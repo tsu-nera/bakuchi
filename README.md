@@ -1,7 +1,5 @@
-仮想通貨システムトレードプロジェクト
+bakuchi
 ===
 
-## Authors
-
-[@tsu-nera](https://twitter.com/tsu_nera)
+仮想通貨botトレード
 
