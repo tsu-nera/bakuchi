@@ -1,7 +1,7 @@
-import invoke
-from src.experiments.client import bitflyer
+from invoke import task
+from src.experiments.ticker import bitflyer
 
 
-@invoke.task
-def tmp(c):
+@task
+def tick(c):
     bitflyer()
