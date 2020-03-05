@@ -2,6 +2,7 @@ from invoke import task
 
 from src.experiments.public import fetch_ticks
 from src.experiments.private import fetch_balance
+from src.experiments.arbitrage import trade
 
 import src.constants.ccxtconst as cctxconst
 
@@ -24,3 +25,8 @@ def balance_bitflyer(c):
 @task
 def balance_coincheck(c):
     fetch_balance(cctxconst.EXCHANGE_ID_COINCHECK)
+
+
+@task
+def arbitrage(c):
+    trade()
