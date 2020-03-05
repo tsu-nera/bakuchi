@@ -1,12 +1,12 @@
 from invoke import task
 
 from src.experiments.public import fetch_ticks
-from src.experiments.private import fetch_bitflyer_balance
+from src.experiments.private import fetch_balance
 
 
 @task
-def balance(c):
-    fetch_bitflyer_balance()
+def balance_bitflyer(c):
+    fetch_balance("bitflyer")
 
 
 @task
