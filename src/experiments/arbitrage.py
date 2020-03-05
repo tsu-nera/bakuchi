@@ -6,10 +6,6 @@ bf = ccxt.bitflyer()
 cc = ccxt.coincheck()
 
 
-def _diff(a, b):
-    return abs(a - b)
-
-
 def trade():
 
     while True:
