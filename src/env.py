@@ -9,3 +9,5 @@ load_dotenv(dotenv_path)
 
 BITFLYER_API_KEY = os.environ.get("BITFLYER_API_KEY")
 BITFLYER_API_SECRET = os.environ.get("BITFLYER_API_SECRET")
+COINCHECK_API_KEY = os.environ.get("COINCHECK_API_KEY")
+COINCHECK_API_SECRET = os.environ.get("COINCHECK_API_SECRET")

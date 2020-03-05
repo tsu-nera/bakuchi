@@ -2,7 +2,7 @@ import ccxt  # noqa
 import time
 
 # from pprint import pprint
-from src.constants.ccxtlib import SYMBOL_BTC_JPY
+from src.constants.ccxtconst import SYMBOL_BTC_JPY
 
 
 def fetch_ticks(exchange_id):

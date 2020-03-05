@@ -1,5 +1,5 @@
 import ccxt  # noqa
-from src.constants.ccxtlib import EXCHANGE_AUTH_DICT, API_KEY, API_SECRET
+from src.constants.ccxtconst import EXCHANGE_AUTH_DICT, API_KEY, API_SECRET
 
 
 def fetch_balance(exchange_id):
