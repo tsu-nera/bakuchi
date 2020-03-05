@@ -1,1 +1,0 @@
-SYMBOL_BTC_JPY = "BTC/JPY"

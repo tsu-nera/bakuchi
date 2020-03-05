@@ -1,10 +1,11 @@
-import ccxt
-import src.env as env
+import ccxt  # noqa
+from src.constants.ccxtconst import EXCHANGE_AUTH_DICT, API_KEY, API_SECRET
 
 
-def fetch_bitflyer_balance():
-    bf = ccxt.bitflyer()
-    bf.apiKey = env.BITFLYER_API_KEY
-    bf.secret = env.BITFLYER_API_SECRET
+def fetch_balance(exchange_id):
+    ex = eval('ccxt.{}()'.format(exchange_id))
+    auth = EXCHANGE_AUTH_DICT[exchange_id]
+    ex.apiKey = auth[API_KEY]
+    ex.secret = auth[API_SECRET]
 
-    print(bf.fetch_balance())
+    print(ex.fetch_balance())
