@@ -13,11 +13,6 @@ basicConfig(filename="logs/bakuchi.log")
 
 
 @task
-def note(c):
-    run("jupyter notebook --notebook-dir='notebooks'")
-
-
-@task
 def tick_bitflyer(c):
     fetch_ticks(cctxconst.EXCHANGE_ID_BITFLYER)
 
@@ -43,5 +38,18 @@ def arbitrage(c):
 
 
 @task
+def backtest(c):
+    pass
+
+
+@task
 def get_historical_data(c):
     save_ticks()
+
+
+###############
+# Othre Utils
+###############
+@task
+def note(c):
+    run("jupyter notebook --notebook-dir='notebooks'")
