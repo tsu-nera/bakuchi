@@ -3,6 +3,7 @@ from invoke import task
 from src.experiments.public import fetch_ticks
 from src.experiments.private import fetch_balance
 from src.experiments.arbitrage import trade
+from src.utils.historical import save_ticks
 
 import src.constants.ccxtconst as cctxconst
 
@@ -30,3 +31,8 @@ def balance_coincheck(c):
 @task
 def arbitrage(c):
     trade()
+
+
+@task
+def get_historical_data(c):
+    save_ticks(cctxconst.EXCHANGE_ID_BITFLYER)
