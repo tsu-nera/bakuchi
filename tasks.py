@@ -2,7 +2,9 @@ from invoke import task, run
 
 from src.experiments.public import fetch_ticks
 from src.experiments.private import fetch_balance
-from src.experiments.arbitrage import trade
+from src.experiments.arbitrage import run_trade
+
+from src.utils.backtest import run_backtest
 from src.utils.historical import save_ticks
 
 import src.constants.ccxtconst as cctxconst
@@ -33,13 +35,13 @@ def balance_coincheck(c):
 
 
 @task
-def arbitrage(c):
-    trade()
+def trade(c):
+    run_trade()
 
 
 @task
 def backtest(c):
-    pass
+    run_backtest()
 
 
 @task
