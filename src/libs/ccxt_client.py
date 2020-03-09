@@ -1,7 +1,7 @@
 import ccxt
 import datetime
 import src.constants.ccxtconst as ccxtconst
-import time
+import sys
 
 from logging import getLogger
 
@@ -17,15 +17,15 @@ class CcxtClient():
         try:
             return proc()
         except ccxt.ExchangeNotAvailable as e:
-            self.logger.error("exchange not available error occured", e)
+            self.logger.exception("exchange not available error occured", e)
             return None
         except ccxt.RequestTimeout as e:
-            self.logger.error("timeout error occured", e)
+            self.logger.exception("timeout error occured", e)
         except ccxt.RateLimitExceeded as e:
-            self.logger.error("rate limit error occured. sleep 30sec", e)
-            time.sleep(30)
+            self.logger.exception("rate limit error occured. exit", e)
+            sys.exit(1)
         except Exception as e:
-            self.logger.error("error occourd", e)
+            self.logger.exception("error occourd", e)
         return None
 
     def fetch_tick(self):
