@@ -35,4 +35,4 @@ def arbitrage(c):
 
 @task
 def get_historical_data(c):
-    save_ticks(cctxconst.EXCHANGE_ID_BITFLYER)
+    save_ticks()
