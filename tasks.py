@@ -1,4 +1,4 @@
-from invoke import task
+from invoke import task, run
 
 from src.experiments.public import fetch_ticks
 from src.experiments.private import fetch_balance
@@ -10,6 +10,11 @@ import src.constants.ccxtconst as cctxconst
 from logging import basicConfig
 
 basicConfig(filename="logs/bakuchi.log")
+
+
+@task
+def note(c):
+    run("jupyter notebook --notebook-dir='notebooks'")
 
 
 @task
