@@ -1,0 +1,6 @@
+import os
+
+DATA_DIR = "data"
+HISTORICAL_DATA_DIR = "historicals"
+
+HISTORICAL_DATA_DIR_PATH = os.path.join(DATA_DIR, HISTORICAL_DATA_DIR)

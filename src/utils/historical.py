@@ -1,17 +1,20 @@
 import ccxt  # noqa
 import time
+import datetime
 import os
 
 from src.libs.ccxt_client import CcxtClient
 import src.constants.ccxtconst as ccxtconst
-
-HISTORICAL_DATA_DIR_PATH = os.path.join("data", "historicals")
-HISTORICAL_DATA_PATH_BITFLYER = os.path.join(HISTORICAL_DATA_DIR_PATH,
-                                             "bitflyer.csv")
-HISTORICAL_DATA_PATH_COINCHECK = os.path.join(HISTORICAL_DATA_DIR_PATH,
-                                              "coincheck.csv")
+from src.constants.common import HISTORICAL_DATA_DIR_PATH
 
 PER_TICK_SEC = 1
+
+
+def _get_file_path(exchange_id):
+    now = datetime.datetime.now()
+    now_string = now.strftime("%y%m%d%H%M")
+    file_name_with_date = "{}_{}.csv".format(now_string, exchange_id)
+    return os.path.join(HISTORICAL_DATA_DIR_PATH, file_name_with_date)
 
 
 def _format_csv(date, bid, ask):
@@ -19,8 +22,11 @@ def _format_csv(date, bid, ask):
 
 
 def save_ticks():
-    fs_bf = open(HISTORICAL_DATA_PATH_BITFLYER, mode='w')
-    fs_cc = open(HISTORICAL_DATA_PATH_COINCHECK, mode='w')
+    bf_file_path = _get_file_path(ccxtconst.EXCHANGE_ID_BITFLYER)
+    cc_file_path = _get_file_path(ccxtconst.EXCHANGE_ID_COINCHECK)
+
+    fs_bf = open(bf_file_path, mode='w')
+    fs_cc = open(cc_file_path, mode='w')
 
     header_string = 'date,bid,ask\n'
     fs_bf.write(header_string)
@@ -29,25 +35,26 @@ def save_ticks():
     client_bf = CcxtClient(ccxtconst.EXCHANGE_ID_BITFLYER)
     client_cc = CcxtClient(ccxtconst.EXCHANGE_ID_COINCHECK)
 
-    for _ in range(1000000):
-        tick_bf = client_bf.fetch_tick()
-        tick_cc = client_cc.fetch_tick()
+    try:
+        for _ in range(1000000):
+            tick_bf = client_bf.fetch_tick()
+            tick_cc = client_cc.fetch_tick()
 
-        if tick_bf and tick_cc:
-            output_bf = _format_csv(tick_bf["date"], tick_bf["bid"],
-                                    tick_bf["ask"])
-            output_cc = _format_csv(tick_cc["date"], tick_cc["bid"],
-                                    tick_cc["ask"])
+            if tick_bf and tick_cc:
+                output_bf = _format_csv(tick_bf["date"], tick_bf["bid"],
+                                        tick_bf["ask"])
+                output_cc = _format_csv(tick_cc["date"], tick_cc["bid"],
+                                        tick_cc["ask"])
 
-            fs_bf.write(output_bf + '\n')
-            fs_bf.flush()
+                fs_bf.write(output_bf + '\n')
+                fs_bf.flush()
 
-            fs_cc.write(output_cc + '\n')
-            fs_cc.flush()
+                fs_cc.write(output_cc + '\n')
+                fs_cc.flush()
 
-            time.sleep(PER_TICK_SEC)
-        else:
-            time.sleep(10)
-
-    fs_bf.close()
-    fs_cc.close()
+                time.sleep(PER_TICK_SEC)
+            else:
+                time.sleep(10)
+    finally:
+        fs_bf.close()
+        fs_cc.close()

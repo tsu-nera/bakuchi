@@ -16,13 +16,13 @@ class CcxtClient():
     def _exec(self, proc):
         try:
             return proc()
-        except ccxt.ExchangeNotAvailable as e:
-            self.logger.exception("exchange not available error occured", e)
+        except ccxt.ExchangeNotAvailable:
+            self.logger.exception("exchange not available error occured")
             return None
-        except ccxt.RequestTimeout as e:
-            self.logger.exception("timeout error occured", e)
-        except ccxt.RateLimitExceeded as e:
-            self.logger.exception("rate limit error occured. exit", e)
+        except ccxt.RequestTimeout:
+            self.logger.exception("timeout error occured")
+        except ccxt.RateLimitExceeded:
+            self.logger.exception("rate limit error occured. exit.")
             sys.exit(1)
         except Exception as e:
             self.logger.exception("error occourd", e)
