@@ -7,6 +7,10 @@ from src.utils.historical import save_ticks
 
 import src.constants.ccxtconst as cctxconst
 
+from logging import basicConfig
+
+basicConfig(filename="logs/bakuchi.log")
+
 
 @task
 def tick_bitflyer(c):
