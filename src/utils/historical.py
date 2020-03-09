@@ -1,6 +1,5 @@
 import ccxt  # noqa
 import time
-
 import os
 
 import datetime
@@ -25,24 +24,28 @@ def save_ticks():
     fs_bf.write(header_string)
     fs_cc.write(header_string)
 
-    for _ in range(10):
-        ticker_bf = ex_bf.fetch_ticker(ccxtconst.SYMBOL_BTC_JPY)
-        ticker_cc = ex_cc.fetch_ticker(ccxtconst.SYMBOL_BTC_JPY)
-
+    for _ in range(1000000):
         date_string = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        output_bf = "{},{},{}".format(date_string, ticker_bf["bid"],
-                                      ticker_bf["ask"])
-        output_cc = "{},{},{}".format(date_string, ticker_cc["bid"],
-                                      ticker_cc["ask"])
+        try:
+            ticker_bf = ex_bf.fetch_ticker(ccxtconst.SYMBOL_BTC_JPY)
+            ticker_cc = ex_cc.fetch_ticker(ccxtconst.SYMBOL_BTC_JPY)
 
-        fs_bf.write(output_bf + '\n')
-        fs_bf.flush()
+            output_bf = "{},{},{}".format(date_string, ticker_bf["bid"],
+                                          ticker_bf["ask"])
+            output_cc = "{},{},{}".format(date_string, ticker_cc["bid"],
+                                          ticker_cc["ask"])
 
-        fs_cc.write(output_cc + '\n')
-        fs_cc.flush()
+            fs_bf.write(output_bf + '\n')
+            fs_bf.flush()
 
-        time.sleep(1)
+            fs_cc.write(output_cc + '\n')
+            fs_cc.flush()
+
+            time.sleep(1)
+        except ccxt.RequestTimeout as e:
+            print("{} timeout error occured".format(date_string), e)
+            time.sleep(10)
 
     fs_bf.close()
     fs_cc.close()
