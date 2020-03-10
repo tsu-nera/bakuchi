@@ -6,7 +6,7 @@ bf = ccxt.bitflyer()
 cc = ccxt.coincheck()
 
 
-def run_trade():
+def run_trading():
 
     while True:
         bf_tick = bf.fetch_ticker(cctxconst.SYMBOL_BTC_JPY)
