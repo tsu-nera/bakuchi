@@ -3,6 +3,7 @@ import src.env as env
 EXCHANGE_ID_BITFLYER = "bitflyer"
 EXCHANGE_ID_COINCHECK = "coincheck"
 EXCHANGE_ID_LIQUID = "liquid"
+EXCHANGE_ID_BITBANK = "bitbank"
 
 SYMBOL_BTC_JPY = "BTC/JPY"
 
@@ -21,5 +22,9 @@ EXCHANGE_AUTH_DICT = {
     EXCHANGE_ID_LIQUID: {
         API_KEY: env.LIQUID_API_KEY,
         API_SECRET: env.LIQUID_API_SECRET
+    },
+    EXCHANGE_ID_BITBANK: {
+        API_KEY: env.BITBANK_API_KEY,
+        API_SECRET: env.BITBANK_API_SECRET
     }
 }
