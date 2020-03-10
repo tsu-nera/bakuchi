@@ -2,6 +2,7 @@ import src.env as env
 
 EXCHANGE_ID_BITFLYER = "bitflyer"
 EXCHANGE_ID_COINCHECK = "coincheck"
+EXCHANGE_ID_LIQUID = "liquid"
 
 SYMBOL_BTC_JPY = "BTC/JPY"
 
