@@ -30,6 +30,11 @@ def tick_liquid(c):
 
 
 @task
+def tick_bitbank(c):
+    fetch_ticks(cctxconst.EXCHANGE_ID_BITBANK)
+
+
+@task
 def balance_bitflyer(c):
     fetch_balance(cctxconst.EXCHANGE_ID_BITFLYER)
 
@@ -42,6 +47,11 @@ def balance_coincheck(c):
 @task
 def balance_liquid(c):
     fetch_balance(cctxconst.EXCHANGE_ID_LIQUID)
+
+
+@task
+def balance_bitbank(c):
+    fetch_balance(cctxconst.EXCHANGE_ID_BITBANK)
 
 
 @task
