@@ -32,11 +32,13 @@ class ArbitrageTrading(ArbitrageBase):
 
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
             profit = y.bid - x.ask
-            print("bitFlyerで1BTCを{}円で買いCoincheckで1BTCを{}円で売れば、{}円の利益が出ます。".
-                  format(x.ask, y.bid, profit))
+            print(
+                "Coincheckで1BTCを{}円で買いLiquidで1BTCを{}円で売れば、{}円の利益が出ます。".format(
+                    x.ask, y.bid, profit))
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
             profit = x.bid - y.ask
-            print("Coincheckで1BTCを{}円で買いbidFlyerで1BTCを{}円で売れば、{}円の利益が出ます。".
-                  format(y.ask, x.bid, profit))
+            print(
+                "Liquidで1BTCを{}円で買いCoincheckで1BTCを{}円で売れば、{}円の利益が出ます。".format(
+                    y.ask, x.bid, profit))
         else:
             pass

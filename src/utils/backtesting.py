@@ -4,10 +4,10 @@ from src.constants.common import HISTORICAL_DATA_DIR_PATH
 from src.drivers.csv_driver import CsvDriver
 from src.core.arbitrage_backtesting import ArbitrageBacktesting
 
-TESTDATA_BITFLYER = os.path.join(HISTORICAL_DATA_DIR_PATH,
-                                 "2003100027_bitflyer.csv")
 TESTDATA_COINCHECK = os.path.join(HISTORICAL_DATA_DIR_PATH,
                                   "2003100027_coincheck.csv")
+TESTDATA_LIQUID = os.path.join(HISTORICAL_DATA_DIR_PATH,
+                               "2003100027_liquid.csv")
 
 
 def run_backtesting():
@@ -15,11 +15,11 @@ def run_backtesting():
     csv_driver = CsvDriver()
 
     # load dataset
-    df_bf = csv_driver.read_df(TESTDATA_BITFLYER)
     df_cc = csv_driver.read_df(TESTDATA_COINCHECK)
+    df_lq = csv_driver.read_df(TESTDATA_LIQUID)
 
     # run trade
-    arbitrage = ArbitrageBacktesting(df_bf, df_cc)
+    arbitrage = ArbitrageBacktesting(df_cc, df_lq)
     arbitrage.run()
 
     # show result

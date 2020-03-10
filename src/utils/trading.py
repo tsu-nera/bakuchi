@@ -6,7 +6,7 @@ def run_trading():
     print("== trading bot start == ")
 
     # run trade
-    arbitrage = ArbitrageTrading(cctxconst.EXCHANGE_ID_BITFLYER,
+    arbitrage = ArbitrageTrading(cctxconst.EXCHANGE_ID_LIQUID,
                                  cctxconst.EXCHANGE_ID_COINCHECK)
 
     try:
