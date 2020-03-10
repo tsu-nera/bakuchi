@@ -1,5 +1,4 @@
 from .arbitrage_base import ArbitrageBase
-
 from .tick import Tick
 
 

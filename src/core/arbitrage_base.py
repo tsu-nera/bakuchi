@@ -14,11 +14,12 @@ class ArbitrageBase(metaclass=ABCMeta):
         # tick取得
         x, y = self._get_tick()
 
-        # 判定
-        result = self._evaluate(x, y)
+        if x and y:
+            # 判定
+            result = self._evaluate(x, y)
 
-        # アクション
-        self._action(result, x, y)
+            # アクション
+            self._action(result, x, y)
 
     @abstractmethod
     def _get_tick(self):
