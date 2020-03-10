@@ -1,8 +1,10 @@
-from invoke import task
+from invoke import task, run
 
 from src.experiments.public import fetch_ticks
 from src.experiments.private import fetch_balance
-from src.experiments.arbitrage import trade
+
+from src.utils.trading import run_trading
+from src.utils.backtesting import run_backtesting
 from src.utils.historical import save_ticks
 
 import src.constants.ccxtconst as cctxconst
@@ -33,10 +35,23 @@ def balance_coincheck(c):
 
 
 @task
-def arbitrage(c):
-    trade()
+def trade(c):
+    run_trading()
+
+
+@task
+def backtest(c):
+    run_backtesting()
 
 
 @task
 def get_historical_data(c):
     save_ticks()
+
+
+###############
+# Othre Utils
+###############
+@task
+def note(c):
+    run("jupyter notebook --notebook-dir='notebooks'")
