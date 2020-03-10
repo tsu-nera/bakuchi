@@ -10,11 +10,15 @@ from src.constants.common import HISTORICAL_DATA_DIR_PATH
 PER_TICK_SEC = 1
 
 
-def _get_file_path(exchange_id):
+def _get_dir_path():
     now = datetime.datetime.now()
     now_string = now.strftime("%y%m%d%H%M")
-    file_name_with_date = "{}_{}.csv".format(now_string, exchange_id)
-    return os.path.join(HISTORICAL_DATA_DIR_PATH, file_name_with_date)
+    return os.path.join(HISTORICAL_DATA_DIR_PATH, now_string)
+
+
+def _get_file_path(dir_path, exchange_id):
+    file_name = "{}.csv".format(exchange_id)
+    return os.path.join(dir_path, file_name)
 
 
 def _format_csv(date, bid, ask):
@@ -22,10 +26,13 @@ def _format_csv(date, bid, ask):
 
 
 def save_ticks():
-    bf_file_path = _get_file_path(ccxtconst.EXCHANGE_ID_BITFLYER)
-    cc_file_path = _get_file_path(ccxtconst.EXCHANGE_ID_COINCHECK)
-    lq_file_path = _get_file_path(ccxtconst.EXCHANGE_ID_LIQUID)
-    bb_file_path = _get_file_path(ccxtconst.EXCHANGE_ID_BITBANK)
+    dir_path = _get_dir_path()
+    os.mkdir(dir_path)
+
+    bf_file_path = _get_file_path(dir_path, ccxtconst.EXCHANGE_ID_BITFLYER)
+    cc_file_path = _get_file_path(dir_path, ccxtconst.EXCHANGE_ID_COINCHECK)
+    lq_file_path = _get_file_path(dir_path, ccxtconst.EXCHANGE_ID_LIQUID)
+    bb_file_path = _get_file_path(dir_path, ccxtconst.EXCHANGE_ID_BITBANK)
 
     fs_bf = open(bf_file_path, mode='w')
     fs_cc = open(cc_file_path, mode='w')
