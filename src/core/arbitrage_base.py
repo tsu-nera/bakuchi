@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractmethod
-from src.config import config
 
 
 class ArbitrageBase(metaclass=ABCMeta):

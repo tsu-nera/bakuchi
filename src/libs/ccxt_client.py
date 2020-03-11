@@ -30,7 +30,7 @@ class CcxtClient():
             return self.exchange.fetch_ticker(self.symbol)
         except ccxt.ExchangeNotAvailable as e:
             self.logger.error(e)
-            self.logger.errro("exchange not available error occured")
+            self.logger.error("exchange not available error occured")
             return None
         except ccxt.RequestTimeout as e:
             self.logger.error(e)

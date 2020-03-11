@@ -10,4 +10,6 @@ def fetch_balance(exchange_id):
 def create_order(exchange_id, order_side, amount):
     client = CcxtClient(exchange_id)
 
-    client.create_order(order_side, amount)
+    order_info = client.create_order(order_side, amount)
+
+    print(order_info)
