@@ -57,7 +57,8 @@ class CcxtClient():
         } if tick else None
 
     def fetch_balance(self):
-        return self.exchange.fetch_balance()
+        balance = self.exchange.fetch_balance()
+        return balance["free"]
 
     def symbols(self):
         markets = self.exchange.markets
