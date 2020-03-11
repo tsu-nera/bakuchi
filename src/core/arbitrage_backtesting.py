@@ -80,8 +80,9 @@ class ArbitrageBacktesting(ArbitrageBase):
         self._report_trade_meta()
         print()
         self._report_trade_stats()
-        print()
-        self._report_histories()
+
+        # print()
+        # self._report_histories()
 
     def _report_trade_meta(self):
         start_date = self.dates[0]
@@ -97,27 +98,20 @@ class ArbitrageBacktesting(ArbitrageBase):
     def _report_trade_stats(self):
         data = []
 
-        data.append(["取引回数", "{}".format(self.trade_count)])
-        data.append([
-            "利益(BTC)",
-            self.exchange_x.get_profit_btc() +
-            self.exchange_y.get_profit_btc()
-        ])
-        data.append([
-            "利益(JPY)",
-            self.exchange_x.get_profit_jpy() +
-            self.exchange_y.get_profit_jpy()
-        ])
-        data.append([
-            "資産(BTC)",
-            self.exchange_x.get_balance_btc() +
-            self.exchange_y.get_balance_btc()
-        ])
-        data.append([
-            "資産(JPY)",
-            self.exchange_x.get_balance_jpy() +
-            self.exchange_y.get_balance_jpy()
-        ])
+        total_profit_btc = self.exchange_x.get_profit_btc(
+        ) + self.exchange_y.get_profit_btc()
+        total_profit_jpy = self.exchange_x.get_profit_jpy(
+        ) + self.exchange_y.get_profit_jpy()
+        total_balance_btc = self.exchange_x.get_balance_btc(
+        ) + self.exchange_y.get_balance_btc()
+        total_balance_jpy = self.exchange_x.get_balance_jpy(
+        ) + self.exchange_y.get_balance_jpy()
+
+        data.append(["取引回数", self.trade_count])
+        data.append(["利益(BTC)", total_profit_btc])
+        data.append(["利益(JPY)", total_profit_jpy])
+        data.append(["資産(BTC)", total_balance_btc])
+        data.append(["資産(JPY)", total_balance_jpy])
 
         print("バックテスト結果")
         print(tabulate(data))
