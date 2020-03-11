@@ -29,6 +29,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.symbol = symbol
 
         self.histories = []
+        self.trade_count = 0
 
     def run(self):
         n = len(self.dates)
@@ -52,7 +53,9 @@ class ArbitrageBacktesting(ArbitrageBase):
 
     def _action(self, result, x, y):
         date_string = x.date.strftime('%Y-%m-%d %H:%M:%S')
+
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
+            self.trade_count += 1
             self.exchange_x.order_buy(self.symbol, 1, x.ask)
             self._record_history(date_string, "売り", self.exchange_x_id, x.ask)
 
@@ -62,6 +65,7 @@ class ArbitrageBacktesting(ArbitrageBase):
             self._rearrange_action_permission_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
+            self.trade_count += 1
             self.exchange_y.order_buy(self.symbol, 1, y.ask)
             self._record_history(date_string, "売り", self.exchange_y_id, y.ask)
 
@@ -74,10 +78,36 @@ class ArbitrageBacktesting(ArbitrageBase):
 
     def report(self):
         print()
-        print(self.exchange_x.get_balances())
-        print(self.exchange_y.get_balances())
+        self._report_trade_stats()
         print()
         self._report_histories()
+
+    def _report_trade_stats(self):
+        data = []
+
+        data.append(["取引回数", "{}".format(self.trade_count)])
+        data.append([
+            "利益(BTC)",
+            self.exchange_x.get_profit_btc() +
+            self.exchange_y.get_profit_btc()
+        ])
+        data.append([
+            "利益(JPY)",
+            self.exchange_x.get_profit_jpy() +
+            self.exchange_y.get_profit_jpy()
+        ])
+        data.append([
+            "資産(BTC)",
+            self.exchange_x.get_balance_btc() +
+            self.exchange_y.get_balance_btc()
+        ])
+        data.append([
+            "資産(JPY)",
+            self.exchange_x.get_balance_jpy() +
+            self.exchange_y.get_balance_jpy()
+        ])
+
+        print(tabulate(data))
 
     def _report_histories(self):
         data = self.histories
@@ -85,5 +115,4 @@ class ArbitrageBacktesting(ArbitrageBase):
         headers = ["日時", "取引所", "注文", "価格"]
         data.insert(0, headers)
 
-        print("取引履歴")
-        print(tabulate(data))
+        print(tabulate(data, headers="firstrow"))

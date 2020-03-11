@@ -4,8 +4,10 @@ from src.config import config
 
 class ExchangeBacktesting(ExchangeBase):
     def __init__(self):
-        self.balance_jpy = float(config['backtest']["balance_jpy"])
-        self.balance_btc = float(config['backtest']["balance_btc"])
+        self.balance_jpy_init = float(config['backtest']["balance_jpy"])
+        self.balance_btc_init = float(config['backtest']["balance_btc"])
+        self.balance_jpy = self.balance_jpy_init
+        self.balance_btc = self.balance_btc_init
 
     def _calc_price(self, amount, price):
         return amount * price
@@ -20,5 +22,14 @@ class ExchangeBacktesting(ExchangeBase):
         self.balance_jpy += value
         self.balance_btc -= amount
 
-    def get_balances(self):
-        return {"BTC": self.balance_btc, "JPY": self.balance_jpy}
+    def get_balance_btc(self):
+        return self.balance_btc
+
+    def get_profit_btc(self):
+        return self.balance_btc - self.balance_btc_init
+
+    def get_balance_jpy(self):
+        return self.balance_jpy
+
+    def get_profit_jpy(self):
+        return self.balance_jpy - self.balance_jpy_init
