@@ -44,18 +44,23 @@ class ArbitrageBase(metaclass=ABCMeta):
 
     def _check_profit_mergin_threshold(self, bid, ask):
         return bid - ask > self.PROFIT_MERGIN_THRESHOLD
+    
+    def _check_profit_mergin_exist(self, bid, ask):
+        return bid - ask > 0
 
     def _check_action_permission_buyx_selly(self, bid, ask):
-        if ask > bid:
+        if not self._check_profit_mergin_exist(bid, ask):
             return False
+        
         if self.action_permission:
             return self._check_profit_mergin_threshold(bid, ask)
         else:
             return self.action_direction
 
     def _check_action_permission_buyy_sellx(self, bid, ask):
-        if ask > bid:
+        if not self._check_profit_mergin_exist(bid, ask):
             return False
+        
         if self.action_permission:
             return self._check_profit_mergin_threshold(bid, ask)
         else:

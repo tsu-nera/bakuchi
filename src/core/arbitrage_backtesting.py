@@ -52,4 +52,3 @@ class ArbitrageBacktesting(ArbitrageBase):
     def report(self):
         print()
         print("comming soon...")
-        print()
