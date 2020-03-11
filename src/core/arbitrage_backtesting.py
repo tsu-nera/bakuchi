@@ -77,10 +77,22 @@ class ArbitrageBacktesting(ArbitrageBase):
             pass
 
     def report(self):
+        self._report_trade_meta()
         print()
         self._report_trade_stats()
         print()
         self._report_histories()
+
+    def _report_trade_meta(self):
+        start_date = self.dates[0]
+        end_date = self.dates[-1]
+
+        data = []
+        data.append(["開始日時", start_date])
+        data.append(["終了日時", end_date])
+
+        print("バックテスト情報")
+        print(tabulate(data))
 
     def _report_trade_stats(self):
         data = []
@@ -107,6 +119,7 @@ class ArbitrageBacktesting(ArbitrageBase):
             self.exchange_y.get_balance_jpy()
         ])
 
+        print("バックテスト結果")
         print(tabulate(data))
 
     def _report_histories(self):
