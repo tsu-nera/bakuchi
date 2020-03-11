@@ -6,6 +6,7 @@ from src.experiments.private import fetch_balance
 from src.utils.trading import run_trading
 from src.utils.backtesting import run_backtesting
 from src.utils.historical import save_ticks
+from src.libs.ccxt_client import CcxtClient
 
 import src.constants.ccxtconst as cctxconst
 
@@ -32,6 +33,16 @@ def tick_liquid(c):
 @task
 def tick_bitbank(c):
     fetch_ticks(cctxconst.EXCHANGE_ID_BITBANK)
+
+
+@task
+def tick_bitmex(c):
+    fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX)
+
+
+@task
+def tick_testnet(c):
+    fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
 
 
 @task
@@ -67,6 +78,12 @@ def backtest(c, date):
 @task
 def get_historical_data(c):
     save_ticks()
+
+
+@task
+def symbols(c, exchange_id):
+    c = CcxtClient(exchange_id)
+    print(c.symbols())
 
 
 ###############

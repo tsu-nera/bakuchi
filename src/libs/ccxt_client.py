@@ -10,7 +10,15 @@ class CcxtClient():
     def __init__(self, exchange_id):
         self.logger = getLogger(__name__)
 
+        # for demo trade
+        exchange_id = exchange_id.replace("_demo", "")
+
         self.exchange = eval('ccxt.{}()'.format(exchange_id))
+
+        # for bitmex exchange
+        if 'test' in self.exchange.urls:
+            self.exchange.urls['api'] = self.exchange.urls['test']
+
         self.symbol = ccxtconst.SYMBOL_BTC_JPY  # とりあえず BTC/JPY固定
 
     def _exec(self):
@@ -43,3 +51,10 @@ class CcxtClient():
             "bid": tick["bid"],
             "ask": tick["ask"]
         } if tick else None
+
+    def symbols(self):
+        markets = self.exchange.markets
+        if markets:
+            return list(markets.keys())
+        else:
+            return []
