@@ -46,11 +46,6 @@ def tick_testnet(c):
 
 
 @task
-def tick_gemini(c):
-    fetch_ticks(cctxconst.EXCHANGE_ID_GEMINI, cctxconst.SYMBOL_BTC_USD)
-
-
-@task
 def tick_gemini_sandbox(c):
     fetch_ticks(cctxconst.EXCHANGE_ID_GEMINI_DEMO, cctxconst.SYMBOL_BTC_USD)
 
