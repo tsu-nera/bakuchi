@@ -9,6 +9,8 @@ class ArbitrageTrading(ArbitrageBase):
     TICK_INTERVAL_SEC = 1
 
     def __init__(self, exchange_id_x, exchange_id_y):
+        super().__init__()
+
         self.ex_id_x = exchange_id_x
         self.ex_id_y = exchange_id_y
 

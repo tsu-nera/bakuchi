@@ -13,6 +13,8 @@ def _get_file_path(date, exchange_id):
 
 def run_backtesting(date):
     print("=== backtest start ===")
+    print()
+
     csv_driver = CsvDriver()
 
     # load dataset
@@ -28,4 +30,5 @@ def run_backtesting(date):
     # show result
     arbitrage.report()
 
-    print("=== backtest end   ===")
+    print()
+    print("=== backtest end ===")
