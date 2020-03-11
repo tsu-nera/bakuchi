@@ -7,11 +7,23 @@ from logging import getLogger
 
 
 class CcxtClient():
-    def __init__(self, exchange_id):
+    def __init__(self, exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
         self.logger = getLogger(__name__)
 
-        self.exchange = eval('ccxt.{}()'.format(exchange_id))
-        self.symbol = ccxtconst.SYMBOL_BTC_JPY  # とりあえず BTC/JPY固定
+        # for demo trade
+        exchange_id_for_eval = exchange_id.replace("_demo", "")
+
+        self.exchange = eval('ccxt.{}()'.format(exchange_id_for_eval))
+
+        # for bitmex exchange
+        if 'test' in self.exchange.urls:
+            self.exchange.urls['api'] = self.exchange.urls['test']
+
+        auth = ccxtconst.EXCHANGE_AUTH_DICT[exchange_id]
+        self.exchange.apiKey = auth[ccxtconst.API_KEY]
+        self.exchange.secret = auth[ccxtconst.API_SECRET]
+
+        self.symbol = symbol
 
     def _exec(self):
         try:
@@ -43,3 +55,14 @@ class CcxtClient():
             "bid": tick["bid"],
             "ask": tick["ask"]
         } if tick else None
+
+    def fetch_balance(self):
+        balance = self.exchange.fetch_balance()
+        return balance["free"]
+
+    def symbols(self):
+        markets = self.exchange.markets
+        if markets:
+            return list(markets.keys())
+        else:
+            return []

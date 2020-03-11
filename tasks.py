@@ -6,6 +6,7 @@ from src.experiments.private import fetch_balance
 from src.utils.trading import run_trading
 from src.utils.backtesting import run_backtesting
 from src.utils.historical import save_ticks
+from src.libs.ccxt_client import CcxtClient
 
 import src.constants.ccxtconst as cctxconst
 
@@ -35,6 +36,21 @@ def tick_bitbank(c):
 
 
 @task
+def tick_bitmex(c):
+    fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX, cctxconst.SYMBOL_BTC_USD)
+
+
+@task
+def tick_testnet(c):
+    fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX_DEMO, cctxconst.SYMBOL_BTC_USD)
+
+
+@task
+def tick_gemini_sandbox(c):
+    fetch_ticks(cctxconst.EXCHANGE_ID_GEMINI_DEMO, cctxconst.SYMBOL_BTC_USD)
+
+
+@task
 def balance_bitflyer(c):
     fetch_balance(cctxconst.EXCHANGE_ID_BITFLYER)
 
@@ -55,6 +71,16 @@ def balance_bitbank(c):
 
 
 @task
+def balance_testnet(c):
+    fetch_balance(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
+
+
+@task
+def balance_gemini_sandbox(c):
+    fetch_balance(cctxconst.EXCHANGE_ID_GEMINI_DEMO)
+
+
+@task
 def trade(c):
     run_trading()
 
@@ -67,6 +93,12 @@ def backtest(c, date):
 @task
 def get_historical_data(c):
     save_ticks()
+
+
+@task
+def symbols(c, exchange_id):
+    c = CcxtClient(exchange_id)
+    print(c.symbols())
 
 
 ###############
