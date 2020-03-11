@@ -37,12 +37,22 @@ def tick_bitbank(c):
 
 @task
 def tick_bitmex(c):
-    fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX)
+    fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX, cctxconst.SYMBOL_BTC_USD)
 
 
 @task
 def tick_testnet(c):
-    fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
+    fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX_DEMO, cctxconst.SYMBOL_BTC_USD)
+
+
+@task
+def tick_gemini(c):
+    fetch_ticks(cctxconst.EXCHANGE_ID_GEMINI, cctxconst.SYMBOL_BTC_USD)
+
+
+@task
+def tick_gemini_sandbox(c):
+    fetch_ticks(cctxconst.EXCHANGE_ID_GEMINI_DEMO, cctxconst.SYMBOL_BTC_USD)
 
 
 @task

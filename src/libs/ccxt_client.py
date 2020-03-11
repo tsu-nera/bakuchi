@@ -7,7 +7,7 @@ from logging import getLogger
 
 
 class CcxtClient():
-    def __init__(self, exchange_id):
+    def __init__(self, exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
         self.logger = getLogger(__name__)
 
         # for demo trade
@@ -19,7 +19,7 @@ class CcxtClient():
         if 'test' in self.exchange.urls:
             self.exchange.urls['api'] = self.exchange.urls['test']
 
-        self.symbol = ccxtconst.SYMBOL_BTC_JPY  # とりあえず BTC/JPY固定
+        self.symbol = symbol
 
     def _exec(self):
         try:
