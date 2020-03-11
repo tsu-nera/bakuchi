@@ -1,7 +1,7 @@
 from invoke import task, run
 
 from src.experiments.public import fetch_ticks
-from src.experiments.private import fetch_balance
+from src.experiments.private import fetch_balance, create_order
 
 from src.utils.trading import run_trading
 from src.utils.backtesting import run_backtesting
@@ -99,6 +99,18 @@ def get_historical_data(c):
 def symbols(c, exchange_id):
     c = CcxtClient(exchange_id)
     print(c.symbols())
+
+
+@task
+def buy_testnet(c):
+    create_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, cctxconst.ORDER_SIDE_BUY,
+                 1)
+
+
+@task
+def sell_testnet(c):
+    create_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, cctxconst.ORDER_SIDE_SELL,
+                 1)
 
 
 ###############

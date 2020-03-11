@@ -9,8 +9,6 @@ class ArbitrageBase(metaclass=ABCMeta):
 
     def __init__(self):
         self._reset_action_permission()
-        self.profilt_mergin_threshold = int(
-            config["arbitrage"]["profit_mergin_threshold"])
 
     @abstractmethod
     def run(self):

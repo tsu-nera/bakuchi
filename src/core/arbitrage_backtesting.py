@@ -32,6 +32,8 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.histories = []
         self.trade_count = 0
         self.trade_amount = float(config["backtest"]["amount"])
+        self.profilt_mergin_threshold = int(
+            config["backtest"]["profit_mergin_threshold"])
 
     def run(self):
         n = len(self.dates)

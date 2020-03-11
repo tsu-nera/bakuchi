@@ -4,12 +4,18 @@ from .arbitrage_base import ArbitrageBase
 from src.libs.ccxt_client import CcxtClient
 from .tick import Tick
 
+from src.config import config
+
 
 class ArbitrageTrading(ArbitrageBase):
     TICK_INTERVAL_SEC = 1
 
     def __init__(self, exchange_id_x, exchange_id_y):
         super().__init__()
+
+        self.profilt_mergin_threshold = int(
+            config["trade"]["profit_mergin_threshold"])
+        self.trade_amount = float(config["trade"]["amount"])
 
         self.ex_id_x = exchange_id_x
         self.ex_id_y = exchange_id_y

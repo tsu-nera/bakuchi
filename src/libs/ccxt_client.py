@@ -66,3 +66,12 @@ class CcxtClient():
             return list(markets.keys())
         else:
             return []
+
+    def create_order(self, order_side, amount):
+        order_info = self.exchange.create_order(
+            symbol=self.symbol,
+            type=ccxtconst.ORDER_TYPE_MARKET,
+            side=order_side,
+            amount=amount)
+
+        return order_info
