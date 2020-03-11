@@ -1,5 +1,6 @@
-from .arbitrage_base import ArbitrageBase
-from .tick import Tick
+from src.core.arbitrage_base import ArbitrageBase
+from src.core.tick import Tick
+from src.core.exchange_backtesting import ExchangeBacktesting as Exchange
 
 
 class ArbitrageBacktesting(ArbitrageBase):
@@ -16,6 +17,9 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.y_asks = df_y.ask.tolist()
 
         self.current_index = 0
+
+        self.exchange_x = Exchange()
+        self.exchange_y = Exchange()
 
     def run(self):
         n = len(self.dates)
@@ -38,11 +42,15 @@ class ArbitrageBacktesting(ArbitrageBase):
             profit = y.bid - x.ask
             print("{} Coincheckで1BTCを{}円で買いLiquidで1BTCを{}円で売れば、{}円の利益が出ます。".
                   format(x.date, x.ask, y.bid, profit))
+            self.exchange_x.buy()
+            self.exchange_y.sell()
             self._rearrange_action_permission_buyx_selly()
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
             profit = x.bid - y.ask
             print("{} Liquidで1BTCを{}円で買いCoincheckで1BTCを{}円で売れば、{}円の利益が出ます。".
                   format(x.date, y.ask, x.bid, profit))
+            self.exchange_y.buy()
+            self.exchange_x.sell()
             self._rearrange_action_permission_buyy_sellx()
         else:
             pass
