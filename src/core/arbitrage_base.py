@@ -6,6 +6,8 @@ class ArbitrageBase(metaclass=ABCMeta):
     STRATEGY_BUY_Y_AND_SELL_X = "buy y and sell x"
     STRATEGY_DO_NOTHING = "no strategy"
 
+    PROFIT_MERGIN_THRESHOLD = 2000
+
     def __init__(self):
         self._reset_action_permission()
 
@@ -29,9 +31,9 @@ class ArbitrageBase(metaclass=ABCMeta):
         pass
 
     def _evaluate(self, x, y):
-        if y.bid > x.ask and self._check_action_permission_buyx_selly():
+        if self._check_action_permission_buyx_selly(y.bid, x.ask):
             return self.STRATEGY_BUY_X_AND_SELL_Y
-        elif x.bid > y.ask and self._check_action_permission_buyy_sellx():
+        elif self._check_action_permission_buyy_sellx(x.bid, y.ask):
             return self.STRATEGY_BUY_Y_AND_SELL_X
         else:
             return self.STRATEGY_DO_NOTHING
@@ -40,15 +42,22 @@ class ArbitrageBase(metaclass=ABCMeta):
     def _action(self, result, x, y):
         pass
 
-    def _check_action_permission_buyx_selly(self):
+    def _check_profit_mergin_threshold(self, bid, ask):
+        return bid - ask > self.PROFIT_MERGIN_THRESHOLD
+
+    def _check_action_permission_buyx_selly(self, bid, ask):
+        if ask > bid:
+            return False
         if self.action_permission:
-            return True
+            return self._check_profit_mergin_threshold(bid, ask)
         else:
             return self.action_direction
 
-    def _check_action_permission_buyy_sellx(self):
+    def _check_action_permission_buyy_sellx(self, bid, ask):
+        if ask > bid:
+            return False
         if self.action_permission:
-            return True
+            return self._check_profit_mergin_threshold(bid, ask)
         else:
             return not self.action_direction
 
@@ -67,7 +76,7 @@ class ArbitrageBase(metaclass=ABCMeta):
     def _reset_action_permission(self):
         self.action_permission = True
         self.action_direction = None
- 
+
     def _allow_only_buyx_selly(self):
         self.action_permission = False
         self.action_direction = True
@@ -75,4 +84,3 @@ class ArbitrageBase(metaclass=ABCMeta):
     def _allow_only_buyy_sellx(self):
         self.action_permission = False
         self.action_direction = False
-        
