@@ -29,9 +29,9 @@ class ArbitrageBase(metaclass=ABCMeta):
         pass
 
     def _evaluate(self, x, y):
-        if y.bid > x.ask:
+        if y.bid > x.ask and self._check_action_permission_buyx_selly():
             return self.STRATEGY_BUY_X_AND_SELL_Y
-        elif x.bid > y.ask:
+        elif x.bid > y.ask and self._check_action_permission_buyy_sellx():
             return self.STRATEGY_BUY_Y_AND_SELL_X
         else:
             return self.STRATEGY_DO_NOTHING
@@ -51,6 +51,18 @@ class ArbitrageBase(metaclass=ABCMeta):
             return True
         else:
             return not self.action_direction
+
+    def _rearrange_action_permission_buyx_selly(self):
+        if self.action_permission:
+            self._allow_only_buyy_sellx()
+        else:
+            self._reset_action_permission()
+
+    def _rearrange_action_permission_buyy_sellx(self):
+        if self.action_permission:
+            self._allow_only_buyx_selly()
+        else:
+            self._reset_action_permission()
 
     def _reset_action_permission(self):
         self.action_permission = True
