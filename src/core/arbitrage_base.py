@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from src.config import config
 
 
 class ArbitrageBase(metaclass=ABCMeta):
@@ -6,10 +7,10 @@ class ArbitrageBase(metaclass=ABCMeta):
     STRATEGY_BUY_Y_AND_SELL_X = "buy y and sell x"
     STRATEGY_DO_NOTHING = "no strategy"
 
-    PROFIT_MERGIN_THRESHOLD = 2000
-
     def __init__(self):
         self._reset_action_permission()
+        self.profilt_mergin_threshold = int(
+            config["arbitrage"]["profit_mergin_threshold"])
 
     @abstractmethod
     def run(self):
@@ -43,7 +44,7 @@ class ArbitrageBase(metaclass=ABCMeta):
         pass
 
     def _check_profit_mergin_threshold(self, bid, ask):
-        return bid - ask > self.PROFIT_MERGIN_THRESHOLD
+        return bid - ask > self.profilt_mergin_threshold
 
     def _check_profit_mergin_exist(self, bid, ask):
         return bid - ask > 0
