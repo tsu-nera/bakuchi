@@ -24,7 +24,9 @@ def run_backtesting(date):
         _get_file_path(date, ccxtconst.EXCHANGE_ID_LIQUID))
 
     # run trade
-    arbitrage = ArbitrageBacktesting(df_cc, df_lq)
+    arbitrage = ArbitrageBacktesting(df_cc, df_lq, ccxtconst.SYMBOL_BTC_JPY,
+                                     ccxtconst.EXCHANGE_ID_COINCHECK,
+                                     ccxtconst.EXCHANGE_ID_LIQUID)
     arbitrage.run()
 
     # show result
