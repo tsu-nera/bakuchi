@@ -1,11 +1,7 @@
-import ccxt  # noqa
-from src.constants.ccxtconst import EXCHANGE_AUTH_DICT, API_KEY, API_SECRET
+from src.libs.ccxt_client import CcxtClient
 
 
 def fetch_balance(exchange_id):
-    ex = eval('ccxt.{}()'.format(exchange_id))
-    auth = EXCHANGE_AUTH_DICT[exchange_id]
-    ex.apiKey = auth[API_KEY]
-    ex.secret = auth[API_SECRET]
+    client = CcxtClient(exchange_id)
 
-    print(ex.fetch_balance())
+    print(client.fetch_balance())

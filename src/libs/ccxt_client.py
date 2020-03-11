@@ -11,13 +11,17 @@ class CcxtClient():
         self.logger = getLogger(__name__)
 
         # for demo trade
-        exchange_id = exchange_id.replace("_demo", "")
+        exchange_id_for_eval = exchange_id.replace("_demo", "")
 
-        self.exchange = eval('ccxt.{}()'.format(exchange_id))
+        self.exchange = eval('ccxt.{}()'.format(exchange_id_for_eval))
 
         # for bitmex exchange
         if 'test' in self.exchange.urls:
             self.exchange.urls['api'] = self.exchange.urls['test']
+
+        auth = ccxtconst.EXCHANGE_AUTH_DICT[exchange_id]
+        self.exchange.apiKey = auth[ccxtconst.API_KEY]
+        self.exchange.secret = auth[ccxtconst.API_SECRET]
 
         self.symbol = symbol
 
@@ -51,6 +55,9 @@ class CcxtClient():
             "bid": tick["bid"],
             "ask": tick["ask"]
         } if tick else None
+
+    def fetch_balance(self):
+        return self.exchange.fetch_balance()
 
     def symbols(self):
         markets = self.exchange.markets

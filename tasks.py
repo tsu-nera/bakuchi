@@ -76,6 +76,16 @@ def balance_bitbank(c):
 
 
 @task
+def balance_testnet(c):
+    fetch_balance(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
+
+
+@task
+def balance_gemini_sandbox(c):
+    fetch_balance(cctxconst.EXCHANGE_ID_GEMINI_DEMO)
+
+
+@task
 def trade(c):
     run_trading()
 
