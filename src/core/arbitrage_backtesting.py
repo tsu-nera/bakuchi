@@ -1,5 +1,6 @@
 from tabulate import tabulate
 
+from src.config import config
 from src.core.arbitrage_base import ArbitrageBase
 from src.core.tick import Tick
 from src.core.exchange_backtesting import ExchangeBacktesting as Exchange
@@ -30,6 +31,7 @@ class ArbitrageBacktesting(ArbitrageBase):
 
         self.histories = []
         self.trade_count = 0
+        self.trade_amount = float(config["backtest"]["amount"])
 
     def run(self):
         n = len(self.dates)
@@ -56,20 +58,20 @@ class ArbitrageBacktesting(ArbitrageBase):
 
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
             self.trade_count += 1
-            self.exchange_x.order_buy(self.symbol, 1, x.ask)
+            self.exchange_x.order_buy(self.symbol, self.trade_amount, x.ask)
             self._record_history(date_string, "売り", self.exchange_x_id, x.ask)
 
-            self.exchange_y.order_sell(self.symbol, 1, y.bid)
+            self.exchange_y.order_sell(self.symbol, self.trade_amount, y.bid)
             self._record_history(date_string, "買い", self.exchange_y_id, y.bid)
 
             self._rearrange_action_permission_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
             self.trade_count += 1
-            self.exchange_y.order_buy(self.symbol, 1, y.ask)
+            self.exchange_y.order_buy(self.symbol, self.trade_amount, y.ask)
             self._record_history(date_string, "売り", self.exchange_y_id, y.ask)
 
-            self.exchange_x.order_sell(self.symbol, 1, x.bid)
+            self.exchange_x.order_sell(self.symbol, self.trade_amount, x.bid)
             self._record_history(date_string, "買い", self.exchange_x_id, x.bid)
 
             self._rearrange_action_permission_buyy_sellx()
@@ -94,26 +96,39 @@ class ArbitrageBacktesting(ArbitrageBase):
 
         print("バックテスト情報")
         print(tabulate(data))
+        print("利確しきい値 {}(円)".format(self.profilt_mergin_threshold))
+        print("取引単位 {}(BTC)".format(self.trade_amount))
+        print("--------")
 
     def _report_trade_stats(self):
         data = []
+        data2 = []
 
-        total_profit_btc = self.exchange_x.get_profit_btc(
-        ) + self.exchange_y.get_profit_btc()
-        total_profit_jpy = self.exchange_x.get_profit_jpy(
-        ) + self.exchange_y.get_profit_jpy()
-        total_balance_btc = self.exchange_x.get_balance_btc(
-        ) + self.exchange_y.get_balance_btc()
-        total_balance_jpy = self.exchange_x.get_balance_jpy(
-        ) + self.exchange_y.get_balance_jpy()
+        total_profit_btc = round(
+            self.exchange_x.get_profit_btc() +
+            self.exchange_y.get_profit_btc(), 3)
+        total_profit_jpy = int(self.exchange_x.get_profit_jpy() +
+                               self.exchange_y.get_profit_jpy())
+        total_balance_btc = round(
+            self.exchange_x.get_balance_btc() +
+            self.exchange_y.get_balance_btc(), 3)
+        total_balance_jpy = int(self.exchange_x.get_balance_jpy() +
+                                self.exchange_y.get_balance_jpy())
+
+        init_balance_jpy = int(config["backtest"]["balance_jpy"]) * 2
+        init_balance_btc = float(config["backtest"]["balance_btc"]) * 2
 
         data.append(["取引回数", self.trade_count])
-        data.append(["利益(BTC)", total_profit_btc])
         data.append(["利益(JPY)", total_profit_jpy])
-        data.append(["資産(BTC)", total_balance_btc])
+        data.append(["元金(JPY)", init_balance_jpy])
         data.append(["資産(JPY)", total_balance_jpy])
 
+        data2.append(["利益(BTC)", total_profit_btc])
+        data2.append(["元金(BTC)", init_balance_btc])
+        data2.append(["資産(BTC)", total_balance_btc])
+
         print("バックテスト結果")
+        print(tabulate(data2))
         print(tabulate(data))
 
     def _report_histories(self):
