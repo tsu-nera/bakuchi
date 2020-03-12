@@ -68,6 +68,12 @@ class CcxtClient():
         else:
             return []
 
+    def fetch_open_orders(self):
+        return self.exchange.fetch_open_orders()
+
+    def get_positions(self):
+        return self.exchange.private_get_position()
+
     def create_market_sell_order(self, amount):
         order_info = self.exchange.create_market_sell_order(symbol=self.symbol,
                                                             amount=amount)

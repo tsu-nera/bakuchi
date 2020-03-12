@@ -1,7 +1,7 @@
 from invoke import task, run
 
-from src.experiments.public import fetch_ticks
-from src.experiments.private import fetch_balance, create_buy_order, create_sell_order
+import src.utils.public as public
+import src.utils.private as private
 
 from src.utils.trading import run_trading
 from src.utils.backtesting import run_backtesting
@@ -17,67 +17,69 @@ basicConfig(filename="logs/bakuchi.log")
 
 @task
 def tick_bitflyer(c):
-    fetch_ticks(cctxconst.EXCHANGE_ID_BITFLYER)
+    public.fetch_ticks(cctxconst.EXCHANGE_ID_BITFLYER)
 
 
 @task
 def tick_coincheck(c):
-    fetch_ticks(cctxconst.EXCHANGE_ID_COINCHECK)
+    public.fetch_ticks(cctxconst.EXCHANGE_ID_COINCHECK)
 
 
 @task
 def tick_liquid(c):
-    fetch_ticks(cctxconst.EXCHANGE_ID_LIQUID)
+    public.fetch_ticks(cctxconst.EXCHANGE_ID_LIQUID)
 
 
 @task
 def tick_bitbank(c):
-    fetch_ticks(cctxconst.EXCHANGE_ID_BITBANK)
+    public.fetch_ticks(cctxconst.EXCHANGE_ID_BITBANK)
 
 
 @task
 def tick_bitmex(c):
-    fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX, cctxconst.SYMBOL_BTC_USD)
+    public.fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX, cctxconst.SYMBOL_BTC_USD)
 
 
 @task
 def tick_testnet(c):
-    fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX_DEMO, cctxconst.SYMBOL_BTC_USD)
+    public.fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX_DEMO,
+                       cctxconst.SYMBOL_BTC_USD)
 
 
 @task
 def tick_gemini_sandbox(c):
-    fetch_ticks(cctxconst.EXCHANGE_ID_GEMINI_DEMO, cctxconst.SYMBOL_BTC_USD)
+    public.fetch_ticks(cctxconst.EXCHANGE_ID_GEMINI_DEMO,
+                       cctxconst.SYMBOL_BTC_USD)
 
 
 @task
 def balance_bitflyer(c):
-    fetch_balance(cctxconst.EXCHANGE_ID_BITFLYER)
+    private.fetch_balance(cctxconst.EXCHANGE_ID_BITFLYER)
 
 
 @task
 def balance_coincheck(c):
-    fetch_balance(cctxconst.EXCHANGE_ID_COINCHECK)
+    private.fetch_balance(cctxconst.EXCHANGE_ID_COINCHECK)
 
 
 @task
 def balance_liquid(c):
-    fetch_balance(cctxconst.EXCHANGE_ID_LIQUID)
+    private.fetch_balance(cctxconst.EXCHANGE_ID_LIQUID)
 
 
 @task
 def balance_bitbank(c):
-    fetch_balance(cctxconst.EXCHANGE_ID_BITBANK)
+    private.fetch_balance(cctxconst.EXCHANGE_ID_BITBANK)
 
 
 @task
 def balance_testnet(c):
-    fetch_balance(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
+    private.fetch_balance(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
 
 
 @task
 def balance_gemini_sandbox(c):
-    fetch_balance(cctxconst.EXCHANGE_ID_GEMINI_DEMO)
+    private.fetch_balance(cctxconst.EXCHANGE_ID_GEMINI_DEMO)
 
 
 @task
@@ -103,12 +105,22 @@ def symbols(c, exchange_id):
 
 @task
 def buy_testnet(c):
-    create_buy_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, 1)
+    private.create_buy_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, 1)
 
 
 @task
 def sell_testnet(c):
-    create_sell_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, 1)
+    private.create_sell_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, 1)
+
+
+@task
+def fetch_orders(c):
+    private.fetch_open_orders(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
+
+
+@task
+def fetch_positions(c):
+    private.get_positions(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
 
 
 ###############

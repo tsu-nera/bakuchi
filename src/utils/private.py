@@ -7,6 +7,18 @@ def fetch_balance(exchange_id):
     print(client.fetch_balance())
 
 
+def fetch_open_orders(exchange_id):
+    client = CcxtClient(exchange_id)
+
+    print(client.fetch_open_orders())
+
+
+def get_positions(exchange_id):
+    client = CcxtClient(exchange_id)
+
+    print(client.get_positions())
+
+
 def create_buy_order(exchange_id, amount):
     client = CcxtClient(exchange_id)
 
