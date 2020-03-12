@@ -2,7 +2,7 @@ from tabulate import tabulate
 
 from src.config import config
 from src.core.arbitrage_base import ArbitrageBase
-from src.core.tick import Tick
+from src.core.tick import Tic
 from src.core.exchange_backtesting import ExchangeBacktesting as Exchange
 
 

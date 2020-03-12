@@ -4,6 +4,7 @@ from .arbitrage_base import ArbitrageBase
 from src.libs.ccxt_client import CcxtClient
 from src.constants.ccxtconst import TICK_INTERVAL_SEC
 from .tick import Tick
+from src.core.exchange_trading import ExchangeTrading as Exchange
 
 from src.config import config
 
@@ -18,6 +19,9 @@ class ArbitrageTrading(ArbitrageBase):
 
         self.ex_id_x = exchange_id_x
         self.ex_id_y = exchange_id_y
+
+        self.exchange_x = Exchange(exchange_id_x)
+        self.exchange_y = Exchange(exchange_id_y)
 
         self.client_x = CcxtClient(exchange_id_x)
         self.client_y = CcxtClient(exchange_id_y)
@@ -35,8 +39,6 @@ class ArbitrageTrading(ArbitrageBase):
                     x["ask"]), Tick(y["timestamp"], y["bid"], y["ask"])
 
     def _action(self, result, x, y):
-        # とりあえずはbacktestingと同じ
-
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
             profit = y.bid - x.ask
             print(
