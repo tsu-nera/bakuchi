@@ -46,12 +46,13 @@ class CcxtClient():
             return None
 
     def fetch_tick(self):
-        date_string = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        timestamp_string = datetime.datetime.now().strftime(
+            '%Y-%m-%d %H:%M:%S')
 
         tick = self._exec()
 
         return {
-            "date": date_string,
+            "timestamp": timestamp_string,
             "bid": tick["bid"],
             "ask": tick["ask"]
         } if tick else None

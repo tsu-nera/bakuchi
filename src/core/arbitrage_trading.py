@@ -32,8 +32,8 @@ class ArbitrageTrading(ArbitrageBase):
         x = self.client_x.fetch_tick()
         y = self.client_y.fetch_tick()
 
-        return Tick(x["date"], x["bid"],
-                    x["ask"]), Tick(y["date"], y["bid"], y["ask"])
+        return Tick(x["timestamp"], x["bid"],
+                    x["ask"]), Tick(y["timestamp"], y["bid"], y["ask"])
 
     def _action(self, result, x, y):
         # とりあえずはbacktestingと同じ

@@ -1,5 +1,5 @@
 class Tick():
-    def __init__(self, date, bid, ask):
-        self.date = date
+    def __init__(self, timestamp, bid, ask):
+        self.timestamp = timestamp
         self.bid = bid
         self.ask = ask

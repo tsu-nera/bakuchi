@@ -21,8 +21,8 @@ def _get_file_path(dir_path, exchange_id):
     return os.path.join(dir_path, file_name)
 
 
-def _format_csv(date, bid, ask):
-    return "{},{},{}".format(date, bid, ask)
+def _format_csv(timestamp, bid, ask):
+    return "{},{},{}".format(timestamp, bid, ask)
 
 
 def save_ticks():
@@ -39,7 +39,7 @@ def save_ticks():
     fs_lq = open(lq_file_path, mode='w')
     fs_bb = open(bb_file_path, mode='w')
 
-    header_string = 'date,bid,ask\n'
+    header_string = 'timestamp,bid,ask\n'
     fs_bf.write(header_string)
     fs_cc.write(header_string)
     fs_lq.write(header_string)
@@ -58,13 +58,13 @@ def save_ticks():
             tick_bb = client_bb.fetch_tick()
 
             if tick_bf and tick_cc and tick_lq and tick_bb:
-                output_bf = _format_csv(tick_bf["date"], tick_bf["bid"],
+                output_bf = _format_csv(tick_bf["timestamp"], tick_bf["bid"],
                                         tick_bf["ask"])
-                output_cc = _format_csv(tick_cc["date"], tick_cc["bid"],
+                output_cc = _format_csv(tick_cc["timestamp"], tick_cc["bid"],
                                         tick_cc["ask"])
-                output_lq = _format_csv(tick_lq["date"], tick_lq["bid"],
+                output_lq = _format_csv(tick_lq["timestamp"], tick_lq["bid"],
                                         tick_lq["ask"])
-                output_bb = _format_csv(tick_bb["date"], tick_bb["bid"],
+                output_bb = _format_csv(tick_bb["timestamp"], tick_bb["bid"],
                                         tick_bb["ask"])
 
                 fs_bf.write(output_bf + '\n')

@@ -13,7 +13,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.df_x = df_x
         self.df_y = df_y
 
-        self.dates = df_x.index
+        self.timestamps = df_x.index
         self.x_bids = df_x.bid.tolist()
         self.x_asks = df_x.ask.tolist()
         self.y_bids = df_y.bid.tolist()
@@ -36,7 +36,7 @@ class ArbitrageBacktesting(ArbitrageBase):
             config["backtest"]["profit_mergin_threshold"])
 
     def run(self):
-        n = len(self.dates)
+        n = len(self.timestamps)
 
         for i in range(n):
             self.next()
@@ -45,36 +45,40 @@ class ArbitrageBacktesting(ArbitrageBase):
     def _get_tick(self):
         i = self.current_index
 
-        date = self.dates[i]
-        tick_x = Tick(date, self.x_bids[i], self.x_asks[i])
-        tick_y = Tick(date, self.y_bids[i], self.y_asks[i])
+        timestamp = self.timestamps[i]
+        tick_x = Tick(timestamp, self.x_bids[i], self.x_asks[i])
+        tick_y = Tick(timestamp, self.y_bids[i], self.y_asks[i])
 
         return tick_x, tick_y
 
-    def _record_history(self, date, exchange_id, order_type, price):
-        history = [date, exchange_id, order_type, price]
+    def _record_history(self, timestamp, exchange_id, order_type, price):
+        history = [timestamp, exchange_id, order_type, price]
         self.histories.append(history)
 
     def _action(self, result, x, y):
-        date_string = x.date.strftime('%Y-%m-%d %H:%M:%S')
+        timestamp_string = x.timestamp.strftime('%Y-%m-%d %H:%M:%S')
 
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
             self.trade_count += 1
             self.exchange_x.order_buy(self.symbol, self.trade_amount, x.ask)
-            self._record_history(date_string, "売り", self.exchange_x_id, x.ask)
+            self._record_history(timestamp_string, "売り", self.exchange_x_id,
+                                 x.ask)
 
             self.exchange_y.order_sell(self.symbol, self.trade_amount, y.bid)
-            self._record_history(date_string, "買い", self.exchange_y_id, y.bid)
+            self._record_history(timestamp_string, "買い", self.exchange_y_id,
+                                 y.bid)
 
             self._rearrange_action_permission_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
             self.trade_count += 1
             self.exchange_y.order_buy(self.symbol, self.trade_amount, y.ask)
-            self._record_history(date_string, "売り", self.exchange_y_id, y.ask)
+            self._record_history(timestamp_string, "売り", self.exchange_y_id,
+                                 y.ask)
 
             self.exchange_x.order_sell(self.symbol, self.trade_amount, x.bid)
-            self._record_history(date_string, "買い", self.exchange_x_id, x.bid)
+            self._record_history(timestamp_string, "買い", self.exchange_x_id,
+                                 x.bid)
 
             self._rearrange_action_permission_buyy_sellx()
         else:
@@ -89,12 +93,12 @@ class ArbitrageBacktesting(ArbitrageBase):
         # self._report_histories()
 
     def _report_trade_meta(self):
-        start_date = self.dates[0]
-        end_date = self.dates[-1]
+        start_timestamp = self.timestamps[0]
+        end_timestamp = self.timestamps[-1]
 
         data = []
-        data.append(["開始日時", start_date])
-        data.append(["終了日時", end_date])
+        data.append(["開始日時", start_timestamp])
+        data.append(["終了日時", end_timestamp])
 
         print("バックテスト情報")
         print(tabulate(data))

@@ -86,8 +86,8 @@ def trade(c):
 
 
 @task
-def backtest(c, date):
-    run_backtesting(date)
+def backtest(c, timestamp):
+    run_backtesting(timestamp)
 
 
 @task
