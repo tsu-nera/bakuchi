@@ -1,5 +1,7 @@
 import src.env as env
 
+TICK_INTERVAL_SEC = 1
+
 EXCHANGE_ID_BITFLYER = "bitflyer"
 EXCHANGE_ID_COINCHECK = "coincheck"
 EXCHANGE_ID_LIQUID = "liquid"

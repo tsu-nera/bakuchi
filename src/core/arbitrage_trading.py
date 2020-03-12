@@ -2,14 +2,13 @@ from time import sleep
 
 from .arbitrage_base import ArbitrageBase
 from src.libs.ccxt_client import CcxtClient
+from src.constants.ccxtconst import TICK_INTERVAL_SEC
 from .tick import Tick
 
 from src.config import config
 
 
 class ArbitrageTrading(ArbitrageBase):
-    TICK_INTERVAL_SEC = 1
-
     def __init__(self, exchange_id_x, exchange_id_y):
         super().__init__()
 
@@ -25,7 +24,7 @@ class ArbitrageTrading(ArbitrageBase):
 
     def run(self):
         while True:
-            sleep(self.TICK_INTERVAL_SEC)
+            sleep(TICK_INTERVAL_SEC)
             self.next()
 
     def _get_tick(self):
