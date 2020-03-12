@@ -59,7 +59,7 @@ class CcxtClient():
 
     def fetch_balance(self):
         balance = self.exchange.fetch_balance()
-        return balance["free"]
+        return balance
 
     def symbols(self):
         markets = self.exchange.markets
