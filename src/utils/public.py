@@ -6,8 +6,9 @@ import src.constants.ccxtconst as ccxtconst
 def fetch_ticks(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
     client = CcxtClient(exchange_id, symbol)
 
-    for _ in range(10):
-        ticker = client.fetch_tick()
-        output = "bid:{} ask:{}".format(ticker["bid"], ticker["ask"])
+    while True:
+        tick = client.fetch_tick()
+        output = "{} bid={} ask={}".format(tick["timestamp"], tick["bid"],
+                                           tick["ask"])
         print(output)
         time.sleep(1)

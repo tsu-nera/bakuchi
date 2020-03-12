@@ -1,5 +1,7 @@
 import src.env as env
 
+TICK_INTERVAL_SEC = 1
+
 EXCHANGE_ID_BITFLYER = "bitflyer"
 EXCHANGE_ID_COINCHECK = "coincheck"
 EXCHANGE_ID_LIQUID = "liquid"
@@ -44,3 +46,8 @@ EXCHANGE_AUTH_DICT = {
         API_SECRET: env.GEMINI_SANDBOX_API_SECRET
     }
 }
+
+ORDER_TYPE_LIMIT = "limit"  # 指値注文
+ORDER_TYPE_MARKET = "market"  # 成功注文
+ORDER_SIDE_BUY = "buy"
+ORDER_SIDE_SELL = "sell"

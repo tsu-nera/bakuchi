@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractmethod
-from src.config import config
 
 
 class ArbitrageBase(metaclass=ABCMeta):
@@ -9,8 +8,6 @@ class ArbitrageBase(metaclass=ABCMeta):
 
     def __init__(self):
         self._reset_action_permission()
-        self.profilt_mergin_threshold = int(
-            config["arbitrage"]["profit_mergin_threshold"])
 
     @abstractmethod
     def run(self):

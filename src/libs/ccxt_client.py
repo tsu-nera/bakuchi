@@ -30,7 +30,7 @@ class CcxtClient():
             return self.exchange.fetch_ticker(self.symbol)
         except ccxt.ExchangeNotAvailable as e:
             self.logger.error(e)
-            self.logger.errro("exchange not available error occured")
+            self.logger.error("exchange not available error occured")
             return None
         except ccxt.RequestTimeout as e:
             self.logger.error(e)
@@ -46,19 +46,20 @@ class CcxtClient():
             return None
 
     def fetch_tick(self):
-        date_string = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        timestamp_string = datetime.datetime.now().strftime(
+            '%Y-%m-%d %H:%M:%S')
 
         tick = self._exec()
 
         return {
-            "date": date_string,
+            "timestamp": timestamp_string,
             "bid": tick["bid"],
             "ask": tick["ask"]
         } if tick else None
 
     def fetch_balance(self):
         balance = self.exchange.fetch_balance()
-        return balance["free"]
+        return balance
 
     def symbols(self):
         markets = self.exchange.markets
@@ -66,3 +67,21 @@ class CcxtClient():
             return list(markets.keys())
         else:
             return []
+
+    def fetch_open_orders(self):
+        return self.exchange.fetch_open_orders()
+
+    def get_positions(self):
+        return self.exchange.private_get_position()
+
+    def create_market_sell_order(self, amount):
+        order_info = self.exchange.create_market_sell_order(symbol=self.symbol,
+                                                            amount=amount)
+
+        return order_info
+
+    def create_market_buy_order(self, amount):
+        order_info = self.exchange.create_market_buy_order(symbol=self.symbol,
+                                                           amount=amount)
+
+        return order_info
