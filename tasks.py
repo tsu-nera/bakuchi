@@ -1,7 +1,7 @@
 from invoke import task, run
 
 from src.experiments.public import fetch_ticks
-from src.experiments.private import fetch_balance, create_order
+from src.experiments.private import fetch_balance, create_buy_order, create_sell_order
 
 from src.utils.trading import run_trading
 from src.utils.backtesting import run_backtesting
@@ -103,14 +103,12 @@ def symbols(c, exchange_id):
 
 @task
 def buy_testnet(c):
-    create_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, cctxconst.ORDER_SIDE_BUY,
-                 1)
+    create_buy_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, 1)
 
 
 @task
 def sell_testnet(c):
-    create_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, cctxconst.ORDER_SIDE_SELL,
-                 1)
+    create_sell_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, 1)
 
 
 ###############
