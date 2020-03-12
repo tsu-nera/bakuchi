@@ -42,10 +42,16 @@ class ArbitrageTrading(ArbitrageBase):
             print(
                 "Coincheckで1BTCを{}円で買いLiquidで1BTCを{}円で売れば、{}円の利益が出ます。".format(
                     x.ask, y.bid, profit))
+
+            self._rearrange_action_permission_buyx_selly()
+
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
             profit = x.bid - y.ask
             print(
                 "Liquidで1BTCを{}円で買いCoincheckで1BTCを{}円で売れば、{}円の利益が出ます。".format(
                     y.ask, x.bid, profit))
+
+            self._rearrange_action_permission_buyy_sellx()
+
         else:
             pass
