@@ -59,8 +59,8 @@ class CcxtClient():
             return None
 
     def _logging_tick(self, bid, ask):
-        self.logger.info('(%s:%s) tick bid=%s ask=%s', self.exchange_id,
-                         self.symbol, bid, ask)
+        self.logger.info('tick bid=%s ask=%s (%s:%s)', bid, ask,
+                         self.exchange_id, self.symbol)
 
     def fetch_tick(self):
         timestamp_string = datetime.datetime.now().strftime(
