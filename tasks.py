@@ -10,9 +10,9 @@ from src.libs.ccxt_client import CcxtClient
 
 import src.constants.ccxtconst as cctxconst
 
+import logging
 from logging import basicConfig
-
-basicConfig(filename="logs/bakuchi.log")
+basicConfig(level=logging.INFO, handlers=[])
 
 
 @task

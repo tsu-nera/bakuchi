@@ -2,5 +2,13 @@ import os
 
 DATA_DIR = "data"
 HISTORICAL_DATA_DIR = "historicals"
+LOG_DIR = "logs"
+
+HISTORICAL_LOG_FILE = "historical.log"
+TRADING_LOG_FILE = "trading.log"
+CCXT_LOG_FILE = "ccxt.log"
 
 HISTORICAL_DATA_DIR_PATH = os.path.join(DATA_DIR, HISTORICAL_DATA_DIR)
+HISTORICAL_LOG_FILE_PATH = os.path.join(LOG_DIR, HISTORICAL_LOG_FILE)
+TRADING_LOG_FILE_PATH = os.path.join(LOG_DIR, TRADING_LOG_FILE)
+CCXT_LOG_FILE_PATH = os.path.join(LOG_DIR, CCXT_LOG_FILE)

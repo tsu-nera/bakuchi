@@ -1,14 +1,18 @@
+import sys
 import ccxt
 import datetime
-import src.constants.ccxtconst as ccxtconst
-import sys
 
-from logging import getLogger
+from src.libs.logger import get_ccxt_logger
+import src.constants.ccxtconst as ccxtconst
 
 
 class CcxtClient():
     def __init__(self, exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
-        self.logger = getLogger(__name__)
+        self.demo_mode = True
+
+        self.exchange_id = exchange_id
+        self.symbol = symbol
+        self.logger = get_ccxt_logger()
 
         # for demo trade
         exchange_id_for_eval = exchange_id.replace("_demo", "")
@@ -22,8 +26,6 @@ class CcxtClient():
         auth = ccxtconst.EXCHANGE_AUTH_DICT[exchange_id]
         self.exchange.apiKey = auth[ccxtconst.API_KEY]
         self.exchange.secret = auth[ccxtconst.API_SECRET]
-
-        self.symbol = symbol
 
     def _exec(self):
         try:
@@ -45,17 +47,26 @@ class CcxtClient():
             self.logger.error("error occourd")
             return None
 
+    def _logging_tick(self, bid, ask):
+        self.logger.info('(%s:%s) tick bid=%s ask=%s', self.exchange_id,
+                         self.symbol, bid, ask)
+
     def fetch_tick(self):
         timestamp_string = datetime.datetime.now().strftime(
             '%Y-%m-%d %H:%M:%S')
 
         tick = self._exec()
 
-        return {
-            "timestamp": timestamp_string,
-            "bid": tick["bid"],
-            "ask": tick["ask"]
-        } if tick else None
+        if tick:
+            self._logging_tick(tick["bid"], tick["ask"])
+            return {
+                "timestamp": timestamp_string,
+                "bid": tick["bid"],
+                "ask": tick["ask"]
+            }
+        else:
+            self.logger.error('(%s) %s', self.exchange_id, "can't get tick")
+            return None
 
     def fetch_balance(self):
         balance = self.exchange.fetch_balance()
@@ -75,12 +86,23 @@ class CcxtClient():
         return self.exchange.private_get_position()
 
     def create_market_sell_order(self, amount):
+        self.logger.info('(%s:%s) order sell amount=%s', self.exchange_id,
+                         self.symbol, amount)
+
+        if self.demo_mode:
+            return None
+
         order_info = self.exchange.create_market_sell_order(symbol=self.symbol,
                                                             amount=amount)
-
         return order_info
 
     def create_market_buy_order(self, amount):
+        self.logger.info('(%s:%s) order buy amount=%s', self.exchange_id,
+                         self.symbol, amount)
+
+        if self.demo_mode:
+            return None
+
         order_info = self.exchange.create_market_buy_order(symbol=self.symbol,
                                                            amount=amount)
 
