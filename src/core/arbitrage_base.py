@@ -41,7 +41,7 @@ class ArbitrageBase(metaclass=ABCMeta):
         pass
 
     def _check_profit_mergin_threshold(self, bid, ask):
-        return bid - ask > self.profilt_mergin_threshold
+        return bid - ask > self.profit_mergin_threshold
 
     def _check_profit_mergin_exist(self, bid, ask):
         return bid - ask > 0

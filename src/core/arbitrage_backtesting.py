@@ -32,7 +32,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.histories = []
         self.trade_count = 0
         self.trade_amount = float(config["backtest"]["amount"])
-        self.profilt_mergin_threshold = int(
+        self.profit_mergin_threshold = int(
             config["backtest"]["profit_mergin_threshold"])
 
     def run(self):
@@ -102,7 +102,7 @@ class ArbitrageBacktesting(ArbitrageBase):
 
         print("バックテスト情報")
         print(tabulate(data))
-        print("利確しきい値 {}(円)".format(self.profilt_mergin_threshold))
+        print("利確しきい値 {}(円)".format(self.profit_mergin_threshold))
         print("取引単位 {}(BTC)".format(self.trade_amount))
         print("--------")
 

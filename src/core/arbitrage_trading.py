@@ -15,7 +15,7 @@ class ArbitrageTrading(ArbitrageBase):
     def __init__(self, exchange_id_x, exchange_id_y, symbol):
         super().__init__()
 
-        self.profilt_mergin_threshold = int(
+        self.profit_mergin_threshold = int(
             config["trade"]["profit_mergin_threshold"])
         self.trade_amount = float(config["trade"]["amount"])
 
@@ -33,7 +33,7 @@ class ArbitrageTrading(ArbitrageBase):
         self.logger_with_stdout = get_trading_logger_with_stdout()
 
         self.trade_amount = float(config["trade"]["amount"])
-        self.profilt_mergin_threshold = int(
+        self.profit_mergin_threshold = int(
             config["trade"]["profit_mergin_threshold"])
 
     def run(self):
@@ -48,7 +48,7 @@ class ArbitrageTrading(ArbitrageBase):
         return Tick(x["timestamp"], x["bid"],
                     x["ask"]), Tick(y["timestamp"], y["bid"], y["ask"])
 
-    def _calc_expected_profilt(self, bid, ask):
+    def _calc_expected_profit(self, bid, ask):
         price = bid - ask
         return round(price * self.trade_amount, 1)
 
@@ -58,7 +58,7 @@ class ArbitrageTrading(ArbitrageBase):
             self.exchange_x.order_buy(self.trade_amount, ask_for_coincheck)
             self.exchange_y.order_sell(self.trade_amount)
 
-            profit = self._calc_expected_profilt(y.bid, x.ask)
+            profit = self._calc_expected_profit(y.bid, x.ask)
             message = "buy {} ask={}, sell {} bid={}, expected_profit={}".format(
                 self.ex_id_x, x.ask, self.ex_id_y, y.bid, profit)
 
@@ -71,7 +71,7 @@ class ArbitrageTrading(ArbitrageBase):
             self.exchange_y.order_buy(self.trade_amount, ask_for_coincheck)
             self.exchange_x.order_sell(self.trade_amount)
 
-            profit = self._calc_expected_profilt(x.bid, y.ask)
+            profit = self._calc_expected_profit(x.bid, y.ask)
             message = "buy {} ask={}, sell {} bid={}, expected_profit={}".format(
                 self.ex_id_y, y.ask, self.ex_id_x, x.bid, profit)
 
