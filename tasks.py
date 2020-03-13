@@ -105,12 +105,16 @@ def symbols(c, exchange_id):
 
 @task
 def sell_coincheck(c):
-    private.create_sell_order(cctxconst.EXCHANGE_ID_COINCHECK, 0.005)
+    private.create_sell_order(cctxconst.EXCHANGE_ID_COINCHECK, 0.0055)
 
 
 @task
 def buy_coincheck(c):
-    private.create_buy_order(cctxconst.EXCHANGE_ID_COINCHECK, 0.005)
+    client = CcxtClient(cctxconst.EXCHANGE_ID_COINCHECK)
+    tick = client.fetch_tick()
+    ask = float(tick["ask"])
+
+    private.create_buy_order(cctxconst.EXCHANGE_ID_COINCHECK, 0.0055, ask)
 
 
 @task

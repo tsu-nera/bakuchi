@@ -29,8 +29,6 @@ class CcxtClient():
         self.exchange.apiKey = auth[ccxtconst.API_KEY]
         self.exchange.secret = auth[ccxtconst.API_SECRET]
 
-        print(self.demo_mode)
-
     def _is_demo_mode(self):
         demo_mode = int(config["trade"]["demo_mode"])
 
@@ -122,8 +120,7 @@ class CcxtClient():
         if self.demo_mode:
             return None
 
-        order_info = self.exchange.create_buy_order(symbol=self.symbol,
-                                                    type="market_buy",
-                                                    amount=amount)
+        order_info = self.exchange.create_market_buy_order(symbol=self.symbol,
+                                                           amount=amount)
 
         return order_info

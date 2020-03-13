@@ -36,10 +36,14 @@ def get_positions(exchange_id):
     print(data)
 
 
-def create_buy_order(exchange_id, amount):
+def create_buy_order(exchange_id, amount, ask_for_coincheck=None):
     client = CcxtClient(exchange_id)
 
-    order_info = client.create_market_buy_order(amount)
+    if ask_for_coincheck:
+        price = int(ask_for_coincheck * amount)
+        order_info = client.create_market_buy_order(price)
+    else:
+        order_info = client.create_market_buy_order(amount)
 
     print(order_info)
 
