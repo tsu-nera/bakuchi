@@ -1,9 +1,17 @@
+import sys
 import ccxt
 import datetime
-import src.constants.ccxtconst as ccxtconst
-import sys
 
-from logging import getLogger
+import src.constants.ccxtconst as ccxtconst
+import src.constants.common as common
+
+import logging
+from logging import getLogger, basicConfig
+
+formatter = '[%(levelname)s]%(asctime)s %(message)s'
+basicConfig(filename=common.CCXT_LOG_FILE_PATH,
+            level=logging.INFO,
+            format=formatter)
 
 
 class CcxtClient():
@@ -46,17 +54,26 @@ class CcxtClient():
             self.logger.error("error occourd")
             return None
 
+    def _logging_tick(self, bid, ask):
+        self.logger.info('(%s)(%s) tick bid=%s ask=%s', self.exchange_id,
+                         self.symbol, bid, ask)
+
     def fetch_tick(self):
         timestamp_string = datetime.datetime.now().strftime(
             '%Y-%m-%d %H:%M:%S')
 
         tick = self._exec()
 
-        return {
-            "timestamp": timestamp_string,
-            "bid": tick["bid"],
-            "ask": tick["ask"]
-        } if tick else None
+        if tick:
+            self._logging_tick(tick["bid"], tick["ask"])
+            return {
+                "timestamp": timestamp_string,
+                "bid": tick["bid"],
+                "ask": tick["ask"]
+            }
+        else:
+            self.logger.error('(%s) %s', self.exchange_id, "can't get tick")
+            return None
 
     def fetch_balance(self):
         balance = self.exchange.fetch_balance()

@@ -10,11 +10,6 @@ from src.libs.ccxt_client import CcxtClient
 
 import src.constants.ccxtconst as cctxconst
 
-from logging import basicConfig
-
-basicConfig(filename="logs/bakuchi.log")
-
-
 @task
 def tick_bitflyer(c):
     public.fetch_ticks(cctxconst.EXCHANGE_ID_BITFLYER)
