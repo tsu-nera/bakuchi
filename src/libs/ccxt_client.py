@@ -5,10 +5,12 @@ import datetime
 from src.libs.logger import get_ccxt_logger
 import src.constants.ccxtconst as ccxtconst
 
+from src.config import config
+
 
 class CcxtClient():
     def __init__(self, exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
-        self.demo_mode = False
+        self.demo_mode = self._is_demo_mode()
 
         self.exchange_id = exchange_id
         self.symbol = symbol
@@ -26,6 +28,17 @@ class CcxtClient():
         auth = ccxtconst.EXCHANGE_AUTH_DICT[exchange_id]
         self.exchange.apiKey = auth[ccxtconst.API_KEY]
         self.exchange.secret = auth[ccxtconst.API_SECRET]
+
+        print(self.demo_mode)
+
+    def _is_demo_mode(self):
+        demo_mode = int(config["trade"]["demo_mode"])
+
+        # 1:on, 0:off
+        if demo_mode == 1:
+            return True
+        else:
+            return False
 
     def _exec(self):
         try:
