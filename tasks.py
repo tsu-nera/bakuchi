@@ -104,9 +104,13 @@ def symbols(c, exchange_id):
     print(c.symbols())
 
 
+AMOUNT_FOR_TASKS = 0.0055
+
+
 @task
 def sell_coincheck(c):
-    private.create_sell_order(ccxtconst.EXCHANGE_ID_COINCHECK, 0.0055)
+    private.create_sell_order(ccxtconst.EXCHANGE_ID_COINCHECK,
+                              AMOUNT_FOR_TASKS)
 
 
 @task
@@ -115,17 +119,30 @@ def buy_coincheck(c):
     tick = client.fetch_tick()
     ask = float(tick["ask"])
 
-    private.create_buy_order(ccxtconst.EXCHANGE_ID_COINCHECK, 0.0055, ask)
+    private.create_buy_order(ccxtconst.EXCHANGE_ID_COINCHECK, AMOUNT_FOR_TASKS,
+                             ask)
 
 
 @task
 def sell_liquid(c):
-    private.create_sell_order(ccxtconst.EXCHANGE_ID_LIQUID, 0.005)
+    private.create_sell_order(ccxtconst.EXCHANGE_ID_LIQUID, AMOUNT_FOR_TASKS)
 
 
 @task
 def buy_liquid(c):
-    private.create_buy_order(ccxtconst.EXCHANGE_ID_LIQUID, 0.005)
+    private.create_buy_order(ccxtconst.EXCHANGE_ID_LIQUID, AMOUNT_FOR_TASKS)
+
+
+@task
+def buy_coincheck_sell_liquid(c):
+    buy_coincheck(c)
+    sell_liquid(c)
+
+
+@task
+def sell_coincheck_buy_liquid(c):
+    sell_coincheck(c)
+    buy_liquid(c)
 
 
 @task
