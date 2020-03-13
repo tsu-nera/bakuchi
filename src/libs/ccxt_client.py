@@ -2,10 +2,8 @@ import sys
 import ccxt
 import datetime
 
+from src.libs.logger import get_ccxt_logger
 import src.constants.ccxtconst as ccxtconst
-import src.constants.common as common
-
-import logging
 
 
 class CcxtClient():
@@ -13,7 +11,7 @@ class CcxtClient():
 
         self.exchange_id = exchange_id
         self.symbol = symbol
-        self.logger = self._get_logger()
+        self.logger = get_ccxt_logger()
 
         # for demo trade
         exchange_id_for_eval = exchange_id.replace("_demo", "")
@@ -27,17 +25,6 @@ class CcxtClient():
         auth = ccxtconst.EXCHANGE_AUTH_DICT[exchange_id]
         self.exchange.apiKey = auth[ccxtconst.API_KEY]
         self.exchange.secret = auth[ccxtconst.API_SECRET]
-
-    def _get_logger(self):
-        LOGGER_NAME = "ccxt"
-
-        formatter = logging.Formatter('[%(levelname)s]%(asctime)s %(message)s')
-        logfile = logging.FileHandler(common.CCXT_LOG_FILE_PATH, "w")
-        logfile.setFormatter(formatter)
-        logger = logging.getLogger(LOGGER_NAME)
-        logger.addHandler(logfile)
-
-        return logger
 
     def _exec(self):
         try:
