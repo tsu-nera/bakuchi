@@ -10,10 +10,13 @@ import src.utils.tool as tool
 from src.libs.ccxt_client import CcxtClient
 
 import src.constants.ccxtconst as ccxtconst
+from src.config import config
 
 import logging
 from logging import basicConfig
 basicConfig(level=logging.INFO, handlers=[])
+
+ORDER_AMOUNT = float(config["trade"]["amount"])
 
 
 @task
@@ -104,13 +107,9 @@ def symbols(c, exchange_id):
     print(c.symbols())
 
 
-AMOUNT_FOR_TASKS = 0.0055
-
-
 @task
 def sell_coincheck(c):
-    private.create_sell_order(ccxtconst.EXCHANGE_ID_COINCHECK,
-                              AMOUNT_FOR_TASKS)
+    private.create_sell_order(ccxtconst.EXCHANGE_ID_COINCHECK, ORDER_AMOUNT)
 
 
 @task
@@ -119,18 +118,18 @@ def buy_coincheck(c):
     tick = client.fetch_tick()
     ask = float(tick["ask"])
 
-    private.create_buy_order(ccxtconst.EXCHANGE_ID_COINCHECK, AMOUNT_FOR_TASKS,
+    private.create_buy_order(ccxtconst.EXCHANGE_ID_COINCHECK, ORDER_AMOUNT,
                              ask)
 
 
 @task
 def sell_liquid(c):
-    private.create_sell_order(ccxtconst.EXCHANGE_ID_LIQUID, AMOUNT_FOR_TASKS)
+    private.create_sell_order(ccxtconst.EXCHANGE_ID_LIQUID, ORDER_AMOUNT)
 
 
 @task
 def buy_liquid(c):
-    private.create_buy_order(ccxtconst.EXCHANGE_ID_LIQUID, AMOUNT_FOR_TASKS)
+    private.create_buy_order(ccxtconst.EXCHANGE_ID_LIQUID, ORDER_AMOUNT)
 
 
 @task
