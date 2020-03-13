@@ -1,13 +1,16 @@
+from src.libs.ccxt_client import CcxtClient
 from .exchange_base import ExchangeBase
-# from src.config import config
 
 
 class ExchangeTrading(ExchangeBase):
-    def __init__(self, exchange_id):
+    def __init__(self, exchange_id, symbol):
         self.exchange_id = exchange_id
+        self.symbol = symbol
 
-    def order_buy(self, symbol, amount, price):
-        pass
+        self.client = CcxtClient(exchange_id, symbol)
 
-    def order_sell(self, symbol, amount, price):
-        pass
+    def order_buy(self, amount):
+        self.client.create_market_buy_order(amount)
+
+    def order_sell(self, amount):
+        self.client.create_market_sell_order(amount)

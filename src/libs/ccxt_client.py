@@ -8,6 +8,7 @@ import src.constants.ccxtconst as ccxtconst
 
 class CcxtClient():
     def __init__(self, exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
+        self.demo_mode = True
 
         self.exchange_id = exchange_id
         self.symbol = symbol
@@ -85,12 +86,23 @@ class CcxtClient():
         return self.exchange.private_get_position()
 
     def create_market_sell_order(self, amount):
+        self.logger.info('(%s:%s) order sell amount=%s', self.exchange_id,
+                         self.symbol, amount)
+
+        if self.demo_mode:
+            return None
+
         order_info = self.exchange.create_market_sell_order(symbol=self.symbol,
                                                             amount=amount)
-
         return order_info
 
     def create_market_buy_order(self, amount):
+        self.logger.info('(%s:%s) order buy amount=%s', self.exchange_id,
+                         self.symbol, amount)
+
+        if self.demo_mode:
+            return None
+
         order_info = self.exchange.create_market_buy_order(symbol=self.symbol,
                                                            amount=amount)
 

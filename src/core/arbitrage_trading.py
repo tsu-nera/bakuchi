@@ -7,10 +7,11 @@ from .tick import Tick
 from src.core.exchange_trading import ExchangeTrading as Exchange
 
 from src.config import config
+from src.libs.logger import get_trading_logger
 
 
 class ArbitrageTrading(ArbitrageBase):
-    def __init__(self, exchange_id_x, exchange_id_y):
+    def __init__(self, exchange_id_x, exchange_id_y, symbol):
         super().__init__()
 
         self.profilt_mergin_threshold = int(
@@ -19,12 +20,19 @@ class ArbitrageTrading(ArbitrageBase):
 
         self.ex_id_x = exchange_id_x
         self.ex_id_y = exchange_id_y
+        self.symbol = symbol
 
-        self.exchange_x = Exchange(exchange_id_x)
-        self.exchange_y = Exchange(exchange_id_y)
+        self.exchange_x = Exchange(exchange_id_x, symbol)
+        self.exchange_y = Exchange(exchange_id_y, symbol)
 
         self.client_x = CcxtClient(exchange_id_x)
         self.client_y = CcxtClient(exchange_id_y)
+
+        self.logger = get_trading_logger()
+
+        self.trade_amount = float(config["trade"]["amount"])
+        self.profilt_mergin_threshold = int(
+            config["trade"]["profit_mergin_threshold"])
 
     def run(self):
         while True:
@@ -40,18 +48,28 @@ class ArbitrageTrading(ArbitrageBase):
 
     def _action(self, result, x, y):
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
+            self.exchange_x.order_buy(self.trade_amount)
+            self.exchange_y.order_sell(self.trade_amount)
+
             profit = y.bid - x.ask
-            print(
-                "Coincheckで1BTCを{}円で買いLiquidで1BTCを{}円で売れば、{}円の利益が出ます。".format(
-                    x.ask, y.bid, profit))
+            message = "buy {} ask={}, sell {} bid={}, expected_profit={}".format(
+                self.ex_id_x, x.ask, self.ex_id_y, y.bid, profit)
+
+            print(message)
+            self.logger.info(message)
 
             self._rearrange_action_permission_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
+            self.exchange_y.order_buy(self.trade_amount)
+            self.exchange_x.order_sell(self.trade_amount)
+
             profit = x.bid - y.ask
-            print(
-                "Liquidで1BTCを{}円で買いCoincheckで1BTCを{}円で売れば、{}円の利益が出ます。".format(
-                    y.ask, x.bid, profit))
+            message = "buy {} ask={}, sell {} bid={}, expected_profit={}".format(
+                self.ex_id_y, y.ask, self.ex_id_x, x.bid, profit)
+
+            print(message)
+            self.logger.info(message)
 
             self._rearrange_action_permission_buyy_sellx()
 

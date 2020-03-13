@@ -15,7 +15,8 @@ def run_trading():
 
     # run trade
     arbitrage = ArbitrageTrading(cctxconst.EXCHANGE_ID_LIQUID,
-                                 cctxconst.EXCHANGE_ID_COINCHECK)
+                                 cctxconst.EXCHANGE_ID_COINCHECK,
+                                 cctxconst.SYMBOL_BTC_JPY)
 
     try:
         arbitrage.run()
