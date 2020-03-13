@@ -3,8 +3,8 @@ from .exchange_base import ExchangeBase
 
 
 class ExchangeTrading(ExchangeBase):
-    def __init__(self):
-        pass
+    def __init__(self, exchange_id):
+        self.exchange_id = exchange_id
 
     def order_buy(self, symbol, amount, price):
         pass
