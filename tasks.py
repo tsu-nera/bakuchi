@@ -6,9 +6,10 @@ import src.utils.private as private
 from src.utils.trading import run_trading
 from src.utils.backtesting import run_backtesting
 from src.utils.historical import save_ticks
+import src.utils.tool as tool
 from src.libs.ccxt_client import CcxtClient
 
-import src.constants.ccxtconst as cctxconst
+import src.constants.ccxtconst as ccxtconst
 
 import logging
 from logging import basicConfig
@@ -17,69 +18,69 @@ basicConfig(level=logging.INFO, handlers=[])
 
 @task
 def tick_bitflyer(c):
-    public.fetch_ticks(cctxconst.EXCHANGE_ID_BITFLYER)
+    public.fetch_ticks(ccxtconst.EXCHANGE_ID_BITFLYER)
 
 
 @task
 def tick_coincheck(c):
-    public.fetch_ticks(cctxconst.EXCHANGE_ID_COINCHECK)
+    public.fetch_ticks(ccxtconst.EXCHANGE_ID_COINCHECK)
 
 
 @task
 def tick_liquid(c):
-    public.fetch_ticks(cctxconst.EXCHANGE_ID_LIQUID)
+    public.fetch_ticks(ccxtconst.EXCHANGE_ID_LIQUID)
 
 
 @task
 def tick_bitbank(c):
-    public.fetch_ticks(cctxconst.EXCHANGE_ID_BITBANK)
+    public.fetch_ticks(ccxtconst.EXCHANGE_ID_BITBANK)
 
 
 @task
 def tick_bitmex(c):
-    public.fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX, cctxconst.SYMBOL_BTC_USD)
+    public.fetch_ticks(ccxtconst.EXCHANGE_ID_BITMEX, ccxtconst.SYMBOL_BTC_USD)
 
 
 @task
 def tick_testnet(c):
-    public.fetch_ticks(cctxconst.EXCHANGE_ID_BITMEX_DEMO,
-                       cctxconst.SYMBOL_BTC_USD)
+    public.fetch_ticks(ccxtconst.EXCHANGE_ID_BITMEX_DEMO,
+                       ccxtconst.SYMBOL_BTC_USD)
 
 
 @task
 def tick_gemini_sandbox(c):
-    public.fetch_ticks(cctxconst.EXCHANGE_ID_GEMINI_DEMO,
-                       cctxconst.SYMBOL_BTC_USD)
+    public.fetch_ticks(ccxtconst.EXCHANGE_ID_GEMINI_DEMO,
+                       ccxtconst.SYMBOL_BTC_USD)
 
 
 @task
 def balance_bitflyer(c):
-    private.fetch_balance(cctxconst.EXCHANGE_ID_BITFLYER)
+    private.fetch_balance(ccxtconst.EXCHANGE_ID_BITFLYER)
 
 
 @task
 def balance_coincheck(c):
-    private.fetch_balance(cctxconst.EXCHANGE_ID_COINCHECK)
+    private.fetch_balance(ccxtconst.EXCHANGE_ID_COINCHECK)
 
 
 @task
 def balance_liquid(c):
-    private.fetch_balance(cctxconst.EXCHANGE_ID_LIQUID)
+    private.fetch_balance(ccxtconst.EXCHANGE_ID_LIQUID)
 
 
 @task
 def balance_bitbank(c):
-    private.fetch_balance(cctxconst.EXCHANGE_ID_BITBANK)
+    private.fetch_balance(ccxtconst.EXCHANGE_ID_BITBANK)
 
 
 @task
 def balance_testnet(c):
-    private.fetch_balance(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
+    private.fetch_balance(ccxtconst.EXCHANGE_ID_BITMEX_DEMO)
 
 
 @task
 def balance_gemini_sandbox(c):
-    private.fetch_balance(cctxconst.EXCHANGE_ID_GEMINI_DEMO)
+    private.fetch_balance(ccxtconst.EXCHANGE_ID_GEMINI_DEMO)
 
 
 @task
@@ -105,50 +106,58 @@ def symbols(c, exchange_id):
 
 @task
 def sell_coincheck(c):
-    private.create_sell_order(cctxconst.EXCHANGE_ID_COINCHECK, 0.0055)
+    private.create_sell_order(ccxtconst.EXCHANGE_ID_COINCHECK, 0.0055)
 
 
 @task
 def buy_coincheck(c):
-    client = CcxtClient(cctxconst.EXCHANGE_ID_COINCHECK)
+    client = CcxtClient(ccxtconst.EXCHANGE_ID_COINCHECK)
     tick = client.fetch_tick()
     ask = float(tick["ask"])
 
-    private.create_buy_order(cctxconst.EXCHANGE_ID_COINCHECK, 0.0055, ask)
+    private.create_buy_order(ccxtconst.EXCHANGE_ID_COINCHECK, 0.0055, ask)
 
 
 @task
 def sell_liquid(c):
-    private.create_sell_order(cctxconst.EXCHANGE_ID_LIQUID, 0.005)
+    private.create_sell_order(ccxtconst.EXCHANGE_ID_LIQUID, 0.005)
 
 
 @task
 def buy_liquid(c):
-    private.create_buy_order(cctxconst.EXCHANGE_ID_LIQUID, 0.005)
+    private.create_buy_order(ccxtconst.EXCHANGE_ID_LIQUID, 0.005)
 
 
 @task
 def buy_testnet(c):
-    private.create_buy_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, 1)
+    private.create_buy_order(ccxtconst.EXCHANGE_ID_BITMEX_DEMO, 1)
 
 
 @task
 def sell_testnet(c):
-    private.create_sell_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, 1)
+    private.create_sell_order(ccxtconst.EXCHANGE_ID_BITMEX_DEMO, 1)
 
 
 @task
 def fetch_orders(c):
-    private.fetch_open_orders(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
-    private.fetch_open_orders(cctxconst.EXCHANGE_ID_COINCHECK)
-    private.fetch_open_orders(cctxconst.EXCHANGE_ID_LIQUID)
+    private.fetch_open_orders(ccxtconst.EXCHANGE_ID_BITMEX_DEMO)
+    private.fetch_open_orders(ccxtconst.EXCHANGE_ID_COINCHECK)
+    private.fetch_open_orders(ccxtconst.EXCHANGE_ID_LIQUID)
 
 
 @task
 def fetch_positions(c):
-    private.get_positions(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
-    private.get_positions(cctxconst.EXCHANGE_ID_COINCHECK)
-    private.get_positions(cctxconst.EXCHANGE_ID_LIQUID)
+    private.get_positions(ccxtconst.EXCHANGE_ID_BITMEX_DEMO)
+    private.get_positions(ccxtconst.EXCHANGE_ID_COINCHECK)
+    private.get_positions(ccxtconst.EXCHANGE_ID_LIQUID)
+
+
+###############
+# Utils
+###############
+@task
+def check_margin(c):
+    tool.check_profit_margin()
 
 
 ###############
