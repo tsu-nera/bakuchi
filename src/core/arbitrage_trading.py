@@ -8,6 +8,7 @@ from src.core.exchange_trading import ExchangeTrading as Exchange
 
 from src.config import config
 from src.libs.logger import get_trading_logger
+from src.libs.logger import get_trading_logger_with_stdout
 
 
 class ArbitrageTrading(ArbitrageBase):
@@ -29,6 +30,7 @@ class ArbitrageTrading(ArbitrageBase):
         self.client_y = CcxtClient(exchange_id_y)
 
         self.logger = get_trading_logger()
+        self.logger_with_stdout = get_trading_logger_with_stdout()
 
         self.trade_amount = float(config["trade"]["amount"])
         self.profilt_mergin_threshold = int(
@@ -55,8 +57,7 @@ class ArbitrageTrading(ArbitrageBase):
             message = "buy {} ask={}, sell {} bid={}, expected_profit={}".format(
                 self.ex_id_x, x.ask, self.ex_id_y, y.bid, profit)
 
-            print(message)
-            self.logger.info(message)
+            self.logger_with_stdout.info(message)
 
             self._rearrange_action_permission_buyx_selly()
 
@@ -68,8 +69,7 @@ class ArbitrageTrading(ArbitrageBase):
             message = "buy {} ask={}, sell {} bid={}, expected_profit={}".format(
                 self.ex_id_y, y.ask, self.ex_id_x, x.bid, profit)
 
-            print(message)
-            self.logger.info(message)
+            self.logger_with_stdout.info(message)
 
             self._rearrange_action_permission_buyy_sellx()
 
