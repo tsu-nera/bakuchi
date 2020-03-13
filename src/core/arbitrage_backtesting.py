@@ -89,8 +89,8 @@ class ArbitrageBacktesting(ArbitrageBase):
         print()
         self._report_trade_stats()
 
-        # print()
-        # self._report_histories()
+        print()
+        self._report_histories()
 
     def _report_trade_meta(self):
         start_timestamp = self.timestamps[0]

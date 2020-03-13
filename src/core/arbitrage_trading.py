@@ -48,14 +48,19 @@ class ArbitrageTrading(ArbitrageBase):
         return Tick(x["timestamp"], x["bid"],
                     x["ask"]), Tick(y["timestamp"], y["bid"], y["ask"])
 
+    def _calc_expected_profilt(self, bid, ask):
+        price = bid - ask
+        return round(price * self.trade_amount, 1)
+
     def _action(self, result, x, y):
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
             self.exchange_x.order_buy(self.trade_amount)
             self.exchange_y.order_sell(self.trade_amount)
 
-            profit = y.bid - x.ask
-            message = "buy {} ask={}, sell {} bid={}, expected_profit={}".format(
-                self.ex_id_x, x.ask, self.ex_id_y, y.bid, profit)
+            profit = self._calc_expected_profilt(y.bid, x.ask)
+            message = "buy {} ask={}, sell {} bid={}, amount={}, expected_profit={}".format(
+                self.ex_id_x, x.ask, self.ex_id_y, y.bid, self.trade_amount,
+                profit)
 
             self.logger_with_stdout.info(message)
 
@@ -65,9 +70,10 @@ class ArbitrageTrading(ArbitrageBase):
             self.exchange_y.order_buy(self.trade_amount)
             self.exchange_x.order_sell(self.trade_amount)
 
-            profit = x.bid - y.ask
-            message = "buy {} ask={}, sell {} bid={}, expected_profit={}".format(
-                self.ex_id_y, y.ask, self.ex_id_x, x.bid, profit)
+            profit = self._calc_expected_profilt(x.bid, y.ask)
+            message = "buy {} ask={}, sell {} bid={}, amount={}, expected_profit={}".format(
+                self.ex_id_y, y.ask, self.ex_id_x, x.bid, self.trade_amount,
+                profit)
 
             self.logger_with_stdout.info(message)
 

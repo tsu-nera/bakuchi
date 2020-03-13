@@ -7,7 +7,10 @@ from src.libs.logger import get_trading_logger_with_stdout
 
 def run_trading():
     logger = get_trading_logger_with_stdout()
+
+    logger.info("========================= ")
     logger.info("=== trading bot start === ")
+    logger.info("========================= ")
 
     # run trade
     arbitrage = ArbitrageTrading(cctxconst.EXCHANGE_ID_LIQUID,
@@ -20,4 +23,6 @@ def run_trading():
         # Botを手動で止めるときはCtrl+Cなのでそのアクションを捕捉
         print()
         print()
+        logger.info("======================= ")
         logger.info("=== trading bot end === ")
+        logger.info("======================= ")
