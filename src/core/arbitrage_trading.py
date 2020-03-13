@@ -2,7 +2,7 @@ from time import sleep
 
 from .arbitrage_base import ArbitrageBase
 from src.libs.ccxt_client import CcxtClient
-from src.constants.ccxtconst import TICK_INTERVAL_SEC
+from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK
 from .tick import Tick
 from src.core.exchange_trading import ExchangeTrading as Exchange
 
@@ -54,7 +54,8 @@ class ArbitrageTrading(ArbitrageBase):
 
     def _action(self, result, x, y):
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
-            self.exchange_x.order_buy(self.trade_amount)
+            ask_for_coincheck = x.ask if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
+            self.exchange_x.order_buy(self.trade_amount, ask_for_coincheck)
             self.exchange_y.order_sell(self.trade_amount)
 
             profit = self._calc_expected_profilt(y.bid, x.ask)
@@ -67,7 +68,8 @@ class ArbitrageTrading(ArbitrageBase):
             self._rearrange_action_permission_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
-            self.exchange_y.order_buy(self.trade_amount)
+            ask_for_coincheck = y.ask if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
+            self.exchange_y.order_buy(self.trade_amount, ask_for_coincheck)
             self.exchange_x.order_sell(self.trade_amount)
 
             profit = self._calc_expected_profilt(x.bid, y.ask)

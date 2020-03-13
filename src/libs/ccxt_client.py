@@ -5,10 +5,12 @@ import datetime
 from src.libs.logger import get_ccxt_logger
 import src.constants.ccxtconst as ccxtconst
 
+from src.config import config
+
 
 class CcxtClient():
     def __init__(self, exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
-        self.demo_mode = True
+        self.demo_mode = self._is_demo_mode()
 
         self.exchange_id = exchange_id
         self.symbol = symbol
@@ -26,6 +28,15 @@ class CcxtClient():
         auth = ccxtconst.EXCHANGE_AUTH_DICT[exchange_id]
         self.exchange.apiKey = auth[ccxtconst.API_KEY]
         self.exchange.secret = auth[ccxtconst.API_SECRET]
+
+    def _is_demo_mode(self):
+        demo_mode = int(config["trade"]["demo_mode"])
+
+        # 1:on, 0:off
+        if demo_mode == 1:
+            return True
+        else:
+            return False
 
     def _exec(self):
         try:
@@ -83,7 +94,13 @@ class CcxtClient():
         return self.exchange.fetch_open_orders()
 
     def get_positions(self):
-        return self.exchange.private_get_position()
+        try:
+            resp = self.exchange.private_get_position()
+        except Exception as e:  # noqa
+            print("{} api not found".format(self.exchange_id))
+            resp = []
+
+        return resp
 
     def create_market_sell_order(self, amount):
         self.logger.info('(%s:%s) order sell amount=%s', self.exchange_id,
