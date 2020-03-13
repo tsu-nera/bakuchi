@@ -10,6 +10,9 @@ class CcxtClient():
     def __init__(self, exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
         self.logger = getLogger(__name__)
 
+        self.exchange_id = exchange_id
+        self.symbol = symbol
+
         # for demo trade
         exchange_id_for_eval = exchange_id.replace("_demo", "")
 
@@ -22,8 +25,6 @@ class CcxtClient():
         auth = ccxtconst.EXCHANGE_AUTH_DICT[exchange_id]
         self.exchange.apiKey = auth[ccxtconst.API_KEY]
         self.exchange.secret = auth[ccxtconst.API_SECRET]
-
-        self.symbol = symbol
 
     def _exec(self):
         try:

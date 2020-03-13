@@ -7,8 +7,6 @@ from src.libs.ccxt_client import CcxtClient
 import src.constants.ccxtconst as ccxtconst
 from src.constants.common import HISTORICAL_DATA_DIR_PATH
 
-PER_TICK_SEC = 1
-
 
 def _get_dir_path():
     now = datetime.datetime.now()
@@ -76,7 +74,7 @@ def save_ticks():
                 fs_bb.write(output_bb + '\n')
                 fs_bb.flush()
 
-                time.sleep(PER_TICK_SEC)
+                time.sleep(ccxtconst.TICK_INTERVAL_SEC)
             else:
                 time.sleep(10)
     finally:

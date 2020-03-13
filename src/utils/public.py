@@ -7,14 +7,14 @@ def fetch_ticks(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
     client = CcxtClient(exchange_id, symbol)
 
     while True:
-        time.sleep(1)
-        
+        time.sleep(ccxtconst.TICK_INTERVAL_SEC)
+
         tick = client.fetch_tick()
-        
+
         if not tick:
             print("no data...")
             continue
-        
+
         output = "{} bid={} ask={}".format(tick["timestamp"], tick["bid"],
                                            tick["ask"])
         print(output)
