@@ -104,6 +104,26 @@ def symbols(c, exchange_id):
 
 
 @task
+def sell_coincheck(c):
+    private.create_sell_order(cctxconst.EXCHANGE_ID_COINCHECK, 0.005)
+
+
+@task
+def buy_coincheck(c):
+    private.create_buy_order(cctxconst.EXCHANGE_ID_COINCHECK, 0.005)
+
+
+@task
+def sell_liquid(c):
+    private.create_sell_order(cctxconst.EXCHANGE_ID_LIQUID, 0.005)
+
+
+@task
+def buy_liquid(c):
+    private.create_buy_order(cctxconst.EXCHANGE_ID_LIQUID, 0.005)
+
+
+@task
 def buy_testnet(c):
     private.create_buy_order(cctxconst.EXCHANGE_ID_BITMEX_DEMO, 1)
 
@@ -116,11 +136,15 @@ def sell_testnet(c):
 @task
 def fetch_orders(c):
     private.fetch_open_orders(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
+    private.fetch_open_orders(cctxconst.EXCHANGE_ID_COINCHECK)
+    private.fetch_open_orders(cctxconst.EXCHANGE_ID_LIQUID)
 
 
 @task
 def fetch_positions(c):
     private.get_positions(cctxconst.EXCHANGE_ID_BITMEX_DEMO)
+    private.get_positions(cctxconst.EXCHANGE_ID_COINCHECK)
+    private.get_positions(cctxconst.EXCHANGE_ID_LIQUID)
 
 
 ###############

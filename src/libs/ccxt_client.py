@@ -8,7 +8,7 @@ import src.constants.ccxtconst as ccxtconst
 
 class CcxtClient():
     def __init__(self, exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
-        self.demo_mode = True
+        self.demo_mode = False
 
         self.exchange_id = exchange_id
         self.symbol = symbol
@@ -83,7 +83,13 @@ class CcxtClient():
         return self.exchange.fetch_open_orders()
 
     def get_positions(self):
-        return self.exchange.private_get_position()
+        try:
+            resp = self.exchange.private_get_position()
+        except Exception as e:  # noqa
+            print("{} api not found".format(self.exchange_id))
+            resp = []
+
+        return resp
 
     def create_market_sell_order(self, amount):
         self.logger.info('(%s:%s) order sell amount=%s', self.exchange_id,
@@ -103,7 +109,8 @@ class CcxtClient():
         if self.demo_mode:
             return None
 
-        order_info = self.exchange.create_market_buy_order(symbol=self.symbol,
-                                                           amount=amount)
+        order_info = self.exchange.create_buy_order(symbol=self.symbol,
+                                                    type="market_buy",
+                                                    amount=amount)
 
         return order_info
