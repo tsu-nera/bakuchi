@@ -59,9 +59,8 @@ class ArbitrageTrading(ArbitrageBase):
             self.exchange_y.order_sell(self.trade_amount)
 
             profit = self._calc_expected_profilt(y.bid, x.ask)
-            message = "buy {} ask={}, sell {} bid={}, amount={}, expected_profit={}".format(
-                self.ex_id_x, x.ask, self.ex_id_y, y.bid, self.trade_amount,
-                profit)
+            message = "buy {} ask={}, sell {} bid={}, expected_profit={}".format(
+                self.ex_id_x, x.ask, self.ex_id_y, y.bid, profit)
 
             self.logger_with_stdout.info(message)
 
@@ -73,9 +72,8 @@ class ArbitrageTrading(ArbitrageBase):
             self.exchange_x.order_sell(self.trade_amount)
 
             profit = self._calc_expected_profilt(x.bid, y.ask)
-            message = "buy {} ask={}, sell {} bid={}, amount={}, expected_profit={}".format(
-                self.ex_id_y, y.ask, self.ex_id_x, x.bid, self.trade_amount,
-                profit)
+            message = "buy {} ask={}, sell {} bid={}, expected_profit={}".format(
+                self.ex_id_y, y.ask, self.ex_id_x, x.bid, profit)
 
             self.logger_with_stdout.info(message)
 
