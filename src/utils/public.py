@@ -18,3 +18,8 @@ def fetch_ticks(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
         output = "{} bid={} ask={}".format(tick["timestamp"], tick["bid"],
                                            tick["ask"])
         print(output)
+
+
+def fetch_tick(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
+    client = CcxtClient(exchange_id, symbol)
+    return client.fetch_tick()

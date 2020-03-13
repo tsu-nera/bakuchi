@@ -4,8 +4,7 @@ from src.libs.ccxt_client import CcxtClient
 def fetch_balance(exchange_id):
     client = CcxtClient(exchange_id)
 
-    balance = client.fetch_balance()["free"]
-    print(balance)
+    return client.fetch_balance()['total']
 
 
 def fetch_open_orders(exchange_id):

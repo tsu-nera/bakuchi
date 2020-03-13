@@ -55,22 +55,22 @@ def tick_gemini_sandbox(c):
 
 @task
 def balance_bitflyer(c):
-    private.fetch_balance(ccxtconst.EXCHANGE_ID_BITFLYER)
+    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_BITFLYER))
 
 
 @task
 def balance_coincheck(c):
-    private.fetch_balance(ccxtconst.EXCHANGE_ID_COINCHECK)
+    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_COINCHECK))
 
 
 @task
 def balance_liquid(c):
-    private.fetch_balance(ccxtconst.EXCHANGE_ID_LIQUID)
+    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_LIQUID))
 
 
 @task
 def balance_bitbank(c):
-    private.fetch_balance(ccxtconst.EXCHANGE_ID_BITBANK)
+    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_BITBANK))
 
 
 @task
@@ -158,6 +158,11 @@ def fetch_positions(c):
 @task
 def check_margin(c):
     tool.check_profit_margin()
+
+
+@task
+def check_asset(c):
+    tool.check_asset()
 
 
 ###############
