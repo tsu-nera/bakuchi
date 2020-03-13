@@ -7,9 +7,8 @@ from src.libs.ccxt_client import CcxtClient
 import src.constants.ccxtconst as ccxtconst
 from src.constants.common import HISTORICAL_DATA_DIR_PATH
 
-from logging import basicConfig
-
-basicConfig(filename="logs/historical.log")
+# from logging import basicConfig
+# basicConfig(filename="logs/historical.log")
 
 
 def _get_dir_path():

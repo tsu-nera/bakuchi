@@ -6,20 +6,14 @@ import src.constants.ccxtconst as ccxtconst
 import src.constants.common as common
 
 import logging
-from logging import getLogger, basicConfig
-
-formatter = '[%(levelname)s]%(asctime)s %(message)s'
-basicConfig(filename=common.CCXT_LOG_FILE_PATH,
-            level=logging.INFO,
-            format=formatter)
 
 
 class CcxtClient():
     def __init__(self, exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
-        self.logger = getLogger(__name__)
 
         self.exchange_id = exchange_id
         self.symbol = symbol
+        self.logger = self._get_logger()
 
         # for demo trade
         exchange_id_for_eval = exchange_id.replace("_demo", "")
@@ -33,6 +27,17 @@ class CcxtClient():
         auth = ccxtconst.EXCHANGE_AUTH_DICT[exchange_id]
         self.exchange.apiKey = auth[ccxtconst.API_KEY]
         self.exchange.secret = auth[ccxtconst.API_SECRET]
+
+    def _get_logger(self):
+        LOGGER_NAME = "ccxt"
+
+        formatter = logging.Formatter('[%(levelname)s]%(asctime)s %(message)s')
+        logfile = logging.FileHandler(common.CCXT_LOG_FILE_PATH, "w")
+        logfile.setFormatter(formatter)
+        logger = logging.getLogger(LOGGER_NAME)
+        logger.addHandler(logfile)
+
+        return logger
 
     def _exec(self):
         try:
@@ -55,7 +60,7 @@ class CcxtClient():
             return None
 
     def _logging_tick(self, bid, ask):
-        self.logger.info('(%s)(%s) tick bid=%s ask=%s', self.exchange_id,
+        self.logger.info('(%s:%s) tick bid=%s ask=%s', self.exchange_id,
                          self.symbol, bid, ask)
 
     def fetch_tick(self):

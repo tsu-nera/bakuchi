@@ -10,6 +10,11 @@ from src.libs.ccxt_client import CcxtClient
 
 import src.constants.ccxtconst as cctxconst
 
+import logging
+from logging import basicConfig
+basicConfig(level=logging.INFO, handlers=[])
+
+
 @task
 def tick_bitflyer(c):
     public.fetch_ticks(cctxconst.EXCHANGE_ID_BITFLYER)
