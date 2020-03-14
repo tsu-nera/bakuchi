@@ -15,8 +15,8 @@ class ArbitrageTrading(ArbitrageBase):
     def __init__(self, exchange_id_x, exchange_id_y, symbol):
         super().__init__()
 
-        self.profit_mergin_threshold = int(
-            config["trade"]["profit_mergin_threshold"])
+        self.profit_margin_threshold = int(
+            config["trade"]["profit_margin_threshold"])
         self.trade_amount = float(config["trade"]["amount"])
 
         self.ex_id_x = exchange_id_x
@@ -33,10 +33,13 @@ class ArbitrageTrading(ArbitrageBase):
         self.logger_with_stdout = get_trading_logger_with_stdout()
 
         self.trade_amount = float(config["trade"]["amount"])
-        self.profit_mergin_threshold = int(
-            config["trade"]["profit_mergin_threshold"])
+        self.profit_margin_threshold = int(
+            config["trade"]["profit_margin_threshold"])
 
     def run(self):
+        print("btc amount: {}".format(self.trade_amount))
+        print("profit margin threshold: {}".format(
+            self.profit_margin_threshold))
         while True:
             sleep(TICK_INTERVAL_SEC)
             self.next()
