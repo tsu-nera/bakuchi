@@ -13,12 +13,38 @@ bakuchi
 
 いまいちうまくいかなければ他の戦略を考えることにする。
 
-## 対応した仮想通貨取引所
+## Getting Started
 
-* [bitFlyer](https://bitflyer.com/ja-jp/)
+`src/.env.sample`をコピーして`src/.env`を作成。認証情報を記載する。
+
+
+### トレード
+
+終了はCtrl+c。デモトレードは `src/config.ini`で指定できる。
+
+```
+$ inv trade
+```
+
+### バックテスト
+
+バックテストのためには、事前にデータを用意する。
+
+```
+$ inv backtest [data/historicals配下のディレクトリ名]
+```
+
+## 対応した取引所
+
 * [Coincheck](https://coincheck.com/ja/)
 * [Liquid](https://www.liquid.com/ja/)
+* 
+
+### 対応予定の取引所
+
+* [bitFlyer](https://bitflyer.com/ja-jp/)
 * [bitbank](https://bitbank.cc/)
+* [BitMEX](https://www.bitmex.com/)
 
 ## 開発リファレンス
 
