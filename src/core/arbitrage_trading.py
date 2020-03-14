@@ -94,7 +94,8 @@ class ArbitrageTrading(ArbitrageBase):
             self.logger_with_stdout.info(message)
 
             # order をだした直後だと早すぎてassetに反映されていない。
-            self.asset.logging()
+            # クラッシュするので一旦封印
+            # self.asset.logging()
 
             self.slack.notify(message)
 
@@ -112,9 +113,8 @@ class ArbitrageTrading(ArbitrageBase):
             self.logger_with_stdout.info(message)
 
             # order をだした直後だと早すぎてassetに反映されていない。
-            self.asset.logging()
-
-            self.slack.notify(message)
+            # クラッシュするので一旦封印
+            # self.asset.logging()
 
             self._rearrange_action_permission_buyy_sellx()
 
