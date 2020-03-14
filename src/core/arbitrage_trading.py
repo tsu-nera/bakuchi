@@ -13,6 +13,7 @@ from src.libs.logger import get_trading_logger
 from src.libs.logger import get_trading_logger_with_stdout
 
 from src.libs.logger import get_margin_logger
+from src.libs.historical_logger import HistoricalLogger
 
 
 class ArbitrageTrading(ArbitrageBase):
@@ -43,6 +44,7 @@ class ArbitrageTrading(ArbitrageBase):
 
         self.asset = Asset()
         self.slack = SlackClient()
+        self.historical_logger = HistoricalLogger()
 
     def run(self):
         self.logger_with_stdout.info(
@@ -54,9 +56,6 @@ class ArbitrageTrading(ArbitrageBase):
             self.next()
 
     def _logging_tick_margin(self, x, y):
-        if not x or not y:
-            return
-
         buy_y_sell_x_margin = x.bid - y.ask
         buy_x_sell_y_margin = y.bid - x.ask
 
@@ -66,6 +65,10 @@ class ArbitrageTrading(ArbitrageBase):
 
         self.logger_margin.info(message)
 
+    def _logging_tick_historical(self, x, y):
+        self.historical_logger.logging(self.ex_id_x, x.timestamp, x.bid, x.ask)
+        self.historical_logger.logging(self.ex_id_y, y.timestamp, y.bid, x.ask)
+
     def _get_tick(self):
         x = self.client_x.fetch_tick()
         y = self.client_y.fetch_tick()
@@ -73,7 +76,9 @@ class ArbitrageTrading(ArbitrageBase):
         tick_x = Tick(x["timestamp"], x["bid"], x["ask"]) if x else None
         tick_y = Tick(y["timestamp"], y["bid"], y["ask"]) if y else None
 
-        self._logging_tick_margin(tick_x, tick_y)
+        if x and y:
+            self._logging_tick_margin(tick_x, tick_y)
+            self._logging_tick_historical(tick_x, tick_y)
 
         return tick_x, tick_y
 
