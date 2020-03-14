@@ -5,6 +5,16 @@ import src.utils.private as private
 import src.constants.ccxtconst as ccxtconst
 from src.libs.ccxt_client import CcxtClient
 
+EXCHANGE_ID_LIST = [
+    ccxtconst.EXCHANGE_ID_COINCHECK, ccxtconst.EXCHANGE_ID_LIQUID
+]
+
+
+def _get_tick(exchange_id):
+    c = CcxtClient(exchange_id)
+    tick = c.fetch_tick()
+    return tick["bid"], tick["ask"]
+
 
 def check_profit_margin():
     '''
@@ -13,11 +23,6 @@ def check_profit_margin():
     # とりあえずこの2つで決め打ち
     ex_x_id = ccxtconst.EXCHANGE_ID_COINCHECK
     ex_y_id = ccxtconst.EXCHANGE_ID_LIQUID
-
-    def _get_tick(exchange_id):
-        c = CcxtClient(exchange_id)
-        tick = c.fetch_tick()
-        return tick["bid"], tick["ask"]
 
     bid_x, ask_x = _get_tick(ex_x_id)
     bid_y, ask_y = _get_tick(ex_y_id)
@@ -80,3 +85,23 @@ def check_asset():
             _calc_jpy(coincheck_bid, balance_coincheck[LABEL_BTC]),
             _calc_jpy(liquid_bid, balance_liquid[LABEL_BTC])
         ])))
+
+
+def calc_btc_to_jpy(btc_amount):
+    '''
+    与えられたBTCの量から日本円の価格を計算する
+    '''
+    for exchange_id in EXCHANGE_ID_LIST:
+        bid, _ = _get_tick(exchange_id)
+
+        price = int(btc_amount * bid)
+        output = "{}BTC to {}円({})".format(btc_amount, price, exchange_id)
+        print(output)
+
+
+def calc_jpy_to_btc(jpy_price):
+    '''
+    与えられた日本円の価格で購入できるBTCの量を計算する
+    '''
+    for exchange_id in EXCHANGE_ID_LIST:
+        print(exchange_id)

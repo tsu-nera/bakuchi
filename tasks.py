@@ -181,6 +181,16 @@ def check_asset(c):
     tool.check_asset()
 
 
+@task
+def calc_btcjpy(c, btc_amount):
+    tool.calc_btc_to_jpy(float(btc_amount))
+
+
+@task
+def calc_jpybtc(c, jpy_price):
+    tool.calc_jpy_to_btc(int(jpy_price))
+
+
 ###############
 # Othre Utils
 ###############
