@@ -1,5 +1,6 @@
 from invoke import task, run
 import importlib
+import psutil
 
 import src.utils.public as public
 import src.utils.private as private
@@ -214,3 +215,16 @@ def note(c):
 def slack(c, message):
     client = SlackClient()
     client.notify(message)
+
+
+@task
+def is_trade(c):
+    flag = any([
+        p.cmdline()[2] == "trade" for p in psutil.process_iter()
+        if len(p.cmdline()) == 3
+    ])
+
+    if flag:
+        print("trading bot is running.")
+    else:
+        print("trading bot is stopped.")
