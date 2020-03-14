@@ -8,7 +8,7 @@ from src.core.exchange_trading import ExchangeTrading as Exchange
 from src.libs.asset import Asset
 from src.libs.slack_client import SlackClient
 
-from src.config import config
+import src.config as config
 from src.libs.logger import get_trading_logger
 from src.libs.logger import get_trading_logger_with_stdout
 
@@ -20,9 +20,8 @@ class ArbitrageTrading(ArbitrageBase):
     def __init__(self, exchange_id_x, exchange_id_y, symbol):
         super().__init__()
 
-        self.profit_margin_threshold = int(
-            config["trade"]["profit_margin_threshold"])
-        self.trade_amount = float(config["trade"]["amount"])
+        self.trade_amount = config.TRADE_AMOUNT
+        self.profit_margin_threshold = config.TRADE_PROFIT_MARGIN_THRESHOLD
 
         self.ex_id_x = exchange_id_x
         self.ex_id_y = exchange_id_y

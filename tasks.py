@@ -12,13 +12,11 @@ from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
 
 import src.constants.ccxtconst as ccxtconst
-from src.config import config
+import src.config as config
 
 import logging
 from logging import basicConfig
 basicConfig(level=logging.INFO, handlers=[])
-
-ORDER_AMOUNT = float(config["trade"]["amount"])
 
 TRADING_MODULE = importlib.import_module('src.utils.trading')
 PUBLIC_MODULE = importlib.import_module('src.utils.public')
@@ -114,7 +112,8 @@ def symbols(c, exchange_id):
 
 @task
 def sell_coincheck(c):
-    private.create_sell_order(ccxtconst.EXCHANGE_ID_COINCHECK, ORDER_AMOUNT)
+    private.create_sell_order(ccxtconst.EXCHANGE_ID_COINCHECK,
+                              config.TRADE_AMOUNT)
 
 
 @task
@@ -123,18 +122,19 @@ def buy_coincheck(c):
     tick = client.fetch_tick()
     ask = float(tick["ask"])
 
-    private.create_buy_order(ccxtconst.EXCHANGE_ID_COINCHECK, ORDER_AMOUNT,
-                             ask)
+    private.create_buy_order(ccxtconst.EXCHANGE_ID_COINCHECK,
+                             config.TRADE_AMOUNT, ask)
 
 
 @task
 def sell_liquid(c):
-    private.create_sell_order(ccxtconst.EXCHANGE_ID_LIQUID, ORDER_AMOUNT)
+    private.create_sell_order(ccxtconst.EXCHANGE_ID_LIQUID,
+                              config.TRADE_AMOUNT)
 
 
 @task
 def buy_liquid(c):
-    private.create_buy_order(ccxtconst.EXCHANGE_ID_LIQUID, ORDER_AMOUNT)
+    private.create_buy_order(ccxtconst.EXCHANGE_ID_LIQUID, config.TRADE_AMOUNT)
 
 
 @task

@@ -1,10 +1,12 @@
 import os
 import datetime
+import json
 from logging import getLogger
 
 from src.libs.logger import create_historical_logger
 import src.constants.ccxtconst as ccxtconst
 import src.constants.common as common
+import src.config as config
 
 
 class HistoricalLogger():
@@ -13,13 +15,17 @@ class HistoricalLogger():
             ccxtconst.EXCHANGE_ID_COINCHECK, ccxtconst.EXCHANGE_ID_LIQUID
         ]
         self.dir_path = self._get_dir_path()
+        self.info_file_path = self._get_info_file_path(self.dir_path)
 
         # create directory
         os.mkdir(self.dir_path)
 
-        # save asset
-
-        # sava params
+        info_dict = {
+            "amount": config.TRADE_AMOUNT,
+            "profit_margin_threshold": config.TRADE_PROFIT_MARGIN_THRESHOLD
+        }
+        json_file = open(self.info_file_path, 'w')
+        json.dump(info_dict, json_file, indent=2)
 
         # initialze loggers
         [self._create_logger(exchange_id) for exchange_id in self.exchange_ids]
@@ -47,6 +53,10 @@ class HistoricalLogger():
 
     def _get_file_path(self, dir_path, exchange_id):
         file_name = "{}.csv".format(exchange_id)
+        return os.path.join(dir_path, file_name)
+
+    def _get_info_file_path(self, dir_path):
+        file_name = "info.json"
         return os.path.join(dir_path, file_name)
 
     def _get_logger_name(self, exchange_id):

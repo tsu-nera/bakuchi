@@ -2,7 +2,7 @@ import src.utils.private as private
 import src.constants.ccxtconst as ccxtconst
 from src.libs.asset import Asset
 
-from src.config import config
+import src.config as config
 
 from src.core.arbitrage_trading import ArbitrageTrading
 
@@ -16,7 +16,7 @@ def run_trading():
     asset = Asset()
     slack = SlackClient()
 
-    demo_mode = int(config["trade"]["demo_mode"])
+    demo_mode = config.TRADE_DEMO_MODE
 
     if demo_mode == 1:
         logger.info("==================================== ")

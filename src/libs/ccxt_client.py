@@ -5,7 +5,7 @@ import datetime
 from src.libs.logger import get_ccxt_logger
 import src.constants.ccxtconst as ccxtconst
 
-from src.config import config
+import src.config as config
 
 
 class CcxtClient():
@@ -30,7 +30,7 @@ class CcxtClient():
         self.exchange.secret = auth[ccxtconst.API_SECRET]
 
     def _is_demo_mode(self):
-        demo_mode = int(config["trade"]["demo_mode"])
+        demo_mode = config.TRADE_DEMO_MODE
 
         # 1:on, 0:off
         if demo_mode == 1:
