@@ -1,4 +1,5 @@
 import src.constants.ccxtconst as cctxconst
+from src.config import config
 
 from src.core.arbitrage_trading import ArbitrageTrading
 
@@ -8,9 +9,16 @@ from src.libs.logger import get_trading_logger_with_stdout
 def run_trading():
     logger = get_trading_logger_with_stdout()
 
-    logger.info("========================= ")
-    logger.info("=== trading bot start === ")
-    logger.info("========================= ")
+    demo_mode = int(config["trade"]["demo_mode"])
+
+    if demo_mode == 1:
+        logger.info("==================================== ")
+        logger.info("=== trading bot start(dmeo mode) === ")
+        logger.info("==================================== ")
+    else:
+        logger.info("========================= ")
+        logger.info("=== trading bot start === ")
+        logger.info("========================= ")
 
     # run trade
     arbitrage = ArbitrageTrading(cctxconst.EXCHANGE_ID_LIQUID,

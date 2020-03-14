@@ -5,6 +5,7 @@ import src.constants.common as common
 LOGGER_NAME_TRADING = "trading"
 LOGGER_NAME_TRADING_WITH_STDOUT = "trading2"
 LOGGER_NAME_CCXT = "ccxt"
+LOGGER_NAME_MARGIN = "margin"
 
 formatter = logging.Formatter('[%(levelname)s]%(asctime)s %(message)s')
 
@@ -25,6 +26,11 @@ ccxt_logfile.setFormatter(formatter)
 ccxt_logger = logging.getLogger(LOGGER_NAME_CCXT)
 ccxt_logger.addHandler(ccxt_logfile)
 
+margin_logfile = logging.FileHandler(common.MARGIN_LOG_FILE_PATH, "w")
+margin_logfile.setFormatter(formatter)
+margin_logger = logging.getLogger(LOGGER_NAME_MARGIN)
+margin_logger.addHandler(margin_logfile)
+
 
 def get_trading_logger():
     return logging.getLogger(LOGGER_NAME_TRADING)
@@ -36,3 +42,7 @@ def get_trading_logger_with_stdout():
 
 def get_ccxt_logger():
     return logging.getLogger(LOGGER_NAME_CCXT)
+
+
+def get_margin_logger():
+    return logging.getLogger(LOGGER_NAME_MARGIN)

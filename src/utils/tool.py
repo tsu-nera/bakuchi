@@ -79,7 +79,7 @@ def check_asset():
         return int(bid * btc)
 
     print()
-    print("総計: {}JPY".format(
+    print("総計: {}[JPY]".format(
         sum([
             int(balance_jpy),
             _calc_jpy(coincheck_bid, balance_coincheck[LABEL_BTC]),
