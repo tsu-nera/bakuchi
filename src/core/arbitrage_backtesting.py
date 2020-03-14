@@ -120,8 +120,8 @@ class ArbitrageBacktesting(ArbitrageBase):
         total_balance_jpy = int(self.exchange_x.get_balance_jpy() +
                                 self.exchange_y.get_balance_jpy())
 
-        init_balance_jpy = int(config["backtest"]["balance_jpy"]) * 2
-        init_balance_btc = float(config["backtest"]["balance_btc"]) * 2
+        init_balance_jpy = config.BACKTEST_BALANCE_JPY * 2
+        init_balance_btc = config.BACKTEST_BALANCE_BTC * 2
 
         data.append(["取引回数", self.trade_count])
         data.append(["利益(JPY)", total_profit_jpy])
