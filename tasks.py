@@ -213,4 +213,4 @@ def note(c):
 @task
 def slack(c, message):
     client = SlackClient()
-    client.post(message)
+    client.notify(message)

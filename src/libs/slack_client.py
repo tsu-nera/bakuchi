@@ -10,5 +10,5 @@ class SlackClient():
 
         self.channel = BOT_CHANNEL_NAME
 
-    def post(self, message):
+    def notify(self, message):
         self.client.chat_postMessage(channel=self.channel, text=message)
