@@ -45,8 +45,10 @@ class ArbitrageTrading(ArbitrageBase):
         x = self.client_x.fetch_tick()
         y = self.client_y.fetch_tick()
 
-        return Tick(x["timestamp"], x["bid"],
-                    x["ask"]), Tick(y["timestamp"], y["bid"], y["ask"])
+        tick_x = Tick(x["timestamp"], x["bid"], x["ask"]) if x else None
+        tick_y = Tick(y["timestamp"], y["bid"], y["ask"]) if y else None
+
+        return tick_x, tick_y
 
     def _calc_expected_profit(self, bid, ask):
         price = bid - ask
