@@ -102,7 +102,7 @@ class ArbitrageBacktesting(ArbitrageBase):
 
         print("バックテスト情報")
         print(tabulate(data))
-        print("利確しきい値 {}(円)".format(self.profit_margin_threshold))
+        print("利確しきい値 {}(JPY)".format(self.profit_margin_threshold))
         print("取引単位 {}(BTC)".format(self.trade_amount))
         print("--------")
 

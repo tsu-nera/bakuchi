@@ -79,7 +79,7 @@ def check_asset():
         return int(bid * btc)
 
     print()
-    print("総計: {}円".format(
+    print("総計: {}JPY".format(
         sum([
             int(balance_jpy),
             _calc_jpy(coincheck_bid, balance_coincheck[LABEL_BTC]),
@@ -95,7 +95,8 @@ def calc_btc_to_jpy(btc_amount):
         bid, _ = _get_tick(exchange_id)
 
         price = int(btc_amount * bid)
-        output = "{}BTC to {}円({})".format(btc_amount, price, exchange_id)
+        output = "{}[BTC] to {}[JPY] ({})".format(btc_amount, price,
+                                                  exchange_id)
         print(output)
 
 
@@ -104,4 +105,9 @@ def calc_jpy_to_btc(jpy_price):
     与えられた日本円の価格で購入できるBTCの量を計算する
     '''
     for exchange_id in EXCHANGE_ID_LIST:
-        print(exchange_id)
+        _, ask = _get_tick(exchange_id)
+
+        btc_amount = round(jpy_price / ask, 6)
+        output = "{}[JPY] to {}[BTC] ({})".format(jpy_price, btc_amount,
+                                                  exchange_id)
+        print(output)
