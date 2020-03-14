@@ -38,7 +38,6 @@ $ inv backtest [data/historicals配下のディレクトリ名]
 
 * [Coincheck](https://coincheck.com/ja/)
 * [Liquid](https://www.liquid.com/ja/)
-* 
 
 ### 対応予定の取引所
 
