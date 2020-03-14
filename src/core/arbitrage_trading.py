@@ -37,9 +37,8 @@ class ArbitrageTrading(ArbitrageBase):
         self.logger_with_stdout = get_trading_logger_with_stdout()
         self.logger_margin = get_margin_logger()
 
-        self.trade_amount = float(config["trade"]["amount"])
-        self.profit_margin_threshold = int(
-            config["trade"]["profit_margin_threshold"])
+        self.trade_amount = config.TRADE_AMOUNT
+        self.profit_margin_threshold = config.TRADE_PROFIT_MARGIN_THRESHOLD
 
         self.asset = Asset()
         self.slack = SlackClient()

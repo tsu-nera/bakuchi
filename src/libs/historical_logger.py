@@ -7,6 +7,7 @@ from src.libs.logger import create_historical_logger
 import src.constants.ccxtconst as ccxtconst
 import src.constants.common as common
 import src.config as config
+# from src.libs.asset import Asset
 
 
 class HistoricalLogger():
@@ -24,6 +25,12 @@ class HistoricalLogger():
             "amount": config.TRADE_AMOUNT,
             "profit_margin_threshold": config.TRADE_PROFIT_MARGIN_THRESHOLD
         }
+
+        # errorするのでマスク
+        # asset = Asset()
+        # asset_json = asset.to_json()
+        # info_dict.update(asset_json)
+
         json_file = open(self.info_file_path, 'w')
         json.dump(info_dict, json_file, indent=2)
 
