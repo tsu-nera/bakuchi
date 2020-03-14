@@ -181,7 +181,7 @@ def check_margin(c):
 
 
 @task
-def check_asset(c):
+def asset(c):
     tool.check_asset()
 
 
