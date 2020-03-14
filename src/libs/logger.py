@@ -6,8 +6,17 @@ LOGGER_NAME_TRADING = "trading"
 LOGGER_NAME_TRADING_WITH_STDOUT = "trading2"
 LOGGER_NAME_CCXT = "ccxt"
 LOGGER_NAME_MARGIN = "margin"
+LOGGER_NAME_ASSET = "asset"
 
 formatter = logging.Formatter('[%(levelname)s]%(asctime)s %(message)s')
+
+
+def create_file_logger(file_path, logger_name):
+    logfile = logging.FileHandler(file_path, "w")
+    logfile.setFormatter(formatter)
+    logger = logging.getLogger(logger_name)
+    logger.addHandler(logfile)
+
 
 trading_logfile = logging.FileHandler(common.TRADING_LOG_FILE_PATH, "w")
 trading_logfile.setFormatter(formatter)
@@ -21,15 +30,9 @@ trading_logger_with_stdout = logging.getLogger(LOGGER_NAME_TRADING_WITH_STDOUT)
 trading_logger_with_stdout.addHandler(trading_logfile)
 trading_logger_with_stdout.addHandler(stream_handler)
 
-ccxt_logfile = logging.FileHandler(common.CCXT_LOG_FILE_PATH, "w")
-ccxt_logfile.setFormatter(formatter)
-ccxt_logger = logging.getLogger(LOGGER_NAME_CCXT)
-ccxt_logger.addHandler(ccxt_logfile)
-
-margin_logfile = logging.FileHandler(common.MARGIN_LOG_FILE_PATH, "w")
-margin_logfile.setFormatter(formatter)
-margin_logger = logging.getLogger(LOGGER_NAME_MARGIN)
-margin_logger.addHandler(margin_logfile)
+create_file_logger(common.CCXT_LOG_FILE_PATH, LOGGER_NAME_CCXT)
+create_file_logger(common.MARGIN_LOG_FILE_PATH, LOGGER_NAME_MARGIN)
+create_file_logger(common.ASSET_LOG_FILE_PATH, LOGGER_NAME_ASSET)
 
 
 def get_trading_logger():
@@ -46,3 +49,7 @@ def get_ccxt_logger():
 
 def get_margin_logger():
     return logging.getLogger(LOGGER_NAME_MARGIN)
+
+
+def get_asset_logger():
+    return logging.getLogger(LOGGER_NAME_ASSET)
