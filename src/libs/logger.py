@@ -9,11 +9,19 @@ LOGGER_NAME_MARGIN = "margin"
 LOGGER_NAME_ASSET = "asset"
 
 formatter = logging.Formatter('[%(levelname)s]%(asctime)s %(message)s')
+historical_formatter = logging.Formatter('%(message)s')
 
 
 def create_file_logger(file_path, logger_name):
     logfile = logging.FileHandler(file_path, "w")
     logfile.setFormatter(formatter)
+    logger = logging.getLogger(logger_name)
+    logger.addHandler(logfile)
+
+
+def create_historical_logger(file_path, logger_name):
+    logfile = logging.FileHandler(file_path, "w")
+    logfile.setFormatter(historical_formatter)
     logger = logging.getLogger(logger_name)
     logger.addHandler(logfile)
 

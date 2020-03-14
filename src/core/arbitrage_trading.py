@@ -8,20 +8,20 @@ from src.core.exchange_trading import ExchangeTrading as Exchange
 from src.libs.asset import Asset
 from src.libs.slack_client import SlackClient
 
-from src.config import config
+import src.config as config
 from src.libs.logger import get_trading_logger
 from src.libs.logger import get_trading_logger_with_stdout
 
 from src.libs.logger import get_margin_logger
+from src.libs.historical_logger import HistoricalLogger
 
 
 class ArbitrageTrading(ArbitrageBase):
     def __init__(self, exchange_id_x, exchange_id_y, symbol):
         super().__init__()
 
-        self.profit_margin_threshold = int(
-            config["trade"]["profit_margin_threshold"])
-        self.trade_amount = float(config["trade"]["amount"])
+        self.trade_amount = config.TRADE_AMOUNT
+        self.profit_margin_threshold = config.TRADE_PROFIT_MARGIN_THRESHOLD
 
         self.ex_id_x = exchange_id_x
         self.ex_id_y = exchange_id_y
@@ -37,12 +37,12 @@ class ArbitrageTrading(ArbitrageBase):
         self.logger_with_stdout = get_trading_logger_with_stdout()
         self.logger_margin = get_margin_logger()
 
-        self.trade_amount = float(config["trade"]["amount"])
-        self.profit_margin_threshold = int(
-            config["trade"]["profit_margin_threshold"])
+        self.trade_amount = config.TRADE_AMOUNT
+        self.profit_margin_threshold = config.TRADE_PROFIT_MARGIN_THRESHOLD
 
         self.asset = Asset()
         self.slack = SlackClient()
+        self.historical_logger = HistoricalLogger()
 
     def run(self):
         self.logger_with_stdout.info(
@@ -54,9 +54,6 @@ class ArbitrageTrading(ArbitrageBase):
             self.next()
 
     def _logging_tick_margin(self, x, y):
-        if not x or not y:
-            return
-
         buy_y_sell_x_margin = x.bid - y.ask
         buy_x_sell_y_margin = y.bid - x.ask
 
@@ -66,6 +63,10 @@ class ArbitrageTrading(ArbitrageBase):
 
         self.logger_margin.info(message)
 
+    def _logging_tick_historical(self, x, y):
+        self.historical_logger.logging(self.ex_id_x, x.timestamp, x.bid, x.ask)
+        self.historical_logger.logging(self.ex_id_y, y.timestamp, y.bid, x.ask)
+
     def _get_tick(self):
         x = self.client_x.fetch_tick()
         y = self.client_y.fetch_tick()
@@ -73,7 +74,9 @@ class ArbitrageTrading(ArbitrageBase):
         tick_x = Tick(x["timestamp"], x["bid"], x["ask"]) if x else None
         tick_y = Tick(y["timestamp"], y["bid"], y["ask"]) if y else None
 
-        self._logging_tick_margin(tick_x, tick_y)
+        if x and y:
+            self._logging_tick_margin(tick_x, tick_y)
+            self._logging_tick_historical(tick_x, tick_y)
 
         return tick_x, tick_y
 

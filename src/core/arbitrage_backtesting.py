@@ -1,6 +1,6 @@
 from tabulate import tabulate
 
-from src.config import config
+import src.config as config
 from src.core.arbitrage_base import ArbitrageBase
 from src.core.tick import Tick
 from src.core.exchange_backtesting import ExchangeBacktesting as Exchange
@@ -31,9 +31,8 @@ class ArbitrageBacktesting(ArbitrageBase):
 
         self.histories = []
         self.trade_count = 0
-        self.trade_amount = float(config["backtest"]["amount"])
-        self.profit_margin_threshold = int(
-            config["backtest"]["profit_margin_threshold"])
+        self.trade_amount = config.TRADE_AMOUNT
+        self.profit_margin_threshold = config.TRADE_PROFIT_MARGIN_THRESHOLD
 
     def run(self):
         n = len(self.timestamps)

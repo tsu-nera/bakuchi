@@ -30,6 +30,13 @@ class Asset():
         balance = private.fetch_balance(exchange_id)
         return int(balance["JPY"]), float(balance["BTC"])
 
+    def to_json(self):
+        self._update()
+        res = {}
+        for asset in self.assets:
+            res.update(asset)
+        return {"asset": res}
+
     def logging(self):
         self._update()
 
