@@ -6,7 +6,7 @@ from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK
 from .tick import Tick
 from src.core.exchange_trading import ExchangeTrading as Exchange
 from src.libs.asset import Asset
-from src.libs.asset import SlackClient
+from src.libs.slack_client import SlackClient
 
 from src.config import config
 from src.libs.logger import get_trading_logger

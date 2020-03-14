@@ -9,6 +9,9 @@ class SlackClient():
         self.client = slack.WebClient(token=SLACK_API_TOKEN)
 
         self.channel = BOT_CHANNEL_NAME
+        self.user_name = "trading bot"
 
     def notify(self, message):
-        self.client.chat_postMessage(channel=self.channel, text=message)
+        self.client.chat_postMessage(channel=self.channel,
+                                     username=self.user_name,
+                                     text=message)
