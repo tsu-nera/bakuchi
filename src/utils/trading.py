@@ -8,10 +8,13 @@ from src.core.arbitrage_trading import ArbitrageTrading
 
 from src.libs.logger import get_trading_logger_with_stdout
 
+from src.libs.slack_client import SlackClient
+
 
 def run_trading():
     logger = get_trading_logger_with_stdout()
     asset = Asset()
+    slack = SlackClient()
 
     demo_mode = int(config["trade"]["demo_mode"])
 
@@ -23,6 +26,8 @@ def run_trading():
         logger.info("========================= ")
         logger.info("=== trading bot start === ")
         logger.info("========================= ")
+
+        slack.notify("trading bot start")
 
     asset.logging()
 
@@ -42,3 +47,6 @@ def run_trading():
         logger.info("======================= ")
         logger.info("=== trading bot end === ")
         logger.info("======================= ")
+
+        if demo_mode != 1:
+            slack.notify("trading bot end")

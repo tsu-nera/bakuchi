@@ -9,6 +9,7 @@ from src.utils.backtesting import run_backtesting
 from src.utils.historical import save_ticks
 import src.utils.tool as tool
 from src.libs.ccxt_client import CcxtClient
+from src.libs.slack_client import SlackClient
 
 import src.constants.ccxtconst as ccxtconst
 from src.config import config
@@ -207,3 +208,9 @@ def reload(c):
 @task
 def note(c):
     run("jupyter notebook --notebook-dir='notebooks'")
+
+
+@task
+def slack(c, message):
+    client = SlackClient()
+    client.notify(message)
