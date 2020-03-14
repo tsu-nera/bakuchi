@@ -13,5 +13,6 @@ class SlackClient():
 
     def notify(self, message):
         self.client.chat_postMessage(channel=self.channel,
+                                     as_user=False,
                                      username=self.user_name,
                                      text=message)
