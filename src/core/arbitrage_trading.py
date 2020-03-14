@@ -15,8 +15,8 @@ class ArbitrageTrading(ArbitrageBase):
     def __init__(self, exchange_id_x, exchange_id_y, symbol):
         super().__init__()
 
-        self.profit_mergin_threshold = int(
-            config["trade"]["profit_mergin_threshold"])
+        self.profit_margin_threshold = int(
+            config["trade"]["profit_margin_threshold"])
         self.trade_amount = float(config["trade"]["amount"])
 
         self.ex_id_x = exchange_id_x
@@ -33,10 +33,13 @@ class ArbitrageTrading(ArbitrageBase):
         self.logger_with_stdout = get_trading_logger_with_stdout()
 
         self.trade_amount = float(config["trade"]["amount"])
-        self.profit_mergin_threshold = int(
-            config["trade"]["profit_mergin_threshold"])
+        self.profit_margin_threshold = int(
+            config["trade"]["profit_margin_threshold"])
 
     def run(self):
+        print("btc amount: {}".format(self.trade_amount))
+        print("profit margin threshold: {}".format(
+            self.profit_margin_threshold))
         while True:
             sleep(TICK_INTERVAL_SEC)
             self.next()
@@ -45,8 +48,10 @@ class ArbitrageTrading(ArbitrageBase):
         x = self.client_x.fetch_tick()
         y = self.client_y.fetch_tick()
 
-        return Tick(x["timestamp"], x["bid"],
-                    x["ask"]), Tick(y["timestamp"], y["bid"], y["ask"])
+        tick_x = Tick(x["timestamp"], x["bid"], x["ask"]) if x else None
+        tick_y = Tick(y["timestamp"], y["bid"], y["ask"]) if y else None
+
+        return tick_x, tick_y
 
     def _calc_expected_profit(self, bid, ask):
         price = bid - ask
