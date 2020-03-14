@@ -5,6 +5,7 @@ from src.libs.ccxt_client import CcxtClient
 from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK
 from .tick import Tick
 from src.core.exchange_trading import ExchangeTrading as Exchange
+from src.libs.asset import Asset
 
 from src.config import config
 from src.libs.logger import get_trading_logger
@@ -38,6 +39,8 @@ class ArbitrageTrading(ArbitrageBase):
         self.trade_amount = float(config["trade"]["amount"])
         self.profit_margin_threshold = int(
             config["trade"]["profit_margin_threshold"])
+
+        self.asset = Asset()
 
     def run(self):
         self.logger_with_stdout.info(
@@ -87,6 +90,9 @@ class ArbitrageTrading(ArbitrageBase):
                 self.ex_id_x, x.ask, self.ex_id_y, y.bid, profit)
 
             self.logger_with_stdout.info(message)
+            
+            # order をだした直後だと早すぎてassetに反映されていない。
+            self.asset.logging()
 
             self._rearrange_action_permission_buyx_selly()
 
@@ -100,6 +106,9 @@ class ArbitrageTrading(ArbitrageBase):
                 self.ex_id_y, y.ask, self.ex_id_x, x.bid, profit)
 
             self.logger_with_stdout.info(message)
+
+            # order をだした直後だと早すぎてassetに反映されていない。
+            self.asset.logging()
 
             self._rearrange_action_permission_buyy_sellx()
 
