@@ -3,6 +3,11 @@ from src.libs.ccxt_client import CcxtClient
 import src.constants.ccxtconst as ccxtconst
 
 
+def _logging(timestamp, bid, ask):
+    output = "{} bid={} ask={}".format(timestamp, bid, ask)
+    print(output)
+
+
 def fetch_ticks(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
     client = CcxtClient(exchange_id, symbol)
 
@@ -15,9 +20,7 @@ def fetch_ticks(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
             print("no data...")
             continue
 
-        output = "{} bid={} ask={}".format(tick["timestamp"], tick["bid"],
-                                           tick["ask"])
-        print(output)
+        _logging(tick["timestamp"], tick["bid"], tick["ask"])
 
 
 def fetch_tick(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):

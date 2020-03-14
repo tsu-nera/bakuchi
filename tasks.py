@@ -1,4 +1,5 @@
 from invoke import task, run
+import importlib
 
 import src.utils.public as public
 import src.utils.private as private
@@ -17,6 +18,9 @@ from logging import basicConfig
 basicConfig(level=logging.INFO, handlers=[])
 
 ORDER_AMOUNT = float(config["trade"]["amount"])
+
+TRADING_MODULE = importlib.import_module('src.utils.trading')
+PUBLIC_MODULE = importlib.import_module('src.utils.public')
 
 
 @task
@@ -189,6 +193,12 @@ def calc_btcjpy(c, btc_amount):
 @task
 def calc_jpybtc(c, jpy_price):
     tool.calc_jpy_to_btc(int(jpy_price))
+
+
+# @task
+def reload(c):
+    # 検証中
+    importlib.reload(PUBLIC_MODULE)
 
 
 ###############
