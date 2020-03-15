@@ -27,9 +27,12 @@ class Backtesting():
         path = self._get_file_path(exchange_id)
         return self.csv_driver.read_df(path)
 
-    def run(self, amount=None, profit_margin_threshold=None):
+    def run(self,
+            amount=None,
+            profit_margin_threshold=None,
+            profit_margin_diff=None):
         # run trade
-        self.arbitrage.run(amount, profit_margin_threshold)
+        self.arbitrage.run(amount, profit_margin_threshold, profit_margin_diff)
 
     def get_trade_histories(self):
         return self.arbitrage.histories
