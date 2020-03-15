@@ -1,5 +1,4 @@
 import time
-
 import src.utils.private as private
 import src.constants.ccxtconst as ccxtconst
 from src.libs.asset import Asset
@@ -24,7 +23,7 @@ def run_trading(demo_mode=False):
         logger.info("=========================")
         logger.info("=== trading bot start ===")
         logger.info("=========================")
-        slack.notify("trading bot start")
+        slack.notify_with_datetime("Trading Botの稼働を開始しました。")
         asset.logging()
 
     # run trade
@@ -52,4 +51,4 @@ def run_trading(demo_mode=False):
 
             asset.logging()
             backup_trading_logs(arbitrage.get_current_trading_data_dir())
-            slack.notify("trading bot end")
+            slack.notify_with_datetime("Trading Botの稼働を終了しました。")

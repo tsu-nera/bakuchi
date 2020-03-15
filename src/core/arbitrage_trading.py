@@ -1,7 +1,6 @@
 from time import sleep
 
 from .arbitrage_base import ArbitrageBase
-from src.libs.ccxt_client import CcxtClient
 from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK
 from .tick import Tick
 from src.core.exchange_trading import ExchangeTrading as Exchange
@@ -23,6 +22,7 @@ class ArbitrageTrading(ArbitrageBase):
         self.ex_id_x = exchange_id_x
         self.ex_id_y = exchange_id_y
         self.symbol = symbol
+        self.demo_mode = demo_mode
 
         self.exchange_x = Exchange(exchange_id_x, symbol, demo_mode=demo_mode)
         self.exchange_y = Exchange(exchange_id_y, symbol, demo_mode=demo_mode)
@@ -96,8 +96,9 @@ class ArbitrageTrading(ArbitrageBase):
             # クラッシュするので一旦封印
             # self.asset.logging()
 
-            self.slack.notify_order(self.ex_id_x, self.ex_id_y, self.symbol,
-                                    self.trade_amount, profit)
+            if not self.demo_mode:
+                self.slack.notify_order(self.ex_id_x, self.ex_id_y,
+                                        self.symbol, self.trade_amount, profit)
 
             self._rearrange_action_permission_buyx_selly()
 
@@ -116,8 +117,9 @@ class ArbitrageTrading(ArbitrageBase):
             # クラッシュするので一旦封印
             # self.asset.logging()
 
-            self.slack.notify_order(self.ex_id_y, self.ex_id_x, self.symbol,
-                                    self.trade_amount, profit)
+            if not self.demo_mode:
+                self.slack.notify_order(self.ex_id_y, self.ex_id_x,
+                                        self.symbol, self.trade_amount, profit)
 
             self._rearrange_action_permission_buyy_sellx()
         else:
