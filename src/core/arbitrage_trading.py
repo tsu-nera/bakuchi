@@ -87,7 +87,7 @@ class ArbitrageTrading(ArbitrageBase):
     def _action(self, result, x, y):
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
             ask_for_coincheck = x.ask if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
-            bid_for_coincheck = x.bid if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
+            bid_for_coincheck = y.bid if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
 
             buy_resp = self.exchange_x.order_buy(
                 self.trade_amount, ask_for_coincheck=ask_for_coincheck)
@@ -116,7 +116,7 @@ class ArbitrageTrading(ArbitrageBase):
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
             ask_for_coincheck = y.ask if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
-            bid_for_coincheck = y.bid if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
+            bid_for_coincheck = x.bid if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
 
             buy_resp = self.exchange_y.order_buy(
                 self.trade_amount, ask_for_coincheck=ask_for_coincheck)
