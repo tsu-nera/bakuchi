@@ -123,47 +123,85 @@ def symbols(c, exchange_id):
 
 
 @task
-def sell_coincheck(c):
+def buy_with_amount(c, exchange_id, amount):
+    response = private.create_buy_order(exchange_id, ccxtconst.SYMBOL_BTC_JPY,
+                                        float(amount))
+    print(response)
+    return response
+
+
+@task
+def buy(c, exchange_id):
+    return buy_with_amount(c, exchange_id, config.TRADE_AMOUNT)
+
+
+@task
+def sell_with_amount(c, exchange_id, amount):
+    response = private.create_sell_order(exchange_id, ccxtconst.SYMBOL_BTC_JPY,
+                                         float(amount))
+    print(response)
+    return response
+
+
+@task
+def sell(c, exchange_id):
+    return sell_with_amount(c, exchange_id, config.TRADE_AMOUNT)
+
+
+@task
+def sell_coincheck_with_amount(c, amount):
     client = CcxtClient(ccxtconst.EXCHANGE_ID_COINCHECK)
     tick = client.fetch_tick()
     bid = float(tick["bid"])
 
     response = private.create_sell_order(ccxtconst.EXCHANGE_ID_COINCHECK,
                                          ccxtconst.SYMBOL_BTC_JPY,
-                                         config.TRADE_AMOUNT, bid)
+                                         float(amount), bid)
     print(response)
     return response
 
 
 @task
-def buy_coincheck(c):
+def sell_coincheck(c):
+    return sell_coincheck_with_amount(c, config.TRADE_AMOUNT)
+
+
+@task
+def buy_coincheck_with_amount(c, amount):
     client = CcxtClient(ccxtconst.EXCHANGE_ID_COINCHECK)
     tick = client.fetch_tick()
     ask = float(tick["ask"])
 
     response = private.create_buy_order(ccxtconst.EXCHANGE_ID_COINCHECK,
                                         ccxtconst.SYMBOL_BTC_JPY,
-                                        config.TRADE_AMOUNT, ask)
+                                        float(amount), ask)
     print(response)
     return response
+
+
+@task
+def buy_coincheck(c):
+    return buy_coincheck_with_amount(c, config.TRADE_AMOUNT)
+
+
+@task
+def sell_liquid_with_amount(c, amount):
+    return sell_with_amount(c, ccxtconst.EXCHANGE_ID_LIQUID, amount)
 
 
 @task
 def sell_liquid(c):
-    response = private.create_sell_order(ccxtconst.EXCHANGE_ID_LIQUID,
-                                         ccxtconst.SYMBOL_BTC_JPY,
-                                         config.TRADE_AMOUNT)
-    print(response)
-    return response
+    return sell(c, ccxtconst.EXCHANGE_ID_LIQUID)
+
+
+@task
+def buy_liquid_with_amount(c, amount):
+    return buy_with_amount(c, ccxtconst.EXCHANGE_ID_LIQUID, amount)
 
 
 @task
 def buy_liquid(c):
-    response = private.create_buy_order(ccxtconst.EXCHANGE_ID_LIQUID,
-                                        ccxtconst.SYMBOL_BTC_JPY,
-                                        config.TRADE_AMOUNT)
-    print(response)
-    return response
+    return buy(c, ccxtconst.EXCHANGE_ID_LIQUID)
 
 
 @task
