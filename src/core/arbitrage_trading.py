@@ -119,6 +119,8 @@ class ArbitrageTrading(ArbitrageBase):
             # クラッシュするので一旦封印
             # self.asset.logging()
 
+            self.slack.notify(message)
+
             self._rearrange_action_permission_buyy_sellx()
 
         else:
