@@ -119,6 +119,9 @@ class ArbitrageTrading(ArbitrageBase):
             self.slack.notify(message)
 
             self._rearrange_action_permission_buyy_sellx()
-
         else:
             pass
+
+    def get_current_trading_data_dir(self):
+        return self.historical_logger.dir_path
+    

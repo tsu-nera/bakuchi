@@ -1,12 +1,12 @@
+import time
+
 import src.utils.private as private
 import src.constants.ccxtconst as ccxtconst
 from src.libs.asset import Asset
 
-import src.config as config
-
 from src.core.arbitrage_trading import ArbitrageTrading
 
-from src.libs.logger import get_trading_logger_with_stdout
+from src.libs.logger import get_trading_logger_with_stdout, backup_trading_logs
 
 from src.libs.slack_client import SlackClient
 
@@ -49,5 +49,7 @@ def run_trading(demo_mode=False):
             logger.info("=======================")
             logger.info("=== trading bot end ===")
             logger.info("=======================")
-            slack.notify("trading bot end")
+
             asset.logging()
+            backup_trading_logs(arbitrage.get_current_trading_data_dir())
+            slack.notify("trading bot end")
