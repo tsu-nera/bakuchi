@@ -1,3 +1,4 @@
+import datetime
 import slack
 from src.env import SLACK_API_TOKEN
 
@@ -19,7 +20,10 @@ class SlackClient():
 
     def notify_order(self, buy_exchange_id, sell_exchange_id, symbol, amount,
                      expected_profit):
-        message = "[取引実行]{}を{}, {}で買い{}で売りました。\n期待される利益は{}円です。".format(
-            symbol, amount, buy_exchange_id, sell_exchange_id, expected_profit)
+        now = datetime.datetime.now()
+        now_string = now.strftime("%Y-%m-%d %H:%M:%S")
+        message = "[取引実行] {}\n{}を{}, {}で買い{}で売りました。\n期待される利益は{}円です。".format(
+            now_string, symbol, amount, buy_exchange_id, sell_exchange_id,
+            expected_profit)
 
         self.notify(message)

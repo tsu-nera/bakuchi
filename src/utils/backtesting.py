@@ -31,6 +31,9 @@ class Backtesting():
         # run trade
         self.arbitrage.run()
 
+    def get_trade_histories(self):
+        return self.arbitrage.histories
+
     def display(self):
         # show result
         self.arbitrage.report()
