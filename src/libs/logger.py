@@ -9,7 +9,7 @@ LOGGER_NAME_CCXT = "ccxt"
 LOGGER_NAME_MARGIN = "margin"
 LOGGER_NAME_ASSET = "asset"
 
-formatter = logging.Formatter('[%(levelname)s]%(asctime)s %(message)s')
+formatter = logging.Formatter('[%(levelname)s] %(asctime)s %(message)s')
 historical_formatter = logging.Formatter('%(message)s')
 
 
