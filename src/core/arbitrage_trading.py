@@ -84,6 +84,20 @@ class ArbitrageTrading(ArbitrageBase):
         price = sell_jpy - buy_jpy
         return round(price, 1)
 
+    def _format_expected_profit_message(self, buy_exchange_id, buy_ask,
+                                        sell_exchange_id, sell_bid,
+                                        expected_profit):
+        return "buy {} ask={}, sell {} bid={}, profit={}".format(
+            buy_exchange_id, buy_ask, sell_exchange_id, sell_bid,
+            expected_profit)
+
+    def _format_actual_profit_message(self, buy_exchange_id, buy_price_jpy,
+                                      sell_exchange_id, sell_price_jpy,
+                                      actual_profit):
+        return "buy {} jpy={}, sell {} jpy={}, profit={}".format(
+            buy_exchange_id, buy_price_jpy, sell_exchange_id, sell_price_jpy,
+            actual_profit)
+
     def _action(self, result, x, y):
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
             ask_for_coincheck = x.ask if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
@@ -96,11 +110,13 @@ class ArbitrageTrading(ArbitrageBase):
 
             if (not self.demo_mode) or (buy_resp and sell_resp):
                 profit = self._calc_profit(buy_resp["jpy"], sell_resp["jpy"])
+                message = self._format_actual_profit_message(
+                    self.ex_id_x, buy_resp["jpy"], self.ex_id_y,
+                    sell_resp["jpy"], profit)
             else:
                 profit = self._calc_expected_profit(y.bid, x.ask)
-
-            message = "buy {} ask={}, sell {} bid={}, profit={}".format(
-                self.ex_id_x, x.ask, self.ex_id_y, y.bid, profit)
+                message = self._format_expected_profit_message(
+                    self.ex_id_x, x.ask, self.ex_id_y, y.bid, profit)
 
             self.logger_with_stdout.info(message)
 
@@ -125,11 +141,13 @@ class ArbitrageTrading(ArbitrageBase):
 
             if (not self.demo_mode) or (buy_resp and sell_resp):
                 profit = self._calc_profit(buy_resp["jpy"], sell_resp["jpy"])
+                message = self._format_actual_profit_message(
+                    self.ex_id_y, buy_resp["jpy"], self.ex_id_x,
+                    sell_resp["jpy"], profit)
             else:
                 profit = self._calc_expected_profit(x.bid, y.ask)
-
-            message = "buy {} ask={}, sell {} bid={}, profit={}".format(
-                self.ex_id_y, y.ask, self.ex_id_x, x.bid, profit)
+                message = self._format_expected_profit_message(
+                    self.ex_id_y, y.ask, self.ex_id_x, x.bid, profit)
 
             self.logger_with_stdout.info(message)
 
