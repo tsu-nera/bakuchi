@@ -33,6 +33,7 @@ class ArbitrageTrading(ArbitrageBase):
 
         self.trade_amount = config.TRADE_AMOUNT
         self.profit_margin_threshold = config.TRADE_PROFIT_MARGIN_THRESHOLD
+        self.profit_margin_diff = config.TRADE_PROFIT_MARGIN_DIFF
 
         self.asset = Asset()
         self.slack = SlackClient()
@@ -40,8 +41,9 @@ class ArbitrageTrading(ArbitrageBase):
 
     def run(self):
         self.logger_with_stdout.info(
-            "amount={}, profit_margin_threshold={}".format(
-                self.trade_amount, self.profit_margin_threshold))
+            "amount={}, profit_margin_threshold={}, profit_margin_diff={}".
+            format(self.trade_amount, self.profit_margin_threshold,
+                   self.profit_margin_diff))
 
         while True:
             sleep(TICK_INTERVAL_SEC)

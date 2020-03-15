@@ -33,17 +33,25 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.arbitrage_histories = []
         self.trade_count = 0
 
-        self._update_run_params(config.TRADE_AMOUNT,
-                                config.TRADE_PROFIT_MARGIN_THRESHOLD)
+        self._update_run_params(config.BACKTEST_AMOUNT,
+                                config.BACKTEST_PROFIT_MARGIN_THRESHOLD,
+                                config.BACKTEST_PROFIT_MARGIN_DIFF)
 
-    def _update_run_params(self, amount, profit_margin_threshold):
+    def _update_run_params(self, amount, profit_margin_threshold,
+                           profit_margin_diff):
         if amount:
             self.trade_amount = amount
         if profit_margin_threshold:
             self.profit_margin_threshold = profit_margin_threshold
+        if profit_margin_diff:
+            self.profit_margin_diff = profit_margin_diff
 
-    def run(self, amount=None, profit_margin_threshold=None):
-        self._update_run_params(amount, profit_margin_threshold)
+    def run(self,
+            amount=None,
+            profit_margin_threshold=None,
+            profit_margin_diff=None):
+        self._update_run_params(amount, profit_margin_threshold,
+                                profit_margin_diff)
 
         n = len(self.timestamps)
 
@@ -132,6 +140,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         print("バックテスト情報")
         print(tabulate(data))
         print("利確しきい値 {}(JPY)".format(self.profit_margin_threshold))
+        print("損切りマージン {}(JPY)".format(self.profit_margin_diff))
         print("取引単位 {}(BTC)".format(self.trade_amount))
         print("--------")
 
