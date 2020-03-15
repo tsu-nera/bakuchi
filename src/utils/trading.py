@@ -49,6 +49,7 @@ def run_trading(demo_mode=False):
             logger.info("=== trading bot end ===")
             logger.info("=======================")
 
-            asset.logging()
+            # なんかタイミングよってエラーするのでマスク
+            # asset.logging()
             backup_trading_logs(arbitrage.get_current_trading_data_dir())
             slack.notify_with_datetime("Trading Botの稼働を終了しました。")
