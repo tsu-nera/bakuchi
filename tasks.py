@@ -82,17 +82,22 @@ def balance_bitbank(c):
 
 @task
 def balance_testnet(c):
-    private.fetch_balance(ccxtconst.EXCHANGE_ID_BITMEX_DEMO)
+    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_BITMEX_DEMO))
 
 
 @task
 def balance_gemini_sandbox(c):
-    private.fetch_balance(ccxtconst.EXCHANGE_ID_GEMINI_DEMO)
+    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_GEMINI_DEMO))
 
 
 @task
 def trade(c):
     run_trading()
+
+
+@task
+def demo_trade(c):
+    run_trading(demo_mode=True)
 
 
 @task

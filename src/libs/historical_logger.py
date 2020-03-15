@@ -1,4 +1,5 @@
 import os
+import shutil
 import datetime
 import json
 from logging import getLogger
@@ -19,6 +20,8 @@ class HistoricalLogger():
         self.info_file_path = self._get_info_file_path(self.dir_path)
 
         # create directory
+        if os.path.exists(self.dir_path):
+            shutil.rmtree(self.dir_path)
         os.mkdir(self.dir_path)
 
         info_dict = {

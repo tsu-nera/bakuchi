@@ -1,4 +1,5 @@
 import logging
+import shutil
 
 import src.constants.common as common
 
@@ -61,3 +62,14 @@ def get_margin_logger():
 
 def get_asset_logger():
     return logging.getLogger(LOGGER_NAME_ASSET)
+
+
+def backup_trading_logs(backup_dir_path):
+
+    backup_file_path_list = [
+        common.CCXT_LOG_FILE_PATH, common.MARGIN_LOG_FILE_PATH,
+        common.ASSET_LOG_FILE_PATH, common.TRADING_LOG_FILE_PATH
+    ]
+
+    for file in backup_file_path_list:
+        shutil.copy(file, backup_dir_path)

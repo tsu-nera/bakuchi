@@ -3,11 +3,14 @@ from .exchange_base import ExchangeBase
 
 
 class ExchangeTrading(ExchangeBase):
-    def __init__(self, exchange_id, symbol):
+    def __init__(self, exchange_id, symbol, demo_mode=False):
         self.exchange_id = exchange_id
         self.symbol = symbol
 
-        self.client = CcxtClient(exchange_id, symbol)
+        self.client = CcxtClient(exchange_id, symbol, demo_mode=demo_mode)
+
+    def fetch_tick(self):
+        return self.client.fetch_tick()
 
     def order_buy(self, amount, ask_for_coincheck=None):
 
