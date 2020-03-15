@@ -14,6 +14,11 @@ class Backtesting():
         self.df_cc = self._read_df(ccxtconst.EXCHANGE_ID_COINCHECK)
         self.df_lq = self._read_df(ccxtconst.EXCHANGE_ID_LIQUID)
 
+        self.arbitrage = ArbitrageBacktesting(self.df_cc, self.df_lq,
+                                              ccxtconst.SYMBOL_BTC_JPY,
+                                              ccxtconst.EXCHANGE_ID_COINCHECK,
+                                              ccxtconst.EXCHANGE_ID_LIQUID)
+
     def _get_file_path(self, exchange_id):
         file_name = "{}.csv".format(exchange_id)
         return os.path.join(BACKTEST_DATA_DIR_PATH, self.timestamp, file_name)
@@ -23,21 +28,12 @@ class Backtesting():
         return self.csv_driver.read_df(path)
 
     def run(self):
-        print("=== backtest start ===")
-        print()
-
         # run trade
-        arbitrage = ArbitrageBacktesting(self.df_cc, self.df_lq,
-                                         ccxtconst.SYMBOL_BTC_JPY,
-                                         ccxtconst.EXCHANGE_ID_COINCHECK,
-                                         ccxtconst.EXCHANGE_ID_LIQUID)
-        arbitrage.run()
+        self.arbitrage.run()
 
+    def display(self):
         # show result
-        arbitrage.report()
-
-        print()
-        print("=== backtest end ===")
+        self.arbitrage.report()
 
     def get_coincheck_df(self):
         return self.df_cc
@@ -47,5 +43,12 @@ class Backtesting():
 
 
 def run_backtesting(timestamp):
+    print("=== backtest start ===")
+    print()
+
     backtest = Backtesting(timestamp)
     backtest.run()
+    backtest.display()
+
+    print()
+    print("=== backtest end ===")
