@@ -119,8 +119,15 @@ def symbols(c, exchange_id):
 
 @task
 def sell_coincheck(c):
-    private.create_sell_order(ccxtconst.EXCHANGE_ID_COINCHECK,
-                              config.TRADE_AMOUNT)
+    client = CcxtClient(ccxtconst.EXCHANGE_ID_COINCHECK)
+    tick = client.fetch_tick()
+    bid = float(tick["bid"])
+
+    response = private.create_sell_order(ccxtconst.EXCHANGE_ID_COINCHECK,
+                                         ccxtconst.SYMBOL_BTC_JPY,
+                                         config.TRADE_AMOUNT, bid)
+    print(response)
+    return response
 
 
 @task
@@ -129,41 +136,59 @@ def buy_coincheck(c):
     tick = client.fetch_tick()
     ask = float(tick["ask"])
 
-    private.create_buy_order(ccxtconst.EXCHANGE_ID_COINCHECK,
-                             config.TRADE_AMOUNT, ask)
+    response = private.create_buy_order(ccxtconst.EXCHANGE_ID_COINCHECK,
+                                        ccxtconst.SYMBOL_BTC_JPY,
+                                        config.TRADE_AMOUNT, ask)
+    print(response)
+    return response
 
 
 @task
 def sell_liquid(c):
-    private.create_sell_order(ccxtconst.EXCHANGE_ID_LIQUID,
-                              config.TRADE_AMOUNT)
+    response = private.create_sell_order(ccxtconst.EXCHANGE_ID_LIQUID,
+                                         ccxtconst.SYMBOL_BTC_JPY,
+                                         config.TRADE_AMOUNT)
+    print(response)
+    return response
 
 
 @task
 def buy_liquid(c):
-    private.create_buy_order(ccxtconst.EXCHANGE_ID_LIQUID, config.TRADE_AMOUNT)
+    response = private.create_buy_order(ccxtconst.EXCHANGE_ID_LIQUID,
+                                        ccxtconst.SYMBOL_BTC_JPY,
+                                        config.TRADE_AMOUNT)
+    print(response)
+    return response
 
 
 @task
 def buy_coincheck_sell_liquid(c):
-    buy_coincheck(c)
-    sell_liquid(c)
+    cc_jpy = int(buy_coincheck(c)["jpy"])
+    lq_jpy = int(sell_liquid(c)["jpy"])
+
+    print("buy coincheck {}, sell liquid {}, profit={}".format(
+        cc_jpy, lq_jpy, lq_jpy - cc_jpy))
 
 
 @task
 def sell_coincheck_buy_liquid(c):
-    sell_coincheck(c)
-    buy_liquid(c)
+    cc_jpy = int(sell_coincheck(c)["jpy"])
+    lq_jpy = int(buy_liquid(c)["jpy"])
+
+    print("buy liquid {}, sell coincheck {}, profit={}".format(
+        lq_jpy, cc_jpy, cc_jpy - lq_jpy))
 
 
 @task
 def buy_testnet(c):
-    private.create_buy_order(ccxtconst.EXCHANGE_ID_BITMEX_DEMO, 1)
+    private.create_buy_order(ccxtconst.EXCHANGE_ID_BITMEX_DEMO,
+                             ccxtconst.SYMBOL_BTC_USD, 1)
 
 
 @task
 def sell_testnet(c):
-    private.create_sell_order(ccxtconst.EXCHANGE_ID_BITMEX_DEMO, 1)
+    private.create_sell_order(ccxtconst.EXCHANGE_ID_BITMEX_DEMO,
+                              ccxtconst.SYMBOL_BTC_USD, 1)
 
 
 @task
