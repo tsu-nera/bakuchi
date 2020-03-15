@@ -1,6 +1,7 @@
 from invoke import task, run
 import importlib
 import psutil
+from distutils.dir_util import copy_tree
 
 import src.utils.public as public
 import src.utils.private as private
@@ -211,6 +212,15 @@ def reload(c):
 ###############
 # Othre Utils
 ###############
+@task
+def backup_data(c, dir_name):
+    production_dir = "../bakuchi_production/data/historicals/"
+    from_dir = production_dir + dir_name
+    to_dir = "data/backtests/" + dir_name
+
+    copy_tree(from_dir, to_dir)
+
+
 @task
 def note(c):
     run("jupyter notebook --notebook-dir='notebooks'")

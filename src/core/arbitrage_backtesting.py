@@ -30,11 +30,21 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.symbol = symbol
 
         self.histories = []
+        self.arbitrage_histories = []
         self.trade_count = 0
-        self.trade_amount = config.TRADE_AMOUNT
-        self.profit_margin_threshold = config.TRADE_PROFIT_MARGIN_THRESHOLD
 
-    def run(self):
+        self._update_run_params(config.TRADE_AMOUNT,
+                                config.TRADE_PROFIT_MARGIN_THRESHOLD)
+
+    def _update_run_params(self, amount, profit_margin_threshold):
+        if amount:
+            self.trade_amount = amount
+        if profit_margin_threshold:
+            self.profit_margin_threshold = profit_margin_threshold
+
+    def run(self, amount=None, profit_margin_threshold=None):
+        self._update_run_params(amount, profit_margin_threshold)
+
         n = len(self.timestamps)
 
         for i in range(n):
@@ -54,30 +64,50 @@ class ArbitrageBacktesting(ArbitrageBase):
         history = [timestamp, exchange_id, order_type, price]
         self.histories.append(history)
 
+    def _record_arbitrage_history(self, timestamp, buy_exchange_id,
+                                  sell_exchange_id, symbol, amount, margin):
+        expected_profit = int(margin * amount)
+
+        history = [
+            timestamp, buy_exchange_id, sell_exchange_id, symbol, amount,
+            expected_profit
+        ]
+
+        self.arbitrage_histories.append(history)
+
     def _action(self, result, x, y):
         timestamp_string = x.timestamp.strftime('%Y-%m-%d %H:%M:%S')
 
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
             self.trade_count += 1
             self.exchange_x.order_buy(self.symbol, self.trade_amount, x.ask)
-            self._record_history(timestamp_string, "売り", self.exchange_x_id,
+            self._record_history(timestamp_string, "買い", self.exchange_x_id,
                                  x.ask)
 
             self.exchange_y.order_sell(self.symbol, self.trade_amount, y.bid)
-            self._record_history(timestamp_string, "買い", self.exchange_y_id,
+            self._record_history(timestamp_string, "売り", self.exchange_y_id,
                                  y.bid)
+
+            self._record_arbitrage_history(timestamp_string,
+                                           self.exchange_x_id,
+                                           self.exchange_y_id, self.symbol,
+                                           self.trade_amount, y.bid - x.ask)
 
             self._rearrange_action_permission_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
             self.trade_count += 1
             self.exchange_y.order_buy(self.symbol, self.trade_amount, y.ask)
-            self._record_history(timestamp_string, "売り", self.exchange_y_id,
+            self._record_history(timestamp_string, "買い", self.exchange_y_id,
                                  y.ask)
 
             self.exchange_x.order_sell(self.symbol, self.trade_amount, x.bid)
-            self._record_history(timestamp_string, "買い", self.exchange_x_id,
+            self._record_history(timestamp_string, "売り", self.exchange_x_id,
                                  x.bid)
+            self._record_arbitrage_history(timestamp_string,
+                                           self.exchange_y_id,
+                                           self.exchange_x_id, self.symbol,
+                                           self.trade_amount, x.bid - y.ask)
 
             self._rearrange_action_permission_buyy_sellx()
         else:

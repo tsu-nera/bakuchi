@@ -20,9 +20,6 @@ class ArbitrageTrading(ArbitrageBase):
     def __init__(self, exchange_id_x, exchange_id_y, symbol, demo_mode=False):
         super().__init__()
 
-        self.trade_amount = config.TRADE_AMOUNT
-        self.profit_margin_threshold = config.TRADE_PROFIT_MARGIN_THRESHOLD
-
         self.ex_id_x = exchange_id_x
         self.ex_id_y = exchange_id_y
         self.symbol = symbol
@@ -97,7 +94,8 @@ class ArbitrageTrading(ArbitrageBase):
             # クラッシュするので一旦封印
             # self.asset.logging()
 
-            self.slack.notify(message)
+            self.slack.notify_order(self.ex_id_x, self.ex_id_y, self.symbol,
+                                    self.trade_amount, profit)
 
             self._rearrange_action_permission_buyx_selly()
 
@@ -116,7 +114,8 @@ class ArbitrageTrading(ArbitrageBase):
             # クラッシュするので一旦封印
             # self.asset.logging()
 
-            self.slack.notify(message)
+            self.slack.notify_order(self.ex_id_y, self.ex_id_x, self.symbol,
+                                    self.trade_amount, profit)
 
             self._rearrange_action_permission_buyy_sellx()
         else:
@@ -124,4 +123,3 @@ class ArbitrageTrading(ArbitrageBase):
 
     def get_current_trading_data_dir(self):
         return self.historical_logger.dir_path
-    
