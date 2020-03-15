@@ -2,6 +2,7 @@ import os
 
 DATA_DIR = "data"
 HISTORICAL_DATA_DIR = "historicals"
+BACKTEST_DATA_DIR = "backtests"
 LOG_DIR = "logs"
 
 HISTORICAL_LOG_FILE = "historical.log"
@@ -11,6 +12,8 @@ MARGIN_LOG_FILE = "margin.log"
 ASSET_LOG_FILE = "asset.log"
 
 HISTORICAL_DATA_DIR_PATH = os.path.join(DATA_DIR, HISTORICAL_DATA_DIR)
+BACKTEST_DATA_DIR_PATH = os.path.join(DATA_DIR, BACKTEST_DATA_DIR)
+
 HISTORICAL_LOG_FILE_PATH = os.path.join(LOG_DIR, HISTORICAL_LOG_FILE)
 TRADING_LOG_FILE_PATH = os.path.join(LOG_DIR, TRADING_LOG_FILE)
 CCXT_LOG_FILE_PATH = os.path.join(LOG_DIR, CCXT_LOG_FILE)
