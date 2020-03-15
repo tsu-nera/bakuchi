@@ -16,3 +16,10 @@ class SlackClient():
                                      username=USER_NAME,
                                      icon_url=SLACK_ICON_URL,
                                      text=message)
+
+    def notify_order(self, buy_exchange_id, sell_exchange_id, symbol, amount,
+                     expected_profit):
+        message = "[取引実行]{}を{}, {}で買い{}で売りました。\n期待される利益は{}円です。".format(
+            symbol, amount, buy_exchange_id, sell_exchange_id, expected_profit)
+
+        self.notify(message)

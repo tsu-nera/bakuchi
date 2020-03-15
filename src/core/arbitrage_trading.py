@@ -97,7 +97,8 @@ class ArbitrageTrading(ArbitrageBase):
             # クラッシュするので一旦封印
             # self.asset.logging()
 
-            self.slack.notify(message)
+            self.slack.notify_order(self.ex_id_x, self.ex_id_y, self.symbol,
+                                    self.trade_amount, profit)
 
             self._rearrange_action_permission_buyx_selly()
 
@@ -116,7 +117,8 @@ class ArbitrageTrading(ArbitrageBase):
             # クラッシュするので一旦封印
             # self.asset.logging()
 
-            self.slack.notify(message)
+            self.slack.notify_order(self.ex_id_y, self.ex_id_x, self.symbol,
+                                    self.trade_amount, profit)
 
             self._rearrange_action_permission_buyy_sellx()
         else:
@@ -124,4 +126,3 @@ class ArbitrageTrading(ArbitrageBase):
 
     def get_current_trading_data_dir(self):
         return self.historical_logger.dir_path
-    
