@@ -229,7 +229,7 @@ def note(c):
 @task
 def slack(c, message):
     client = SlackClient()
-    client.notify(message)
+    client.notify_with_datetime(message)
 
 
 @task
