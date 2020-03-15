@@ -17,7 +17,7 @@ from src.libs.historical_logger import HistoricalLogger
 
 
 class ArbitrageTrading(ArbitrageBase):
-    def __init__(self, exchange_id_x, exchange_id_y, symbol):
+    def __init__(self, exchange_id_x, exchange_id_y, symbol, demo_mode=False):
         super().__init__()
 
         self.trade_amount = config.TRADE_AMOUNT
@@ -27,11 +27,8 @@ class ArbitrageTrading(ArbitrageBase):
         self.ex_id_y = exchange_id_y
         self.symbol = symbol
 
-        self.exchange_x = Exchange(exchange_id_x, symbol)
-        self.exchange_y = Exchange(exchange_id_y, symbol)
-
-        self.client_x = CcxtClient(exchange_id_x)
-        self.client_y = CcxtClient(exchange_id_y)
+        self.exchange_x = Exchange(exchange_id_x, symbol, demo_mode=demo_mode)
+        self.exchange_y = Exchange(exchange_id_y, symbol, demo_mode=demo_mode)
 
         self.logger = get_trading_logger()
         self.logger_with_stdout = get_trading_logger_with_stdout()
@@ -68,8 +65,8 @@ class ArbitrageTrading(ArbitrageBase):
         self.historical_logger.logging(self.ex_id_y, y.timestamp, y.bid, x.ask)
 
     def _get_tick(self):
-        x = self.client_x.fetch_tick()
-        y = self.client_y.fetch_tick()
+        x = self.exchange_x.fetch_tick()
+        y = self.exchange_y.fetch_tick()
 
         tick_x = Tick(x["timestamp"], x["bid"], x["ask"]) if x else None
         tick_y = Tick(y["timestamp"], y["bid"], y["ask"]) if y else None
