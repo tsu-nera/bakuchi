@@ -5,13 +5,22 @@ from src.core.arbitrage_base import ArbitrageBase
 from src.core.tick import Tick
 from src.core.exchange_backtesting import ExchangeBacktesting as Exchange
 
+import time
+
 
 class ArbitrageBacktesting(ArbitrageBase):
-    def __init__(self, df_x, df_y, symbol, exchange_x_id, exchange_y_id):
+    def __init__(self,
+                 df_x,
+                 df_y,
+                 symbol,
+                 exchange_x_id,
+                 exchange_y_id,
+                 simulate_mode=False):
         super().__init__()
 
         self.df_x = df_x
         self.df_y = df_y
+        self.simulate_mode = simulate_mode
 
         self.timestamps = df_x.index
         self.x_bids = df_x.bid.tolist()
@@ -56,8 +65,8 @@ class ArbitrageBacktesting(ArbitrageBase):
         n = len(self.timestamps)
 
         for i in range(n):
-            self.next()
             self.current_index = i
+            self.next()
 
     def _get_tick(self):
         i = self.current_index
@@ -84,6 +93,8 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.arbitrage_histories.append(history)
 
     def _action(self, result, x, y):
+        if self.simulate_mode:
+            time.sleep(1)
         timestamp_string = x.timestamp.strftime('%Y-%m-%d %H:%M:%S')
 
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
@@ -100,7 +111,8 @@ class ArbitrageBacktesting(ArbitrageBase):
                                            self.exchange_x_id,
                                            self.exchange_y_id, self.symbol,
                                            self.trade_amount, y.bid - x.ask)
-
+            if self.simulate_mode:
+                print(x.timestamp, result, y.bid - x.ask)
             self._rearrange_action_permission_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
@@ -117,8 +129,12 @@ class ArbitrageBacktesting(ArbitrageBase):
                                            self.exchange_x_id, self.symbol,
                                            self.trade_amount, x.bid - y.ask)
 
+            if self.simulate_mode:
+                print(x.timestamp, result, x.bid - y.ask)
             self._rearrange_action_permission_buyy_sellx()
         else:
+            if self.simulate_mode:
+                print(x.timestamp, result)
             pass
 
     def report(self):
@@ -162,6 +178,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         init_balance_jpy = config.BACKTEST_BALANCE_JPY * 2
         init_balance_btc = config.BACKTEST_BALANCE_BTC * 2
 
+        data.append(["レコード数", len(self.timestamps)])
         data.append(["取引回数", self.trade_count])
         data.append(["利益(JPY)", total_profit_jpy])
         data.append(["元金(JPY)", init_balance_jpy])

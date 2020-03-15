@@ -1,11 +1,11 @@
 from .exchange_base import ExchangeBase
-from src.config import config
+import src.config as config
 
 
 class ExchangeBacktesting(ExchangeBase):
     def __init__(self):
-        self.balance_jpy_init = float(config['backtest']["balance_jpy"])
-        self.balance_btc_init = float(config['backtest']["balance_btc"])
+        self.balance_jpy_init = config.BACKTEST_BALANCE_JPY
+        self.balance_btc_init = config.BACKTEST_BALANCE_BTC
         self.balance_jpy = self.balance_jpy_init
         self.balance_btc = self.balance_btc_init
 

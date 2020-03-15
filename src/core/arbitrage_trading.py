@@ -61,7 +61,7 @@ class ArbitrageTrading(ArbitrageBase):
 
     def _logging_tick_historical(self, x, y):
         self.historical_logger.logging(self.ex_id_x, x.timestamp, x.bid, x.ask)
-        self.historical_logger.logging(self.ex_id_y, y.timestamp, y.bid, x.ask)
+        self.historical_logger.logging(self.ex_id_y, y.timestamp, y.bid, y.ask)
 
     def _get_tick(self):
         x = self.exchange_x.fetch_tick()

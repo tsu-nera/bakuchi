@@ -7,7 +7,7 @@ from src.core.arbitrage_backtesting import ArbitrageBacktesting
 
 
 class Backtesting():
-    def __init__(self, timestamp):
+    def __init__(self, timestamp, simulate_mode=False):
         self.timestamp = timestamp
         self.csv_driver = CsvDriver()
 
@@ -17,7 +17,8 @@ class Backtesting():
         self.arbitrage = ArbitrageBacktesting(self.df_cc, self.df_lq,
                                               ccxtconst.SYMBOL_BTC_JPY,
                                               ccxtconst.EXCHANGE_ID_COINCHECK,
-                                              ccxtconst.EXCHANGE_ID_LIQUID)
+                                              ccxtconst.EXCHANGE_ID_LIQUID,
+                                              simulate_mode)
 
     def _get_file_path(self, exchange_id):
         file_name = "{}.csv".format(exchange_id)
@@ -51,11 +52,11 @@ class Backtesting():
         return self.df_lq
 
 
-def run_backtesting(timestamp):
+def run_backtesting(timestamp, simulate_mode=False):
     print("=== backtest start ===")
     print()
 
-    backtest = Backtesting(timestamp)
+    backtest = Backtesting(timestamp, simulate_mode)
     backtest.run()
     backtest.display()
 

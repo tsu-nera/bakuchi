@@ -107,6 +107,11 @@ def backtest(c, timestamp):
 
 
 @task
+def simulate(c, timestamp):
+    run_backtesting(timestamp, simulate_mode=True)
+
+
+@task
 def get_historical_data(c):
     save_ticks()
 
