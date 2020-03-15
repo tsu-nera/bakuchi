@@ -95,8 +95,8 @@ class ArbitrageTrading(ArbitrageBase):
                                       sell_exchange_id, sell_price_jpy,
                                       actual_profit):
         return "buy {} jpy={}, sell {} jpy={}, profit={}".format(
-            buy_exchange_id, buy_price_jpy, sell_exchange_id, sell_price_jpy,
-            actual_profit)
+            buy_exchange_id, round(buy_price_jpy, 3), sell_exchange_id,
+            round(sell_price_jpy, 3), actual_profit)
 
     def _action(self, result, x, y):
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
