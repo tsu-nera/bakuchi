@@ -20,9 +20,6 @@ class ArbitrageTrading(ArbitrageBase):
     def __init__(self, exchange_id_x, exchange_id_y, symbol, demo_mode=False):
         super().__init__()
 
-        self.trade_amount = config.TRADE_AMOUNT
-        self.profit_margin_threshold = config.TRADE_PROFIT_MARGIN_THRESHOLD
-
         self.ex_id_x = exchange_id_x
         self.ex_id_y = exchange_id_y
         self.symbol = symbol
