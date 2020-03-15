@@ -50,8 +50,8 @@ class ArbitrageTrading(ArbitrageBase):
             self.next()
 
     def _logging_tick_margin(self, x, y):
-        buy_y_sell_x_margin = x.bid - y.ask
-        buy_x_sell_y_margin = y.bid - x.ask
+        buy_y_sell_x_margin = int(x.bid - y.ask)
+        buy_x_sell_y_margin = int(y.bid - x.ask)
 
         message = "sell[{}] buy[{}] margin={}, sell[{}] buy[{}] margin={}, action_permission={}".format(
             self.ex_id_x, self.ex_id_y, buy_y_sell_x_margin, self.ex_id_y,
