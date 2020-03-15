@@ -1,3 +1,4 @@
+from src.core.exchange_trading import ExchangeTrading as Exchange
 from src.libs.ccxt_client import CcxtClient
 
 
@@ -35,21 +36,13 @@ def get_positions(exchange_id):
     print(data)
 
 
-def create_buy_order(exchange_id, amount, ask_for_coincheck=None):
-    client = CcxtClient(exchange_id)
-
-    if ask_for_coincheck:
-        price = int(ask_for_coincheck * amount)
-        order_info = client.create_market_buy_order(price)
-    else:
-        order_info = client.create_market_buy_order(amount)
-
-    print(order_info)
+def create_buy_order(exchange_id, symbol, amount, ask_for_coincheck=None):
+    ex = Exchange(exchange_id, symbol)
+    order_info = ex.order_buy(amount, ask_for_coincheck)
+    return order_info
 
 
-def create_sell_order(exchange_id, amount):
-    client = CcxtClient(exchange_id)
-
-    order_info = client.create_market_sell_order(amount)
-
-    print(order_info)
+def create_sell_order(exchange_id, symbol, amount, bid_for_coincheck=None):
+    ex = Exchange(exchange_id, symbol)
+    order_info = ex.order_sell(amount, bid_for_coincheck)
+    return order_info
