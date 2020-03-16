@@ -27,7 +27,8 @@ class HistoricalLogger():
         info_dict = {
             "amount": config.TRADE_AMOUNT,
             "profit_margin_threshold": config.TRADE_PROFIT_MARGIN_THRESHOLD,
-            "profit_margin_diff": config.TRADE_PROFIT_MARGIN_DIFF
+            "profit_margin_diff": config.TRADE_PROFIT_MARGIN_DIFF,
+            "profit_margin_change_sec": config.PROFIT_MARGIN_THRESHOLD_CHANGE_SEC
         }
 
         # errorするのでマスク
