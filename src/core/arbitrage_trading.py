@@ -85,7 +85,7 @@ class ArbitrageTrading(ArbitrageBase):
         margin_buyx_selly = self._get_profit_margin(y.bid, x.ask)
         margin_buyy_sellx = self._get_profit_margin(x.bid, y.ask)
 
-        base_message_format = "sell-{} buy-{} margin:{}"
+        base_message_format = "sell-{}/buy-{} margin:{}"
         if self.opened:
             if self.open_direction:
                 message_format = base_message_format.format(
@@ -116,8 +116,10 @@ class ArbitrageTrading(ArbitrageBase):
                 self.ACTION_OPENING, message_buyy_sellx_format,
                 open_threshold_format)
 
-            self.logger_margin.info(message_buyx_selly)
-            self.logger_margin.info(message_buyy_sellx)
+            if margin_buyx_selly > margin_buyy_sellx:
+                self.logger_margin.info(message_buyx_selly)
+            else:
+                self.logger_margin.info(message_buyy_sellx)
 
     def _logging_tick_historical(self, x, y):
         self.historical_logger.logging(self.ex_id_x, x.timestamp, x.bid, x.ask)
