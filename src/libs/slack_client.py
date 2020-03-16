@@ -1,7 +1,9 @@
 import datetime
 import requests
 import json
+
 from src.env import SLACK_WEBHOOK_URL
+import src.constants.common as common
 
 NEWLINE = "\n"
 
@@ -14,7 +16,7 @@ class SlackClient():
 
     def _get_datetime_string(self):
         now = datetime.datetime.now()
-        return now.strftime("%Y-%m-%d %H:%M:%S")
+        return now.strftime(common.DATETIME_BASE_FORMAT)
 
     def notify_with_datetime(self, message):
         now_string = self._get_datetime_string()

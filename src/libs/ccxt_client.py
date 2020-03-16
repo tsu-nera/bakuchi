@@ -1,9 +1,12 @@
 import sys
 import ccxt
 import datetime
+import requests
 
 from src.libs.logger import get_ccxt_logger
 import src.constants.ccxtconst as ccxtconst
+import src.constants.common as common
+from src.libs.exchanges.coincheck import Coincheck
 
 
 class CcxtClient():
@@ -56,7 +59,7 @@ class CcxtClient():
 
     def fetch_tick(self):
         timestamp_string = datetime.datetime.now().strftime(
-            '%Y-%m-%d %H:%M:%S')
+            common.DATETIME_BASE_FORMAT)
 
         tick = self._exec()
 
@@ -116,3 +119,27 @@ class CcxtClient():
                                                            amount=amount)
 
         return order_info
+
+    def fetch_trades(self):
+        if self.exchange_id == ccxtconst.EXCHANGE_ID_COINCHECK:
+            client = Coincheck()
+            trades = client.fetch_my_trades()
+        elif self.exchange.has['fetchMyTrades']:
+            trades = []
+            resp = self.exchange.fetch_my_trades(self.symbol, limit=200)
+            for x in resp:
+                trade = x['info']
+                trade["rate"] = float(trade["price"])
+                trade["price"] = round(
+                    trade["rate"] * float(trade["quantity"]), 3)
+                trades.append(trade)
+        else:
+            print("fetch_trades api is not supported in {}".format(
+                self.exchange_id))
+            return []
+
+        res = []
+        for trade in trades:
+            trade["pair"] = self.symbol
+            res.append(trade)
+        return res

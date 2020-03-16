@@ -10,6 +10,7 @@ from src.utils.trading import run_trading
 from src.utils.backtesting import run_backtesting
 from src.utils.historical import save_ticks
 import src.utils.tool as tool
+import src.utils.trade_history as trade_history
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
 
@@ -248,6 +249,22 @@ def fetch_positions(c):
     private.get_positions(ccxtconst.EXCHANGE_ID_LIQUID)
 
 
+@task
+def save_coincheck_trades(c):
+    trade_history.save_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
+
+
+@task
+def save_liquid_trades(c):
+    trade_history.save_trades(ccxtconst.EXCHANGE_ID_LIQUID)
+
+
+@task
+def save_trades(c):
+    save_coincheck_trades(c)
+    save_liquid_trades(c)
+
+
 ###############
 # Utils
 ###############
@@ -275,6 +292,16 @@ def calc_jpybtc(c, jpy_price):
 def reload(c):
     # 検証中
     importlib.reload(PUBLIC_MODULE)
+
+
+@task
+def recent_profits(c):
+    trade_history.show_recent_profits()
+
+
+@task
+def recent_profits_by(c, hour):
+    trade_history.show_recent_profits(hour)
 
 
 ###############
