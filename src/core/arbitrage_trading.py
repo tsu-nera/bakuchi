@@ -1,7 +1,8 @@
 from time import sleep
+import datetime
 
 from .arbitrage_base import ArbitrageBase
-from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK
+from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK, EXCHANGE_ID_LIQUID
 from .tick import Tick
 from src.core.exchange_trading import ExchangeTrading as Exchange
 from src.libs.asset import Asset
@@ -40,14 +41,43 @@ class ArbitrageTrading(ArbitrageBase):
         self.historical_logger = HistoricalLogger()
 
     def run(self):
+        self._logging_trading_metadata()
+
+        while True:
+            sleep(TICK_INTERVAL_SEC)
+
+            if not self.is_server_maintenance(
+                    self.ex_id_x) and not self.is_server_maintenance(
+                        self.ex_id_y):
+                self.next()
+
+    def _is_liquid_server_maintenance(self):
+        now = datetime.datetime.now()
+        # 6:55
+        maintenance_start_time = datetime.datetime(now.year, now.month,
+                                                   now.day, 6, 55, 0)
+        # 7:05
+        maintenance_end_time = datetime.datetime(now.year, now.month, now.day,
+                                                 7, 5, 0)
+
+        if maintenance_start_time <= now and now <= maintenance_end_time:
+            self.logger_with_stdout.info(
+                "liquid is currently daily server maintenance...(6:55-7:05)")
+            return True
+        else:
+            return False
+
+    def is_server_maintenance(self, exchange_id):
+        if exchange_id == EXCHANGE_ID_LIQUID:
+            return self._is_liquid_server_maintenance()
+        else:
+            return False
+
+    def _logging_trading_metadata(self):
         self.logger_with_stdout.info(
             "amount={}, profit_margin_threshold={}, profit_margin_diff={}".
             format(self.trade_amount, self.profit_margin_threshold,
                    self.profit_margin_diff))
-
-        while True:
-            sleep(TICK_INTERVAL_SEC)
-            self.next()
 
     def _logging_tick_margin(self, x, y):
         buy_y_sell_x_margin = int(x.bid - y.ask)
