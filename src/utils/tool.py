@@ -1,14 +1,9 @@
-import os
-import pandas as pd
-
 from tabulate import tabulate
 
 import src.utils.public as public
 import src.utils.private as private
 import src.constants.ccxtconst as ccxtconst
 from src.libs.ccxt_client import CcxtClient
-
-import src.constants.common as common
 
 EXCHANGE_ID_LIST = [
     ccxtconst.EXCHANGE_ID_COINCHECK, ccxtconst.EXCHANGE_ID_LIQUID
@@ -116,14 +111,3 @@ def calc_jpy_to_btc(jpy_price):
         output = "{}[JPY] to {}[BTC] ({})".format(jpy_price, btc_amount,
                                                   exchange_id)
         print(output)
-
-
-def save_trades(exchange_id):
-    trades = private.fetch_trades(exchange_id)
-
-    file_name = "latest_trades_{}.csv".format(exchange_id)
-    file_path = os.path.join(common.TRADES_RAWDATA_DIR_PATH, file_name)
-
-    df = pd.DataFrame.from_dict(trades)
-
-    df.to_csv(file_path, index=None)

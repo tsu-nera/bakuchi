@@ -2,7 +2,6 @@ from invoke import task, run
 import importlib
 import psutil
 from distutils.dir_util import copy_tree
-from pprint import pprint as pp
 
 import src.utils.public as public
 import src.utils.private as private
@@ -11,6 +10,7 @@ from src.utils.trading import run_trading
 from src.utils.backtesting import run_backtesting
 from src.utils.historical import save_ticks
 import src.utils.tool as tool
+import src.utils.trade_history as trade_history
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
 
@@ -251,7 +251,18 @@ def fetch_positions(c):
 
 @task
 def save_coincheck_trades(c):
-    tool.save_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
+    trade_history.save_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
+
+
+@task
+def save_liquid_trades(c):
+    trade_history.save_trades(ccxtconst.EXCHANGE_ID_LIQUID)
+
+
+@task
+def save_trades(c):
+    save_coincheck_trades(c)
+    save_liquid_trades(c)
 
 
 ###############

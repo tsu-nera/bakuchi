@@ -122,10 +122,19 @@ class CcxtClient():
     def fetch_trades(self):
         if self.exchange_id == ccxtconst.EXCHANGE_ID_COINCHECK:
             client = Coincheck()
-            return client.fetch_my_trades()
+            trades = client.fetch_my_trades()
         elif self.exchange.has['fetchMyTrades']:
-            return self.exchange.fetch_my_trades(self.symbol)
+            trades = []
+
+            resp = self.exchange.fetch_my_trades(self.symbol, limit=100)
+            trades.extend([x['info'] for x in resp])
         else:
             print("fetch_trades api is not supported in {}".format(
                 self.exchange_id))
             return []
+
+        res = []
+        for trade in trades:
+            trade["pair"] = self.symbol
+            res.append(trade)
+        return res

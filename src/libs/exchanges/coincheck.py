@@ -93,22 +93,6 @@ class Coincheck():
 
         return params
 
-    def _convert_jp_datetime(self, d_str):
-        dt = datetime.datetime.fromisoformat(d_str.replace('Z', ''))
-        dt = dt + datetime.timedelta(hours=9)
-        return dt.strftime('%Y-%m-%d %H:%M:%S')
-
-    def _create_trade(self, datetime, pair, side, fee, amount, price, rate):
-        return {
-            "datetime": datetime,
-            "pair": pair,
-            "side": side,
-            "fee": fee,
-            "amount": round(amount, 3),
-            "price": round(price, 3),
-            "rate": round(rate, 3)
-        }
-
     def fetch_my_trades(self):
         end_point = "api/exchange/orders/transactions_pagination"
 
@@ -124,38 +108,9 @@ class Coincheck():
                 transactions = res["data"]
                 index_id = int(transactions[-1]["id"])
 
-                for t in transactions:
-                    trade = self._create_trade(
-                        self._convert_jp_datetime(t["created_at"]), t["pair"],
-                        t["side"], float(t["fee"]), float(t["funds"]["btc"]),
-                        float(t["funds"]["jpy"]), float(t["rate"]))
-                    trades.append(trade)
+                trades.extend(transactions)
             else:
                 print(res["error"])
                 break
 
-        dup = [trade['datetime'] for trade in trades]
-        dup_flag_list = [True if dup.count(x) > 1 else False for x in dup]
-
-        filterd_trades = []
-
-        i = 0
-        while i < len(dup):
-            flag = dup_flag_list[i]
-            if flag:
-                current_trade = trades[i]
-                next_trade = trades[i + 1]
-                merged_trade = self._create_trade(
-                    current_trade["datetime"], current_trade["pair"],
-                    current_trade["side"], current_trade["fee"],
-                    current_trade["amount"] + next_trade["amount"],
-                    current_trade["price"] + next_trade["price"],
-                    (current_trade["rate"] + next_trade["rate"]) / 2)
-                i += 2
-                filterd_trades.append(merged_trade)
-            else:
-                trade = trades[i]
-                filterd_trades.append(trade)
-                i += 1
-
-        return filterd_trades
+        return trades
