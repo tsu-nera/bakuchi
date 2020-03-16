@@ -23,7 +23,7 @@ class ArbitrageAnalyzer():
         return self.length >= PROFIT_MARGIN_THRESHOLD_CHANGE_SEC
 
     def get_new_profit_margin_threshold(self):
-        sample_length = 180
+        sample_length = 90
         length = PROFIT_MARGIN_THRESHOLD_CHANGE_SEC - sample_length
         buyx_selly_mean = mean(self.buyx_selly_margings[length:])
         buyy_sellx_mean = mean(self.buyy_sellx_margings[length:])
