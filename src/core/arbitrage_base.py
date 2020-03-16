@@ -13,6 +13,7 @@ class ArbitrageBase(metaclass=ABCMeta):
         self._closing()
         self.analyzer = ArbitrageAnalyzer()
         self.opened = False
+        self.entry_open_margin = None
 
     @abstractmethod
     def run(self):
@@ -64,6 +65,9 @@ class ArbitrageBase(metaclass=ABCMeta):
         return profit_margin > self.open_threshold
 
     def _get_close_threshold(self):
+        if not self.entry_open_margin:
+            return -1
+
         return self.profit_margin_diff - max(self.entry_open_margin,
                                              self.open_threshold)
 
