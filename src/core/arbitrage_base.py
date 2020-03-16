@@ -6,8 +6,8 @@ class ArbitrageBase(metaclass=ABCMeta):
     STRATEGY_BUY_X_AND_SELL_Y = "buy x and sell y"
     STRATEGY_BUY_Y_AND_SELL_X = "buy y and sell x"
     STRATEGY_DO_NOTHING = "no strategy"
-    ACTION_OPEN = "OPEN"
-    ACTION_CLOSE = "CLOSE"
+    ACTION_OPENING = "OPENING"
+    ACTION_CLOSING = "CLOSING"
 
     def __init__(self):
         self._closing()
@@ -96,13 +96,13 @@ class ArbitrageBase(metaclass=ABCMeta):
 
     def _change_status_buyx_selly(self):
         if not self.opened:
-            self._opening_buyy_sellx()
+            self._opening_buyx_selly()
         else:
             self._closing()
 
     def _change_status_buyy_sellx(self):
         if not self.opened:
-            self._opening_buyx_selly()
+            self._opening_buyy_sellx()
         else:
             self._closing()
 
@@ -112,8 +112,8 @@ class ArbitrageBase(metaclass=ABCMeta):
 
     def _opening_buyx_selly(self):
         self.opened = True
-        self.open_direction = True
+        self.open_direction = False
 
     def _opening_buyy_sellx(self):
         self.opened = True
-        self.open_direction = False
+        self.open_direction = True

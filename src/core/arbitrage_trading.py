@@ -82,15 +82,42 @@ class ArbitrageTrading(ArbitrageBase):
                 self.profit_margin_diff))
 
     def _logging_tick_margin(self, x, y):
-        buy_y_sell_x_margin = self._get_profit_margin(x.bid, y.ask)
-        buy_x_sell_y_margin = self._get_profit_margin(y.bid, x.ask)
+        margin_buyx_selly = self._get_profit_margin(y.bid, x.ask)
+        margin_buyy_sellx = self._get_profit_margin(x.bid, y.ask)
 
-        message = "sell-{} buy-{} margin={}, sell-{} buy-{} margin={}, opened={}, open_threshold={}, close_threshold={}".format(
-            self.ex_id_x, self.ex_id_y, buy_y_sell_x_margin, self.ex_id_y,
-            self.ex_id_x, buy_x_sell_y_margin, self.opened,
-            self.open_threshold, self._get_close_threshold())
+        base_message_format = "sell-{} buy-{} margin:{}"
+        if self.opened:
+            if self.open_direction:
+                message_format = base_message_format.format(
+                    self.ex_id_y, self.ex_id_x, margin_buyx_selly)
+            else:
+                message_format = base_message_format.format(
+                    self.ex_id_x, self.ex_id_y, margin_buyy_sellx)
+        else:
+            message_buyx_selly_format = base_message_format.format(
+                self.ex_id_y, self.ex_id_x, margin_buyx_selly)
+            message_buyy_sellx_format = base_message_format.format(
+                self.ex_id_x, self.ex_id_y, margin_buyy_sellx)
 
-        self.logger_margin.info(message)
+        open_threshold_format = "open_threshold:{}".format(self.open_threshold)
+        close_threshold_format = "close_threshold:{}".format(
+            self._get_close_threshold())
+
+        if self.opened:
+            message = "waiting {} {}, {}".format(self.ACTION_CLOSING,
+                                                 message_format,
+                                                 close_threshold_format)
+            self.logger_margin.info(message)
+        else:
+            message_buyx_selly = "waiting {} {}, {}".format(
+                self.ACTION_OPENING, message_buyx_selly_format,
+                open_threshold_format)
+            message_buyy_sellx = "waiting {} {}, {}".format(
+                self.ACTION_OPENING, message_buyy_sellx_format,
+                open_threshold_format)
+
+            self.logger_margin.info(message_buyx_selly)
+            self.logger_margin.info(message_buyy_sellx)
 
     def _logging_tick_historical(self, x, y):
         self.historical_logger.logging(self.ex_id_x, x.timestamp, x.bid, x.ask)
@@ -128,7 +155,7 @@ class ArbitrageTrading(ArbitrageBase):
         return round(price, 1)
 
     def _get_log_label(self):
-        return self.ACTION_CLOSE if self.opened else self.ACTION_OPEN
+        return self.ACTION_CLOSING if self.opened else self.ACTION_OPENING
 
     def _format_expected_profit_message(self, buy_exchange_id, buy_ask,
                                         sell_exchange_id, sell_bid,

@@ -301,7 +301,7 @@ def recent_profits(c):
 
 @task
 def recent_profits_by(c, hour):
-    trade_history.show_recent_profits(hour)
+    trade_history.show_recent_profits(int(hour))
 
 
 ###############

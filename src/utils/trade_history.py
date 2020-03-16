@@ -138,7 +138,7 @@ def show_recent_profits(hours=None):
     for timestamp, data in base_trade_dict.items():
         if hours:
             datetime_threshold = datetime.datetime.now() - datetime.timedelta(
-                hours=3)
+                hours=hours)
 
             datetime_timestamp = datetime.datetime.strptime(
                 timestamp, common.DATETIME_BASE_FORMAT)
