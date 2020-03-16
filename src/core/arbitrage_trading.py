@@ -142,7 +142,7 @@ class ArbitrageTrading(ArbitrageBase):
                                       sell_exchange_id, sell_price_jpy,
                                       actual_profit, profit_margin):
         label = self._get_log_label()
-        return "{} buy {}({}), sell {}({}), margin={}, profit={}".format(
+        return "{} buy-{}({}), sell-{}({}), margin={}, profit={}".format(
             label, buy_exchange_id, round(buy_price_jpy, 3), sell_exchange_id,
             round(sell_price_jpy, 3), profit_margin, actual_profit)
 
