@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from src.core.arbitrage_analyzer import ArbitrageAnalyzer
 
 
 class ArbitrageBase(metaclass=ABCMeta):
@@ -8,6 +9,7 @@ class ArbitrageBase(metaclass=ABCMeta):
 
     def __init__(self):
         self._reset_action_permission()
+        self.analyzer = ArbitrageAnalyzer()
 
     @abstractmethod
     def run(self):
@@ -29,6 +31,11 @@ class ArbitrageBase(metaclass=ABCMeta):
         pass
 
     def _evaluate(self, x, y):
+        self.analyzer.update(y.bid - x.ask, x.bid - y.ask)
+        if self.analyzer.check_period():
+            self.profit_margin_threshold = self.analyzer.get_new_profit_margin_threshold()
+            self.analyzer.reset()
+
         if self._check_action_permission_buyx_selly(y.bid, x.ask):
             return self.STRATEGY_BUY_X_AND_SELL_Y
         elif self._check_action_permission_buyy_sellx(x.bid, y.ask):
