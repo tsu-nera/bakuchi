@@ -107,12 +107,15 @@ class ArbitrageBacktesting(ArbitrageBase):
             self._record_history(timestamp_string, "売り", self.exchange_y_id,
                                  y.bid)
 
+            profit_margin = y.bid - x.ask
             self._record_arbitrage_history(timestamp_string,
                                            self.exchange_x_id,
                                            self.exchange_y_id, self.symbol,
-                                           self.trade_amount, y.bid - x.ask)
+                                           self.trade_amount, profit_margin)
             if self.simulate_mode:
-                print(x.timestamp, result, y.bid - x.ask)
+                print(x.timestamp, result, profit_margin)
+
+            self._update_entry_profit_margin(profit_margin)
             self._rearrange_action_permission_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
@@ -124,13 +127,17 @@ class ArbitrageBacktesting(ArbitrageBase):
             self.exchange_x.order_sell(self.symbol, self.trade_amount, x.bid)
             self._record_history(timestamp_string, "売り", self.exchange_x_id,
                                  x.bid)
+
+            profit_margin = x.bid - y.ask
             self._record_arbitrage_history(timestamp_string,
                                            self.exchange_y_id,
                                            self.exchange_x_id, self.symbol,
-                                           self.trade_amount, x.bid - y.ask)
+                                           self.trade_amount, profit_margin)
 
             if self.simulate_mode:
-                print(x.timestamp, result, x.bid - y.ask)
+                print(x.timestamp, result, profit_margin)
+                
+            self._update_entry_profit_margin(profit_margin)
             self._rearrange_action_permission_buyy_sellx()
         else:
             if self.simulate_mode:

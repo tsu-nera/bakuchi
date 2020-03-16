@@ -33,7 +33,8 @@ class ArbitrageBase(metaclass=ABCMeta):
     def _evaluate(self, x, y):
         self.analyzer.update(y.bid - x.ask, x.bid - y.ask)
         if self.analyzer.check_period():
-            self.profit_margin_threshold = self.analyzer.get_new_profit_margin_threshold()
+            self.profit_margin_threshold = self.analyzer.get_new_profit_margin_threshold(
+            )
             self.analyzer.reset()
 
         if self._check_action_permission_buyx_selly(y.bid, x.ask):
@@ -47,11 +48,17 @@ class ArbitrageBase(metaclass=ABCMeta):
     def _action(self, result, x, y):
         pass
 
+    def _update_entry_profit_margin(self, value):
+        if self.action_permission:
+            self.entry_profit_margin = value
+        else:
+            self.entry_profit_margin = None
+
     def _check_profit_margin_threshold(self, bid, ask):
         return bid - ask > self.profit_margin_threshold
 
     def _check_profit_margin_diff_allowed(self, bid, ask):
-        return bid - ask > self.profit_margin_diff - self.profit_margin_threshold
+        return bid - ask > self.profit_margin_diff - self.entry_profit_margin
 
     def _check_action_permission_buyx_selly(self, bid, ask):
         if self.action_permission:
