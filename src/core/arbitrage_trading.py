@@ -33,7 +33,7 @@ class ArbitrageTrading(ArbitrageBase):
         self.logger_margin = get_margin_logger()
 
         self.trade_amount = config.TRADE_AMOUNT
-        self.profit_margin_threshold = config.TRADE_PROFIT_MARGIN_THRESHOLD
+        self.open_threshold = config.TRADE_OPEN_THRESHOLD
         self.profit_margin_diff = config.TRADE_PROFIT_MARGIN_DIFF
 
         self.asset = Asset()
@@ -77,17 +77,18 @@ class ArbitrageTrading(ArbitrageBase):
 
     def _logging_trading_metadata(self):
         self.logger_with_stdout.info(
-            "amount={}, profit_margin_threshold={}, profit_margin_diff={}".
-            format(self.trade_amount, self.profit_margin_threshold,
-                   self.profit_margin_diff))
+            "amount={}, open_threshold={}, profit_margin_diff={}".format(
+                self.trade_amount, self.open_threshold,
+                self.profit_margin_diff))
 
     def _logging_tick_margin(self, x, y):
-        buy_y_sell_x_margin = int(x.bid - y.ask)
-        buy_x_sell_y_margin = int(y.bid - x.ask)
+        buy_y_sell_x_margin = self._get_profit_margin(x.bid, y.ask)
+        buy_x_sell_y_margin = self._get_profit_margin(y.bid, x.ask)
 
-        message = "sell[{}] buy[{}] margin={}, sell[{}] buy[{}] margin={}, action_permission={}".format(
+        message = "sell[{}] buy[{}] margin={}, sell[{}] buy[{}] margin={}, opened={}, open_threshold={}, close_threshold={}".format(
             self.ex_id_x, self.ex_id_y, buy_y_sell_x_margin, self.ex_id_y,
-            self.ex_id_x, buy_x_sell_y_margin, self.action_permission)
+            self.ex_id_x, buy_x_sell_y_margin, self.opened,
+            self.open_threshold, self._get_close_threshold())
 
         self.logger_margin.info(message)
 
@@ -97,10 +98,10 @@ class ArbitrageTrading(ArbitrageBase):
 
     def _logging_profit_margin_threshold_change(self):
         if self.analyzer.check_period_for_logging():
-            old_threshold = self.profit_margin_threshold
+            old_threshold = self.open_threshold
             new_threshold = self.analyzer.get_new_profit_margin_threshold()
 
-            message = "profit margin threshold changed from {} to {}".format(
+            message = "open threshold changed from {} to {}".format(
                 old_threshold, new_threshold)
             self.logger_with_stdout.info(message)
 
@@ -126,18 +127,23 @@ class ArbitrageTrading(ArbitrageBase):
         price = sell_jpy - buy_jpy
         return round(price, 1)
 
+    def _get_log_label(self):
+        return self.ACTION_CLOSE if self.opened else self.ACTION_OPEN
+
     def _format_expected_profit_message(self, buy_exchange_id, buy_ask,
                                         sell_exchange_id, sell_bid,
                                         expected_profit, profit_margin):
-        return "buy {} ask={}, sell {} bid={}, margin={}, profit={}".format(
-            buy_exchange_id, buy_ask, sell_exchange_id, sell_bid,
+        label = self._get_log_label()
+        return "{} buy {}({}), sell {}({}), margin={}, profit={}".format(
+            label, buy_exchange_id, buy_ask, sell_exchange_id, sell_bid,
             profit_margin, expected_profit)
 
     def _format_actual_profit_message(self, buy_exchange_id, buy_price_jpy,
                                       sell_exchange_id, sell_price_jpy,
                                       actual_profit, profit_margin):
-        return "buy {} jpy={}, sell {} jpy={}, margin={}, profit={}".format(
-            buy_exchange_id, round(buy_price_jpy, 3), sell_exchange_id,
+        label = self._get_log_label()
+        return "{} buy {}({}), sell {}({}), margin={}, profit={}".format(
+            label, buy_exchange_id, round(buy_price_jpy, 3), sell_exchange_id,
             round(sell_price_jpy, 3), profit_margin, actual_profit)
 
     def _action(self, result, x, y):
@@ -150,7 +156,8 @@ class ArbitrageTrading(ArbitrageBase):
             sell_resp = self.exchange_y.order_sell(
                 self.trade_amount, bid_for_coincheck=bid_for_coincheck)
 
-            profit_margin = y.bid - x.ask
+            profit_margin = self._get_profit_margin(y.bid, x.ask)
+
             if (not self.demo_mode) or (buy_resp and sell_resp):
                 profit = self._calc_profit(buy_resp["jpy"], sell_resp["jpy"])
                 message = self._format_actual_profit_message(
@@ -173,7 +180,7 @@ class ArbitrageTrading(ArbitrageBase):
                                         self.symbol, self.trade_amount, profit)
 
             self._update_entry_profit_margin(profit_margin)
-            self._rearrange_action_permission_buyx_selly()
+            self._change_status_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
             ask_for_coincheck = y.ask if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
@@ -184,7 +191,8 @@ class ArbitrageTrading(ArbitrageBase):
             sell_resp = self.exchange_x.order_sell(
                 self.trade_amount, bid_for_coincheck=bid_for_coincheck)
 
-            profit_margin = int(x.bid - y.ask)
+            profit_margin = self._get_profit_margin(x.bid, y.ask)
+
             if (not self.demo_mode) or (buy_resp and sell_resp):
                 profit = self._calc_profit(buy_resp["jpy"], sell_resp["jpy"])
                 message = self._format_actual_profit_message(
@@ -207,7 +215,7 @@ class ArbitrageTrading(ArbitrageBase):
                                         self.symbol, self.trade_amount, profit)
 
             self._update_entry_profit_margin(profit_margin)
-            self._rearrange_action_permission_buyy_sellx()
+            self._change_status_buyy_sellx()
         else:
             pass
 

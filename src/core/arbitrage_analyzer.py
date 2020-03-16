@@ -1,4 +1,4 @@
-from src.config import PROFIT_MARGIN_THRESHOLD_CHANGE_SEC
+from src.config import OPEN_THRESHOLD_CHANGE_SEC
 from statistics import mean
 
 
@@ -17,14 +17,14 @@ class ArbitrageAnalyzer():
         self.length += 1
 
     def check_period(self):
-        return self.length > PROFIT_MARGIN_THRESHOLD_CHANGE_SEC
+        return self.length > OPEN_THRESHOLD_CHANGE_SEC
 
     def check_period_for_logging(self):
-        return self.length >= PROFIT_MARGIN_THRESHOLD_CHANGE_SEC
+        return self.length >= OPEN_THRESHOLD_CHANGE_SEC
 
-    def get_new_profit_margin_threshold(self):
+    def get_new_open_threshold(self):
         sample_length = 90
-        length = PROFIT_MARGIN_THRESHOLD_CHANGE_SEC - sample_length
+        length = OPEN_THRESHOLD_CHANGE_SEC - sample_length
         buyx_selly_mean = mean(self.buyx_selly_margings[length:])
         buyy_sellx_mean = mean(self.buyy_sellx_margings[length:])
 

@@ -6,10 +6,13 @@ class ArbitrageBase(metaclass=ABCMeta):
     STRATEGY_BUY_X_AND_SELL_Y = "buy x and sell y"
     STRATEGY_BUY_Y_AND_SELL_X = "buy y and sell x"
     STRATEGY_DO_NOTHING = "no strategy"
+    ACTION_OPEN = "OPEN"
+    ACTION_CLOSE = "CLOSE"
 
     def __init__(self):
-        self._reset_action_permission()
+        self._closing()
         self.analyzer = ArbitrageAnalyzer()
+        self.opened = False
 
     @abstractmethod
     def run(self):
@@ -33,13 +36,12 @@ class ArbitrageBase(metaclass=ABCMeta):
     def _evaluate(self, x, y):
         self.analyzer.update(y.bid - x.ask, x.bid - y.ask)
         if self.analyzer.check_period():
-            self.profit_margin_threshold = self.analyzer.get_new_profit_margin_threshold(
-            )
+            self.open_threshold = self.analyzer.get_new_open_threshold()
             self.analyzer.reset()
 
-        if self._check_action_permission_buyx_selly(y.bid, x.ask):
+        if self._check_status_buyx_selly(y.bid, x.ask):
             return self.STRATEGY_BUY_X_AND_SELL_Y
-        elif self._check_action_permission_buyy_sellx(x.bid, y.ask):
+        elif self._check_status_buyy_sellx(x.bid, y.ask):
             return self.STRATEGY_BUY_Y_AND_SELL_X
         else:
             return self.STRATEGY_DO_NOTHING
@@ -48,60 +50,66 @@ class ArbitrageBase(metaclass=ABCMeta):
     def _action(self, result, x, y):
         pass
 
-    def _update_entry_profit_margin(self, value):
-        if self.action_permission:
-            self.entry_profit_margin = value
+    def _get_profit_margin(self, bid, ask):
+        return int(bid - ask)
+
+    def _update_entry_open_margin(self, value):
+        if not self.opened:
+            self.entry_open_margin = value
         else:
-            self.entry_profit_margin = None
+            self.entry_open_margin = None
 
-    def _check_profit_margin_threshold(self, bid, ask):
-        profit = bid - ask
-        return profit > self.profit_margin_threshold
+    def _check_opening_threshold(self, bid, ask):
+        profit_margin = self._get_profit_margin(bid, ask)
+        return profit_margin > self.open_threshold
 
-    def _check_profit_margin_diff_allowed(self, bid, ask):
-        profit = bid - ask
-        threshold = self.profit_margin_diff - max(self.entry_profit_margin,
-                                                  self.profit_margin_threshold)
-        return profit > threshold
+    def _get_close_threshold(self):
+        return self.profit_margin_diff - max(self.entry_open_margin,
+                                             self.open_threshold)
 
-    def _check_action_permission_buyx_selly(self, bid, ask):
-        if self.action_permission:
-            return self._check_profit_margin_threshold(bid, ask)
+    def _check_closeing_threshold(self, bid, ask):
+        profit_margin = self._get_profit_margin(bid, ask)
+        close_threshold = self._get_close_threshold()
+        return profit_margin > close_threshold
+
+    def _check_status_buyx_selly(self, bid, ask):
+        if not self.opened:
+            return self._check_opening_threshold(bid, ask)
         else:
-            if self._check_profit_margin_diff_allowed(bid, ask):
-                return self.action_direction
+            if self._check_closeing_threshold(bid, ask):
+                return self.open_direction
             else:
                 return False
 
-    def _check_action_permission_buyy_sellx(self, bid, ask):
-        if self.action_permission:
-            return self._check_profit_margin_threshold(bid, ask)
+    def _check_status_buyy_sellx(self, bid, ask):
+        if not self.opened:
+            return self._check_opening_threshold(bid, ask)
         else:
-            if self._check_profit_margin_diff_allowed(bid, ask):
-                return not self.action_direction
+            if self._check_closeing_threshold(bid, ask):
+                return not self.open_direction
             else:
                 return False
 
-    def _rearrange_action_permission_buyx_selly(self):
-        if self.action_permission:
-            self._allow_only_buyy_sellx()
+    def _change_status_buyx_selly(self):
+        if not self.opened:
+            self._opening_buyy_sellx()
         else:
-            self._reset_action_permission()
+            self._closing()
 
-    def _rearrange_action_permission_buyy_sellx(self):
-        if self.action_permission:
-            self._allow_only_buyx_selly()
+    def _change_status_buyy_sellx(self):
+        if not self.opened:
+            self._opening_buyx_selly()
         else:
-            self._reset_action_permission()
+            self._closing()
 
-    def _reset_action_permission(self):
-        self.action_permission = True
-        self.action_direction = None
+    def _closing(self):
+        self.opened = False
+        self.open_direction = None
 
-    def _allow_only_buyx_selly(self):
-        self.action_permission = False
-        self.action_direction = True
+    def _opening_buyx_selly(self):
+        self.opened = True
+        self.open_direction = True
 
-    def _allow_only_buyy_sellx(self):
-        self.action_permission = False
-        self.action_direction = False
+    def _opening_buyy_sellx(self):
+        self.opened = True
+        self.open_direction = False

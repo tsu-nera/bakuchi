@@ -43,24 +43,19 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.trade_count = 0
 
         self._update_run_params(config.BACKTEST_AMOUNT,
-                                config.BACKTEST_PROFIT_MARGIN_THRESHOLD,
+                                config.BACKTEST_OPEN_THRESHOLD,
                                 config.BACKTEST_PROFIT_MARGIN_DIFF)
 
-    def _update_run_params(self, amount, profit_margin_threshold,
-                           profit_margin_diff):
+    def _update_run_params(self, amount, open_threshold, profit_margin_diff):
         if amount:
             self.trade_amount = amount
-        if profit_margin_threshold:
-            self.profit_margin_threshold = profit_margin_threshold
+        if open_threshold:
+            self.open_threshold = open_threshold
         if profit_margin_diff:
             self.profit_margin_diff = profit_margin_diff
 
-    def run(self,
-            amount=None,
-            profit_margin_threshold=None,
-            profit_margin_diff=None):
-        self._update_run_params(amount, profit_margin_threshold,
-                                profit_margin_diff)
+    def run(self, amount=None, open_threshold=None, profit_margin_diff=None):
+        self._update_run_params(amount, open_threshold, profit_margin_diff)
 
         n = len(self.timestamps)
 
@@ -107,7 +102,8 @@ class ArbitrageBacktesting(ArbitrageBase):
             self._record_history(timestamp_string, "売り", self.exchange_y_id,
                                  y.bid)
 
-            profit_margin = y.bid - x.ask
+            profit_margin = self._get_profit_margin(y.bid, x.ask)
+
             self._record_arbitrage_history(timestamp_string,
                                            self.exchange_x_id,
                                            self.exchange_y_id, self.symbol,
@@ -115,8 +111,8 @@ class ArbitrageBacktesting(ArbitrageBase):
             if self.simulate_mode:
                 print(x.timestamp, result, profit_margin)
 
-            self._update_entry_profit_margin(profit_margin)
-            self._rearrange_action_permission_buyx_selly()
+            self._update_entry_open_margin(profit_margin)
+            self._change_status_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
             self.trade_count += 1
@@ -128,7 +124,7 @@ class ArbitrageBacktesting(ArbitrageBase):
             self._record_history(timestamp_string, "売り", self.exchange_x_id,
                                  x.bid)
 
-            profit_margin = x.bid - y.ask
+            profit_margin = self._get_profit_margin(x.bid, y.ask)
             self._record_arbitrage_history(timestamp_string,
                                            self.exchange_y_id,
                                            self.exchange_x_id, self.symbol,
@@ -136,9 +132,9 @@ class ArbitrageBacktesting(ArbitrageBase):
 
             if self.simulate_mode:
                 print(x.timestamp, result, profit_margin)
-                
-            self._update_entry_profit_margin(profit_margin)
-            self._rearrange_action_permission_buyy_sellx()
+
+            self._update_entry_open_margin(profit_margin)
+            self._change_status_buyy_sellx()
         else:
             if self.simulate_mode:
                 print(x.timestamp, result)
@@ -162,7 +158,7 @@ class ArbitrageBacktesting(ArbitrageBase):
 
         print("バックテスト情報")
         print(tabulate(data))
-        print("利確しきい値 {}(JPY)".format(self.profit_margin_threshold))
+        print("利確しきい値 {}(JPY)".format(self.open_threshold))
         print("損切りマージン {}(JPY)".format(self.profit_margin_diff))
         print("取引単位 {}(BTC)".format(self.trade_amount))
         print("--------")
