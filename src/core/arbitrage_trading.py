@@ -85,7 +85,7 @@ class ArbitrageTrading(ArbitrageBase):
         buy_y_sell_x_margin = self._get_profit_margin(x.bid, y.ask)
         buy_x_sell_y_margin = self._get_profit_margin(y.bid, x.ask)
 
-        message = "sell[{}] buy[{}] margin={}, sell[{}] buy[{}] margin={}, opened={}, open_threshold={}, close_threshold={}".format(
+        message = "sell-{} buy-{} margin={}, sell-{} buy-{} margin={}, opened={}, open_threshold={}, close_threshold={}".format(
             self.ex_id_x, self.ex_id_y, buy_y_sell_x_margin, self.ex_id_y,
             self.ex_id_x, buy_x_sell_y_margin, self.opened,
             self.open_threshold, self._get_close_threshold())
@@ -134,7 +134,7 @@ class ArbitrageTrading(ArbitrageBase):
                                         sell_exchange_id, sell_bid,
                                         expected_profit, profit_margin):
         label = self._get_log_label()
-        return "{} buy {}({}), sell {}({}), margin={}, profit={}".format(
+        return "{} buy-{}({}), sell-{}({}), margin={}, profit={}".format(
             label, buy_exchange_id, buy_ask, sell_exchange_id, sell_bid,
             profit_margin, expected_profit)
 
