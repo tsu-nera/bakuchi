@@ -99,7 +99,7 @@ class Coincheck():
         index_id = None
         trades = []
 
-        for _ in range(7):
+        for _ in range(10):
             params = self._create_fetch_trades_params(index_id)
             res = self._get(end_point, params=params)
             time.sleep(1)

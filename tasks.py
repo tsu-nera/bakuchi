@@ -299,6 +299,11 @@ def recent_profits(c):
     trade_history.show_recent_profits()
 
 
+@task
+def recent_profits_by(c, hour):
+    trade_history.show_recent_profits(hour)
+
+
 ###############
 # Othre Utils
 ###############

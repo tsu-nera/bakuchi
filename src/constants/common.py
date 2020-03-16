@@ -1,5 +1,7 @@
 import os
 
+DATETIME_BASE_FORMAT = '%Y-%m-%d %H:%M:%S'
+
 DATA_DIR = "data"
 RAWDATA_DIR = "rawdata"
 

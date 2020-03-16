@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import datetime
 
+from tabulate import tabulate
+
 import src.utils.private as private
 import src.constants.common as common
 import src.constants.ccxtconst as ccxtconst
@@ -25,19 +27,10 @@ def _create_trade(id, order_id, datetime, pair, side, fee, amount, price,
 def _convert_coincheck_datetime(d_str):
     dt = datetime.datetime.fromisoformat(d_str.replace('Z', ''))
     dt = dt + datetime.timedelta(hours=9)
-    return dt.strftime('%Y-%m-%d %H:%M:%S')
+    return dt.strftime(common.DATETIME_BASE_FORMAT)
 
 
-def _format_coincheck_trades(data):
-    trades = []
-    for t in data:
-        trade = _create_trade(t["id"], t["order_id"],
-                              _convert_coincheck_datetime(t["created_at"]),
-                              t["pair"], t["side"], float(t["fee"]),
-                              float(t["funds"]["btc"]),
-                              float(t["funds"]["jpy"]), float(t["rate"]))
-        trades.append(trade)
-
+def _marge_duplicated_trades(trades):
     dup = [trade['datetime'] for trade in trades]
     dup_flag_list = [True if dup.count(x) > 1 else False for x in dup]
 
@@ -66,19 +59,31 @@ def _format_coincheck_trades(data):
     return filterd_trades
 
 
-def _format_fetched_trades(trades):
-    res = []
+def _format_coincheck_trades(data):
+    trades = []
+    for t in data:
+        trade = _create_trade(t["id"], t["order_id"],
+                              _convert_coincheck_datetime(t["created_at"]),
+                              t["pair"], t["side"], float(t["fee"]),
+                              float(t["funds"]["btc"]),
+                              float(t["funds"]["jpy"]), float(t["rate"]))
+        trades.append(trade)
 
-    for t in trades:
+    return _marge_duplicated_trades(trades)
+
+
+def _format_fetched_trades(data):
+    trades = []
+
+    for t in data:
         dt = datetime.datetime.fromtimestamp(t["created_at"])
-        dt = dt.strftime('%Y-%m-%d %H:%M:%S')
+        dt = dt.strftime(common.DATETIME_BASE_FORMAT)
 
         trade = _create_trade(t["id"], t["order_id"], dt, t["pair"],
                               t["taker_side"], 0, t["quantity"], t["price"],
                               t["rate"])
-        res.append(trade)
-
-    return res
+        trades.append(trade)
+    return _marge_duplicated_trades(trades)
 
 
 def fetch_trades(exchange_id):
@@ -93,7 +98,7 @@ def fetch_trades(exchange_id):
 
 
 def save_trades(exchange_id):
-    '''
+    '''pp
     取引履歴をcsvに保存
     '''
     trades = fetch_trades(exchange_id)
@@ -105,7 +110,7 @@ def save_trades(exchange_id):
     df.to_csv(file_path, index=None)
 
 
-def show_recent_profits():
+def show_recent_profits(hours=None):
     cc_trades = fetch_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
     lq_trades = fetch_trades(ccxtconst.EXCHANGE_ID_LIQUID)
 
@@ -131,6 +136,16 @@ def show_recent_profits():
 
     summary = []
     for timestamp, data in base_trade_dict.items():
+        if hours:
+            datetime_threshold = datetime.datetime.now() - datetime.timedelta(
+                hours=3)
+
+            datetime_timestamp = datetime.datetime.strptime(
+                timestamp, common.DATETIME_BASE_FORMAT)
+
+            if datetime_timestamp < datetime_threshold:
+                continue
+
         try:
             target_data = target_trade_dict[timestamp]
             base_data = data
@@ -140,13 +155,13 @@ def show_recent_profits():
             if base_data['side'] == 'buy':
                 info['buy_id'] = base_exchange_id
                 info['sell_id'] = target_exchange_id
-                info['buy_price'] = round(base_data['price'], 3)
-                info['sell_price'] = round(target_data['price'], 3)
+                info['buy_price'] = int(base_data['price'])
+                info['sell_price'] = int(target_data['price'])
             else:
                 info['buy_id'] = target_exchange_id
                 info['sell_id'] = base_exchange_id
-                info['buy_price'] = round(target_data['price'], 3)
-                info['sell_price'] = round(base_data['price'], 3)
+                info['buy_price'] = int(target_data['price'])
+                info['sell_price'] = int(base_data['price'])
             info["profit"] = int(info["sell_price"] - info['buy_price'])
         except Exception:
             continue
@@ -157,5 +172,28 @@ def show_recent_profits():
     total_profit = sum(profits)
     total_trade_count = len(summary)
 
+    timestamp_first = summary[0]["timestamp"]
+    timestamp_last = summary[-1]["timestamp"]
+
+    if timestamp_first < timestamp_last:
+        oldest_timestamp = timestamp_first
+        latest_timestamp = timestamp_last
+    else:
+        oldest_timestamp = timestamp_last
+        latest_timestamp = timestamp_first
+
+    print("期間: {} - {}".format(oldest_timestamp, latest_timestamp))
     print("取引回数: {}".format(total_trade_count))
     print("利益: {}".format(total_profit))
+
+    table = []
+    table.append(["日時", "売却取引所", "売値", "購入取引所", "買値", "利益"])
+
+    for x in summary:
+        table_row = [
+            x["timestamp"], x["buy_id"], x["buy_price"], x["sell_id"],
+            x["sell_price"], x["profit"]
+        ]
+        table.append(table_row)
+
+    print(tabulate(table, headers="firstrow"))
