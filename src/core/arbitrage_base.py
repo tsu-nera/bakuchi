@@ -60,7 +60,8 @@ class ArbitrageBase(metaclass=ABCMeta):
 
     def _check_profit_margin_diff_allowed(self, bid, ask):
         profit = bid - ask
-        threshold = self.profit_margin_diff - max(self.entry_profit_margin, self.profit_margin_threshold)
+        threshold = self.profit_margin_diff - max(self.entry_profit_margin,
+                                                  self.profit_margin_threshold)
         return profit > threshold
 
     def _check_action_permission_buyx_selly(self, bid, ask):

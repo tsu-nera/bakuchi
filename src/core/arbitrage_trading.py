@@ -172,7 +172,7 @@ class ArbitrageTrading(ArbitrageBase):
                 self.slack.notify_order(self.ex_id_x, self.ex_id_y,
                                         self.symbol, self.trade_amount, profit)
 
-            self._update_entry_profit_margin(profit)
+            self._update_entry_profit_margin(profit_margin)
             self._rearrange_action_permission_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
@@ -206,7 +206,7 @@ class ArbitrageTrading(ArbitrageBase):
                 self.slack.notify_order(self.ex_id_y, self.ex_id_x,
                                         self.symbol, self.trade_amount, profit)
 
-            self._update_entry_profit_margin(profit)
+            self._update_entry_profit_margin(profit_margin)
             self._rearrange_action_permission_buyy_sellx()
         else:
             pass
