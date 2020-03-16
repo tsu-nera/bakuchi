@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import datetime
+from statistics import mean
 
 from tabulate import tabulate
 
@@ -32,29 +33,29 @@ def _convert_coincheck_datetime(d_str):
 
 def _marge_duplicated_trades(trades):
     dup = [trade['datetime'] for trade in trades]
-    dup_flag_list = [True if dup.count(x) > 1 else False for x in dup]
+    dup_count_list = [dup.count(x) for x in dup]
 
     filterd_trades = []
 
     i = 0
     while i < len(dup):
-        flag = dup_flag_list[i]
-        if flag:
+        n = dup_count_list[i]
+        if n > 1:
             current_trade = trades[i]
-            next_trade = trades[i + 1]
+            total_amount = sum([trades[i + j]["amount"] for j in range(n)])
+            total_price = sum([trades[i + j]["price"] for j in range(n)])
+            average_rate = mean([trades[i + j]["rate"] for j in range(n)])
+
             merged_trade = _create_trade(
                 current_trade["id"], current_trade["order_id"],
                 current_trade["datetime"], current_trade["pair"],
-                current_trade["side"], current_trade["fee"],
-                current_trade["amount"] + next_trade["amount"],
-                current_trade["price"] + next_trade["price"],
-                (current_trade["rate"] + next_trade["rate"]) / 2)
-            i += 2
+                current_trade["side"], current_trade["fee"], total_amount,
+                total_price, average_rate)
             filterd_trades.append(merged_trade)
         else:
             trade = trades[i]
             filterd_trades.append(trade)
-            i += 1
+        i += n
 
     return filterd_trades
 
@@ -98,7 +99,7 @@ def fetch_trades(exchange_id):
 
 
 def save_trades(exchange_id):
-    '''pp
+    '''
     取引履歴をcsvに保存
     '''
     trades = fetch_trades(exchange_id)
@@ -113,6 +114,9 @@ def save_trades(exchange_id):
 def show_recent_profits(hours=None):
     cc_trades = fetch_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
     lq_trades = fetch_trades(ccxtconst.EXCHANGE_ID_LIQUID)
+
+    # print([trade["datetime"] for trade in cc_trades])
+    # print([trade["datetime"] for trade in lq_trades])
 
     if len(cc_trades) < len(lq_trades):
         base_trades = cc_trades
