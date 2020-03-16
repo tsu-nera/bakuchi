@@ -68,6 +68,8 @@ class ArbitrageTrading(ArbitrageBase):
             return False
 
     def is_server_maintenance(self, exchange_id):
+        # 臨時サーバメンテナンスのときもとりあえずここに判定を追記していく。
+
         if exchange_id == EXCHANGE_ID_LIQUID:
             return self._is_liquid_server_maintenance()
         else:
