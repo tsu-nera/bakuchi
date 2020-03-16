@@ -2,6 +2,7 @@ from invoke import task, run
 import importlib
 import psutil
 from distutils.dir_util import copy_tree
+from pprint import pprint as pp
 
 import src.utils.public as public
 import src.utils.private as private
@@ -246,6 +247,11 @@ def fetch_positions(c):
     private.get_positions(ccxtconst.EXCHANGE_ID_BITMEX_DEMO)
     private.get_positions(ccxtconst.EXCHANGE_ID_COINCHECK)
     private.get_positions(ccxtconst.EXCHANGE_ID_LIQUID)
+
+
+@task
+def fetch_trades(c):
+    private.fetch_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
 
 
 ###############

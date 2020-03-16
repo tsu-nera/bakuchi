@@ -1,5 +1,6 @@
 from src.core.exchange_trading import ExchangeTrading as Exchange
 from src.libs.ccxt_client import CcxtClient
+from pprint import pprint as pp
 
 
 def fetch_balance(exchange_id):
@@ -46,3 +47,11 @@ def create_sell_order(exchange_id, symbol, amount, bid_for_coincheck=None):
     ex = Exchange(exchange_id, symbol)
     order_info = ex.order_sell(amount, bid_for_coincheck)
     return order_info
+
+
+def fetch_trades(exchange_id):
+    client = CcxtClient(exchange_id)
+    trades = client.fetch_trades()
+
+    for trade in trades:
+        print(trade)

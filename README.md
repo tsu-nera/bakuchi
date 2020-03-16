@@ -1,15 +1,14 @@
-bakuchi
-===
+# bakuchi
 
-仮想通貨Botトレード開発
+仮想通貨 Bot トレード開発
 
 ## 概要
 
-仮想通貨Botを開発して億り人になり、武蔵小杉のタワマンに住むためのプロジェクト。
+仮想通貨 Bot を開発して億り人になり、武蔵小杉のタワマンに住むためのプロジェクト。
 
 戦略は、とりあえずローリスク・ローリターンのアービトラージ(裁定取引)で実装する。
 
-* [裁定取引 \- Wikipedia](https://ja.wikipedia.org/wiki/%E8%A3%81%E5%AE%9A%E5%8F%96%E5%BC%95)
+- [裁定取引 \- Wikipedia](https://ja.wikipedia.org/wiki/%E8%A3%81%E5%AE%9A%E5%8F%96%E5%BC%95)
 
 いまいちうまくいかなければ他の戦略を考えることにする。
 
@@ -17,10 +16,9 @@ bakuchi
 
 `src/.env.sample`をコピーして`src/.env`を作成。認証情報を記載する。
 
-
 ### トレード
 
-終了はCtrl+c。デモトレードは `src/config.ini`で指定できる。
+終了は Ctrl+c。デモトレードは `src/config.ini`で指定できる。
 
 ```
 $ inv trade
@@ -36,26 +34,27 @@ $ inv backtest [data/historicals配下のディレクトリ名]
 
 ## 対応した取引所
 
-* [Coincheck](https://coincheck.com/ja/)
-* [Liquid](https://www.liquid.com/ja/)
+- [Coincheck](https://coincheck.com/ja/)
+- [Liquid](https://www.liquid.com/ja/)
 
 ### 対応予定の取引所
 
-* [bitFlyer](https://bitflyer.com/ja-jp/)
-* [bitbank](https://bitbank.cc/)
-* [BitMEX](https://www.bitmex.com/)
+- [bitFlyer](https://bitflyer.com/ja-jp/)
+- [bitbank](https://bitbank.cc/)
+- [BitMEX](https://www.bitmex.com/)
 
 ## 開発リファレンス
 
-* [cctx](https://github.com/ccxt/ccxt)
-* [cctx doc](https://github.com/ccxt/ccxt/wiki)
-* [coincheck api](https://coincheck.com/ja/documents/exchange/api)
+- [cctx](https://github.com/ccxt/ccxt)
+- [cctx doc](https://github.com/ccxt/ccxt/wiki)
+- [coincheck api](https://coincheck.com/ja/documents/exchange/api)
+- [liquid api](https://developers.liquid.com)
 
 ## Links
 
-5年前のFXシストレ失敗作はこちら。
+5 年前の FX シストレ失敗作はこちら。
 
-* https://github.com/tsu-nera/oanda-forex-study/
+- https://github.com/tsu-nera/oanda-forex-study/
 
 ## Author
 

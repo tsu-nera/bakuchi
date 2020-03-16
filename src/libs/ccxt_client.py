@@ -1,9 +1,11 @@
 import sys
 import ccxt
 import datetime
+import requests
 
 from src.libs.logger import get_ccxt_logger
 import src.constants.ccxtconst as ccxtconst
+from src.libs.exchanges.coincheck import Coincheck
 
 
 class CcxtClient():
@@ -116,3 +118,14 @@ class CcxtClient():
                                                            amount=amount)
 
         return order_info
+
+    def fetch_trades(self):
+        if self.exchange_id == ccxtconst.EXCHANGE_ID_COINCHECK:
+            client = Coincheck()
+            return client.fetch_my_trades()
+        elif self.exchange.has['fetchMyTrades']:
+            return self.exchange.fetch_my_trades(self.symbol)
+        else:
+            print("fetch_trades api is not supported in {}".format(
+                self.exchange_id))
+            return []
