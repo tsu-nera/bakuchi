@@ -3,6 +3,8 @@ import configparser
 config = configparser.ConfigParser()
 config.read('src/config.ini')
 
+PROFIT_MARGIN_THRESHOLD_CHANGE_SEC = int(config["arbitrage"]["profit_margin_threshold_change_sec"])
+
 TRADE_AMOUNT = float(config["trade"]["amount"])
 TRADE_PROFIT_MARGIN_THRESHOLD = int(config["trade"]["profit_margin_threshold"])
 TRADE_PROFIT_MARGIN_DIFF = int(config["trade"]["profit_margin_diff"])

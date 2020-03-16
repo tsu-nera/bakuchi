@@ -95,6 +95,15 @@ class ArbitrageTrading(ArbitrageBase):
         self.historical_logger.logging(self.ex_id_x, x.timestamp, x.bid, x.ask)
         self.historical_logger.logging(self.ex_id_y, y.timestamp, y.bid, y.ask)
 
+    def _logging_profit_margin_threshold_change(self):
+        if self.analyzer.check_period_for_logging():
+            old_threshold = self.profit_margin_threshold
+            new_threshold = self.analyzer.get_new_profit_margin_threshold()
+
+            message = "profit margin threshold changed from {} to {}".format(
+                old_threshold, new_threshold)
+            self.logger_with_stdout.info(message)
+
     def _get_tick(self):
         x = self.exchange_x.fetch_tick()
         y = self.exchange_y.fetch_tick()
@@ -105,7 +114,8 @@ class ArbitrageTrading(ArbitrageBase):
         if x and y:
             self._logging_tick_margin(tick_x, tick_y)
             self._logging_tick_historical(tick_x, tick_y)
-
+            self._logging_profit_margin_threshold_change()
+            
         return tick_x, tick_y
 
     def _calc_expected_profit(self, bid, ask):
