@@ -250,8 +250,8 @@ def fetch_positions(c):
 
 
 @task
-def fetch_trades(c):
-    private.fetch_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
+def save_coincheck_trades(c):
+    tool.save_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
 
 
 ###############

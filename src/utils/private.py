@@ -51,7 +51,4 @@ def create_sell_order(exchange_id, symbol, amount, bid_for_coincheck=None):
 
 def fetch_trades(exchange_id):
     client = CcxtClient(exchange_id)
-    trades = client.fetch_trades()
-
-    for trade in trades:
-        print(trade)
+    return client.fetch_trades()
