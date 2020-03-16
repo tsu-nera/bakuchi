@@ -49,6 +49,7 @@ $ inv backtest [data/historicals配下のディレクトリ名]
 
 * [cctx](https://github.com/ccxt/ccxt)
 * [cctx doc](https://github.com/ccxt/ccxt/wiki)
+* [coincheck api](https://coincheck.com/ja/documents/exchange/api)
 
 ## Links
 

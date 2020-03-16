@@ -96,10 +96,10 @@ class ArbitrageTrading(ArbitrageBase):
         self.historical_logger.logging(self.ex_id_x, x.timestamp, x.bid, x.ask)
         self.historical_logger.logging(self.ex_id_y, y.timestamp, y.bid, y.ask)
 
-    def _logging_profit_margin_threshold_change(self):
+    def _logging_open_threshold_change(self):
         if self.analyzer.check_period_for_logging():
             old_threshold = self.open_threshold
-            new_threshold = self.analyzer.get_new_profit_margin_threshold()
+            new_threshold = self.analyzer.get_new_open_threshold()
 
             message = "open threshold changed from {} to {}".format(
                 old_threshold, new_threshold)
@@ -115,7 +115,7 @@ class ArbitrageTrading(ArbitrageBase):
         if x and y:
             self._logging_tick_margin(tick_x, tick_y)
             self._logging_tick_historical(tick_x, tick_y)
-            self._logging_profit_margin_threshold_change()
+            self._logging_open_threshold_change()
 
         return tick_x, tick_y
 
