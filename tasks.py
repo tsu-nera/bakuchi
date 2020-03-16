@@ -294,6 +294,11 @@ def reload(c):
     importlib.reload(PUBLIC_MODULE)
 
 
+@task
+def recent_profits(c):
+    trade_history.show_recent_profits()
+
+
 ###############
 # Othre Utils
 ###############

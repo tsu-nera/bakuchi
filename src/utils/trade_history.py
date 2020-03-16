@@ -17,7 +17,7 @@ def _create_trade(id, order_id, datetime, pair, side, fee, amount, price,
         "side": side,
         "fee": fee,
         "amount": round(float(amount), 3),
-        "price": round(float(price), 3),
+        "price": round(abs(float(price)), 3),
         "rate": round(float(rate), 3)
     }
 
@@ -70,19 +70,18 @@ def _format_fetched_trades(trades):
     res = []
 
     for t in trades:
-        timestamp = datetime.datetime.fromtimestamp(t["created_at"])
+        dt = datetime.datetime.fromtimestamp(t["created_at"])
+        dt = dt.strftime('%Y-%m-%d %H:%M:%S')
 
-        trade = _create_trade(t["id"], t["order_id"], timestamp, t["pair"],
-                              t["taker_side"], 0, t["quantity"], t["price"], 0)
+        trade = _create_trade(t["id"], t["order_id"], dt, t["pair"],
+                              t["taker_side"], 0, t["quantity"], t["price"],
+                              t["rate"])
         res.append(trade)
 
     return res
 
 
-def save_trades(exchange_id):
-    '''
-    取引履歴をcsvに保存
-    '''
+def fetch_trades(exchange_id):
     trades = private.fetch_trades(exchange_id)
 
     if exchange_id == ccxtconst.EXCHANGE_ID_COINCHECK:
@@ -90,8 +89,73 @@ def save_trades(exchange_id):
     else:
         trades = _format_fetched_trades(trades)
 
+    return trades
+
+
+def save_trades(exchange_id):
+    '''
+    取引履歴をcsvに保存
+    '''
+    trades = fetch_trades(exchange_id)
+
     file_name = "latest_trades_{}.csv".format(exchange_id)
     file_path = os.path.join(common.TRADES_RAWDATA_DIR_PATH, file_name)
 
     df = pd.DataFrame.from_dict(trades)
     df.to_csv(file_path, index=None)
+
+
+def show_recent_profits():
+    cc_trades = fetch_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
+    lq_trades = fetch_trades(ccxtconst.EXCHANGE_ID_LIQUID)
+
+    if len(cc_trades) < len(lq_trades):
+        base_trades = cc_trades
+        target_trades = lq_trades
+        base_exchange_id = ccxtconst.EXCHANGE_ID_COINCHECK
+        target_exchange_id = ccxtconst.EXCHANGE_ID_LIQUID
+    else:
+        base_trades = lq_trades
+        target_trades = cc_trades
+        base_exchange_id = ccxtconst.EXCHANGE_ID_LIQUID
+        target_exchange_id = ccxtconst.EXCHANGE_ID_COINCHECK
+
+    def _to_dict(trades):
+        trade_dict = {}
+        for trade in trades:
+            trade_dict[trade["datetime"]] = trade
+        return trade_dict
+
+    base_trade_dict = _to_dict(base_trades)
+    target_trade_dict = _to_dict(target_trades)
+
+    summary = []
+    for timestamp, data in base_trade_dict.items():
+        try:
+            target_data = target_trade_dict[timestamp]
+            base_data = data
+
+            info = {}
+            info["timestamp"] = timestamp
+            if base_data['side'] == 'buy':
+                info['buy_id'] = base_exchange_id
+                info['sell_id'] = target_exchange_id
+                info['buy_price'] = round(base_data['price'], 3)
+                info['sell_price'] = round(target_data['price'], 3)
+            else:
+                info['buy_id'] = target_exchange_id
+                info['sell_id'] = base_exchange_id
+                info['buy_price'] = round(target_data['price'], 3)
+                info['sell_price'] = round(base_data['price'], 3)
+            info["profit"] = int(info["sell_price"] - info['buy_price'])
+        except Exception:
+            continue
+
+        summary.append(info)
+
+    profits = [x['profit'] for x in summary]
+    total_profit = sum(profits)
+    total_trade_count = len(summary)
+
+    print("取引回数: {}".format(total_trade_count))
+    print("利益: {}".format(total_profit))

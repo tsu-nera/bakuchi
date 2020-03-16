@@ -125,9 +125,13 @@ class CcxtClient():
             trades = client.fetch_my_trades()
         elif self.exchange.has['fetchMyTrades']:
             trades = []
-
-            resp = self.exchange.fetch_my_trades(self.symbol, limit=100)
-            trades.extend([x['info'] for x in resp])
+            resp = self.exchange.fetch_my_trades(self.symbol, limit=150)
+            for x in resp:
+                trade = x['info']
+                trade["rate"] = float(trade["price"])
+                trade["price"] = round(
+                    trade["rate"] * float(trade["quantity"]), 3)
+                trades.append(trade)
         else:
             print("fetch_trades api is not supported in {}".format(
                 self.exchange_id))
