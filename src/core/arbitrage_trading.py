@@ -1,5 +1,6 @@
 from time import sleep
 import datetime
+import ccxt
 
 from .arbitrage_base import ArbitrageBase
 from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK, EXCHANGE_ID_LIQUID
@@ -15,6 +16,8 @@ from src.libs.logger import get_trading_logger_with_stdout
 from src.libs.logger import get_margin_logger
 from src.libs.historical_logger import HistoricalLogger
 
+from src.core.circuit_breaker import CircuitBreaker
+
 
 class ArbitrageTrading(ArbitrageBase):
     def __init__(self, exchange_id_x, exchange_id_y, symbol, demo_mode=False):
@@ -22,6 +25,8 @@ class ArbitrageTrading(ArbitrageBase):
 
         self.ex_id_x = exchange_id_x
         self.ex_id_y = exchange_id_y
+        self.exchage_ids = [self.ex_id_x, self.ex_id_y]
+
         self.symbol = symbol
         self.demo_mode = demo_mode
 
@@ -40,40 +45,21 @@ class ArbitrageTrading(ArbitrageBase):
         self.slack = SlackClient()
         self.historical_logger = HistoricalLogger()
 
+        self.circuit_breaker = CircuitBreaker(self.exchage_ids)
+
     def run(self):
         self._logging_trading_metadata()
 
         while True:
             sleep(TICK_INTERVAL_SEC)
 
-            if not self.is_server_maintenance(
-                    self.ex_id_x) and not self.is_server_maintenance(
-                        self.ex_id_y):
+            if self.circuit_breaker.is_server_maintenance():
+                continue
+
+            try:
                 self.next()
-
-    def _is_liquid_server_maintenance(self):
-        now = datetime.datetime.now()
-        # 6:55
-        maintenance_start_time = datetime.datetime(now.year, now.month,
-                                                   now.day, 6, 55, 0)
-        # 7:05
-        maintenance_end_time = datetime.datetime(now.year, now.month, now.day,
-                                                 7, 5, 0)
-
-        if maintenance_start_time <= now and now <= maintenance_end_time:
-            self.logger_with_stdout.info(
-                "liquid is currently daily server maintenance...(6:55-7:05)")
-            return True
-        else:
-            return False
-
-    def is_server_maintenance(self, exchange_id):
-        # 臨時サーバメンテナンスのときもとりあえずここに判定を追記していく。
-
-        if exchange_id == EXCHANGE_ID_LIQUID:
-            return self._is_liquid_server_maintenance()
-        else:
-            return False
+            except ccxt.ExchangeNotAvailable:
+                self.circuit_breaker.recover_exchange_not_available()
 
     def _logging_trading_metadata(self):
         self.logger_with_stdout.info(
