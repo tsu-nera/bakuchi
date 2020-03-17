@@ -25,7 +25,7 @@ class Asset():
 
         self.total["jpy"] = int(sum([asset["jpy"] for asset in self.assets]))
         self.total["btc"] = round(sum([asset["btc"] for asset in self.assets]),
-                                  3)
+                                  6)
 
     def _get_balance(self, exchange_id):
         balance = private.fetch_balance(exchange_id)
