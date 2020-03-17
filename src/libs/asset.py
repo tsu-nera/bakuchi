@@ -27,6 +27,11 @@ class Asset():
         self.retry = retry
         self.logger = get_asset_logger()
 
+    def _get_tick(self, exchange_id):
+        c = CcxtClient(exchange_id)
+        tick = c.fetch_tick()
+        return tick["bid"], tick["ask"]
+
     def _create_asset(self, id, jpy, btc, btc_as_jpy, total_jpy):
         return {
             "id": id,
@@ -43,11 +48,19 @@ class Asset():
         for exchange_id in EXCHANGE_ID_LIST:
             jpy, btc = self._get_balance(exchange_id)
 
-            asset = self._create_asset(exchange_id, jpy, btc)
+            btc_as_jpy = self._calc_btc_to_jpy(exchange_id, btc)
+
+            asset = self._create_asset(exchange_id, jpy, btc, btc_as_jpy,
+                                       jpy + btc_as_jpy)
             self.assets.append(asset)
 
-        self.total["jpy"] = sum([asset["jpy"] for asset in self.assets])
-        self.total["btc"] = sum([asset["btc"] for asset in self.assets])
+        def _sum(key):
+            return sum([asset[key] for asset in self.assets])
+
+        self.total["jpy"] = _sum("jpy")
+        self.total["btc"] = _sum("btc")
+        self.total["btc_as_jpy"] = _sum("btc_as_jpy")
+        self.total["total_jpy"] = _sum("total_jpy")
 
     def _get_balance(self, exchange_id):
         # 短時間に複数回呼び出すとタイミングによってfetchがエラーするのでリトライを実施
@@ -69,6 +82,7 @@ class Asset():
 
     def to_json(self):
         self._update()
+
         res = {}
         for asset in self.assets:
             res.update(asset)
@@ -86,77 +100,58 @@ class Asset():
 
     def display(self):
         '''
-        資産をチェックするツール
+        現在の資産を表示する
         '''
-        coincheck_id = ccxtconst.EXCHANGE_ID_COINCHECK
-        liquid_id = ccxtconst.EXCHANGE_ID_LIQUID
-
-        balance_coincheck = private.fetch_balance(coincheck_id)
-        balance_liquid = private.fetch_balance(liquid_id)
+        self._update()
 
         data = []
 
         LABEL_JPY = "JPY"
         LABEL_BTC = "BTC"
 
-        headers = ["取引所", LABEL_JPY, LABEL_BTC]
+        headers = ["取引所", LABEL_JPY, LABEL_BTC, "BTC[JPY]", "total[JPY]"]
         data.append(headers)
+
+        for asset in self.assets:
+            data.append([
+                asset["id"], asset['jpy'], asset["btc"], asset["btc_as_jpy"],
+                asset["total_jpy"]
+            ])
+
+        data.append([])
         data.append([
-            coincheck_id,
-            int(balance_coincheck[LABEL_JPY]), balance_coincheck[LABEL_BTC]
+            "合計", self.total["jpy"], self.total["btc"],
+            self.total["btc_as_jpy"], self.total["total_jpy"]
         ])
-        data.append([
-            liquid_id,
-            int(balance_liquid[LABEL_JPY]), balance_liquid[LABEL_BTC]
-        ])
-
-        balance_jpy = int(balance_coincheck[LABEL_JPY] +
-                          balance_liquid[LABEL_JPY])
-        balance_btc = balance_coincheck[LABEL_BTC] + balance_liquid[LABEL_BTC]
-
-        data.append(["合計", balance_jpy, balance_btc])
-
         print(tabulate(data, headers="firstrow"))
 
-        coincheck_bid = public.fetch_tick(coincheck_id)["bid"]
-        liquid_bid = public.fetch_tick(liquid_id)["bid"]
-
-        def _calc_jpy(bid, btc):
-            return int(bid * btc)
-
-        print()
-        print("総計: {}[JPY]".format(
-            sum([
-                int(balance_jpy),
-                _calc_jpy(coincheck_bid, balance_coincheck[LABEL_BTC]),
-                _calc_jpy(liquid_bid, balance_liquid[LABEL_BTC])
-            ])))
-
-    def _get_tick(self, exchange_id):
-        c = CcxtClient(exchange_id)
-        tick = c.fetch_tick()
-        return tick["bid"], tick["ask"]
+    def _calc_btc_to_jpy(self, exchange_id, btc_amount):
+        '''
+        与えられたBTCの量から日本円の価格を計算する
+        '''
+        bid, _ = self._get_tick(exchange_id)
+        return format_jpy(btc_amount * bid)
 
     def calc_btc_to_jpy(self, btc_amount):
         '''
         与えられたBTCの量から日本円の価格を計算する
         '''
         for exchange_id in EXCHANGE_ID_LIST:
-            bid, _ = self._get_tick(exchange_id)
-
-            price = int(btc_amount * bid)
+            price = self._calc_btc_to_jpy(exchange_id, btc_amount)
             output = "{}[BTC] to {}[JPY] ({})".format(btc_amount, price,
                                                       exchange_id)
             print(output)
+
+    def _calc_jpy_to_btc(self, exchange_id, jpy_price):
+        _, ask = self._get_tick(exchange_id)
+        return format_btc(jpy_price / ask)
 
     def calc_jpy_to_btc(self, jpy_price):
         '''
         与えられた日本円の価格で購入できるBTCの量を計算する
         '''
         for exchange_id in EXCHANGE_ID_LIST:
-            _, ask = self._get_tick(exchange_id)
-
-            btc_amount = round(jpy_price / ask, 6)
+            btc_amount = self._calc_jpy_to_btc(exchange_id, jpy_price)
             output = "{}[JPY] to {}[BTC] ({})".format(jpy_price, btc_amount,
                                                       exchange_id)
             print(output)
