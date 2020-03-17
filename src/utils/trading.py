@@ -1,5 +1,5 @@
-import time
-import src.utils.private as private
+import traceback
+
 import src.constants.ccxtconst as ccxtconst
 from src.libs.asset import Asset
 
@@ -37,8 +37,13 @@ def run_trading(demo_mode=False):
         arbitrage.run()
     except KeyboardInterrupt:
         # Botを手動で止めるときはCtrl+Cなのでそのアクションを捕捉
-        asset.logging()
-
+        logger.info("keyboard interuption occured. stop trading bot...")
+    except Exception as e:
+        # エラー発生したらログとslack通知
+        slack_error = SlackClient(env.SLACK_WEBHOOK_URL_ERROR)
+        slack_error.notify_error(traceback.format_exc())
+        logger.exception(e)
+    finally:
         print()
         print()
         if demo_mode:
@@ -50,7 +55,6 @@ def run_trading(demo_mode=False):
             logger.info("=== trading bot end ===")
             logger.info("=======================")
 
-            # なんかタイミングよってエラーするのでマスク
-            # asset.logging()
+            asset.logging()
             backup_trading_logs(arbitrage.get_current_trading_data_dir())
             slack.notify_with_datetime("Trading Botの稼働を終了しました。")

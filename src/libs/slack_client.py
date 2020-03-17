@@ -24,6 +24,9 @@ class SlackClient():
         now_string = self._get_datetime_string()
         self.notify(NEWLINE.join([now_string, message]))
 
+    def notify_error(self, message):
+        self.notify_with_datetime(message)
+
     def notify_order(self, buy_exchange_id, sell_exchange_id, symbol, amount,
                      expected_profit):
         now_string = self._get_datetime_string()
