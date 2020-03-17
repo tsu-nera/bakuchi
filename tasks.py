@@ -1,3 +1,6 @@
+import os
+import glob
+
 from invoke import task, run
 import importlib
 import psutil
@@ -14,6 +17,7 @@ import src.utils.trade_history as trade_history
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
 
+import src.constants.common as common
 import src.constants.ccxtconst as ccxtconst
 import src.config as config
 import src.env as env
@@ -298,11 +302,24 @@ def recent_profits_by(c, hour):
 ###############
 # Othre Utils
 ###############
+
+
+@task
+def backup_latest_data(c):
+    production_dir = common.PRODUCTION_HISTORICAL_DATA_DIR_PATH
+    from_dir = max(glob.glob(os.path.join(production_dir, '*/')),
+                   key=os.path.getmtime)
+    dir_name = from_dir.split('/')[-2]
+    to_dir = os.path.join(common.BACKTEST_DATA_DIR_PATH, dir_name)
+
+    copy_tree(from_dir, to_dir)
+
+
 @task
 def backup_data(c, dir_name):
-    production_dir = "../bakuchi_production/data/historicals/"
-    from_dir = production_dir + dir_name
-    to_dir = "data/backtests/" + dir_name
+    production_dir = common.PRODUCTION_HISTORICAL_DATA_DIR_PATH
+    from_dir = os.path.join(production_dir, dir_name)
+    to_dir = os.path.join(common.BACKTEST_DATA_DIR_PATH, dir_name)
 
     copy_tree(from_dir, to_dir)
 

@@ -2,6 +2,7 @@ import os
 
 DATETIME_BASE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
+PRODUCTION_DIR = "../bakuchi_production"
 DATA_DIR = "data"
 RAWDATA_DIR = "rawdata"
 
@@ -17,6 +18,9 @@ MARGIN_LOG_FILE = "margin.log"
 ASSET_LOG_FILE = "asset.log"
 
 HISTORICAL_DATA_DIR_PATH = os.path.join(DATA_DIR, HISTORICAL_DATA_DIR)
+PRODUCTION_HISTORICAL_DATA_DIR_PATH = os.path.join(PRODUCTION_DIR, DATA_DIR,
+                                                   HISTORICAL_DATA_DIR)
+
 BACKTEST_DATA_DIR_PATH = os.path.join(DATA_DIR, BACKTEST_DATA_DIR)
 TRADES_RAWDATA_DIR_PATH = os.path.join(RAWDATA_DIR, TRADES_DIR)
 
