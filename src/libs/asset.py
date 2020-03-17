@@ -5,9 +5,12 @@ from tabulate import tabulate
 import src.constants.ccxtconst as ccxtconst
 from src.libs.logger import get_asset_logger
 import src.utils.private as private
-import src.utils.public as public
 
 from src.libs.ccxt_client import CcxtClient
+from src.libs.slack_client import SlackClient
+
+import src.env as env
+from src.utils.datetime import now_string
 
 EXCHANGE_ID_LIST = [
     ccxtconst.EXCHANGE_ID_COINCHECK, ccxtconst.EXCHANGE_ID_LIQUID
@@ -57,6 +60,7 @@ class Asset():
         def _sum(key):
             return sum([asset[key] for asset in self.assets])
 
+        self.total["id"] = "total"
         self.total["jpy"] = _sum("jpy")
         self.total["btc"] = _sum("btc")
         self.total["btc_as_jpy"] = _sum("btc_as_jpy")
@@ -97,6 +101,30 @@ class Asset():
         # csv出力
         # ログ出力
         # slack出力
+        self._notify_slack()
+
+    def _notify_slack(self):
+        slack = SlackClient(env.SLACK_WEBHOOK_URL_ASSET)
+
+        lines = []
+        lines.append("現在の資産状況は以下の通り({})".format(now_string()))
+        lines.append("")
+
+        for asset in self.assets:
+            line = "[{}] {}円/{}BTC({}) 計{}円".format(asset["id"], asset["jpy"],
+                                                    asset["btc"],
+                                                    asset["btc_as_jpy"],
+                                                    asset["total_jpy"])
+            lines.append(line)
+        line = "[{}] {}円/{}BTC({}) 計{}円".format(self.total["id"],
+                                                self.total["jpy"],
+                                                self.total["btc"],
+                                                self.total["btc_as_jpy"],
+                                                self.total["total_jpy"])
+        lines.append(line)
+
+        message = "\n".join(lines)
+        slack.notify(message)
 
     def display(self):
         '''
@@ -106,10 +134,7 @@ class Asset():
 
         data = []
 
-        LABEL_JPY = "JPY"
-        LABEL_BTC = "BTC"
-
-        headers = ["取引所", LABEL_JPY, LABEL_BTC, "BTC[JPY]", "total[JPY]"]
+        headers = ["取引所", "JPY", "BTC", "BTC[JPY]", "total[JPY]"]
         data.append(headers)
 
         for asset in self.assets:
@@ -123,6 +148,7 @@ class Asset():
             "合計", self.total["jpy"], self.total["btc"],
             self.total["btc_as_jpy"], self.total["total_jpy"]
         ])
+
         print(tabulate(data, headers="firstrow"))
 
     def _calc_btc_to_jpy(self, exchange_id, btc_amount):
