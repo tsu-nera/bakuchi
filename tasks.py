@@ -16,6 +16,7 @@ import src.utils.tool as tool
 import src.utils.trade_history as trade_history
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
+from src.libs.asset import Asset
 
 import src.constants.common as common
 import src.constants.ccxtconst as ccxtconst
@@ -270,17 +271,22 @@ def check_margin(c):
 
 @task
 def asset(c):
-    tool.check_asset()
+    Asset().display()
+
+
+@task
+def bot_asset(c):
+    Asset().run_bot()
 
 
 @task
 def calc_btcjpy(c, btc_amount):
-    tool.calc_btc_to_jpy(float(btc_amount))
+    Asset().calc_btc_to_jpy(float(btc_amount))
 
 
 @task
 def calc_jpybtc(c, jpy_price):
-    tool.calc_jpy_to_btc(int(jpy_price))
+    Asset().calc_jpy_to_btc(int(jpy_price))
 
 
 # @task
@@ -302,8 +308,6 @@ def recent_profits_by(c, hour):
 ###############
 # Othre Utils
 ###############
-
-
 @task
 def backup_latest_data(c):
     production_dir = common.PRODUCTION_HISTORICAL_DATA_DIR_PATH
