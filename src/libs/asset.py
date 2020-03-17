@@ -12,7 +12,7 @@ class Asset():
         self.logger = get_asset_logger()
 
     def _create_asset(self, id, jpy, btc):
-        return {"id": id, "jpy": int(jpy), "btc": round(btc, 3)}
+        return {"id": id, "jpy": int(jpy), "btc": round(btc, 6)}
 
     def _update(self):
         self.assets = []
@@ -29,7 +29,7 @@ class Asset():
 
     def _get_balance(self, exchange_id):
         balance = private.fetch_balance(exchange_id)
-        return int(balance["JPY"]), round(float(balance["BTC"]), 3)
+        return int(balance["JPY"]), round(float(balance["BTC"]), 6)
 
     def to_json(self):
         self._update()
