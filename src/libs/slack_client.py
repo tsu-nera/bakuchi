@@ -2,17 +2,19 @@ import datetime
 import requests
 import json
 
-from src.env import SLACK_WEBHOOK_URL
 import src.constants.common as common
 
 NEWLINE = "\n"
 
 
 class SlackClient():
+    def __init__(self, url):
+        self.url = url
+
     def notify(self, message):
         payload = {"text": message}
         data = json.dumps(payload)
-        requests.post(SLACK_WEBHOOK_URL, data=data)
+        requests.post(self.url, data=data)
 
     def _get_datetime_string(self):
         now = datetime.datetime.now()
@@ -21,6 +23,9 @@ class SlackClient():
     def notify_with_datetime(self, message):
         now_string = self._get_datetime_string()
         self.notify(NEWLINE.join([now_string, message]))
+
+    def notify_error(self, message):
+        self.notify_with_datetime(message)
 
     def notify_order(self, buy_exchange_id, sell_exchange_id, symbol, amount,
                      expected_profit):
