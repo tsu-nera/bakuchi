@@ -151,13 +151,8 @@ def sell(c, exchange_id):
 
 @task
 def sell_coincheck_with_amount(c, amount):
-    client = CcxtClient(ccxtconst.EXCHANGE_ID_COINCHECK)
-    tick = client.fetch_tick()
-    bid = float(tick["bid"])
-
-    response = private.create_sell_order(ccxtconst.EXCHANGE_ID_COINCHECK,
-                                         ccxtconst.SYMBOL_BTC_JPY,
-                                         float(amount), bid)
+    response = private.create_coincheck_sell_order(ccxtconst.SYMBOL_BTC_JPY,
+                                                   float(amount))
     print(response)
     return response
 
@@ -169,13 +164,8 @@ def sell_coincheck(c):
 
 @task
 def buy_coincheck_with_amount(c, amount):
-    client = CcxtClient(ccxtconst.EXCHANGE_ID_COINCHECK)
-    tick = client.fetch_tick()
-    ask = float(tick["ask"])
-
-    response = private.create_buy_order(ccxtconst.EXCHANGE_ID_COINCHECK,
-                                        ccxtconst.SYMBOL_BTC_JPY,
-                                        float(amount), ask)
+    response = private.create_coincheck_buy_order(ccxtconst.SYMBOL_BTC_JPY,
+                                                  float(amount))
     print(response)
     return response
 
