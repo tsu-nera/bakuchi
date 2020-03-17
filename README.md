@@ -8,7 +8,7 @@
 
 戦略は、とりあえずローリスク・ローリターンのアービトラージ([裁定取引](https://ja.wikipedia.org/wiki/%E8%A3%81%E5%AE%9A%E5%8F%96%E5%BC%95))で実装する。
 
-クソザコBotterなので収益とソースコードは公開していくスタイル。
+クソザコ Botter なので収益とソースコードは公開していくスタイル。
 
 ## Environments
 
@@ -33,7 +33,7 @@ $ pip install tablulate urllib3
 $ pip install numpy pandas jupyter notebook matplotlib
 
 # Bot稼働
-$ inv trade
+$ inv bot
 ```
 
 ## ツール
@@ -50,7 +50,7 @@ $ pip install invoke
 
 ```
 # bot稼働
-$ inv trade
+$ inv bot
 
 # デモトレード: 実際のorderは実施しない。
 $ inv demo-trade

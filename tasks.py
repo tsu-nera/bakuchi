@@ -99,7 +99,7 @@ def balance_gemini_sandbox(c):
 
 
 @task
-def trade(c):
+def bot(c):
     run_trading()
 
 
@@ -341,7 +341,7 @@ def slack(c, message):
 
 
 @task
-def is_trade(c):
+def is_bot(c):
     flag = any([
         p.cmdline()[2] == "trade" for p in psutil.process_iter()
         if len(p.cmdline()) == 3
