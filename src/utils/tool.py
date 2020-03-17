@@ -30,14 +30,13 @@ def check_profit_margin():
     diff1 = bid_x - ask_y
     diff2 = bid_y - ask_x
 
-    if diff1 > diff2:
-        output = "buy {} at {}, sell {} at {}, then get profit {}".format(
-            ask_y, ex_y_id, bid_x, ex_x_id, diff1)
-    else:
-        output = "buy {} at {}, sell {} at {}, then get profit {}".format(
-            ask_x, ex_x_id, bid_y, ex_y_id, diff2)
+    output1 = "buy {} at {}, sell {} at {}, then get profit {}".format(
+        ask_y, ex_y_id, bid_x, ex_x_id, diff1)
+    output2 = "buy {} at {}, sell {} at {}, then get profit {}".format(
+        ask_x, ex_x_id, bid_y, ex_y_id, diff2)
 
-    print(output)
+    print(output1)
+    print(output2)
 
 
 def check_asset():
