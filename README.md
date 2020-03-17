@@ -8,6 +8,8 @@
 
 戦略は、とりあえずローリスク・ローリターンのアービトラージ([裁定取引](https://ja.wikipedia.org/wiki/%E8%A3%81%E5%AE%9A%E5%8F%96%E5%BC%95))で実装する。
 
+クソザコBotterなので収益とソースコードは公開していくスタイル。
+
 ## Environments
 
 - python 3.7
