@@ -2,17 +2,19 @@ import datetime
 import requests
 import json
 
-from src.env import SLACK_WEBHOOK_URL
 import src.constants.common as common
 
 NEWLINE = "\n"
 
 
 class SlackClient():
+    def __init__(self, url):
+        self.url = url
+
     def notify(self, message):
         payload = {"text": message}
         data = json.dumps(payload)
-        requests.post(SLACK_WEBHOOK_URL, data=data)
+        requests.post(self.url, data=data)
 
     def _get_datetime_string(self):
         now = datetime.datetime.now()

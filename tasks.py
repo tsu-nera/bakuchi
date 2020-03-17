@@ -16,6 +16,7 @@ from src.libs.slack_client import SlackClient
 
 import src.constants.ccxtconst as ccxtconst
 import src.config as config
+import src.env as env
 
 import logging
 from logging import basicConfig
@@ -313,7 +314,8 @@ def note(c):
 
 @task
 def slack(c, message):
-    client = SlackClient()
+    url = env.SLACK_WEBHOOK_URL_TRADE
+    client = SlackClient(url)
     client.notify_with_datetime(message)
 
 

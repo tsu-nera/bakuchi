@@ -17,6 +17,7 @@ from src.libs.logger import get_margin_logger
 from src.libs.historical_logger import HistoricalLogger
 
 from src.core.circuit_breaker import CircuitBreaker
+import src.env as env
 
 
 class ArbitrageTrading(ArbitrageBase):
@@ -42,7 +43,7 @@ class ArbitrageTrading(ArbitrageBase):
         self.profit_margin_diff = config.TRADE_PROFIT_MARGIN_DIFF
 
         self.asset = Asset()
-        self.slack = SlackClient()
+        self.slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
         self.historical_logger = HistoricalLogger()
 
         self.circuit_breaker = CircuitBreaker(self.exchage_ids)

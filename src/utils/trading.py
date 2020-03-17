@@ -8,12 +8,13 @@ from src.core.arbitrage_trading import ArbitrageTrading
 from src.libs.logger import get_trading_logger_with_stdout, backup_trading_logs
 
 from src.libs.slack_client import SlackClient
+import src.env as env
 
 
 def run_trading(demo_mode=False):
     logger = get_trading_logger_with_stdout()
     asset = Asset()
-    slack = SlackClient()
+    slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
 
     if demo_mode:
         logger.info("====================================")
