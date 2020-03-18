@@ -1,8 +1,7 @@
-import datetime
 import requests
 import json
 
-import src.constants.common as common
+import src.utils.datetime as dt
 
 NEWLINE = "\n"
 
@@ -16,12 +15,8 @@ class SlackClient():
         data = json.dumps(payload)
         requests.post(self.url, data=data)
 
-    def _get_datetime_string(self):
-        now = datetime.datetime.now()
-        return now.strftime(common.DATETIME_BASE_FORMAT)
-
     def notify_with_datetime(self, message):
-        now_string = self._get_datetime_string()
+        now_string = dt.now_string()
         self.notify(NEWLINE.join([now_string, message]))
 
     def notify_error(self, message):

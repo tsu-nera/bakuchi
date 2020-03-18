@@ -8,6 +8,7 @@ from tabulate import tabulate
 import src.utils.private as private
 import src.constants.common as common
 import src.constants.ccxtconst as ccxtconst
+import src.utils.datetime as dt
 
 
 def _create_trade(id, order_id, datetime, pair, side, fee, amount, price,
@@ -26,9 +27,9 @@ def _create_trade(id, order_id, datetime, pair, side, fee, amount, price,
 
 
 def _convert_coincheck_datetime(d_str):
-    dt = datetime.datetime.fromisoformat(d_str.replace('Z', ''))
-    dt = dt + datetime.timedelta(hours=9)
-    return dt.strftime(common.DATETIME_BASE_FORMAT)
+    timestamp = datetime.datetime.fromisoformat(d_str.replace('Z', ''))
+    timestamp = timestamp + datetime.timedelta(hours=9)
+    return timestamp.strftime(dt.DATETIME_BASE_FORMAT)
 
 
 def _marge_duplicated_trades(trades):
@@ -77,8 +78,8 @@ def _format_fetched_trades(data):
     trades = []
 
     for t in data:
-        dt = datetime.datetime.fromtimestamp(t["created_at"])
-        dt = dt.strftime(common.DATETIME_BASE_FORMAT)
+        timestamp = datetime.datetime.fromtimestamp(t["created_at"])
+        timestamp = timestamp.strftime(dt.DATETIME_BASE_FORMAT)
 
         trade = _create_trade(t["id"], t["order_id"], dt, t["pair"],
                               t["taker_side"], 0, t["quantity"], t["price"],
@@ -145,7 +146,7 @@ def show_recent_profits(hours=None):
                 hours=hours)
 
             datetime_timestamp = datetime.datetime.strptime(
-                timestamp, common.DATETIME_BASE_FORMAT)
+                timestamp, dt.DATETIME_BASE_FORMAT)
 
             if datetime_timestamp < datetime_threshold:
                 continue
