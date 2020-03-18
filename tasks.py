@@ -308,11 +308,14 @@ def recent_profits_by(c, hour):
 ###############
 # Othre Utils
 ###############
+def get_latest_dirpath(dir_path):
+    return max(glob.glob(os.path.join(dir_path, '*/')), key=os.path.getmtime)
+
+
 @task
 def backup_latest_data(c):
     production_dir = common.PRODUCTION_HISTORICAL_DATA_DIR_PATH
-    from_dir = max(glob.glob(os.path.join(production_dir, '*/')),
-                   key=os.path.getmtime)
+    from_dir = get_latest_dirpath(production_dir)
     dir_name = from_dir.split('/')[-2]
     to_dir = os.path.join(common.BACKTEST_DATA_DIR_PATH, dir_name)
 
@@ -338,6 +341,13 @@ def slack(c, message):
     url = env.SLACK_WEBHOOK_URL_TRADE
     client = SlackClient(url)
     client.notify_with_datetime(message)
+
+
+@task
+def check_error(c):
+    root_dir_path = "./data/historicals"
+    dir_path = get_latest_dirpath(root_dir_path)
+    run('find {} -type f -name "*.log" | xargs grep ERROR'.format(dir_path))
 
 
 @task
