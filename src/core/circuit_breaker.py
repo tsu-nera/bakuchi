@@ -15,6 +15,8 @@ class CircuitBreaker():
 
         self.trade_amount_btc = config.TRADE_AMOUNT
 
+        self.maintenance_log_flag = False
+
     def _display_message(self):
         self.logger.info("=============================")
         self.logger.info("= CIRCUIT BREAKER CALLED!!! =")
@@ -34,10 +36,14 @@ class CircuitBreaker():
                                                  7, 5, 0)
 
         if maintenance_start_time <= now and now <= maintenance_end_time:
-            self.logger.info(
-                "liquid is currently daily server maintenance...(6:55-7:05)")
+            if not self.maintenance_log_flag:
+                self.logger.info(
+                    "liquid is currently daily server maintenance...(6:55-7:05)"
+                )
+                self.maintenance_log_flag = True
             return True
         else:
+            self.maintenance_log_flag = False
             return False
 
     def _is_server_maintenance(self, exchange_id):

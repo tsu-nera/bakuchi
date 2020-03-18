@@ -1,9 +1,8 @@
 from time import sleep
-import datetime
 import ccxt
 
 from .arbitrage_base import ArbitrageBase
-from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK, EXCHANGE_ID_LIQUID
+from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK
 from .tick import Tick
 from src.core.exchange_trading import ExchangeTrading as Exchange
 from src.libs.asset import Asset
@@ -59,7 +58,7 @@ class ArbitrageTrading(ArbitrageBase):
 
             try:
                 self.next()
-            except ccxt.ExchangeNotAvailable:
+            except (ccxt.ExchangeNotAvailable, ccxt.InsufficientFunds):
                 self.circuit_breaker.recover_exchange_not_available()
 
     def _logging_trading_metadata(self):

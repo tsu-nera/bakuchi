@@ -1,5 +1,4 @@
 import logging
-import shutil
 
 import src.constants.common as common
 
@@ -8,26 +7,28 @@ LOGGER_NAME_TRADING_WITH_STDOUT = "trading2"
 LOGGER_NAME_CCXT = "ccxt"
 LOGGER_NAME_MARGIN = "margin"
 LOGGER_NAME_ASSET = "asset"
+LOGGER_NAME_ASSET_CRON = "asset_cron"
+LOGGER_NAME_ASSET_CSV = "asset_csv"
 
 formatter = logging.Formatter('[%(levelname)s:%(asctime)s] %(message)s')
-historical_formatter = logging.Formatter('%(message)s')
+csv_formatter = logging.Formatter('%(message)s')
 
 
 def create_file_logger(file_path, logger_name):
-    logfile = logging.FileHandler(file_path, "w")
+    logfile = logging.FileHandler(file_path, "a")
     logfile.setFormatter(formatter)
     logger = logging.getLogger(logger_name)
     logger.addHandler(logfile)
 
 
-def create_historical_logger(file_path, logger_name):
-    logfile = logging.FileHandler(file_path, "w")
-    logfile.setFormatter(historical_formatter)
+def create_csv_logger(file_path, logger_name):
+    logfile = logging.FileHandler(file_path, "a")
+    logfile.setFormatter(csv_formatter)
     logger = logging.getLogger(logger_name)
     logger.addHandler(logfile)
 
 
-trading_logfile = logging.FileHandler(common.TRADING_LOG_FILE_PATH, "w")
+trading_logfile = logging.FileHandler(common.TRADING_LOG_FILE_PATH, "a")
 trading_logfile.setFormatter(formatter)
 trading_logger = logging.getLogger(LOGGER_NAME_TRADING)
 trading_logger.addHandler(trading_logfile)
@@ -42,6 +43,7 @@ trading_logger_with_stdout.addHandler(stream_handler)
 create_file_logger(common.CCXT_LOG_FILE_PATH, LOGGER_NAME_CCXT)
 create_file_logger(common.MARGIN_LOG_FILE_PATH, LOGGER_NAME_MARGIN)
 create_file_logger(common.ASSET_LOG_FILE_PATH, LOGGER_NAME_ASSET)
+create_file_logger(common.CRON_ASSET_LOG_FILE_PATH, LOGGER_NAME_ASSET_CRON)
 
 
 def get_trading_logger():
@@ -64,12 +66,9 @@ def get_asset_logger():
     return logging.getLogger(LOGGER_NAME_ASSET)
 
 
-def backup_trading_logs(backup_dir_path):
+def get_asset_append_logger():
+    return logging.getLogger(LOGGER_NAME_ASSET_CRON)
 
-    backup_file_path_list = [
-        common.CCXT_LOG_FILE_PATH, common.MARGIN_LOG_FILE_PATH,
-        common.ASSET_LOG_FILE_PATH, common.TRADING_LOG_FILE_PATH
-    ]
 
-    for file in backup_file_path_list:
-        shutil.copy(file, backup_dir_path)
+def get_asset_csv_logger():
+    return logging.getLogger(LOGGER_NAME_ASSET_CSV)

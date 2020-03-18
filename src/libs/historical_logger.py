@@ -4,7 +4,7 @@ import datetime
 import json
 from logging import getLogger
 
-from src.libs.logger import create_historical_logger
+from src.libs.logger import create_csv_logger
 import src.constants.ccxtconst as ccxtconst
 import src.constants.common as common
 import src.config as config
@@ -61,7 +61,7 @@ class HistoricalLogger():
     def _get_dir_path(self):
         now = datetime.datetime.now()
         now_string = now.strftime("%y%m%d%H%M")
-        return os.path.join(common.HISTORICAL_DATA_DIR_PATH, now_string)
+        return os.path.join(common.HISTORICAL_RAWDATA_DIR_PATH, now_string)
 
     def _get_file_path(self, dir_path, exchange_id):
         file_name = "{}.csv".format(exchange_id)
@@ -77,7 +77,7 @@ class HistoricalLogger():
     def _create_logger(self, exchange_id):
         file_path = self._get_file_path(self.dir_path, exchange_id)
         logger_name = self._get_logger_name(exchange_id)
-        create_historical_logger(file_path, logger_name)
+        create_csv_logger(file_path, logger_name)
 
     def _get_logger(self, exchange_id):
         logger_name = self._get_logger_name(exchange_id)
