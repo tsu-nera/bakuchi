@@ -314,7 +314,7 @@ def get_latest_dirpath(dir_path):
 
 @task
 def backup_latest_data(c):
-    production_dir = common.PRODUCTION_HISTORICAL_DATA_DIR_PATH
+    production_dir = common.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
     from_dir = get_latest_dirpath(production_dir)
     dir_name = from_dir.split('/')[-2]
     to_dir = os.path.join(common.BACKTEST_DATA_DIR_PATH, dir_name)
@@ -324,7 +324,7 @@ def backup_latest_data(c):
 
 @task
 def backup_data(c, dir_name):
-    production_dir = common.PRODUCTION_HISTORICAL_DATA_DIR_PATH
+    production_dir = common.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
     from_dir = os.path.join(production_dir, dir_name)
     to_dir = os.path.join(common.BACKTEST_DATA_DIR_PATH, dir_name)
 

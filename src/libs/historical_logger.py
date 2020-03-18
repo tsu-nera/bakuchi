@@ -61,7 +61,7 @@ class HistoricalLogger():
     def _get_dir_path(self):
         now = datetime.datetime.now()
         now_string = now.strftime("%y%m%d%H%M")
-        return os.path.join(common.HISTORICAL_DATA_DIR_PATH, now_string)
+        return os.path.join(common.HISTORICAL_RAWDATA_DIR_PATH, now_string)
 
     def _get_file_path(self, dir_path, exchange_id):
         file_name = "{}.csv".format(exchange_id)
