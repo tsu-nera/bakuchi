@@ -7,6 +7,7 @@ LOGGER_NAME_TRADING_WITH_STDOUT = "trading2"
 LOGGER_NAME_CCXT = "ccxt"
 LOGGER_NAME_MARGIN = "margin"
 LOGGER_NAME_ASSET = "asset"
+LOGGER_NAME_ASSET2 = "asset2"
 
 formatter = logging.Formatter('[%(levelname)s:%(asctime)s] %(message)s')
 historical_formatter = logging.Formatter('%(message)s')
@@ -41,6 +42,7 @@ trading_logger_with_stdout.addHandler(stream_handler)
 create_file_logger(common.CCXT_LOG_FILE_PATH, LOGGER_NAME_CCXT)
 create_file_logger(common.MARGIN_LOG_FILE_PATH, LOGGER_NAME_MARGIN)
 create_file_logger(common.ASSET_LOG_FILE_PATH, LOGGER_NAME_ASSET)
+create_file_logger(common.CRON_ASSET_LOG_FILE_PATH, LOGGER_NAME_ASSET2)
 
 
 def get_trading_logger():
@@ -61,3 +63,7 @@ def get_margin_logger():
 
 def get_asset_logger():
     return logging.getLogger(LOGGER_NAME_ASSET)
+
+
+def get_asset_append_logger():
+    return logging.getLogger(LOGGER_NAME_ASSET2)

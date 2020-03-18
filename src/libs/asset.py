@@ -3,7 +3,7 @@ import ccxt
 from tabulate import tabulate
 
 import src.constants.ccxtconst as ccxtconst
-from src.libs.logger import get_asset_logger
+from src.libs.logger import get_asset_logger, get_asset_append_logger
 import src.utils.private as private
 
 from src.libs.ccxt_client import CcxtClient
@@ -29,6 +29,7 @@ class Asset():
     def __init__(self, retry=True):
         self.retry = retry
         self.logger = get_asset_logger()
+        self.append_logger = get_asset_append_logger()
 
     def _get_tick(self, exchange_id):
         c = CcxtClient(exchange_id)
@@ -100,6 +101,7 @@ class Asset():
 
         # csv出力
         # ログ出力
+        self._append_log()
         # slack出力
         self._notify_slack()
 
@@ -182,12 +184,33 @@ class Asset():
                                                       exchange_id)
             print(output)
 
+    def _log_format(self):
+        return "({}) {}[JPY]/{}[BTC]({})/{}[TOTAL JPY]"
+
     def logging(self):
         self._update()
 
-        for asset in self.assets:
-            self.logger.info("asset: {}[JPY], {}[BTC] ({})".format(
-                asset["jpy"], asset["btc"], asset["id"]))
+        def _log(id, jpy, btc, btc_as_jpy, total_jpy):
+            log_format = self._log_format()
+            self.logger.info(
+                log_format.format(id, jpy, btc, btc_as_jpy, total_jpy))
 
-        self.logger.info("asset: {}[JPY], {}[BTC] (total)".format(
-            self.total["jpy"], self.total["btc"]))
+        for asset in self.assets:
+            _log(asset["id"], asset["jpy"], asset["btc"], asset["btc_as_jpy"],
+                 asset["total_jpy"])
+
+        _log(self.total["id"], self.total["jpy"], self.total["btc"],
+             self.total["btc_as_jpy"], self.total["total_jpy"])
+
+    def _append_log(self):
+        def _log(id, jpy, btc, btc_as_jpy, total_jpy):
+            log_format = self._log_format()
+            self.append_logger.info(
+                log_format.format(id, jpy, btc, btc_as_jpy, total_jpy))
+
+        for asset in self.assets:
+            _log(asset["id"], asset["jpy"], asset["btc"], asset["btc_as_jpy"],
+                 asset["total_jpy"])
+
+        _log(self.total["id"], self.total["jpy"], self.total["btc"],
+             self.total["btc_as_jpy"], self.total["total_jpy"])
