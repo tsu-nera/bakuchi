@@ -121,7 +121,7 @@ class CcxtClient():
             trades = client.fetch_my_trades()
         elif self.exchange.has['fetchMyTrades']:
             trades = []
-            resp = self.exchange.fetch_my_trades(self.symbol, limit=200)
+            resp = self.exchange.fetch_my_trades(self.symbol, limit=300)
             for x in resp:
                 trade = x['info']
                 trade["rate"] = float(trade["price"])

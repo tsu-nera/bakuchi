@@ -83,10 +83,10 @@ def _format_fetched_trades(data):
     trades = []
 
     for t in data:
-        timestamp = datetime.datetime.fromtimestamp(t["created_at"])
-        timestamp = timestamp.strftime(dt.DATETIME_BASE_FORMAT)
+        created_at = datetime.datetime.fromtimestamp(t["created_at"])
+        timestamp = dt.format_timestamp(created_at)
 
-        trade = _create_trade(t["id"], t["order_id"], dt, t["pair"],
+        trade = _create_trade(t["id"], t["order_id"], timestamp, t["pair"],
                               t["taker_side"], 0, t["quantity"], t["price"],
                               t["rate"])
         trades.append(trade)
@@ -268,4 +268,3 @@ def convert_trades(from_path, exchange_id):
             df_new = df_date
 
         df_new.to_csv(to_file_path)
-n
