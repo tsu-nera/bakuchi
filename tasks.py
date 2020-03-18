@@ -338,7 +338,7 @@ def backup_trades(c):
 
 @task
 def note(c):
-    run("jupyter notebook --notebook-dir='notebooks'")
+    run("jupyter notebook --notebook-dir='.'")
 
 
 @task
