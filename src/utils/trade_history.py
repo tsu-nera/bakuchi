@@ -234,8 +234,12 @@ def _get_datetime_range(start_datetime, end_datetime):
     return date_list
 
 
+def _read_csv(path):
+    return pd.read_csv(path, index_col=0, parse_dates=[2])
+
+
 def convert_trades(from_path, exchange_id):
-    df = pd.read_csv(from_path, index_col=0, parse_dates=[2])
+    df = _read_csv(from_path)
 
     df = df.sort_values("datetime")
 
@@ -256,4 +260,12 @@ def convert_trades(from_path, exchange_id):
 
         df_date = df[df.datetime.dt.date == date]
 
-        df_date.to_csv(to_file_path)
+        if os.path.exists(to_file_path):
+            df_old = _read_csv(to_file_path)
+            df_new = pd.concat([df_old, df_date], sort=False).drop_duplicates(
+                subset=["datetime"]).sort_values("datetime")
+        else:
+            df_new = df_date
+
+        df_new.to_csv(to_file_path)
+n
