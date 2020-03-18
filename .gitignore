@@ -1,7 +1,8 @@
 .vscode
 data
 .idea
-logs
 .ipynb_checkpoints
 *~
+logs/trades
+logs/cron
 rawdata

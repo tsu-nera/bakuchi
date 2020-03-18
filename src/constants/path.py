@@ -1,9 +1,9 @@
 import os
 
+# directory name
 PRODUCTION_DIR = "../bakuchi_production"
 DATA_DIR = "data"
 RAWDATA_DIR = "rawdata"
-
 HISTORICAL_DATA_DIR = "historicals"
 BACKTEST_DATA_DIR = "backtests"
 LOG_DIR = "logs"
@@ -11,12 +11,15 @@ TRADES_DIR = "trades"
 CRON_DIR = "cron"
 ASSETS_DIR = "assets"
 REPORTS_DIR = "reports"
+EXCHANGES_DIR = "exchanges"
 
+# file name
 HISTORICAL_LOG_FILE = "historical.log"
 TRADING_LOG_FILE = "trading.log"
 CCXT_LOG_FILE = "ccxt.log"
 MARGIN_LOG_FILE = "margin.log"
 ASSET_LOG_FILE = "asset.log"
+CONFIG_JSON_FILE = "config.json"
 
 # bakuchi_production
 PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH = os.path.join(PRODUCTION_DIR,

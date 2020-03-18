@@ -1,6 +1,6 @@
 {
   "amount": 0.009,
-  "open_threshold": 2000,
-  "profit_margin_diff": 800,
+  "open_threshold": 1000,
+  "profit_margin_diff": 500,
   "open_threshold_change_sec": 300
 }

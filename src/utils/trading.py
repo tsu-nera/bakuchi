@@ -20,9 +20,14 @@ TRADES_LOGS = [
 
 
 def backup_trading_logs(backup_dir_path):
+    target_dir_path = os.path.join(backup_dir_path, path.LOG_DIR)
+    os.mkdir(target_dir_path)
+
     for file in TRADES_LOGS:
         if os.path.exists(file):
-            shutil.copy(file, backup_dir_path)
+            file_name = os.path.basename(file)
+            target_file_path = os.path.join(target_dir_path, file_name)
+            shutil.copy(file, target_file_path)
 
 
 def clean_trading_logs():
