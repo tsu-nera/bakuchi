@@ -112,3 +112,31 @@ class CircuitBreaker():
 
         # BTC to JPY は未実装
         # 現状coincheckのBTCが不足するエラーのみなので
+
+    def recover_ddos_protection(self):
+        self._display_message()
+
+        self.logger.info("ddos protection error recovery start")
+
+        self._recover_ddos_protection()
+
+        self.logger.info("ddos protection error recovery completed")
+
+    def _recover_ddos_protection(self):
+        # liquid API rate limit exceeded. Please retry after 300s
+        # こういうエラーなので、 300secだけsleepする。
+        self._wait(300)
+
+    def recover_network_error(self):
+        self._display_message()
+
+        self.logger.info("network error recovery start")
+
+        self._recover_network_error()
+
+        self.logger.info("network error recovery completed")
+
+    def _recover_network_error(self):
+        # ネットワークエラーはとりあえず5秒sleep
+        # 様子を見て追加対応する
+        self._wait(5)

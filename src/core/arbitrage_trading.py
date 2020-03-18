@@ -60,6 +60,10 @@ class ArbitrageTrading(ArbitrageBase):
                 self.next()
             except (ccxt.ExchangeNotAvailable, ccxt.InsufficientFunds):
                 self.circuit_breaker.recover_exchange_not_available()
+            except ccxt.NetworkError:
+                self.circuit_breaker.recover_network_error()
+            except ccxt.DDoSProtection:
+                self.circuit_breaker.recover_ddos_protection()
 
     def _logging_trading_metadata(self):
         self.logger_with_stdout.info(
