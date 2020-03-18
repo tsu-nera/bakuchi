@@ -2,7 +2,7 @@ import time
 from tabulate import tabulate
 
 import src.config as config
-import src.constants.common as common
+import src.utils.datetime as dt
 
 from src.core.arbitrage_base import ArbitrageBase
 from src.core.tick import Tick
@@ -91,7 +91,7 @@ class ArbitrageBacktesting(ArbitrageBase):
     def _action(self, result, x, y):
         if self.simulate_mode:
             time.sleep(1)
-        timestamp_string = x.timestamp.strftime(common.DATETIME_BASE_FORMAT)
+        timestamp_string = x.timestamp.strftime(dt.DATETIME_BASE_FORMAT)
 
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
             self.trade_count += 1

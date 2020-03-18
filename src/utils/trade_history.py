@@ -1,13 +1,15 @@
 import os
 import pandas as pd
 import datetime
+import shutil
 from statistics import mean
 
 from tabulate import tabulate
 
 import src.utils.private as private
-import src.constants.common as common
+import src.constants.path as path
 import src.constants.ccxtconst as ccxtconst
+import src.utils.datetime as dt
 
 
 def _create_trade(id, order_id, datetime, pair, side, fee, amount, price,
@@ -26,9 +28,13 @@ def _create_trade(id, order_id, datetime, pair, side, fee, amount, price,
 
 
 def _convert_coincheck_datetime(d_str):
-    dt = datetime.datetime.fromisoformat(d_str.replace('Z', ''))
-    dt = dt + datetime.timedelta(hours=9)
-    return dt.strftime(common.DATETIME_BASE_FORMAT)
+    timestamp = datetime.datetime.fromisoformat(d_str.replace('Z', ''))
+    timestamp = timestamp + datetime.timedelta(hours=9)
+    return timestamp.strftime(dt.DATETIME_BASE_FORMAT)
+
+
+def _get_latest_file_name(exchange_id):
+    return "latest_trades_{}.csv".format(exchange_id)
 
 
 def _marge_duplicated_trades(trades):
@@ -77,10 +83,10 @@ def _format_fetched_trades(data):
     trades = []
 
     for t in data:
-        dt = datetime.datetime.fromtimestamp(t["created_at"])
-        dt = dt.strftime(common.DATETIME_BASE_FORMAT)
+        created_at = datetime.datetime.fromtimestamp(t["created_at"])
+        timestamp = dt.format_timestamp(created_at)
 
-        trade = _create_trade(t["id"], t["order_id"], dt, t["pair"],
+        trade = _create_trade(t["id"], t["order_id"], timestamp, t["pair"],
                               t["taker_side"], 0, t["quantity"], t["price"],
                               t["rate"])
         trades.append(trade)
@@ -104,8 +110,8 @@ def save_trades(exchange_id):
     '''
     trades = fetch_trades(exchange_id)
 
-    file_name = "latest_trades_{}.csv".format(exchange_id)
-    file_path = os.path.join(common.TRADES_RAWDATA_DIR_PATH, file_name)
+    file_name = _get_latest_file_name(exchange_id)
+    file_path = os.path.join(path.TRADES_RAWDATA_DIR_PATH, file_name)
 
     df = pd.DataFrame.from_dict(trades)
     df.to_csv(file_path, index=None)
@@ -145,7 +151,7 @@ def show_recent_profits(hours=None):
                 hours=hours)
 
             datetime_timestamp = datetime.datetime.strptime(
-                timestamp, common.DATETIME_BASE_FORMAT)
+                timestamp, dt.DATETIME_BASE_FORMAT)
 
             if datetime_timestamp < datetime_threshold:
                 continue
@@ -201,3 +207,64 @@ def show_recent_profits(hours=None):
         table.append(table_row)
 
     print(tabulate(table, headers="firstrow"))
+
+
+def backup_trades():
+    from_dir_path = path.TRADES_RAWDATA_DIR_PATH
+
+    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        from_file_name = _get_latest_file_name(exchange_id)
+
+        from_file_path = os.path.join(from_dir_path, from_file_name)
+
+        convert_trades(from_file_path, exchange_id)
+
+
+def _get_datetime_range(start_datetime, end_datetime):
+    start_date = start_datetime.date()
+    end_date = end_datetime.date()
+
+    date_list = []
+    index_date = start_date
+
+    while index_date <= end_date:
+        date_list.append(index_date)
+        index_date += datetime.timedelta(days=1)
+
+    return date_list
+
+
+def _read_csv(path):
+    return pd.read_csv(path, index_col=0, parse_dates=[2])
+
+
+def convert_trades(from_path, exchange_id):
+    df = _read_csv(from_path)
+
+    df = df.sort_values("datetime")
+
+    start_datetime = df.iloc[0]['datetime']
+    end_datetime = df.iloc[-1]['datetime']
+
+    date_range = _get_datetime_range(start_datetime, end_datetime)
+
+    for date in date_range:
+        dir_name = date.strftime('%y%m%d')
+        to_dir_path = os.path.join(path.TRADES_DATA_DIR_PATH, dir_name)
+
+        if not os.path.exists(to_dir_path):
+            os.mkdir(to_dir_path)
+
+        to_file_name = "{}.csv".format(exchange_id)
+        to_file_path = os.path.join(to_dir_path, to_file_name)
+
+        df_date = df[df.datetime.dt.date == date]
+
+        if os.path.exists(to_file_path):
+            df_old = _read_csv(to_file_path)
+            df_new = pd.concat([df_old, df_date], sort=False).drop_duplicates(
+                subset=["datetime"]).sort_values("datetime")
+        else:
+            df_new = df_date
+
+        df_new.to_csv(to_file_path)

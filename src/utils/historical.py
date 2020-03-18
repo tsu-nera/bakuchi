@@ -1,17 +1,15 @@
 import ccxt  # noqa
 import time
-import datetime
 import os
 
+import src.utils.datetime as dt
 from src.libs.ccxt_client import CcxtClient
 import src.constants.ccxtconst as ccxtconst
-from src.constants.common import HISTORICAL_DATA_DIR_PATH
+from src.constants.path import HISTORICAL_DATA_DIR_PATH
 
 
 def _get_dir_path():
-    now = datetime.datetime.now()
-    now_string = now.strftime("%y%m%d%H%M")
-    return os.path.join(HISTORICAL_DATA_DIR_PATH, now_string)
+    return os.path.join(HISTORICAL_DATA_DIR_PATH, dt.NOW_DIRNAME)
 
 
 def _get_file_path(dir_path, exchange_id):

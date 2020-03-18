@@ -1,8 +1,7 @@
-import datetime
 import requests
 import json
 
-import src.constants.common as common
+import src.utils.datetime as dt
 
 NEWLINE = "\n"
 
@@ -16,20 +15,16 @@ class SlackClient():
         data = json.dumps(payload)
         requests.post(self.url, data=data)
 
-    def _get_datetime_string(self):
-        now = datetime.datetime.now()
-        return now.strftime(common.DATETIME_BASE_FORMAT)
-
     def notify_with_datetime(self, message):
-        now_string = self._get_datetime_string()
-        self.notify(NEWLINE.join([now_string, message]))
+        now_timestamp = dt.now_timestamp()
+        self.notify(NEWLINE.join([now_timestamp, message]))
 
     def notify_error(self, message):
         self.notify_with_datetime(message)
 
     def notify_order(self, buy_exchange_id, sell_exchange_id, symbol, amount,
                      expected_profit):
-        now_string = self._get_datetime_string()
+        now_timestamp = dt.now_timestamp()
 
         emoji_gold = "💰"
 
@@ -38,6 +33,6 @@ class SlackClient():
                                                       buy_exchange_id,
                                                       sell_exchange_id)
 
-        message = NEWLINE.join([profit_message, "", now_string, order_message])
+        message = NEWLINE.join([profit_message, "", now_timestamp, order_message])
 
         self.notify(message)
