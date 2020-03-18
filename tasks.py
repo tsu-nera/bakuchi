@@ -344,6 +344,11 @@ def generate_latest_report(c):
 
 
 @task
+def display_report(c, dir_name):
+    trade_history.display_report(dir_name)
+
+
+@task
 def backup_trades(c):
     trade_history.backup_trades()
 
