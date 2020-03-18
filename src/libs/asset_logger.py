@@ -1,8 +1,7 @@
 import os
-import datetime
 from logging import getLogger
 
-from src.utils.datetime import now_string
+import src.utils.datetime as dt
 from src.libs.logger import create_csv_logger
 import src.constants.ccxtconst as ccxtconst
 import src.constants.common as common
@@ -21,7 +20,7 @@ class AssetLogger():
 
     def logging(self, exchange_id, jpy, btc, btc_as_jpy, total_jpy):
         logger = self._get_logger(exchange_id)
-        timestamp = now_string()
+        timestamp = dt.now_timestamp()
         message = "{},{},{},{},{}".format(timestamp, jpy, btc, btc_as_jpy,
                                           total_jpy)
         logger.info(message)

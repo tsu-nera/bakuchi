@@ -1,6 +1,5 @@
 import sys
 import ccxt
-import datetime
 from src.libs.logger import get_ccxt_logger
 import src.constants.ccxtconst as ccxtconst
 import src.utils.datetime as dt
@@ -56,7 +55,7 @@ class CcxtClient():
                          self.exchange_id, self.symbol)
 
     def fetch_tick(self):
-        timestamp = dt.now_string()
+        timestamp = dt.now_timestamp()
         tick = self._exec()
 
         if tick:

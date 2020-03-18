@@ -11,7 +11,7 @@ from src.libs.slack_client import SlackClient
 from src.libs.asset_logger import AssetLogger
 
 import src.env as env
-from src.utils.datetime import now_string
+import src.utils.datetime as dt
 
 EXCHANGE_ID_LIST = [
     ccxtconst.EXCHANGE_ID_COINCHECK, ccxtconst.EXCHANGE_ID_LIQUID
@@ -112,7 +112,7 @@ class Asset():
         slack = SlackClient(env.SLACK_WEBHOOK_URL_ASSET)
 
         lines = []
-        lines.append("現在の資産状況は以下の通り({})".format(now_string()))
+        lines.append("現在の資産状況は以下の通り({})".format(dt.now_timestamp()))
         lines.append("")
 
         for asset in self.assets:
