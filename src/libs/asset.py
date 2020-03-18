@@ -30,6 +30,7 @@ class Asset():
         self.retry = retry
         self.logger = get_asset_logger()
         self.append_logger = get_asset_append_logger()
+        self.csv_logger = get_asset_csv_logger()
 
     def _get_tick(self, exchange_id):
         c = CcxtClient(exchange_id)
@@ -100,6 +101,7 @@ class Asset():
         self._update()
 
         # csv出力
+        self._append_csv()
         # ログ出力
         self._append_log()
         # slack出力
@@ -206,6 +208,19 @@ class Asset():
         def _log(id, jpy, btc, btc_as_jpy, total_jpy):
             log_format = self._log_format()
             self.append_logger.info(
+                log_format.format(id, jpy, btc, btc_as_jpy, total_jpy))
+
+        for asset in self.assets:
+            _log(asset["id"], asset["jpy"], asset["btc"], asset["btc_as_jpy"],
+                 asset["total_jpy"])
+
+        _log(self.total["id"], self.total["jpy"], self.total["btc"],
+             self.total["btc_as_jpy"], self.total["total_jpy"])
+
+    def _append_csv(self):
+        def _log(id, jpy, btc, btc_as_jpy, total_jpy):
+            log_format = self._log_format()
+            self.csv_logger.info(
                 log_format.format(id, jpy, btc, btc_as_jpy, total_jpy))
 
         for asset in self.assets:
