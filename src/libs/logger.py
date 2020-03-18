@@ -1,6 +1,6 @@
 import logging
 
-import src.constants.common as common
+import src.constants.path as path
 
 LOGGER_NAME_TRADING = "trading"
 LOGGER_NAME_TRADING_WITH_STDOUT = "trading2"
@@ -28,7 +28,7 @@ def create_csv_logger(file_path, logger_name):
     logger.addHandler(logfile)
 
 
-trading_logfile = logging.FileHandler(common.TRADING_LOG_FILE_PATH, "a")
+trading_logfile = logging.FileHandler(path.TRADING_LOG_FILE_PATH, "a")
 trading_logfile.setFormatter(formatter)
 trading_logger = logging.getLogger(LOGGER_NAME_TRADING)
 trading_logger.addHandler(trading_logfile)
@@ -40,10 +40,10 @@ trading_logger_with_stdout = logging.getLogger(LOGGER_NAME_TRADING_WITH_STDOUT)
 trading_logger_with_stdout.addHandler(trading_logfile)
 trading_logger_with_stdout.addHandler(stream_handler)
 
-create_file_logger(common.CCXT_LOG_FILE_PATH, LOGGER_NAME_CCXT)
-create_file_logger(common.MARGIN_LOG_FILE_PATH, LOGGER_NAME_MARGIN)
-create_file_logger(common.ASSET_LOG_FILE_PATH, LOGGER_NAME_ASSET)
-create_file_logger(common.CRON_ASSET_LOG_FILE_PATH, LOGGER_NAME_ASSET_CRON)
+create_file_logger(path.CCXT_LOG_FILE_PATH, LOGGER_NAME_CCXT)
+create_file_logger(path.MARGIN_LOG_FILE_PATH, LOGGER_NAME_MARGIN)
+create_file_logger(path.ASSET_LOG_FILE_PATH, LOGGER_NAME_ASSET)
+create_file_logger(path.CRON_ASSET_LOG_FILE_PATH, LOGGER_NAME_ASSET_CRON)
 
 
 def get_trading_logger():

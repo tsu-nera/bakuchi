@@ -1,7 +1,7 @@
 import os
 
 import src.constants.ccxtconst as ccxtconst
-from src.constants.common import BACKTEST_DATA_DIR_PATH
+from src.constants.path import BACKTEST_DATA_DIR_PATH
 from src.drivers.csv_driver import CsvDriver
 from src.core.arbitrage_backtesting import ArbitrageBacktesting
 

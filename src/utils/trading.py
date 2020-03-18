@@ -11,11 +11,11 @@ from src.libs.logger import get_trading_logger_with_stdout
 
 from src.libs.slack_client import SlackClient
 import src.env as env
-import src.constants.common as common
+import src.constants.path as path
 
 TRADES_LOGS = [
-    common.CCXT_LOG_FILE_PATH, common.MARGIN_LOG_FILE_PATH,
-    common.ASSET_LOG_FILE_PATH, common.TRADING_LOG_FILE_PATH
+    path.CCXT_LOG_FILE_PATH, path.MARGIN_LOG_FILE_PATH,
+    path.ASSET_LOG_FILE_PATH, path.TRADING_LOG_FILE_PATH
 ]
 
 

@@ -4,7 +4,7 @@ from logging import getLogger
 import src.utils.datetime as dt
 from src.libs.logger import create_csv_logger
 import src.constants.ccxtconst as ccxtconst
-import src.constants.common as common
+import src.constants.path as path
 
 
 class AssetLogger():
@@ -13,7 +13,7 @@ class AssetLogger():
             ccxtconst.EXCHANGE_ID_COINCHECK, ccxtconst.EXCHANGE_ID_LIQUID,
             "total"
         ]
-        self.dir_path = common.ASSET_DATA_DIR_PATH
+        self.dir_path = path.ASSET_DATA_DIR_PATH
 
         # initialze loggers
         [self._create_logger(exchange_id) for exchange_id in self.exchange_ids]

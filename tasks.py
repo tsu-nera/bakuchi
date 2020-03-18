@@ -18,7 +18,7 @@ from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
 from src.libs.asset import Asset
 
-import src.constants.common as common
+import src.constants.path as path
 import src.constants.ccxtconst as ccxtconst
 import src.config as config
 import src.env as env
@@ -314,21 +314,26 @@ def get_latest_dirpath(dir_path):
 
 @task
 def backup_latest_data(c):
-    production_dir = common.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
+    production_dir = path.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
     from_dir = get_latest_dirpath(production_dir)
     dir_name = from_dir.split('/')[-2]
-    to_dir = os.path.join(common.BACKTEST_DATA_DIR_PATH, dir_name)
+    to_dir = os.path.join(path.BACKTEST_DATA_DIR_PATH, dir_name)
 
     copy_tree(from_dir, to_dir)
 
 
 @task
 def backup_data(c, dir_name):
-    production_dir = common.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
+    production_dir = path.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
     from_dir = os.path.join(production_dir, dir_name)
-    to_dir = os.path.join(common.BACKTEST_DATA_DIR_PATH, dir_name)
+    to_dir = os.path.join(path.BACKTEST_DATA_DIR_PATH, dir_name)
 
     copy_tree(from_dir, to_dir)
+
+
+@task
+def backup_trades(c):
+    tool.backup_trades()
 
 
 @task

@@ -5,7 +5,7 @@ import os
 import src.utils.datetime as dt
 from src.libs.ccxt_client import CcxtClient
 import src.constants.ccxtconst as ccxtconst
-from src.constants.common import HISTORICAL_DATA_DIR_PATH
+from src.constants.path import HISTORICAL_DATA_DIR_PATH
 
 
 def _get_dir_path():

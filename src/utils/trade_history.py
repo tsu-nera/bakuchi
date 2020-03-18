@@ -6,7 +6,7 @@ from statistics import mean
 from tabulate import tabulate
 
 import src.utils.private as private
-import src.constants.common as common
+import src.constants.path as path
 import src.constants.ccxtconst as ccxtconst
 import src.utils.datetime as dt
 
@@ -106,7 +106,7 @@ def save_trades(exchange_id):
     trades = fetch_trades(exchange_id)
 
     file_name = "latest_trades_{}.csv".format(exchange_id)
-    file_path = os.path.join(common.TRADES_RAWDATA_DIR_PATH, file_name)
+    file_path = os.path.join(path.TRADES_RAWDATA_DIR_PATH, file_name)
 
     df = pd.DataFrame.from_dict(trades)
     df.to_csv(file_path, index=None)

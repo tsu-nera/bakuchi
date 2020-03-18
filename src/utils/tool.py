@@ -1,4 +1,10 @@
+import os
+import shutil
+import src.utils.datetime as dt
+
 import src.constants.ccxtconst as ccxtconst
+import src.constants.path as path
+
 from src.libs.ccxt_client import CcxtClient
 
 
@@ -29,3 +35,15 @@ def check_profit_margin():
 
     print(output1)
     print(output2)
+
+
+def backup_trades():
+    now_dirname = dt.now_dirname()
+    dir_path = os.path.join(path.TRADES_RAWDATA_DIR_PATH, now_dirname)
+
+    os.mkdir(dir_path)
+
+    # for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+    #     file_name = "{}."
+    #     from_file_path =
+    #     shutil.copy(file)

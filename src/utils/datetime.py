@@ -14,7 +14,7 @@ def get_dt_dirname(timestamp):
     return datetime.datetime.strftime(timestamp, format_string)
 
 
-def now_dirname(timestamp):
+def now_dirname():
     format_string = DATETIME_DIR_FORMAT
     return datetime.datetime.now().strftime(format_string)
 
