@@ -33,7 +33,7 @@ def _convert_coincheck_datetime(d_str):
     return timestamp.strftime(dt.DATETIME_BASE_FORMAT)
 
 
-def _get_latest_file_name(self, exchange_id):
+def _get_latest_file_name(exchange_id):
     return "latest_trades_{}.csv".format(exchange_id)
 
 
@@ -211,16 +211,49 @@ def show_recent_profits(hours=None):
 
 def backup_trades():
     from_dir_path = path.TRADES_RAWDATA_DIR_PATH
-    to_dir_path = os.path.join(path.TRADES_DATA_DIR_PATH, dt.NOW_DIRNAME)
 
-    if not os.path.exists(to_dir_path):
-        os.mkdir(to_dir_path)
+    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        from_file_name = _get_latest_file_name(exchange_id)
 
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
-            from_file_name = _get_latest_file_name(exchange_id)
-            to_file_name = "{}.csv".format(exchange_id)
+        from_file_path = os.path.join(from_dir_path, from_file_name)
 
-            from_file_path = os.path.join(from_dir_path, from_file_name)
-            to_file_path = os.path.join(to_dir_path, to_file_name)
+        convert_trades(from_file_path, exchange_id)
 
-            shutil.copy(from_file_path, to_file_path)
+
+def _get_datetime_range(start_datetime, end_datetime):
+    start_date = start_datetime.date()
+    end_date = end_datetime.date()
+
+    date_list = []
+    index_date = start_date
+
+    while index_date <= end_date:
+        date_list.append(index_date)
+        index_date += datetime.timedelta(days=1)
+
+    return date_list
+
+
+def convert_trades(from_path, exchange_id):
+    df = pd.read_csv(from_path, index_col=0, parse_dates=[2])
+
+    df = df.sort_values("datetime")
+
+    start_datetime = df.iloc[0]['datetime']
+    end_datetime = df.iloc[-1]['datetime']
+
+    date_range = _get_datetime_range(start_datetime, end_datetime)
+
+    for date in date_range:
+        dir_name = date.strftime('%y%m%d')
+        to_dir_path = os.path.join(path.TRADES_DATA_DIR_PATH, dir_name)
+
+        if not os.path.exists(to_dir_path):
+            os.mkdir(to_dir_path)
+
+        to_file_name = "{}.csv".format(exchange_id)
+        to_file_path = os.path.join(to_dir_path, to_file_name)
+
+        df_date = df[df.datetime.dt.date == date]
+
+        df_date.to_csv(to_file_path)
