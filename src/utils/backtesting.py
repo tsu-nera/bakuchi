@@ -1,7 +1,7 @@
 import os
 
 import src.constants.ccxtconst as ccxtconst
-from src.constants.path import BACKTEST_DATA_DIR_PATH
+import src.constants.path as path
 from src.drivers.csv_driver import CsvDriver
 from src.core.arbitrage_backtesting import ArbitrageBacktesting
 
@@ -22,7 +22,8 @@ class Backtesting():
 
     def _get_file_path(self, exchange_id):
         file_name = "{}.csv".format(exchange_id)
-        return os.path.join(BACKTEST_DATA_DIR_PATH, self.timestamp, file_name)
+        return os.path.join(path.REPORTS_DIR, self.timestamp,
+                            path.EXCHANGES_DIR, file_name)
 
     def _read_df(self, exchange_id):
         path = self._get_file_path(exchange_id)
