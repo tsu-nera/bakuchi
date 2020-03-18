@@ -14,6 +14,8 @@ from src.utils.backtesting import run_backtesting
 from src.utils.historical import save_ticks
 import src.utils.tool as tool
 import src.utils.trade_history as trade_history
+import src.utils.report as report
+
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
 from src.libs.asset import Asset
@@ -329,6 +331,16 @@ def backup_data(c, dir_name):
     to_dir = os.path.join(path.BACKTEST_DATA_DIR_PATH, dir_name)
 
     copy_tree(from_dir, to_dir)
+
+
+@task
+def generate_report(c, dir_name):
+    report.generate(dir_name)
+
+
+@task
+def generate_latest_report(c):
+    report.generate_latest()
 
 
 @task

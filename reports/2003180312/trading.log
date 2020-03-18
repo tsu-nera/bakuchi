@@ -1,0 +1,834 @@
+[INFO:2020-03-18 03:12:34,602] =========================
+[INFO:2020-03-18 03:12:34,602] === trading bot start ===
+[INFO:2020-03-18 03:12:34,603] =========================
+[INFO:2020-03-18 03:12:35,903] amount=0.009, open_threshold=2000, profit_margin_diff=800
+[INFO:2020-03-18 03:17:58,587] open threshold changed from 2000 to 1000
+[INFO:2020-03-18 03:19:25,997] OPENING buy-liquid(5257.62), sell-coincheck(5268.087), margin=1016, profit=10.5
+[INFO:2020-03-18 03:19:45,621] CLOSING buy-coincheck(5263.0), sell-liquid(5260.878), margin=-89, profit=-2.1
+[INFO:2020-03-18 03:21:23,260] OPENING buy-liquid(5254.83), sell-coincheck(5264.901), margin=1119, profit=10.1
+[INFO:2020-03-18 03:23:00,615] CLOSING buy-coincheck(5238.0), sell-liquid(5237.883), margin=-32, profit=-0.1
+[INFO:2020-03-18 03:23:12,768] OPENING buy-liquid(5234.904), sell-coincheck(5240.709), margin=1028, profit=5.8
+[INFO:2020-03-18 03:23:22,684] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 03:25:45,725] CLOSING buy-coincheck(5240.0), sell-liquid(5240.466), margin=-55, profit=0.5
+[INFO:2020-03-18 03:28:44,521] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 03:29:01,842] OPENING buy-liquid(5259.483), sell-coincheck(5267.619), margin=1060, profit=8.1
+[INFO:2020-03-18 03:31:02,713] CLOSING buy-coincheck(5280.0), sell-liquid(5284.089), margin=669, profit=4.1
+[INFO:2020-03-18 03:31:19,511] OPENING buy-liquid(5277.582), sell-coincheck(5288.607), margin=1225, profit=11.0
+[INFO:2020-03-18 03:31:40,603] CLOSING buy-coincheck(5284.0), sell-liquid(5280.75), margin=-321, profit=-3.2
+[INFO:2020-03-18 03:32:05,716] OPENING buy-liquid(5271.534), sell-coincheck(5285.646), margin=1443, profit=14.1
+[INFO:2020-03-18 03:32:20,152] CLOSING buy-coincheck(5279.0), sell-liquid(5273.865), margin=-600, profit=-5.1
+[INFO:2020-03-18 03:33:02,299] OPENING buy-liquid(5287.5), sell-coincheck(5297.94), margin=1160, profit=10.4
+[INFO:2020-03-18 03:33:53,034] CLOSING buy-coincheck(5284.0), sell-liquid(5283.0), margin=-158, profit=-1.0
+[INFO:2020-03-18 03:34:11,426] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 03:34:13,757] OPENING buy-liquid(5286.087), sell-coincheck(5293.485), margin=1192, profit=7.4
+[INFO:2020-03-18 03:34:23,904] CLOSING buy-coincheck(5289.0), sell-liquid(5284.773), margin=-130, profit=-4.2
+[INFO:2020-03-18 03:36:10,679] OPENING buy-liquid(5288.094), sell-coincheck(5295.312), margin=1041, profit=7.2
+[INFO:2020-03-18 03:36:36,185] CLOSING buy-coincheck(5292.0), sell-liquid(5288.022), margin=-189, profit=-4.0
+[INFO:2020-03-18 03:39:37,519] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 03:44:44,383] OPENING buy-liquid(5259.411), sell-coincheck(5274.252), margin=1507, profit=14.8
+[INFO:2020-03-18 03:44:48,089] CLOSING buy-coincheck(5263.0), sell-liquid(5262.003), margin=-444, profit=-1.0
+[INFO:2020-03-18 03:45:01,111] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 03:47:19,121] OPENING buy-liquid(5256.144), sell-coincheck(5266.116), margin=1122, profit=10.0
+[INFO:2020-03-18 03:48:55,769] CLOSING buy-coincheck(5254.0), sell-liquid(5251.194), margin=-116, profit=-2.8
+[INFO:2020-03-18 03:50:24,834] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 03:52:27,774] OPENING buy-liquid(5240.367), sell-coincheck(5251.869), margin=1255, profit=11.5
+[INFO:2020-03-18 03:52:36,880] CLOSING buy-coincheck(5245.0), sell-liquid(5239.719), margin=-355, profit=-5.3
+[INFO:2020-03-18 03:55:49,132] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:01:12,468] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:01:23,438] OPENING buy-liquid(5227.11), sell-coincheck(5243.832), margin=1724, profit=16.7
+[INFO:2020-03-18 04:01:33,843] CLOSING buy-coincheck(5227.0), sell-liquid(5219.595), margin=-911, profit=-7.4
+[INFO:2020-03-18 04:02:00,939] OPENING buy-liquid(5215.563), sell-coincheck(5225.508), margin=1143, profit=9.9
+[INFO:2020-03-18 04:02:13,097] CLOSING buy-coincheck(5223.0), sell-liquid(5221.449), margin=-239, profit=-1.6
+[INFO:2020-03-18 04:03:01,881] OPENING buy-liquid(5223.951), sell-coincheck(5233.77), margin=1008, profit=9.8
+[INFO:2020-03-18 04:05:49,109] CLOSING buy-coincheck(5216.0), sell-liquid(5217.624), margin=96, profit=1.6
+[INFO:2020-03-18 04:05:56,278] OPENING buy-liquid(5214.663), sell-coincheck(5225.076), margin=1494, profit=10.4
+[INFO:2020-03-18 04:06:02,061] CLOSING buy-coincheck(5224.0), sell-liquid(5215.878), margin=-682, profit=-8.1
+[INFO:2020-03-18 04:06:34,028] OPENING buy-liquid(5205.087), sell-coincheck(5219.568), margin=1429, profit=14.5
+[INFO:2020-03-18 04:06:37,719] CLOSING buy-coincheck(5209.0), sell-liquid(5206.464), margin=-586, profit=-2.5
+[INFO:2020-03-18 04:06:41,161] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:07:57,769] OPENING buy-liquid(5222.376), sell-coincheck(5232.006), margin=1068, profit=9.6
+[INFO:2020-03-18 04:09:12,858] CLOSING buy-coincheck(5226.0), sell-liquid(5227.956), margin=-175, profit=2.0
+[INFO:2020-03-18 04:09:29,419] OPENING buy-liquid(5229.171), sell-coincheck(5235.912), margin=1098, profit=6.7
+[INFO:2020-03-18 04:09:47,939] CLOSING buy-coincheck(5243.0), sell-liquid(5240.592), margin=-272, profit=-2.4
+[INFO:2020-03-18 04:09:56,862] OPENING buy-liquid(5229.387), sell-coincheck(5241.186), margin=1190, profit=11.8
+[INFO:2020-03-18 04:10:09,129] CLOSING buy-coincheck(5224.0), sell-liquid(5224.365), margin=-122, profit=0.4
+[INFO:2020-03-18 04:12:06,395] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:13:11,861] OPENING buy-liquid(5216.742), sell-coincheck(5223.798), margin=1041, profit=7.1
+[INFO:2020-03-18 04:13:19,841] CLOSING buy-coincheck(5220.0), sell-liquid(5218.488), margin=-41, profit=-1.5
+[INFO:2020-03-18 04:17:11,788] OPENING buy-liquid(5231.97), sell-coincheck(5246.991), margin=1420, profit=15.0
+[INFO:2020-03-18 04:17:21,858] CLOSING buy-coincheck(5237.0), sell-liquid(5234.247), margin=-16, profit=-2.8
+[INFO:2020-03-18 04:17:29,532] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:20:16,619] OPENING buy-liquid(5228.631), sell-coincheck(5238.018), margin=1043, profit=9.4
+[INFO:2020-03-18 04:21:05,245] CLOSING buy-coincheck(5227.0), sell-liquid(5224.221), margin=-173, profit=-2.8
+[INFO:2020-03-18 04:22:52,471] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:28:13,503] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:30:53,261] OPENING buy-coincheck(5245.0), sell-liquid(5255.433), margin=1062, profit=10.4
+[INFO:2020-03-18 04:30:59,153] CLOSING buy-liquid(5256.972), sell-coincheck(5254.722), margin=-250, profit=-2.2
+[INFO:2020-03-18 04:33:36,340] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:36:28,192] OPENING buy-liquid(5269.689), sell-coincheck(5279.247), margin=1062, profit=9.6
+[INFO:2020-03-18 04:37:14,686] CLOSING buy-coincheck(5274.0), sell-liquid(5273.874), margin=-105, profit=-0.1
+[INFO:2020-03-18 04:38:58,414] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:41:40,656] OPENING buy-liquid(5266.971), sell-coincheck(5275.413), margin=1057, profit=8.4
+[INFO:2020-03-18 04:42:00,565] CLOSING buy-coincheck(5269.0), sell-liquid(5270.301), margin=-88, profit=1.3
+[INFO:2020-03-18 04:44:21,721] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:45:26,346] OPENING buy-liquid(5256.27), sell-coincheck(5266.197), margin=1005, profit=9.9
+[INFO:2020-03-18 04:45:32,102] CLOSING buy-coincheck(5260.0), sell-liquid(5261.4), margin=119, profit=1.4
+[INFO:2020-03-18 04:46:10,258] OPENING buy-liquid(5240.916), sell-coincheck(5252.625), margin=1301, profit=11.7
+[INFO:2020-03-18 04:46:16,166] CLOSING buy-coincheck(5254.0), sell-liquid(5255.613), margin=-479, profit=1.6
+[INFO:2020-03-18 04:49:49,569] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:49:56,164] OPENING buy-liquid(5255.361), sell-coincheck(5265.171), margin=1090, profit=9.8
+[INFO:2020-03-18 04:50:13,611] CLOSING buy-coincheck(5261.0), sell-liquid(5261.184), margin=-159, profit=0.2
+[INFO:2020-03-18 04:50:30,271] OPENING buy-liquid(5255.622), sell-coincheck(5263.101), margin=1217, profit=7.5
+[INFO:2020-03-18 04:50:48,914] CLOSING buy-coincheck(5255.0), sell-liquid(5251.788), margin=-400, profit=-3.2
+[INFO:2020-03-18 04:51:31,170] OPENING buy-liquid(5237.559), sell-coincheck(5250.582), margin=1447, profit=13.0
+[INFO:2020-03-18 04:51:37,114] CLOSING buy-coincheck(5234.0), sell-liquid(5234.202), margin=-221, profit=0.2
+[INFO:2020-03-18 04:55:14,872] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 04:59:34,759] OPENING buy-coincheck(5258.0), sell-liquid(5269.716), margin=1111, profit=11.7
+[INFO:2020-03-18 04:59:36,336] CLOSING buy-liquid(5272.839), sell-coincheck(5271.192), margin=230, profit=-1.6
+[INFO:2020-03-18 05:00:25,387] OPENING buy-liquid(5268.879), sell-coincheck(5278.266), margin=1042, profit=9.4
+[INFO:2020-03-18 05:00:30,482] CLOSING buy-coincheck(5252.0), sell-liquid(5257.719), margin=644, profit=5.7
+[INFO:2020-03-18 05:00:39,302] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 05:03:03,258] OPENING buy-coincheck(5244.0), sell-liquid(5254.479), margin=1066, profit=10.5
+[INFO:2020-03-18 05:03:28,427] CLOSING buy-liquid(5251.95), sell-coincheck(5249.16), margin=-86, profit=-2.8
+[INFO:2020-03-18 05:04:54,495] OPENING buy-coincheck(5237.0), sell-liquid(5247.702), margin=1096, profit=10.7
+[INFO:2020-03-18 05:04:58,125] CLOSING buy-liquid(5242.842), sell-coincheck(5242.581), margin=-29, profit=-0.3
+[INFO:2020-03-18 05:06:04,568] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 05:07:00,728] OPENING buy-coincheck(5243.0), sell-liquid(5255.028), margin=1111, profit=12.0
+[INFO:2020-03-18 05:07:06,552] CLOSING buy-liquid(5255.001), sell-coincheck(5251.023), margin=-229, profit=-4.0
+[INFO:2020-03-18 05:08:19,758] OPENING buy-coincheck(5239.0), sell-liquid(5248.431), margin=1166, profit=9.4
+[INFO:2020-03-18 05:09:09,112] CLOSING buy-liquid(5248.08), sell-coincheck(5245.272), margin=-312, profit=-2.8
+[INFO:2020-03-18 05:11:28,460] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 05:13:33,666] OPENING buy-coincheck(5245.0), sell-liquid(5254.587), margin=1030, profit=9.6
+[INFO:2020-03-18 05:14:14,954] CLOSING buy-liquid(5264.163), sell-coincheck(5261.553), margin=-196, profit=-2.6
+[INFO:2020-03-18 05:15:16,154] OPENING buy-coincheck(5258.0), sell-liquid(5270.022), margin=1178, profit=12.0
+[INFO:2020-03-18 05:15:24,091] CLOSING buy-liquid(5267.34), sell-coincheck(5264.919), margin=-269, profit=-2.4
+[INFO:2020-03-18 05:16:51,824] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 05:21:35,054] OPENING buy-coincheck(5258.0), sell-liquid(5267.457), margin=1053, profit=9.5
+[INFO:2020-03-18 05:22:13,724] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 05:22:31,145] CLOSING buy-liquid(5262.228), sell-coincheck(5261.247), margin=-151, profit=-1.0
+[INFO:2020-03-18 05:23:57,613] OPENING buy-coincheck(5260.0), sell-liquid(5270.4), margin=1123, profit=10.4
+[INFO:2020-03-18 05:24:22,703] CLOSING buy-liquid(5266.395), sell-coincheck(5262.3), margin=-276, profit=-4.1
+[INFO:2020-03-18 05:26:54,777] OPENING buy-coincheck(5263.0), sell-liquid(5273.442), margin=1127, profit=10.4
+[INFO:2020-03-18 05:27:38,208] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 05:28:35,508] CLOSING buy-liquid(5268.042), sell-coincheck(5268.519), margin=-185, profit=0.5
+[INFO:2020-03-18 05:28:44,483] OPENING buy-coincheck(5262.0), sell-liquid(5272.281), margin=1097, profit=10.3
+[INFO:2020-03-18 05:29:51,040] CLOSING buy-liquid(5281.713), sell-coincheck(5279.931), margin=-198, profit=-1.8
+[INFO:2020-03-18 05:33:02,062] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 05:35:12,421] OPENING buy-coincheck(5293.0), sell-liquid(5303.547), margin=1050, profit=10.5
+[INFO:2020-03-18 05:35:16,134] CLOSING buy-liquid(5302.719), sell-coincheck(5302.53), margin=-125, profit=-0.2
+[INFO:2020-03-18 05:37:08,952] OPENING buy-coincheck(5307.0), sell-liquid(5318.838), margin=1087, profit=11.8
+[INFO:2020-03-18 05:38:24,747] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 05:38:38,839] CLOSING buy-liquid(5333.292), sell-coincheck(5336.046), margin=349, profit=2.8
+[INFO:2020-03-18 05:39:04,058] OPENING buy-coincheck(5329.0), sell-liquid(5337.918), margin=1260, profit=8.9
+[INFO:2020-03-18 05:39:16,384] CLOSING buy-liquid(5346.0), sell-coincheck(5342.427), margin=-397, profit=-3.6
+[INFO:2020-03-18 05:39:25,389] OPENING buy-liquid(5328.819), sell-coincheck(5342.427), margin=2344, profit=13.6
+[INFO:2020-03-18 05:39:28,032] CLOSING buy-coincheck(5323.0), sell-liquid(5327.442), margin=46, profit=4.4
+[INFO:2020-03-18 05:39:52,063] OPENING buy-coincheck(5318.0), sell-liquid(5325.714), margin=1238, profit=7.7
+[INFO:2020-03-18 05:40:05,294] CLOSING buy-liquid(5321.403), sell-coincheck(5322.447), margin=-183, profit=1.0
+[INFO:2020-03-18 05:41:01,557] OPENING buy-coincheck(5309.0), sell-liquid(5320.314), margin=1232, profit=11.3
+[INFO:2020-03-18 05:42:28,508] CLOSING buy-liquid(5320.845), sell-coincheck(5316.129), margin=-402, profit=-4.7
+[INFO:2020-03-18 05:43:50,739] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 05:49:11,589] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 05:54:33,544] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 05:59:54,696] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 06:01:14,720] OPENING buy-coincheck(5355.0), sell-liquid(5369.958), margin=1662, profit=15.0
+[INFO:2020-03-18 06:01:27,060] CLOSING buy-liquid(5381.982), sell-coincheck(5374.179), margin=-771, profit=-7.8
+[INFO:2020-03-18 06:01:48,339] OPENING buy-coincheck(5371.0), sell-liquid(5375.457), margin=1031, profit=4.5
+[INFO:2020-03-18 06:01:57,309] CLOSING buy-liquid(5376.573), sell-coincheck(5377.23), margin=73, profit=0.7
+[INFO:2020-03-18 06:02:21,579] OPENING buy-coincheck(5381.0), sell-liquid(5392.539), margin=1266, profit=11.5
+[INFO:2020-03-18 06:02:32,095] CLOSING buy-liquid(5390.622), sell-coincheck(5387.094), margin=-392, profit=-3.5
+[INFO:2020-03-18 06:03:04,467] OPENING buy-liquid(5353.281), sell-coincheck(5371.821), margin=2153, profit=18.5
+[INFO:2020-03-18 06:03:06,036] CLOSING buy-coincheck(5353.0), sell-liquid(5352.255), margin=-579, profit=-0.7
+[INFO:2020-03-18 06:04:03,184] OPENING buy-coincheck(5340.0), sell-liquid(5352.732), margin=1084, profit=12.7
+[INFO:2020-03-18 06:04:24,568] CLOSING buy-liquid(5351.958), sell-coincheck(5347.629), margin=-245, profit=-4.3
+[INFO:2020-03-18 06:04:34,648] OPENING buy-coincheck(5352.0), sell-liquid(5362.119), margin=1080, profit=10.1
+[INFO:2020-03-18 06:04:41,508] CLOSING buy-liquid(5356.503), sell-coincheck(5357.709), margin=-55, profit=1.2
+[INFO:2020-03-18 06:04:51,559] OPENING buy-coincheck(5353.0), sell-liquid(5368.608), margin=1300, profit=15.6
+[INFO:2020-03-18 06:05:03,858] CLOSING buy-liquid(5361.273), sell-coincheck(5357.637), margin=-404, profit=-3.6
+[INFO:2020-03-18 06:05:25,616] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 06:05:25,829] OPENING buy-coincheck(5359.0), sell-liquid(5371.848), margin=1149, profit=12.8
+[INFO:2020-03-18 06:07:23,156] CLOSING buy-liquid(5397.939), sell-coincheck(5394.501), margin=-130, profit=-3.4
+[INFO:2020-03-18 06:08:36,062] OPENING buy-liquid(5405.067), sell-coincheck(5418.0), margin=2014, profit=12.9
+[INFO:2020-03-18 06:08:39,774] CLOSING buy-coincheck(5405.0), sell-liquid(5396.751), margin=-822, profit=-8.2
+[INFO:2020-03-18 06:08:53,069] OPENING buy-liquid(5399.415), sell-coincheck(5409.513), margin=1122, profit=10.1
+[INFO:2020-03-18 06:09:08,889] CLOSING buy-coincheck(5387.0), sell-liquid(5385.951), margin=-316, profit=-1.0
+[INFO:2020-03-18 06:09:23,598] OPENING buy-liquid(5379.012), sell-coincheck(5390.604), margin=1283, profit=11.6
+[INFO:2020-03-18 06:09:40,110] CLOSING buy-coincheck(5382.0), sell-liquid(5380.173), margin=-282, profit=-1.8
+[INFO:2020-03-18 06:10:03,324] OPENING buy-liquid(5364.504), sell-coincheck(5373.378), margin=1086, profit=8.9
+[INFO:2020-03-18 06:10:39,361] CLOSING buy-coincheck(5325.0), sell-liquid(5325.048), margin=-43, profit=0.0
+[INFO:2020-03-18 06:10:54,506] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 06:11:03,287] OPENING buy-liquid(5316.705), sell-coincheck(5327.172), margin=1051, profit=10.5
+[INFO:2020-03-18 06:11:22,052] CLOSING buy-coincheck(5288.0), sell-liquid(5293.503), margin=48, profit=5.5
+[INFO:2020-03-18 06:11:27,926] OPENING buy-liquid(5287.401), sell-coincheck(5295.915), margin=1629, profit=8.5
+[INFO:2020-03-18 06:11:36,889] CLOSING buy-coincheck(5286.0), sell-liquid(5284.35), margin=-400, profit=-1.7
+[INFO:2020-03-18 06:11:46,925] OPENING buy-coincheck(5286.0), sell-liquid(5300.397), margin=1528, profit=14.4
+[INFO:2020-03-18 06:11:48,497] CLOSING buy-liquid(5304.816), sell-coincheck(5302.332), margin=-276, profit=-2.5
+[INFO:2020-03-18 06:16:19,876] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 06:21:41,667] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 06:23:15,209] OPENING buy-coincheck(5287.0), sell-liquid(5296.473), margin=1025, profit=9.5
+[INFO:2020-03-18 06:23:16,759] CLOSING buy-liquid(5296.203), sell-coincheck(5296.239), margin=-91, profit=0.0
+[INFO:2020-03-18 06:27:04,984] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 06:32:27,331] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 06:36:22,626] OPENING buy-coincheck(5322.0), sell-liquid(5331.978), margin=1145, profit=10.0
+[INFO:2020-03-18 06:36:47,832] CLOSING buy-liquid(5344.083), sell-coincheck(5346.0), margin=213, profit=1.9
+[INFO:2020-03-18 06:37:49,990] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 06:42:01,582] OPENING buy-liquid(5314.446), sell-coincheck(5326.911), margin=1385, profit=12.5
+[INFO:2020-03-18 06:42:05,313] CLOSING buy-coincheck(5316.0), sell-liquid(5312.952), margin=-358, profit=-3.0
+[INFO:2020-03-18 06:43:12,944] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 06:48:35,528] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 06:53:13,927] OPENING buy-coincheck(5305.0), sell-liquid(5319.882), margin=1678, profit=14.9
+[INFO:2020-03-18 06:53:16,549] CLOSING buy-liquid(5322.663), sell-coincheck(5315.661), margin=-778, profit=-7.0
+[INFO:2020-03-18 06:53:58,583] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 06:55:00,294] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:01,295] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:02,297] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:03,298] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:04,300] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:05,301] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:06,303] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:07,303] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:08,304] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:09,305] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:10,307] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:11,308] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:12,309] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:13,310] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:14,312] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:15,313] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:16,314] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:17,315] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:18,317] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:19,318] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:20,320] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:21,321] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:22,323] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:23,324] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:24,326] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:25,327] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:26,329] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:27,331] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:28,331] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:29,333] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:30,334] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:31,336] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:32,337] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:33,339] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:34,340] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:35,342] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:36,343] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:37,345] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:38,346] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:39,348] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:40,348] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:41,350] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:42,351] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:43,353] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:44,354] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:45,356] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:46,357] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:47,359] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:48,361] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:49,361] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:50,363] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:51,364] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:52,365] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:53,367] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:54,368] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:55,369] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:56,371] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:57,371] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:58,372] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:55:59,374] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:00,375] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:01,376] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:02,378] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:03,379] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:04,380] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:05,382] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:06,383] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:07,385] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:08,386] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:09,387] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:10,389] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:11,390] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:12,392] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:13,393] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:14,395] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:15,396] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:16,398] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:17,399] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:18,400] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:19,402] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:20,403] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:21,405] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:22,406] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:23,408] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:24,409] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:25,411] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:26,412] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:27,413] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:28,415] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:29,417] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:30,418] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:31,419] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:32,421] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:33,422] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:34,424] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:35,425] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:36,427] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:37,428] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:38,429] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:39,430] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:40,432] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:41,433] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:42,435] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:43,436] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:44,438] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:45,439] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:46,440] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:47,441] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:48,443] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:49,444] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:50,445] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:51,447] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:52,448] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:53,450] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:54,451] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:55,453] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:56,454] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:57,455] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:58,457] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:56:59,458] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:00,460] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:01,461] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:02,463] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:03,464] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:04,466] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:05,467] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:06,468] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:07,469] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:08,471] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:09,472] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:10,474] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:11,475] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:12,477] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:13,478] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:14,480] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:15,481] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:16,483] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:17,484] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:18,486] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:19,487] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:20,489] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:21,490] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:22,492] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:23,493] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:24,495] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:25,496] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:26,498] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:27,499] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:28,501] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:29,502] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:30,504] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:31,505] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:32,506] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:33,508] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:34,510] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:35,511] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:36,513] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:37,514] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:38,515] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:39,517] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:40,518] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:41,519] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:42,520] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:43,522] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:44,523] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:45,525] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:46,526] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:47,527] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:48,529] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:49,530] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:50,531] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:51,533] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:52,534] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:53,535] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:54,536] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:55,538] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:56,539] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:57,541] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:58,542] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:57:59,544] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:00,545] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:01,546] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:02,548] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:03,549] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:04,551] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:05,552] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:06,554] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:07,555] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:08,557] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:09,558] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:10,560] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:11,561] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:12,563] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:13,564] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:14,566] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:15,567] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:16,569] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:17,570] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:18,572] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:19,573] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:20,575] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:21,576] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:22,577] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:23,579] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:24,580] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:25,582] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:26,583] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:27,584] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:28,586] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:29,587] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:30,589] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:31,590] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:32,591] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:33,593] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:34,594] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:35,596] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:36,597] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:37,599] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:38,600] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:39,602] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:40,603] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:41,603] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:42,605] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:43,606] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:44,608] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:45,609] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:46,611] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:47,612] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:48,614] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:49,615] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:50,617] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:51,618] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:52,619] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:53,621] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:54,622] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:55,624] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:56,625] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:57,627] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:58,628] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:58:59,630] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:00,631] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:01,633] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:02,634] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:03,636] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:04,637] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:05,639] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:06,640] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:07,642] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:08,643] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:09,644] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:10,646] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:11,647] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:12,649] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:13,651] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:14,651] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:15,653] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:16,654] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:17,655] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:18,657] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:19,658] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:20,659] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:21,661] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:22,662] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:23,663] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:24,665] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:25,666] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:26,667] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:27,669] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:28,670] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:29,671] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:30,673] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:31,674] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:32,675] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:33,676] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:34,678] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:35,679] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:36,681] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:37,682] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:38,684] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:39,685] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:40,686] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:41,688] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:42,689] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:43,690] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:44,692] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:45,694] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:46,695] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:47,697] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:48,698] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:49,700] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:50,701] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:51,703] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:52,704] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:53,706] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:54,707] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:55,709] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:56,710] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:57,712] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:58,713] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 06:59:59,715] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:00,717] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:01,718] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:02,719] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:03,720] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:04,722] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:05,723] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:06,723] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:07,724] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:08,725] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:09,727] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:10,728] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:11,729] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:12,729] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:13,730] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:14,731] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:15,733] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:16,734] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:17,736] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:18,737] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:19,739] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:20,740] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:21,742] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:22,743] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:23,745] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:24,746] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:25,747] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:26,748] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:27,750] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:28,751] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:29,753] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:30,754] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:31,756] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:32,757] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:33,759] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:34,761] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:35,762] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:36,764] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:37,765] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:38,767] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:39,767] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:40,769] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:41,770] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:42,771] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:43,773] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:44,774] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:45,775] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:46,777] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:47,778] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:48,779] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:49,781] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:50,782] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:51,783] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:52,785] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:53,786] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:54,787] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:55,789] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:56,790] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:57,792] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:58,793] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:00:59,795] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:00,796] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:01,797] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:02,799] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:03,800] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:04,801] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:05,803] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:06,803] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:07,804] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:08,805] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:09,807] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:10,808] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:11,809] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:12,811] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:13,812] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:14,814] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:15,815] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:16,816] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:17,817] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:18,818] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:19,820] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:20,821] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:21,822] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:22,824] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:23,825] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:24,826] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:25,827] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:26,829] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:27,830] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:28,831] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:29,832] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:30,833] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:31,834] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:32,836] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:33,837] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:34,838] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:35,839] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:36,840] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:37,842] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:38,843] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:39,843] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:40,844] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:41,846] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:42,847] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:43,847] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:44,848] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:45,850] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:46,851] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:47,851] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:48,852] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:49,854] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:50,855] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:51,856] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:52,858] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:53,859] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:54,860] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:55,861] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:56,863] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:57,863] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:58,864] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:01:59,866] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:00,866] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:01,868] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:02,869] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:03,870] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:04,871] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:05,873] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:06,874] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:07,875] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:08,876] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:09,878] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:10,879] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:11,880] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:12,881] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:13,882] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:14,883] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:15,884] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:16,886] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:17,887] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:18,887] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:19,888] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:20,890] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:21,891] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:22,892] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:23,894] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:24,895] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:25,895] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:26,896] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:27,898] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:28,899] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:29,900] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:30,901] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:31,903] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:32,904] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:33,905] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:34,906] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:35,908] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:36,909] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:37,910] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:38,911] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:39,913] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:40,914] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:41,916] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:42,917] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:43,918] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:44,919] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:45,920] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:46,922] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:47,923] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:48,924] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:49,926] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:50,927] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:51,928] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:52,930] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:53,931] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:54,932] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:55,934] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:56,935] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:57,936] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:58,938] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:02:59,939] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:00,941] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:01,942] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:02,943] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:03,944] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:04,946] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:05,947] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:06,949] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:07,950] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:08,951] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:09,952] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:10,954] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:11,955] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:12,957] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:13,958] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:14,960] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:15,961] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:16,963] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:17,963] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:18,965] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:19,966] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:20,968] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:21,969] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:22,970] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:23,972] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:24,973] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:25,975] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:26,976] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:27,977] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:28,979] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:29,980] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:30,982] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:31,983] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:32,985] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:33,986] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:34,987] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:35,988] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:36,990] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:37,991] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:38,993] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:39,994] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:40,995] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:41,997] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:42,998] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:44,000] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:45,001] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:46,002] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:47,004] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:48,005] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:49,007] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:50,008] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:51,010] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:52,011] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:53,012] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:54,013] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:55,015] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:56,016] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:57,017] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:58,018] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:03:59,019] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:00,020] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:01,021] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:02,023] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:03,025] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:04,026] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:05,028] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:06,029] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:07,031] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:08,032] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:09,033] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:10,035] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:11,036] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:12,038] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:13,039] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:14,041] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:15,042] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:16,044] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:17,045] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:18,047] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:19,048] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:20,050] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:21,051] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:22,052] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:23,053] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:24,055] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:25,056] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:26,058] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:27,059] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:28,061] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:29,062] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:30,064] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:31,065] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:32,066] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:33,068] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:34,069] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:35,071] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:36,072] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:37,074] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:38,075] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:39,077] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:40,078] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:41,080] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:42,081] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:43,082] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:44,083] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:45,085] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:46,086] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:47,088] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:48,089] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:49,091] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:50,092] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:51,094] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:52,095] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:53,097] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:54,098] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:55,099] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:56,101] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:57,102] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:58,103] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:04:59,105] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-18 07:09:20,977] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 07:13:20,411] OPENING buy-liquid(5275.494), sell-coincheck(5288.013), margin=1391, profit=12.5
+[INFO:2020-03-18 07:13:27,267] CLOSING buy-coincheck(5282.0), sell-liquid(5276.988), margin=-533, profit=-5.0
+[INFO:2020-03-18 07:14:44,525] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 07:20:07,563] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 07:23:51,347] OPENING buy-liquid(5254.461), sell-coincheck(5263.821), margin=1023, profit=9.4
+[INFO:2020-03-18 07:24:01,556] CLOSING buy-coincheck(5260.0), sell-liquid(5260.959), margin=17, profit=1.0
+[INFO:2020-03-18 07:25:31,674] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 07:26:32,758] OPENING buy-liquid(5270.031), sell-coincheck(5280.786), margin=1183, profit=10.8
+[INFO:2020-03-18 07:26:43,969] CLOSING buy-coincheck(5273.0), sell-liquid(5272.632), margin=-102, profit=-0.4
+[INFO:2020-03-18 07:30:56,843] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 07:34:35,565] OPENING buy-liquid(5272.947), sell-coincheck(5282.1), margin=1026, profit=9.2
+[INFO:2020-03-18 07:34:44,559] CLOSING buy-coincheck(5278.0), sell-liquid(5277.285), margin=-156, profit=-0.7
+[INFO:2020-03-18 07:36:21,267] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 07:37:44,906] OPENING buy-liquid(5277.15), sell-coincheck(5287.383), margin=1137, profit=10.2
+[INFO:2020-03-18 07:41:43,319] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 07:41:59,561] CLOSING buy-coincheck(5279.0), sell-liquid(5277.744), margin=-240, profit=-1.3
+[INFO:2020-03-18 07:42:20,336] OPENING buy-liquid(5272.686), sell-coincheck(5282.253), margin=1079, profit=9.6
+[INFO:2020-03-18 07:47:05,960] open threshold changed from 1000 to 1771
+[INFO:2020-03-18 07:48:25,991] CLOSING buy-coincheck(5292.0), sell-liquid(5284.827), margin=-808, profit=-7.2
+[INFO:2020-03-18 07:49:25,035] OPENING buy-liquid(5288.751), sell-coincheck(5305.644), margin=2288, profit=16.9
+[INFO:2020-03-18 07:52:28,193] open threshold changed from 1775 to 1491
+[INFO:2020-03-18 07:52:52,311] CLOSING buy-coincheck(5292.0), sell-liquid(5282.316), margin=-1244, profit=-9.7
+[INFO:2020-03-18 07:53:11,339] OPENING buy-liquid(5282.46), sell-coincheck(5296.572), margin=1568, profit=14.1
+[INFO:2020-03-18 07:57:52,935] open threshold changed from 1489 to 1365
+[INFO:2020-03-18 08:02:49,878] CLOSING buy-coincheck(5298.0), sell-liquid(5289.921), margin=-707, profit=-8.1
+[INFO:2020-03-18 08:03:16,784] open threshold changed from 1362 to 1000
+[INFO:2020-03-18 08:03:45,756] OPENING buy-liquid(5286.321), sell-coincheck(5297.553), margin=1023, profit=11.2
+[INFO:2020-03-18 08:08:39,462] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 08:14:01,847] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 08:19:24,124] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 08:24:47,272] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 08:30:09,532] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 08:35:32,399] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 08:40:55,263] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 08:46:19,247] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 08:51:33,803] CLOSING buy-coincheck(5262.0), sell-liquid(5257.143), margin=-184, profit=-4.9
+[INFO:2020-03-18 08:51:42,667] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 08:51:46,043] OPENING buy-liquid(5253.561), sell-coincheck(5262.705), margin=1021, profit=9.1
+[INFO:2020-03-18 08:57:06,300] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 08:57:12,953] CLOSING buy-coincheck(5202.0), sell-liquid(5201.226), margin=-145, profit=-0.8
+[INFO:2020-03-18 09:00:03,889] OPENING buy-liquid(5198.22), sell-coincheck(5206.959), margin=1207, profit=8.7
+[INFO:2020-03-18 09:00:09,676] CLOSING buy-coincheck(5203.0), sell-liquid(5203.719), margin=3, profit=0.7
+[INFO:2020-03-18 09:01:23,276] OPENING buy-liquid(5223.222), sell-coincheck(5235.219), margin=1150, profit=12.0
+[INFO:2020-03-18 09:02:12,049] CLOSING buy-coincheck(5226.0), sell-liquid(5226.642), margin=12, profit=0.6
+[INFO:2020-03-18 09:02:32,077] open threshold changed from 1000 to 1000
+[INFO:2020-03-18 09:02:34,478] OPENING buy-liquid(5237.109), sell-coincheck(5247.36), margin=1258, profit=10.3
+[INFO:2020-03-18 09:02:42,892] CLOSING buy-coincheck(5244.0), sell-liquid(5238.135), margin=-442, profit=-5.9
+[INFO:2020-03-18 09:03:02,731] OPENING buy-liquid(5233.212), sell-coincheck(5241.123), margin=1090, profit=7.9
+[INFO:2020-03-18 09:03:37,020] CLOSING buy-coincheck(5227.0), sell-liquid(5226.444), margin=-259, profit=-0.6
+[INFO:2020-03-18 09:04:57,480] keyboard interuption occured. stop trading bot...
+[INFO:2020-03-18 09:04:57,481] =======================
+[INFO:2020-03-18 09:04:57,481] === trading bot end ===
+[INFO:2020-03-18 09:04:57,481] =======================

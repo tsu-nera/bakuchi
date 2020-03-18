@@ -10,6 +10,7 @@ LOG_DIR = "logs"
 TRADES_DIR = "trades"
 CRON_DIR = "cron"
 ASSETS_DIR = "assets"
+REPORTS_DIR = "reports"
 
 HISTORICAL_LOG_FILE = "historical.log"
 TRADING_LOG_FILE = "trading.log"
