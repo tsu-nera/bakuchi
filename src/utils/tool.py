@@ -37,20 +37,3 @@ def check_profit_margin():
     print(output2)
 
 
-def backup_trades():
-    now_dirname = dt.now_dirname()
-
-    from_dir_path = path.TRADES_RAWDATA_DIR_PATH
-    to_dir_path = os.path.join(path.TRADES_DATA_DIR_PATH, now_dirname)
-
-    if not os.path.exists(to_dir_path):
-        os.mkdir(to_dir_path)
-
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
-            from_file_name = "latest_trades_{}.csv".format(exchange_id)
-            to_file_name = "{}.csv".format(exchange_id)
-
-            from_file_path = os.path.join(from_dir_path, from_file_name)
-            to_file_path = os.path.join(to_dir_path, to_file_name)
-
-            shutil.copy(from_file_path, to_file_path)

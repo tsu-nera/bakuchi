@@ -333,7 +333,7 @@ def backup_data(c, dir_name):
 
 @task
 def backup_trades(c):
-    tool.backup_trades()
+    trade_history.backup_trades()
 
 
 @task

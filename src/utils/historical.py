@@ -9,8 +9,7 @@ from src.constants.path import HISTORICAL_DATA_DIR_PATH
 
 
 def _get_dir_path():
-    now_dirname = dt.now_dirname()
-    return os.path.join(HISTORICAL_DATA_DIR_PATH, now_dirname)
+    return os.path.join(HISTORICAL_DATA_DIR_PATH, dt.NOW_DIRNAME)
 
 
 def _get_file_path(dir_path, exchange_id):

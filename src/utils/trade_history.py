@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import datetime
+import shutil
 from statistics import mean
 
 from tabulate import tabulate
@@ -30,6 +31,10 @@ def _convert_coincheck_datetime(d_str):
     timestamp = datetime.datetime.fromisoformat(d_str.replace('Z', ''))
     timestamp = timestamp + datetime.timedelta(hours=9)
     return timestamp.strftime(dt.DATETIME_BASE_FORMAT)
+
+
+def _get_latest_file_name(self, exchange_id):
+    return "latest_trades_{}.csv".format(exchange_id)
 
 
 def _marge_duplicated_trades(trades):
@@ -105,7 +110,7 @@ def save_trades(exchange_id):
     '''
     trades = fetch_trades(exchange_id)
 
-    file_name = "latest_trades_{}.csv".format(exchange_id)
+    file_name = _get_latest_file_name(exchange_id)
     file_path = os.path.join(path.TRADES_RAWDATA_DIR_PATH, file_name)
 
     df = pd.DataFrame.from_dict(trades)
@@ -202,3 +207,20 @@ def show_recent_profits(hours=None):
         table.append(table_row)
 
     print(tabulate(table, headers="firstrow"))
+
+
+def backup_trades():
+    from_dir_path = path.TRADES_RAWDATA_DIR_PATH
+    to_dir_path = os.path.join(path.TRADES_DATA_DIR_PATH, dt.NOW_DIRNAME)
+
+    if not os.path.exists(to_dir_path):
+        os.mkdir(to_dir_path)
+
+        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+            from_file_name = _get_latest_file_name(exchange_id)
+            to_file_name = "{}.csv".format(exchange_id)
+
+            from_file_path = os.path.join(from_dir_path, from_file_name)
+            to_file_path = os.path.join(to_dir_path, to_file_name)
+
+            shutil.copy(from_file_path, to_file_path)
