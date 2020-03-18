@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 import datetime
-import shutil
 from statistics import mean
 
 from tabulate import tabulate
@@ -234,14 +233,30 @@ def _get_datetime_range(start_datetime, end_datetime):
     return date_list
 
 
-def _read_csv(path):
-    return pd.read_csv(path, index_col=0, parse_dates=[2])
+def read_trades(path):
+    return pd.read_csv(path, index_col="id",
+                       parse_dates=["datetime"]).sort_values('datetime')
+
+
+def _read_trades(timestamp, exchange_id):
+    file_name = "{}.csv".format(exchange_id)
+    file_path = os.path.join(path.REPORTS_DIR, timestamp, path.TRADES_DIR,
+                             file_name)
+    return read_trades(file_path)
+
+
+def read_coincheck(timestamp):
+    exchange_id = ccxtconst.EXCHANGE_ID_COINCHECK
+    return _read_trades(timestamp, exchange_id)
+
+
+def read_liquid(timestamp):
+    exchange_id = ccxtconst.EXCHANGE_ID_LIQUID
+    return _read_trades(timestamp, exchange_id)
 
 
 def convert_trades(from_path, exchange_id):
-    df = _read_csv(from_path)
-
-    df = df.sort_values("datetime")
+    df = read_trades(from_path)
 
     start_datetime = df.iloc[0]['datetime']
     end_datetime = df.iloc[-1]['datetime']
