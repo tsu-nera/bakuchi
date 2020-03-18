@@ -1,5 +1,4 @@
 import logging
-import shutil
 
 import src.constants.common as common
 
@@ -14,7 +13,7 @@ historical_formatter = logging.Formatter('%(message)s')
 
 
 def create_file_logger(file_path, logger_name):
-    logfile = logging.FileHandler(file_path, "w")
+    logfile = logging.FileHandler(file_path, "a")
     logfile.setFormatter(formatter)
     logger = logging.getLogger(logger_name)
     logger.addHandler(logfile)
@@ -27,7 +26,7 @@ def create_historical_logger(file_path, logger_name):
     logger.addHandler(logfile)
 
 
-trading_logfile = logging.FileHandler(common.TRADING_LOG_FILE_PATH, "w")
+trading_logfile = logging.FileHandler(common.TRADING_LOG_FILE_PATH, "a")
 trading_logfile.setFormatter(formatter)
 trading_logger = logging.getLogger(LOGGER_NAME_TRADING)
 trading_logger.addHandler(trading_logfile)
@@ -62,14 +61,3 @@ def get_margin_logger():
 
 def get_asset_logger():
     return logging.getLogger(LOGGER_NAME_ASSET)
-
-
-def backup_trading_logs(backup_dir_path):
-
-    backup_file_path_list = [
-        common.CCXT_LOG_FILE_PATH, common.MARGIN_LOG_FILE_PATH,
-        common.ASSET_LOG_FILE_PATH, common.TRADING_LOG_FILE_PATH
-    ]
-
-    for file in backup_file_path_list:
-        shutil.copy(file, backup_dir_path)
