@@ -157,43 +157,46 @@ class ArbitrageBacktesting(ArbitrageBase):
         data.append(["開始日時", start_timestamp])
         data.append(["終了日時", end_timestamp])
         data.append(["取引単位[BTC]", self.trade_amount])
-        data.append(["利確しきい値[JPY]",self.open_threshold])
+        data.append(["利確しきい値[JPY]", self.open_threshold])
         data.append(["損切りマージン[JPY]", self.profit_margin_diff])
 
         print("バックテスト情報")
-        print(tabulate(data, tablefmt="grid", numalign="right", stralign="right"))        
+        print(
+            tabulate(data, tablefmt="grid", numalign="right",
+                     stralign="right"))
 
     def _report_trade_stats(self):
         data = []
-        data2 = []
 
         total_profit_btc = round(
             self.exchange_x.get_profit_btc() +
             self.exchange_y.get_profit_btc(), 3)
-        total_profit_jpy = int(self.exchange_x.get_profit_jpy() +
-                               self.exchange_y.get_profit_jpy())
+        total_profit_jpy = self.exchange_x.get_profit_jpy(
+        ) + self.exchange_y.get_profit_jpy()
+
         total_balance_btc = round(
             self.exchange_x.get_balance_btc() +
             self.exchange_y.get_balance_btc(), 3)
-        total_balance_jpy = int(self.exchange_x.get_balance_jpy() +
-                                self.exchange_y.get_balance_jpy())
+        total_balance_jpy = self.exchange_x.get_balance_jpy(
+        ) + self.exchange_y.get_balance_jpy()
 
         init_balance_jpy = config.BACKTEST_BALANCE_JPY * 2
         init_balance_btc = config.BACKTEST_BALANCE_BTC * 2
+
+        if total_profit_btc == 0:
+            total_profit_btc = 0
 
         data.append(["レコード数", len(self.timestamps)])
         data.append(["取引回数", self.trade_count])
         data.append(["利益(JPY)", total_profit_jpy])
         data.append(["元金(JPY)", init_balance_jpy])
         data.append(["資産(JPY)", total_balance_jpy])
-
-        data2.append(["利益(BTC)", total_profit_btc])
-        data2.append(["元金(BTC)", init_balance_btc])
-        data2.append(["資産(BTC)", total_balance_btc])
+        data.append(["利益(BTC)", total_profit_btc])
+        data.append(["元金(BTC)", init_balance_btc])
+        data.append(["資産(BTC)", total_balance_btc])
 
         print("バックテスト結果")
-        print(tabulate(data2))
-        print(tabulate(data))
+        print(tabulate(data, tablefmt="grid", numalign="rigth"))
 
     def _report_histories(self):
         data = self.histories
