@@ -8,6 +8,8 @@ from src.core.arbitrage_base import ArbitrageBase
 from src.core.tick import Tick
 from src.core.exchange_backtesting import ExchangeBacktesting as Exchange
 
+from src.utils.asset import format_btc, format_jpy
+
 
 class ArbitrageBacktesting(ArbitrageBase):
     def __init__(self,
@@ -46,6 +48,8 @@ class ArbitrageBacktesting(ArbitrageBase):
         self._update_run_params(config.BACKTEST_AMOUNT,
                                 config.BACKTEST_OPEN_THRESHOLD,
                                 config.BACKTEST_PROFIT_MARGIN_DIFF)
+
+        self.result = {}
 
     def _update_run_params(self, amount, open_threshold, profit_margin_diff):
         if amount:
@@ -141,7 +145,70 @@ class ArbitrageBacktesting(ArbitrageBase):
                 print(x.timestamp, result)
             pass
 
+    def _get_total_jpy(self):
+        start_jpy_x = config.BACKTEST_BALANCE_JPY
+        start_btc_x = config.BACKTEST_BALANCE_BTC
+        start_jpy_y = config.BACKTEST_BALANCE_JPY
+        start_btc_y = config.BACKTEST_BALANCE_BTC
+        start_bid_x = self.df_x["bid"][0]
+        start_bid_y = self.df_y["bid"][-1]
+
+        end_jpy_x = self.exchange_x.get_balance_jpy()
+        end_btc_x = self.exchange_x.get_balance_btc()
+        end_jpy_y = self.exchange_y.get_balance_jpy()
+        end_btc_y = self.exchange_y.get_balance_btc()
+        end_bid_x = self.df_x["bid"][0]
+        end_bid_y = self.df_y["bid"][-1]
+
+        start_total_jpy = sum([
+            start_jpy_x, start_jpy_y, start_btc_x * start_bid_x,
+            start_btc_y * start_bid_y
+        ])
+        end_total_jpy = sum([
+            end_jpy_x, end_jpy_y, end_btc_x * end_bid_x, end_btc_y * end_bid_y
+        ])
+
+        return start_total_jpy, end_total_jpy
+
+    def _prepare_result(self):
+        # meta data
+        self.result["record_count"] = len(self.timestamps)
+        self.result["trade_count"] = self.trade_count
+        self.result["start_timestamp"] = self.timestamps[0]
+        self.result["end_timestamp"] = self.timestamps[-1]
+        self.result["trade_amount"] = self.trade_amount
+        self.result["open_threshold"] = self.open_threshold
+        self.result["profit_margin_diff"] = self.profit_margin_diff
+
+        # stats
+        self.result["start_price_jpy"] = config.BACKTEST_BALANCE_JPY * 2
+        self.result["end_price_jpy"] = format_jpy(
+            sum([
+                self.exchange_x.get_balance_jpy(),
+                self.exchange_y.get_balance_jpy()
+            ]))
+        self.result["profit_jpy"] = self.result["end_price_jpy"] - self.result[
+            "start_price_jpy"]
+
+        self.result["start_price_btc"] = config.BACKTEST_BALANCE_BTC * 2
+        self.result["end_price_btc"] = format_btc(
+            sum([
+                self.exchange_x.get_balance_btc(),
+                self.exchange_y.get_balance_btc()
+            ]))
+        self.result["profit_btc"] = self.result["end_price_btc"] - self.result[
+            "start_price_btc"]
+
+        total_start_price_jpy, total_end_price_jpy = self._get_total_jpy()
+
+        self.result["total_start_price_jpy"] = total_start_price_jpy
+        self.result["total_end_price_jpy"] = total_end_price_jpy
+        self.result["total_profit_jpy"] = self.result[
+            "total_end_price_jpy"] - self.result["total_start_price_jpy"]
+
     def report(self):
+        self._prepare_result()
+
         self._report_trade_meta()
         print()
         self._report_trade_stats()
@@ -150,17 +217,15 @@ class ArbitrageBacktesting(ArbitrageBase):
         # self._report_histories()
 
     def _report_trade_meta(self):
-        start_timestamp = self.timestamps[0]
-        end_timestamp = self.timestamps[-1]
-
         data = []
-        data.append(["レコード数", len(self.timestamps)])
-        data.append(["取引回数", self.trade_count])
-        data.append(["開始日時", start_timestamp])
-        data.append(["終了日時", end_timestamp])
-        data.append(["取引単位[BTC]", self.trade_amount])
-        data.append(["利確しきい値[JPY]", self.open_threshold])
-        data.append(["損切りマージン[JPY]", self.profit_margin_diff])
+
+        data.append(["レコード数", self.result["record_count"]])
+        data.append(["取引回数", self.result["trade_count"]])
+        data.append(["開始日時", self.result["start_timestamp"]])
+        data.append(["終了日時", self.result["end_timestamp"]])
+        data.append(["取引単位[BTC]", self.result["trade_amount"]])
+        data.append(["利確しきい値[JPY]", self.result["open_threshold"]])
+        data.append(["損切りマージン[JPY]", self.result["profit_margin_diff"]])
 
         print("バックテスト情報")
         print(
@@ -170,15 +235,6 @@ class ArbitrageBacktesting(ArbitrageBase):
     def _report_trade_stats(self):
         data = []
 
-        total_balance_btc = round(
-            self.exchange_x.get_balance_btc() +
-            self.exchange_y.get_balance_btc(), 3)
-        total_balance_jpy = self.exchange_x.get_balance_jpy(
-        ) + self.exchange_y.get_balance_jpy()
-
-        init_balance_jpy = config.BACKTEST_BALANCE_JPY * 2
-        init_balance_btc = config.BACKTEST_BALANCE_BTC * 2
-
         def _report_trade_asset_result(label, start, end):
             data = []
             profit = end - start
@@ -187,43 +243,17 @@ class ArbitrageBacktesting(ArbitrageBase):
             data.append(["利益[{}]".format(label), profit])
             return data
 
-        def _get_total_jpy():
-            start_jpy_x = config.BACKTEST_BALANCE_JPY
-            start_btc_x = config.BACKTEST_BALANCE_BTC
-            start_jpy_y = config.BACKTEST_BALANCE_JPY
-            start_btc_y = config.BACKTEST_BALANCE_BTC
-            start_bid_x = self.df_x["bid"][0]
-            start_bid_y = self.df_y["bid"][-1]
-
-            end_jpy_x = self.exchange_x.get_balance_jpy()
-            end_btc_x = self.exchange_x.get_balance_btc()
-            end_jpy_y = self.exchange_y.get_balance_jpy()
-            end_btc_y = self.exchange_y.get_balance_btc()
-            end_bid_x = self.df_x["bid"][0]
-            end_bid_y = self.df_y["bid"][-1]
-
-            start_total_jpy = sum([
-                start_jpy_x, start_jpy_y, start_btc_x * start_bid_x,
-                start_btc_y * start_bid_y
-            ])
-            end_total_jpy = sum([
-                end_jpy_x, end_jpy_y, end_btc_x * end_bid_x,
-                end_btc_y * end_bid_y
-            ])
-
-            return start_total_jpy, end_total_jpy
+        data.extend(
+            _report_trade_asset_result("JPY", self.result["start_price_jpy"],
+                                       self.result["end_price_jpy"]))
+        data.extend(
+            _report_trade_asset_result("BTC", self.result["start_price_btc"],
+                                       self.result["end_price_btc"]))
 
         data.extend(
-            _report_trade_asset_result("JPY", init_balance_jpy,
-                                       total_balance_jpy))
-        data.extend(
-            _report_trade_asset_result("BTC", init_balance_btc,
-                                       total_balance_btc))
-
-        start_total_jpy, end_total_jpy = _get_total_jpy()
-        data.extend(
-            _report_trade_asset_result("TOTAL", start_total_jpy,
-                                       end_total_jpy))
+            _report_trade_asset_result("TOTAL",
+                                       self.result["total_start_price_jpy"],
+                                       self.result["total_end_price_jpy"]))
 
         print("バックテスト結果")
         print(tabulate(data, tablefmt="grid", numalign="right"))
@@ -235,3 +265,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         data.insert(0, headers)
 
         print(tabulate(data, headers="firstrow"))
+
+    def get_result_data(self):
+        self._prepare_result()
+        return self.result

@@ -52,6 +52,10 @@ class Backtesting():
     def get_liquid_df(self):
         return self.df_lq
 
+    def get_result_data(self):
+        self.arbitrage.run()
+        return self.arbitrage.get_result_data()
+
 
 def run_backtesting(timestamp, simulate_mode=False):
     print("=== backtest start ===")
