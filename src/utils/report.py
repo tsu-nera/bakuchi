@@ -58,10 +58,7 @@ def display(timestamp):
         print("トレード情報")
         headers = ["", "バックテスト", "トレード"]
         print(
-            tabulate(data,
-                     tablefmt="grid",
-                     numalign="right",
-                     stralign="right",
+            tabulate(data, numalign="right", stralign="right",
                      headers=headers))
 
     def _report_trade_stats(backtest, trade):
@@ -92,8 +89,7 @@ def display(timestamp):
 
         print("トレード結果")
         headers = ["", "バックテスト", "トレード"]
-        print(
-            tabulate(data, tablefmt="grid", numalign="right", headers=headers))
+        print(tabulate(data, numalign="right", headers=headers))
 
     _report_trade_meta(backtest_data, trade_data)
     print()
