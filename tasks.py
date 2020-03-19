@@ -309,8 +309,13 @@ def recent_profits_by(c, hour):
 
 
 @task
-def analysis(c, timestamp):
+def trade_analysis(c, timestamp):
     run_analysis(timestamp)
+
+
+@task
+def display_report(c, timestamp):
+    report.display(timestamp)
 
 
 ###############
@@ -347,11 +352,6 @@ def generate_report(c, dir_name):
 @task
 def generate_latest_report(c):
     report.generate_latest()
-
-
-@task
-def display_report(c, dir_name):
-    trade_history.display_report(dir_name)
 
 
 @task

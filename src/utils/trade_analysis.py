@@ -29,6 +29,8 @@ class TradeAnalysis():
         self.ticks_cc = self.read_ticks(ccxtconst.EXCHANGE_ID_COINCHECK)
         self.ticks_lq = self.read_ticks(ccxtconst.EXCHANGE_ID_LIQUID)
 
+        self.result = {}
+
     def _read_trades(self, file_path):
         return pd.read_csv(file_path, index_col="id",
                            parse_dates=["datetime"]).sort_values('datetime')
@@ -57,19 +59,46 @@ class TradeAnalysis():
         file_path = os.path.join(self.dir_path, path.ASSETS_DIR, file_name)
         return json.read(file_path)
 
-    def _report_trade_meta(self):
-        data = []
+    def _prepare_result(self):
         config = self._read_config()
 
-        start_timestamp = self.trades_cc.iloc[0]["datetime"]
-        end_timestamp = self.trades_cc.iloc[-1]["datetime"]
+        # meta data
+        self.result["record_count"] = len(self.ticks_cc)
+        self.result["trade_count"] = len(self.trades_cc)
+        self.result["start_timestamp"] = self.trades_cc.iloc[0]["datetime"]
+        self.result["end_timestamp"] = self.trades_cc.iloc[-1]["datetime"]
+        self.result["trade_amount"] = config["amount"]
+        self.result["open_threshold"] = config["open_threshold"]
+        self.result["profit_margin_diff"] = config["profit_margin_diff"]
 
-        data.append(["取引回数", len(self.trades_cc)])
-        data.append(["開始日時", start_timestamp])
-        data.append(["終了日時", end_timestamp])
-        data.append(["取引単位[BTC]", config["amount"]])
-        data.append(["利確しきい値[JPY]", config["open_threshold"]])
-        data.append(["損切りマージン[JPY]", config["profit_margin_diff"]])
+        # stats
+        self.result["start_price_jpy"] = self.start_asset["total"]["jpy"]
+        self.result["end_price_jpy"] = self.end_asset["total"]["jpy"]
+        self.result["profit_jpy"] = self.result["end_price_jpy"] - self.result[
+            "start_price_jpy"]
+
+        self.result["start_price_btc"] = self.start_asset["total"]["btc"]
+        self.result["end_price_btc"] = self.end_asset["total"]["btc"]
+        self.result["profit_btc"] = self.result["end_price_btc"] - self.result[
+            "start_price_btc"]
+
+        self.result["total_start_price_jpy"] = self.start_asset["total"][
+            "total_jpy"]
+        self.result["total_end_price_jpy"] = self.end_asset["total"][
+            "total_jpy"]
+        self.result["total_profit_jpy"] = self.result[
+            "total_end_price_jpy"] - self.result["total_start_price_jpy"]
+
+    def _report_trade_meta(self):
+        data = []
+
+        data.append(["レコード数", self.result["record_count"]])
+        data.append(["取引回数", self.result["trade_count"]])
+        data.append(["開始日時", self.result["start_timestamp"]])
+        data.append(["終了日時", self.result["end_timestamp"]])
+        data.append(["取引単位[BTC]", self.result["trade_amount"]])
+        data.append(["利確しきい値[JPY]", self.result["open_threshold"]])
+        data.append(["損切りマージン[JPY]", self.result["profit_margin_diff"]])
 
         print("トレード情報")
         print(
@@ -88,21 +117,20 @@ class TradeAnalysis():
             return data
 
         data.extend(
-            _report_trade_asset_result("JPY", self.start_asset["total"]["jpy"],
-                                       self.end_asset["total"]["jpy"]))
+            _report_trade_asset_result("JPY", self.result["start_price_jpy"],
+                                       self.result["end_price_jpy"]))
         data.extend(
-            _report_trade_asset_result("BTC", self.start_asset["total"]["btc"],
-                                       self.end_asset["total"]["btc"]))
+            _report_trade_asset_result("BTC", self.result["start_price_btc"],
+                                       self.result["end_price_btc"]))
         data.extend(
             _report_trade_asset_result("TOTAL",
-                                       self.start_asset["total"]["total_jpy"],
-                                       self.end_asset["total"]["total_jpy"]))
+                                       self.result["total_start_price_jpy"],
+                                       self.result["total_end_price_jpy"]))
 
         print("トレード結果")
         print(tabulate(data, tablefmt="grid", numalign="right"))
 
     def _report_trade_profits(self):
-
         notrade_start_total_jpy = self.start_asset['total']['total_jpy']
         notrade_end_total_jpy = format_jpy_float(
             self.start_asset['total']['jpy'] + sum([
@@ -130,6 +158,8 @@ class TradeAnalysis():
                      headers="firstrow"))
 
     def display(self):
+        self._prepare_result()
+
         self._report_trade_meta()
         print()
         self._report_trade_stats()
@@ -199,6 +229,10 @@ class TradeAnalysis():
         ax.scatter(self.trades_cc['datetime'], self.trades_cc['rate'])
 
         return fig, ax
+
+    def get_result_data(self):
+        self._prepare_result()
+        return self.result
 
 
 def run_analysis(timestamp):
