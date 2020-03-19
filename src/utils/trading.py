@@ -13,20 +13,39 @@ from src.libs.slack_client import SlackClient
 import src.env as env
 import src.constants.path as path
 
-TRADES_LOGS = [
-    path.CCXT_LOG_FILE_PATH, path.MARGIN_LOG_FILE_PATH,
-    path.ASSET_LOG_FILE_PATH, path.TRADING_LOG_FILE_PATH
-]
 
+def backup_trading_logs(current_trading_dir):
+    target_dir_path = os.path.join(current_trading_dir, path.LOG_DIR)
+    os.mkdir(target_dir_path)
 
-def backup_trading_logs(backup_dir_path):
-    for file in TRADES_LOGS:
+    for file in path.TRADES_LOGS:
         if os.path.exists(file):
-            shutil.copy(file, backup_dir_path)
+            file_name = os.path.basename(file)
+            target_file_path = os.path.join(target_dir_path, file_name)
+            shutil.copy(file, target_file_path)
+
+
+def backup_trading_assets(current_trading_dir):
+    target_dir_path = os.path.join(current_trading_dir, path.ASSETS_DIR)
+    os.mkdir(target_dir_path)
+
+    for file in path.TRADES_ASSETS:
+        if os.path.exists(file):
+            file_name = os.path.basename(file)
+            target_file_path = os.path.join(target_dir_path, file_name)
+            shutil.copy(file, target_file_path)
 
 
 def clean_trading_logs():
-    for file in TRADES_LOGS:
+    for file in path.TRADES_LOGS:
+        if os.path.exists(file):
+            # os.removeだと loggerとの関係がうまくいかなかった
+            with open(file, 'w'):
+                pass
+
+
+def clean_trading_assets():
+    for file in path.TRADES_ASSETS:
         if os.path.exists(file):
             # os.removeだと loggerとの関係がうまくいかなかった
             with open(file, 'w'):
@@ -35,9 +54,19 @@ def clean_trading_logs():
 
 def run_trading(demo_mode=False):
     clean_trading_logs()
+    clean_trading_assets()
+
     logger = get_trading_logger_with_stdout()
     asset = Asset()
     slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
+
+    # run trade
+    arbitrage = ArbitrageTrading(ccxtconst.EXCHANGE_ID_LIQUID,
+                                 ccxtconst.EXCHANGE_ID_COINCHECK,
+                                 ccxtconst.SYMBOL_BTC_JPY,
+                                 demo_mode=demo_mode)
+
+    current_trading_dir = arbitrage.get_current_trading_data_dir()
 
     if demo_mode:
         logger.info("====================================")
@@ -48,13 +77,7 @@ def run_trading(demo_mode=False):
         logger.info("=== trading bot start ===")
         logger.info("=========================")
         slack.notify_with_datetime("Trading Botの稼働を開始しました。")
-        asset.logging()
-
-    # run trade
-    arbitrage = ArbitrageTrading(ccxtconst.EXCHANGE_ID_LIQUID,
-                                 ccxtconst.EXCHANGE_ID_COINCHECK,
-                                 ccxtconst.SYMBOL_BTC_JPY,
-                                 demo_mode=demo_mode)
+        asset.save(asset.TRADIGNG_START)
 
     try:
         arbitrage.run()
@@ -77,7 +100,7 @@ def run_trading(demo_mode=False):
             logger.info("=======================")
             logger.info("=== trading bot end ===")
             logger.info("=======================")
-
-            asset.logging()
-            backup_trading_logs(arbitrage.get_current_trading_data_dir())
+            asset.save(asset.TRADING_END)
+            backup_trading_logs(current_trading_dir)
+            backup_trading_assets(current_trading_dir)
             slack.notify_with_datetime("Trading Botの稼働を終了しました。")

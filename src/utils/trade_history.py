@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import datetime
-import shutil
+import src.utils.json as json
 from statistics import mean
 
 from tabulate import tabulate
@@ -234,14 +234,30 @@ def _get_datetime_range(start_datetime, end_datetime):
     return date_list
 
 
-def _read_csv(path):
-    return pd.read_csv(path, index_col=0, parse_dates=[2])
+def read_trades(path):
+    return pd.read_csv(path, index_col="id",
+                       parse_dates=["datetime"]).sort_values('datetime')
+
+
+def _read_trades(timestamp, exchange_id):
+    file_name = "{}.csv".format(exchange_id)
+    file_path = os.path.join(path.REPORTS_DIR, timestamp, path.TRADES_DIR,
+                             file_name)
+    return read_trades(file_path)
+
+
+def read_coincheck(timestamp):
+    exchange_id = ccxtconst.EXCHANGE_ID_COINCHECK
+    return _read_trades(timestamp, exchange_id)
+
+
+def read_liquid(timestamp):
+    exchange_id = ccxtconst.EXCHANGE_ID_LIQUID
+    return _read_trades(timestamp, exchange_id)
 
 
 def convert_trades(from_path, exchange_id):
-    df = _read_csv(from_path)
-
-    df = df.sort_values("datetime")
+    df = read_trades(from_path)
 
     start_datetime = df.iloc[0]['datetime']
     end_datetime = df.iloc[-1]['datetime']
@@ -261,10 +277,88 @@ def convert_trades(from_path, exchange_id):
         df_date = df[df.datetime.dt.date == date]
 
         if os.path.exists(to_file_path):
-            df_old = _read_csv(to_file_path)
+            df_old = read_trades(to_file_path)
             df_new = pd.concat([df_old, df_date], sort=False).drop_duplicates(
                 subset=["datetime"]).sort_values("datetime")
         else:
             df_new = df_date
 
         df_new.to_csv(to_file_path)
+
+
+def create_profit_df(cc_df, lq_df):
+    df = pd.DataFrame({
+        'timestamp': cc_df['datetime'].to_list(),
+        'cc_side': cc_df['side'].to_list(),
+        'cc_price': cc_df['price'].to_list(),
+        'lq_side': lq_df['side'].to_list(),
+        'lq_price': lq_df['price'].to_list()
+    })
+
+    def calc_profit(x):
+        if x['cc_side'] == 'sell':
+            cc_price = x['cc_price']
+        else:
+            cc_price = -1 * x['cc_price']
+
+        if x['lq_side'] == 'sell':
+            lq_price = x['lq_price']
+        else:
+            lq_price = -1 * x['lq_price']
+
+        return cc_price + lq_price
+
+    df['profit'] = df.apply(calc_profit, axis=1)
+
+    df.timestamp = pd.to_datetime(df.timestamp, format=dt.DATETIME_BASE_FORMAT)
+    df = df.set_index('timestamp')
+
+    return df
+
+
+def read_trade_asset(keyword, timestamp):
+    file_name = "{}.json".format(keyword)
+    file_path = os.path.join(path.REPORTS_DIR, timestamp, path.ASSETS_DIR,
+                             file_name)
+    return json.read(file_path)
+
+
+def display_report(timestamp):
+    display_asset_report(timestamp)
+
+
+def display_asset_report(timestamp):
+    start_asset = read_trade_asset('start', timestamp)
+    end_asset = read_trade_asset('end', timestamp)
+
+    def _format(v):
+        return round(v, 3)
+
+    def _get_total_jpy(asset):
+        return round(
+            asset['total']['jpy'] + sum([
+                asset[exchange_id]['btc'] * asset[exchange_id]['bid']
+                for exchange_id in ccxtconst.EXCHANGE_ID_LIST
+            ]), 3)
+
+    actual_start_total_jpy = _get_total_jpy(start_asset)
+    actual_end_total_jpy = _get_total_jpy(end_asset)
+    actual_profit_jpy = round(actual_end_total_jpy - actual_start_total_jpy, 3)
+
+    notrade_start_total_jpy = actual_start_total_jpy
+    notrade_end_total_jpy = round(
+        start_asset['total']['jpy'] + sum([
+            start_asset[exchange_id]['btc'] * end_asset[exchange_id]['bid']
+            for exchange_id in ccxtconst.EXCHANGE_ID_LIST
+        ]), 3)
+    notrade_profit_jpy = round(notrade_end_total_jpy - notrade_start_total_jpy,
+                               3)
+
+    trade_profit_jpy = actual_profit_jpy - notrade_profit_jpy
+    time_profit_jpy = notrade_profit_jpy
+
+    profits = []
+    profits.append(['Bot利益', 'トレード利益', '市場利益'])
+    profits.append([actual_profit_jpy, trade_profit_jpy, time_profit_jpy])
+
+    print(tabulate(profits, headers="firstrow"))

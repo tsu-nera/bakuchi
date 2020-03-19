@@ -1,21 +1,26 @@
 import os
 
+# directory name
 PRODUCTION_DIR = "../bakuchi_production"
 DATA_DIR = "data"
 RAWDATA_DIR = "rawdata"
-
 HISTORICAL_DATA_DIR = "historicals"
 BACKTEST_DATA_DIR = "backtests"
 LOG_DIR = "logs"
 TRADES_DIR = "trades"
 CRON_DIR = "cron"
 ASSETS_DIR = "assets"
+REPORTS_DIR = "reports"
+EXCHANGES_DIR = "exchanges"
 
-HISTORICAL_LOG_FILE = "historical.log"
+# file name
 TRADING_LOG_FILE = "trading.log"
 CCXT_LOG_FILE = "ccxt.log"
 MARGIN_LOG_FILE = "margin.log"
 ASSET_LOG_FILE = "asset.log"
+CONFIG_JSON_FILE = "config.json"
+TRADING_START_ASSET_FILE = "start.json"
+TRADING_END_ASSET_FILE = "end.json"
 
 # bakuchi_production
 PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH = os.path.join(PRODUCTION_DIR,
@@ -36,13 +41,26 @@ HISTORICAL_RAWDATA_DIR_PATH = os.path.join(RAWDATA_DIR, HISTORICAL_DATA_DIR)
 # logs
 TRADES_LOG_DIR = os.path.join(LOG_DIR, TRADES_DIR)
 CRON_LOG_DIR = os.path.join(LOG_DIR, CRON_DIR)
+ASSETS_LOG_DIR = os.path.join(LOG_DIR, ASSETS_DIR)
 
 # logs/trades
-HISTORICAL_LOG_FILE_PATH = os.path.join(TRADES_LOG_DIR, HISTORICAL_LOG_FILE)
 TRADING_LOG_FILE_PATH = os.path.join(TRADES_LOG_DIR, TRADING_LOG_FILE)
 CCXT_LOG_FILE_PATH = os.path.join(TRADES_LOG_DIR, CCXT_LOG_FILE)
 MARGIN_LOG_FILE_PATH = os.path.join(TRADES_LOG_DIR, MARGIN_LOG_FILE)
 ASSET_LOG_FILE_PATH = os.path.join(TRADES_LOG_DIR, ASSET_LOG_FILE)
+
+TRADES_LOGS = [
+    CCXT_LOG_FILE_PATH, MARGIN_LOG_FILE_PATH, ASSET_LOG_FILE_PATH,
+    TRADING_LOG_FILE_PATH
+]
+
+# logs/assets
+TRADING_START_ASSET_FILE_PATH = os.path.join(ASSETS_LOG_DIR,
+                                             TRADING_START_ASSET_FILE)
+TRADING_END_ASSET_FILE_PATH = os.path.join(ASSETS_LOG_DIR,
+                                           TRADING_END_ASSET_FILE)
+
+TRADES_ASSETS = [TRADING_START_ASSET_FILE_PATH, TRADING_END_ASSET_FILE_PATH]
 
 # logs/cron
 CRON_ASSET_LOG_FILE_PATH = os.path.join(CRON_LOG_DIR, ASSET_LOG_FILE)

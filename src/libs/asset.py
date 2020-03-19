@@ -1,3 +1,4 @@
+import os
 import time
 import ccxt
 from tabulate import tabulate
@@ -5,6 +6,7 @@ from tabulate import tabulate
 import src.constants.ccxtconst as ccxtconst
 from src.libs.logger import get_asset_logger, get_asset_append_logger
 import src.utils.private as private
+import src.utils.json as json
 
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
@@ -12,10 +14,7 @@ from src.libs.asset_logger import AssetLogger
 
 import src.env as env
 import src.utils.datetime as dt
-
-EXCHANGE_ID_LIST = [
-    ccxtconst.EXCHANGE_ID_COINCHECK, ccxtconst.EXCHANGE_ID_LIQUID
-]
+import src.constants.path as path
 
 
 def format_jpy(jpy):
@@ -27,6 +26,9 @@ def format_btc(btc):
 
 
 class Asset():
+    TRADIGNG_START = "start"
+    TRADING_END = "end"
+
     def __init__(self, retry=True):
         self.retry = retry
         self.logger = get_asset_logger()
@@ -38,26 +40,30 @@ class Asset():
         tick = c.fetch_tick()
         return tick["bid"], tick["ask"]
 
-    def _create_asset(self, id, jpy, btc, btc_as_jpy, total_jpy):
+    def _create_asset(self, id, jpy, btc, btc_as_jpy, total_jpy, bid, ask):
         return {
             "id": id,
             "jpy": format_jpy(jpy),
             "btc": format_btc(btc),
             "btc_as_jpy": format_jpy(btc_as_jpy),
-            "total_jpy": format_jpy(total_jpy)
+            "total_jpy": format_jpy(total_jpy),
+            "bid": bid,
+            "ask": ask
         }
 
     def _update(self):
         self.assets = []
         self.total = {}
 
-        for exchange_id in EXCHANGE_ID_LIST:
+        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
             jpy, btc = self._get_balance(exchange_id)
 
             btc_as_jpy = self._calc_btc_to_jpy(exchange_id, btc)
 
+            bid, ask = self._get_tick(exchange_id)
+
             asset = self._create_asset(exchange_id, jpy, btc, btc_as_jpy,
-                                       jpy + btc_as_jpy)
+                                       jpy + btc_as_jpy, bid, ask)
             self.assets.append(asset)
 
         def _sum(key):
@@ -167,7 +173,7 @@ class Asset():
         '''
         与えられたBTCの量から日本円の価格を計算する
         '''
-        for exchange_id in EXCHANGE_ID_LIST:
+        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
             price = self._calc_btc_to_jpy(exchange_id, btc_amount)
             output = "{}[BTC] to {}[JPY] ({})".format(btc_amount, price,
                                                       exchange_id)
@@ -181,7 +187,7 @@ class Asset():
         '''
         与えられた日本円の価格で購入できるBTCの量を計算する
         '''
-        for exchange_id in EXCHANGE_ID_LIST:
+        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
             btc_amount = self._calc_jpy_to_btc(exchange_id, jpy_price)
             output = "{}[JPY] to {}[BTC] ({})".format(jpy_price, btc_amount,
                                                       exchange_id)
@@ -190,9 +196,34 @@ class Asset():
     def _log_format(self):
         return "({}) {}[JPY]/{}[BTC]({})/{}[TOTAL JPY]"
 
-    def logging(self):
+    def save(self, keyword):
         self._update()
 
+        # ログファイルへ
+        self._logging()
+
+        # jsonへ
+        self._logging_json(keyword)
+
+    def _logging_json(self, keyword):
+        file_name = "{}.json".format(keyword)
+        dir_path = path.ASSETS_LOG_DIR
+
+        if not os.path.exists(dir_path):
+            os.mkdir(dir_path)
+
+        file_path = os.path.join(dir_path, file_name)
+
+        data = {}
+        data["timestamp"] = dt.now_timestamp()
+        data["total"] = self.total
+
+        for asset in self.assets:
+            data[asset["id"]] = asset
+
+        json.write(file_path, data)
+
+    def _logging(self):
         def _log(id, jpy, btc, btc_as_jpy, total_jpy):
             log_format = self._log_format()
             self.logger.info(

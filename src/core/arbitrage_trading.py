@@ -14,6 +14,7 @@ from src.libs.logger import get_trading_logger_with_stdout
 
 from src.libs.logger import get_margin_logger
 from src.libs.historical_logger import HistoricalLogger
+import src.utils.datetime as dt
 
 from src.core.circuit_breaker import CircuitBreaker
 import src.env as env
@@ -112,8 +113,11 @@ class ArbitrageTrading(ArbitrageBase):
                 self.logger_margin.info(message_buyy_sellx)
 
     def _logging_tick_historical(self, x, y):
-        self.historical_logger.logging(self.ex_id_x, x.timestamp, x.bid, x.ask)
-        self.historical_logger.logging(self.ex_id_y, y.timestamp, y.bid, y.ask)
+        timestamp = dt.now_timestamp()
+        self.historical_logger.logging(self.ex_id_x, timestamp, x.bid, x.ask,
+                                       x.timestamp)
+        self.historical_logger.logging(self.ex_id_y, timestamp, y.bid, y.ask,
+                                       y.timestamp)
 
     def _logging_open_threshold_change(self):
         if self.analyzer.check_period_for_logging():
@@ -190,10 +194,6 @@ class ArbitrageTrading(ArbitrageBase):
 
             self.logger_with_stdout.info(message)
 
-            # order をだした直後だと早すぎてassetに反映されていない。
-            # クラッシュするので一旦封印
-            # self.asset.logging()
-
             if not self.demo_mode:
                 self.slack.notify_order(self.ex_id_x, self.ex_id_y,
                                         self.symbol, self.trade_amount, profit)
@@ -224,10 +224,6 @@ class ArbitrageTrading(ArbitrageBase):
                     profit_margin)
 
             self.logger_with_stdout.info(message)
-
-            # order をだした直後だと早すぎてassetに反映されていない。
-            # クラッシュするので一旦封印
-            # self.asset.logging()
 
             if not self.demo_mode:
                 self.slack.notify_order(self.ex_id_y, self.ex_id_x,
