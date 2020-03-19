@@ -15,6 +15,7 @@ from src.utils.historical import save_ticks
 import src.utils.tool as tool
 import src.utils.trade_history as trade_history
 import src.utils.report as report
+from src.utils.trade_analysis import run_analysis
 
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
@@ -305,6 +306,11 @@ def recent_profits(c):
 @task
 def recent_profits_by(c, hour):
     trade_history.show_recent_profits(int(hour))
+
+
+@task
+def analysis(c, timestamp):
+    run_analysis(timestamp)
 
 
 ###############

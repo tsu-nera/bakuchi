@@ -156,13 +156,12 @@ class ArbitrageBacktesting(ArbitrageBase):
         data = []
         data.append(["開始日時", start_timestamp])
         data.append(["終了日時", end_timestamp])
+        data.append(["取引単位[BTC]", self.trade_amount])
+        data.append(["利確しきい値[JPY]",self.open_threshold])
+        data.append(["損切りマージン[JPY]", self.profit_margin_diff])
 
         print("バックテスト情報")
-        print(tabulate(data))
-        print("利確しきい値 {}(JPY)".format(self.open_threshold))
-        print("損切りマージン {}(JPY)".format(self.profit_margin_diff))
-        print("取引単位 {}(BTC)".format(self.trade_amount))
-        print("--------")
+        print(tabulate(data, tablefmt="grid", numalign="right", stralign="right"))        
 
     def _report_trade_stats(self):
         data = []
