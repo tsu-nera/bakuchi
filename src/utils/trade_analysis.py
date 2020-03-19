@@ -16,6 +16,9 @@ class TradeAnalysis():
         self.df_cc = self.read_csv(ccxtconst.EXCHANGE_ID_COINCHECK)
         self.df_lq = self.read_csv(ccxtconst.EXCHANGE_ID_LIQUID)
 
+        self.start_asset = self._read_asset("start")
+        self.end_asset = self._read_asset("end")
+
     def _read_csv(self, file_path):
         return pd.read_csv(file_path, index_col="id",
                            parse_dates=["datetime"]).sort_values('datetime')
@@ -29,6 +32,11 @@ class TradeAnalysis():
         file_path = os.path.join(self.dir_path, path.CONFIG_JSON_FILE)
         return json.read(file_path)
 
+    def _read_asset(self, keyword):
+        file_name = "{}.json".format(keyword)
+        file_path = os.path.join(self.dir_path, path.ASSETS_DIR, file_name)
+        return json.read(file_path)
+
     def run(self):
         pass
 
@@ -39,17 +47,42 @@ class TradeAnalysis():
         start_timestamp = self.df_cc.iloc[0]["datetime"]
         end_timestamp = self.df_cc.iloc[-1]["datetime"]
 
+        data.append(["取引回数", len(self.df_cc)])
         data.append(["開始日時", start_timestamp])
         data.append(["終了日時", end_timestamp])
         data.append(["取引単位[BTC]", config["amount"]])
         data.append(["利確しきい値[JPY]", config["open_threshold"]])
         data.append(["損切りマージン[JPY]", config["profit_margin_diff"]])
 
-        print("バックテスト情報")
-        print(tabulate(data, tablefmt="grid", numalign="right", stralign="right"))
+        print("トレード情報")
+        print(
+            tabulate(data, tablefmt="grid", numalign="right",
+                     stralign="right"))
 
     def _report_trade_stats(self):
-        pass
+        data = []
+
+        def _report_trade_asset_result(label, start, end):
+            data = []
+            profit = end - start
+            data.append(["開始[{}]".format(label), start])
+            data.append(["終了[{}]".format(label), end])
+            data.append(["利益[{}]".format(label), profit])
+            return data
+
+        data.extend(
+            _report_trade_asset_result("JPY", self.start_asset["total"]["jpy"],
+                                       self.end_asset["total"]["jpy"]))
+        data.extend(
+            _report_trade_asset_result("BTC", self.start_asset["total"]["btc"],
+                                       self.end_asset["total"]["btc"]))
+        data.extend(
+            _report_trade_asset_result("TOTAL",
+                                       self.start_asset["total"]["total_jpy"],
+                                       self.end_asset["total"]["total_jpy"]))
+
+        print("トレード結果")
+        print(tabulate(data, tablefmt="grid", numalign="right"))
 
     def display(self):
         self._report_trade_meta()

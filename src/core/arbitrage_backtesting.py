@@ -154,6 +154,8 @@ class ArbitrageBacktesting(ArbitrageBase):
         end_timestamp = self.timestamps[-1]
 
         data = []
+        data.append(["レコード数", len(self.timestamps)])
+        data.append(["取引回数", self.trade_count])
         data.append(["開始日時", start_timestamp])
         data.append(["終了日時", end_timestamp])
         data.append(["取引単位[BTC]", self.trade_amount])
@@ -168,12 +170,6 @@ class ArbitrageBacktesting(ArbitrageBase):
     def _report_trade_stats(self):
         data = []
 
-        total_profit_btc = round(
-            self.exchange_x.get_profit_btc() +
-            self.exchange_y.get_profit_btc(), 3)
-        total_profit_jpy = self.exchange_x.get_profit_jpy(
-        ) + self.exchange_y.get_profit_jpy()
-
         total_balance_btc = round(
             self.exchange_x.get_balance_btc() +
             self.exchange_y.get_balance_btc(), 3)
@@ -183,20 +179,54 @@ class ArbitrageBacktesting(ArbitrageBase):
         init_balance_jpy = config.BACKTEST_BALANCE_JPY * 2
         init_balance_btc = config.BACKTEST_BALANCE_BTC * 2
 
-        if total_profit_btc == 0:
-            total_profit_btc = 0
+        def _report_trade_asset_result(label, start, end):
+            data = []
+            profit = end - start
+            data.append(["開始[{}]".format(label), start])
+            data.append(["終了[{}]".format(label), end])
+            data.append(["利益[{}]".format(label), profit])
+            return data
 
-        data.append(["レコード数", len(self.timestamps)])
-        data.append(["取引回数", self.trade_count])
-        data.append(["利益(JPY)", total_profit_jpy])
-        data.append(["元金(JPY)", init_balance_jpy])
-        data.append(["資産(JPY)", total_balance_jpy])
-        data.append(["利益(BTC)", total_profit_btc])
-        data.append(["元金(BTC)", init_balance_btc])
-        data.append(["資産(BTC)", total_balance_btc])
+        def _get_total_jpy():
+            start_jpy_x = config.BACKTEST_BALANCE_JPY
+            start_btc_x = config.BACKTEST_BALANCE_BTC
+            start_jpy_y = config.BACKTEST_BALANCE_JPY
+            start_btc_y = config.BACKTEST_BALANCE_BTC
+            start_bid_x = self.df_x["bid"][0]
+            start_bid_y = self.df_y["bid"][-1]
+
+            end_jpy_x = self.exchange_x.get_balance_jpy()
+            end_btc_x = self.exchange_x.get_balance_btc()
+            end_jpy_y = self.exchange_y.get_balance_jpy()
+            end_btc_y = self.exchange_y.get_balance_btc()
+            end_bid_x = self.df_x["bid"][0]
+            end_bid_y = self.df_y["bid"][-1]
+
+            start_total_jpy = sum([
+                start_jpy_x, start_jpy_y, start_btc_x * start_bid_x,
+                start_btc_y * start_bid_y
+            ])
+            end_total_jpy = sum([
+                end_jpy_x, end_jpy_y, end_btc_x * end_bid_x,
+                end_btc_y * end_bid_y
+            ])
+
+            return start_total_jpy, end_total_jpy
+
+        data.extend(
+            _report_trade_asset_result("JPY", init_balance_jpy,
+                                       total_balance_jpy))
+        data.extend(
+            _report_trade_asset_result("BTC", init_balance_btc,
+                                       total_balance_btc))
+
+        start_total_jpy, end_total_jpy = _get_total_jpy()
+        data.extend(
+            _report_trade_asset_result("TOTAL", start_total_jpy,
+                                       end_total_jpy))
 
         print("バックテスト結果")
-        print(tabulate(data, tablefmt="grid", numalign="rigth"))
+        print(tabulate(data, tablefmt="grid", numalign="right"))
 
     def _report_histories(self):
         data = self.histories
