@@ -12,3 +12,19 @@ def read_asset(exchange_id):
 
 def read_asset_total():
     return read_asset("total")
+
+
+def format_jpy(jpy):
+    return int(jpy)
+
+
+def format_jpy_float(jpy):
+    return round(jpy, 3)
+
+
+def format_btc(btc):
+    return round(btc, 3)
+
+
+def btc_to_jpy(btc_amount, bid):
+    return btc_amount * bid

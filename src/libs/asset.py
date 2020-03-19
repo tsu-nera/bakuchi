@@ -16,13 +16,7 @@ import src.env as env
 import src.utils.datetime as dt
 import src.constants.path as path
 
-
-def format_jpy(jpy):
-    return int(jpy)
-
-
-def format_btc(btc):
-    return round(btc, 6)
+from src.utils.asset import format_jpy, format_btc
 
 
 class Asset():
