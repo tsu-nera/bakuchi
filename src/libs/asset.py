@@ -16,10 +16,6 @@ import src.env as env
 import src.utils.datetime as dt
 import src.constants.path as path
 
-EXCHANGE_ID_LIST = [
-    ccxtconst.EXCHANGE_ID_COINCHECK, ccxtconst.EXCHANGE_ID_LIQUID
-]
-
 
 def format_jpy(jpy):
     return int(jpy)
@@ -44,26 +40,30 @@ class Asset():
         tick = c.fetch_tick()
         return tick["bid"], tick["ask"]
 
-    def _create_asset(self, id, jpy, btc, btc_as_jpy, total_jpy):
+    def _create_asset(self, id, jpy, btc, btc_as_jpy, total_jpy, bid, ask):
         return {
             "id": id,
             "jpy": format_jpy(jpy),
             "btc": format_btc(btc),
             "btc_as_jpy": format_jpy(btc_as_jpy),
-            "total_jpy": format_jpy(total_jpy)
+            "total_jpy": format_jpy(total_jpy),
+            "bid": bid,
+            "ask": ask
         }
 
     def _update(self):
         self.assets = []
         self.total = {}
 
-        for exchange_id in EXCHANGE_ID_LIST:
+        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
             jpy, btc = self._get_balance(exchange_id)
 
             btc_as_jpy = self._calc_btc_to_jpy(exchange_id, btc)
 
+            bid, ask = self._get_tick(exchange_id)
+
             asset = self._create_asset(exchange_id, jpy, btc, btc_as_jpy,
-                                       jpy + btc_as_jpy)
+                                       jpy + btc_as_jpy, bid, ask)
             self.assets.append(asset)
 
         def _sum(key):
@@ -173,7 +173,7 @@ class Asset():
         '''
         与えられたBTCの量から日本円の価格を計算する
         '''
-        for exchange_id in EXCHANGE_ID_LIST:
+        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
             price = self._calc_btc_to_jpy(exchange_id, btc_amount)
             output = "{}[BTC] to {}[JPY] ({})".format(btc_amount, price,
                                                       exchange_id)
@@ -187,7 +187,7 @@ class Asset():
         '''
         与えられた日本円の価格で購入できるBTCの量を計算する
         '''
-        for exchange_id in EXCHANGE_ID_LIST:
+        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
             btc_amount = self._calc_jpy_to_btc(exchange_id, jpy_price)
             output = "{}[JPY] to {}[BTC] ({})".format(jpy_price, btc_amount,
                                                       exchange_id)
@@ -215,6 +215,12 @@ class Asset():
         file_path = os.path.join(dir_path, file_name)
 
         data = {}
+        data["timestamp"] = dt.now_timestamp()
+        data["total"] = self.total
+
+        for asset in self.assets:
+            data[asset["id"]] = asset
+
         json.write(file_path, data)
 
     def _logging(self):

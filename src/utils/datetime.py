@@ -28,8 +28,3 @@ def today_dirname():
 def now_timestamp():
     format_string = DATETIME_BASE_FORMAT
     return datetime.datetime.now().strftime(format_string)
-
-
-NOW_DIRNAME = now_dirname()
-NOW_TIMESTAMP = now_timestamp()
-TODAY_DIRNAME = today_dirname()

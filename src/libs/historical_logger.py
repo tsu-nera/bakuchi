@@ -56,7 +56,7 @@ class HistoricalLogger():
         logger.info(header)
 
     def _get_dir_path(self):
-        return os.path.join(path.HISTORICAL_RAWDATA_DIR_PATH, dt.NOW_DIRNAME)
+        return os.path.join(path.HISTORICAL_RAWDATA_DIR_PATH, dt.now_dirname())
 
     def _get_file_path(self, dir_path, exchange_id):
         file_name = "{}.csv".format(exchange_id)
