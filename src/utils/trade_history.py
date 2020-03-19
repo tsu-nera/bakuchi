@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 import datetime
-import src.utils.json as json
 from statistics import mean
 
 from tabulate import tabulate
@@ -286,31 +285,3 @@ def convert_trades(from_path, exchange_id):
         df_new.to_csv(to_file_path)
 
 
-def create_profit_df(cc_df, lq_df):
-    df = pd.DataFrame({
-        'timestamp': cc_df['datetime'].to_list(),
-        'cc_side': cc_df['side'].to_list(),
-        'cc_price': cc_df['price'].to_list(),
-        'lq_side': lq_df['side'].to_list(),
-        'lq_price': lq_df['price'].to_list()
-    })
-
-    def calc_profit(x):
-        if x['cc_side'] == 'sell':
-            cc_price = x['cc_price']
-        else:
-            cc_price = -1 * x['cc_price']
-
-        if x['lq_side'] == 'sell':
-            lq_price = x['lq_price']
-        else:
-            lq_price = -1 * x['lq_price']
-
-        return cc_price + lq_price
-
-    df['profit'] = df.apply(calc_profit, axis=1)
-
-    df.timestamp = pd.to_datetime(df.timestamp, format=dt.DATETIME_BASE_FORMAT)
-    df = df.set_index('timestamp')
-
-    return df
