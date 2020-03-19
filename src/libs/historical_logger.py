@@ -1,6 +1,5 @@
 import os
 import shutil
-import json
 from logging import getLogger
 
 from src.libs.logger import create_csv_logger
@@ -9,6 +8,7 @@ import src.constants.path as path
 import src.config as config
 # from src.libs.asset import Asset
 import src.utils.datetime as dt
+import src.utils.json as json
 
 
 class HistoricalLogger():
@@ -43,8 +43,7 @@ class HistoricalLogger():
             "open_threshold_change_sec": config.OPEN_THRESHOLD_CHANGE_SEC
         }
 
-        json_file = open(self.config_file_path, 'w')
-        json.dump(config_dict, json_file, indent=2)
+        json.write(self.config_file_path, config_dict)
 
     def logging(self, exchange_id, timestamp, bid, ask):
         logger = self._get_logger(exchange_id)

@@ -190,10 +190,6 @@ class ArbitrageTrading(ArbitrageBase):
 
             self.logger_with_stdout.info(message)
 
-            # order をだした直後だと早すぎてassetに反映されていない。
-            # クラッシュするので一旦封印
-            # self.asset.logging()
-
             if not self.demo_mode:
                 self.slack.notify_order(self.ex_id_x, self.ex_id_y,
                                         self.symbol, self.trade_amount, profit)
@@ -224,10 +220,6 @@ class ArbitrageTrading(ArbitrageBase):
                     profit_margin)
 
             self.logger_with_stdout.info(message)
-
-            # order をだした直後だと早すぎてassetに反映されていない。
-            # クラッシュするので一旦封印
-            # self.asset.logging()
 
             if not self.demo_mode:
                 self.slack.notify_order(self.ex_id_y, self.ex_id_x,

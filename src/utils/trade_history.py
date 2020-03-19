@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import datetime
-import json
+import src.utils.json as json
 from statistics import mean
 
 from tabulate import tabulate
@@ -320,9 +320,7 @@ def read_trade_asset(keyword, timestamp):
     file_name = "{}.json".format(keyword)
     file_path = os.path.join(path.REPORTS_DIR, timestamp, path.ASSETS_DIR,
                              file_name)
-    with open(file_path) as f:
-        data = json.load(f)
-    return data
+    return json.read(file_path)
 
 
 def display_report(timestamp):
