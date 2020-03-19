@@ -9,7 +9,6 @@ import src.utils.datetime as dt
 
 from src.utils.asset import format_jpy_float, btc_to_jpy
 
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
@@ -179,7 +178,11 @@ class TradeAnalysis():
 
         return df
 
-    def get_tick_fig(self, bids, asks):
+    def get_fig(
+            self,
+            tick_bids,
+            tick_asks,
+    ):
         timestamps = self.ticks_cc.index
 
         fig, ax = plt.subplots(figsize=(12, 5))
@@ -190,8 +193,10 @@ class TradeAnalysis():
         fig.tight_layout()
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%m/%d\n%H:%M'))
 
-        ax.plot(timestamps, bids, lw=0.5)
-        ax.plot(timestamps, asks, lw=0.5)
+        ax.plot(timestamps, tick_bids, lw=0.5)
+        ax.plot(timestamps, tick_asks, lw=0.5)
+
+        ax.scatter(self.trades_cc['datetime'], self.trades_cc['rate'])
 
         return fig, ax
 
