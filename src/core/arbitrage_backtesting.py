@@ -8,6 +8,8 @@ from src.core.arbitrage_base import ArbitrageBase
 from src.core.tick import Tick
 from src.core.exchange_backtesting import ExchangeBacktesting as Exchange
 
+from src.utils.asset import format_btc, format_jpy
+
 
 class ArbitrageBacktesting(ArbitrageBase):
     def __init__(self,
@@ -180,18 +182,20 @@ class ArbitrageBacktesting(ArbitrageBase):
 
         # stats
         self.result["start_price_jpy"] = config.BACKTEST_BALANCE_JPY * 2
-        self.result["end_price_jpy"] = sum([
-            self.exchange_x.get_balance_jpy(),
-            self.exchange_y.get_balance_jpy()
-        ])
+        self.result["end_price_jpy"] = format_jpy(
+            sum([
+                self.exchange_x.get_balance_jpy(),
+                self.exchange_y.get_balance_jpy()
+            ]))
         self.result["profit_jpy"] = self.result["end_price_jpy"] - self.result[
             "start_price_jpy"]
 
         self.result["start_price_btc"] = config.BACKTEST_BALANCE_BTC * 2
-        self.result["end_price_btc"] = sum([
-            self.exchange_x.get_balance_btc(),
-            self.exchange_y.get_balance_btc()
-        ])
+        self.result["end_price_btc"] = format_btc(
+            sum([
+                self.exchange_x.get_balance_btc(),
+                self.exchange_y.get_balance_btc()
+            ]))
         self.result["profit_btc"] = self.result["end_price_btc"] - self.result[
             "start_price_btc"]
 

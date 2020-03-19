@@ -53,6 +53,7 @@ class Backtesting():
         return self.df_lq
 
     def get_result_data(self):
+        self.arbitrage.run()
         return self.arbitrage.get_result_data()
 
 
