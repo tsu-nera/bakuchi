@@ -45,13 +45,13 @@ class HistoricalLogger():
 
         json.write(self.config_file_path, config_dict)
 
-    def logging(self, exchange_id, timestamp, bid, ask):
+    def logging(self, exchange_id, timestamp, bid, ask, tick_timestamp):
         logger = self._get_logger(exchange_id)
-        message = "{},{},{}".format(timestamp, bid, ask)
+        message = "{},{},{},{}".format(timestamp, bid, ask, tick_timestamp)
         logger.info(message)
 
     def _logging_header(self, exchange_id):
-        header = 'timestamp,bid,ask'
+        header = 'timestamp,bid,ask,tick_timestamp'
         logger = self._get_logger(exchange_id)
         logger.info(header)
 
