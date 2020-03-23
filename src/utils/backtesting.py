@@ -5,9 +5,11 @@ import src.constants.path as path
 from src.drivers.csv_driver import CsvDriver
 from src.core.arbitrage_backtesting import ArbitrageBacktesting
 
+import src.utils.json as json
+
 
 class Backtesting():
-    def __init__(self, timestamp, simulate_mode=False):
+    def __init__(self, timestamp, simulate_mode=False, report=False):
         self.timestamp = timestamp
         self.csv_driver = CsvDriver()
 
@@ -52,8 +54,20 @@ class Backtesting():
     def get_liquid_df(self):
         return self.df_lq
 
-    def get_result_data(self):
-        self.arbitrage.run()
+    def get_result_data(self, report_mode=False):
+        if report_mode:
+            config_file_path = os.path.join(path.REPORTS_DIR, self.timestamp,
+                                            path.CONFIG_JSON_FILE)
+            config = json.read(config_file_path)
+            self.arbitrage.run(amount=int(config["amount"]),
+                               open_threshold=int(config["open_threshold"]),
+                               profit_margin_diff=int(
+                                   config["profit_margin_diff"]),
+                               open_threshold_change_sec=int(
+                                   config["open_threshold_change_sec"]))
+
+        else:
+            self.arbitrage.run()
         return self.arbitrage.get_result_data()
 
 

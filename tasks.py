@@ -314,7 +314,21 @@ def trade_analysis(c, timestamp):
 
 
 @task
+def trade_latest_analysis(c):
+    dir_path = path.REPORTS_DIR
+    timestamp = get_latest_dirname(dir_path)
+    run_analysis(timestamp)
+
+
+@task
 def display_report(c, timestamp):
+    report.display(timestamp)
+
+
+@task
+def display_latest_report(c):
+    dir_path = path.REPORTS_DIR
+    timestamp = get_latest_dirname(dir_path)
     report.display(timestamp)
 
 
@@ -323,6 +337,11 @@ def display_report(c, timestamp):
 ###############
 def get_latest_dirpath(dir_path):
     return max(glob.glob(os.path.join(dir_path, '*/')), key=os.path.getmtime)
+
+
+def get_latest_dirname(dir_path):
+    file_path = get_latest_dirpath(dir_path)
+    return os.path.basename(os.path.dirname(file_path))
 
 
 @task
