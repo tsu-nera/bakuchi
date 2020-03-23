@@ -350,6 +350,11 @@ def generate_report(c, dir_name):
 
 
 @task
+def run_notebook(c, file_path):
+    report.run_notebook(file_path)
+
+
+@task
 def generate_latest_report(c):
     report.generate_latest()
 
