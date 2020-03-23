@@ -9,9 +9,9 @@ class ArbitrageBase(metaclass=ABCMeta):
     ACTION_OPENING = "OPENING"
     ACTION_CLOSING = "CLOSING"
 
-    def __init__(self):
+    def __init__(self, open_threshold_change_sec=None):
         self._closing()
-        self.analyzer = ArbitrageAnalyzer()
+        self.analyzer = ArbitrageAnalyzer(open_threshold_change_sec)
         self.opened = False
         self.entry_open_margin = None
 

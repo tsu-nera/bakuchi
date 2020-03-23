@@ -94,7 +94,7 @@ def display(timestamp):
     backtesting = Backtesting(timestamp)
     trade_analysis = TradeAnalysis(timestamp)
 
-    backtest_data = backtesting.get_result_data()
+    backtest_data = backtesting.get_result_data(report_mode=True)
     trade_data = trade_analysis.get_result_data()
 
     def _report_trade_meta(backtest, trade):

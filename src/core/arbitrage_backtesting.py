@@ -59,8 +59,15 @@ class ArbitrageBacktesting(ArbitrageBase):
         if profit_margin_diff:
             self.profit_margin_diff = profit_margin_diff
 
-    def run(self, amount=None, open_threshold=None, profit_margin_diff=None):
+    def run(self,
+            amount=None,
+            open_threshold=None,
+            profit_margin_diff=None,
+            open_threshold_change_sec=None):
+
         self._update_run_params(amount, open_threshold, profit_margin_diff)
+        self.analyzer.update_open_threshold_change_sec(
+            open_threshold_change_sec)
 
         n = len(self.timestamps)
 
