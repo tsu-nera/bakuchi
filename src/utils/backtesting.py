@@ -59,11 +59,12 @@ class Backtesting():
             config_file_path = os.path.join(path.REPORTS_DIR, self.timestamp,
                                             path.CONFIG_JSON_FILE)
             config = json.read(config_file_path)
-            self.arbitrage.run(
-                amount=config["amount"],
-                open_threshold=config["open_threshold"],
-                profit_margin_diff=config["profit_margin_diff"],
-                open_threshold_change_sec=config["open_threshold_change_sec"])
+            self.arbitrage.run(amount=int(config["amount"]),
+                               open_threshold=int(config["open_threshold"]),
+                               profit_margin_diff=int(
+                                   config["profit_margin_diff"]),
+                               open_threshold_change_sec=int(
+                                   config["open_threshold_change_sec"]))
 
         else:
             self.arbitrage.run()

@@ -43,4 +43,5 @@ class ArbitrageAnalyzer():
         return new_threshold
 
     def update_open_threshold_change_sec(self, value):
-        self.open_threshold_change_sec = value
+        if value:
+            self.open_threshold_change_sec = value
