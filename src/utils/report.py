@@ -2,13 +2,17 @@ import os
 import glob
 import shutil
 from distutils.dir_util import copy_tree
+import pandas as pd
 
 from tabulate import tabulate
 
 import src.constants.path as path
+import src.constants.ccxtconst as ccxtconst
 
 from src.utils.backtesting import Backtesting
 from src.utils.trade_analysis import TradeAnalysis
+
+from src.utils.trade_history import save_report_trades
 
 
 def get_latest_dirpath(dir_path):
@@ -22,12 +26,6 @@ def generate(dir_name):
 
     copy_tree(from_dir, to_dir)
 
-    # jupyter notebookの実行
-    generate_notebook(dir_name)
-
-    # 結果の出力
-    display(dir_name)
-
 
 def generate_latest():
     production_dir = path.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
@@ -35,6 +33,14 @@ def generate_latest():
     dir_name = from_dir.split('/')[-2]
 
     generate(dir_name)
+
+    _fetch_trades(dir_name)
+
+    # jupyter notebookの実行
+    generate_notebook(dir_name)
+
+    # 結果の出力
+    display(dir_name)
 
 
 def run_notebook(file_path):
@@ -57,6 +63,31 @@ def generate_notebook(dir_name):
         shutil.copy(from_path, to_path)
 
         run_notebook(to_path)
+
+
+def _get_trade_timestamps(timestamp):
+    to_dir = os.path.join(path.REPORTS_DIR, timestamp)
+
+    start_timestamps = []
+    end_timestamps = []
+
+    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        file_name = "{}.csv".format(exchange_id)
+        file_path = os.path.join(to_dir, path.EXCHANGES_DIR, file_name)
+
+        trade_data = pd.read_csv(file_path,
+                                 parse_dates=["timestamp"
+                                              ]).sort_values('timestamp')
+
+        start_timestamps.append(trade_data.iloc[0]["timestamp"])
+        end_timestamps.append(trade_data.iloc[-1]["timestamp"])
+
+    return max(start_timestamps), min(end_timestamps)
+
+
+def _fetch_trades(dir_name):
+    start_timestamp, end_timestamp = _get_trade_timestamps(dir_name)
+    save_report_trades(dir_name, start_timestamp, end_timestamp)
 
 
 def display(timestamp):

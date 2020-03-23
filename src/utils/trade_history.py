@@ -285,3 +285,21 @@ def convert_trades(from_path, exchange_id):
         df_new.to_csv(to_file_path)
 
 
+def save_report_trades(dir_name, start_timestamp, end_timestamp):
+    to_dir = os.path.join(path.REPORTS_DIR, dir_name, path.TRADES_DIR)
+
+    if not os.path.exists(to_dir):
+        os.mkdir(to_dir)
+
+    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        trades = fetch_trades(exchange_id)
+        df = pd.DataFrame.from_dict(trades)
+
+        df["datetime"] = pd.to_datetime(df["datetime"])
+        df.sort_values("datetime", inplace=True)
+
+        df = df[df['datetime'] >= start_timestamp]
+        df = df[df["datetime"] < end_timestamp]
+
+        file_path = os.path.join(to_dir, "{}.csv".format(exchange_id))
+        df.to_csv(file_path, index=None)
