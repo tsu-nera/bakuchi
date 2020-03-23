@@ -176,6 +176,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.result["trade_count"] = self.trade_count
         self.result["start_timestamp"] = self.timestamps[0]
         self.result["end_timestamp"] = self.timestamps[-1]
+        self.result["duration"] = self.timestamps[-1] - self.timestamps[0]
         self.result["trade_amount"] = self.trade_amount
         self.result["open_threshold"] = self.open_threshold
         self.result["profit_margin_diff"] = self.profit_margin_diff
@@ -223,6 +224,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         data.append(["取引回数", self.result["trade_count"]])
         data.append(["開始日時", self.result["start_timestamp"]])
         data.append(["終了日時", self.result["end_timestamp"]])
+        data.append(["取引時間[H]", self.result["duration"]])
         data.append(["取引単位[BTC]", self.result["trade_amount"]])
         data.append(["利確しきい値[JPY]", self.result["open_threshold"]])
         data.append(["損切りマージン[JPY]", self.result["profit_margin_diff"]])

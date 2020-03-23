@@ -105,6 +105,7 @@ def display(timestamp):
             ["開始日時", backtest["start_timestamp"], trade["start_timestamp"]])
         data.append(
             ["終了日時", backtest["end_timestamp"], trade["end_timestamp"]])
+        data.append(["取引時間[H]", backtest["duration"], trade["duration"]])
         data.append(
             ["取引単位[BTC]", backtest["trade_amount"], trade["trade_amount"]])
         data.append([
