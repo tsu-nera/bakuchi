@@ -1,0 +1,28 @@
+{
+  "timestamp": "2020-03-20 02:10:48",
+  "total": {
+    "id": "total",
+    "jpy": 11002,
+    "btc": 0.022,
+    "btc_as_jpy": 15142,
+    "total_jpy": 26144
+  },
+  "coincheck": {
+    "id": "coincheck",
+    "jpy": 5236,
+    "btc": 0.011,
+    "btc_as_jpy": 7589,
+    "total_jpy": 12825,
+    "bid": 688935.0,
+    "ask": 689702.0
+  },
+  "liquid": {
+    "id": "liquid",
+    "jpy": 5766,
+    "btc": 0.011,
+    "btc_as_jpy": 7553,
+    "total_jpy": 13319,
+    "bid": 686643.0,
+    "ask": 686800.0
+  }
+}
