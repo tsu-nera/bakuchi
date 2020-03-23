@@ -1,5 +1,6 @@
 import os
 import glob
+import shutil
 from distutils.dir_util import copy_tree
 
 from tabulate import tabulate
@@ -21,6 +22,12 @@ def generate(dir_name):
 
     copy_tree(from_dir, to_dir)
 
+    # jupyter notebookの実行
+    generate_notebook(dir_name)
+
+    # 結果の出力
+    display(dir_name)
+
 
 def generate_latest():
     production_dir = path.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
@@ -28,6 +35,28 @@ def generate_latest():
     dir_name = from_dir.split('/')[-2]
 
     generate(dir_name)
+
+
+def run_notebook(file_path):
+    command_base = "jupyter nbconvert --to notebook --ExecutePreprocessor.timeout=-1 --execute --inplace --ExecutePreprocessor.kernel_name=python"
+    command = " ".join([command_base, file_path])
+
+    os.system(command)
+
+
+def generate_notebook(dir_name):
+    from_dir = path.NOTEBOOK_TEMPLATES_DIR
+    to_dir = os.path.join(path.REPORTS_DIR, dir_name)
+
+    reports = [path.REPORT_BACKTEST, path.REPORT_TRADE]
+
+    for report_name in reports:
+        from_path = os.path.join(from_dir, report_name)
+        to_path = os.path.join(to_dir, report_name)
+
+        shutil.copy(from_path, to_path)
+
+        run_notebook(to_path)
 
 
 def display(timestamp):

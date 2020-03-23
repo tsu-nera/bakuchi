@@ -12,6 +12,8 @@ CRON_DIR = "cron"
 ASSETS_DIR = "assets"
 REPORTS_DIR = "reports"
 EXCHANGES_DIR = "exchanges"
+NOTEBOOKS_DIR = "notebooks"
+TEMPLATES_DIR = "templates"
 
 # file name
 TRADING_LOG_FILE = "trading.log"
@@ -21,6 +23,9 @@ ASSET_LOG_FILE = "asset.log"
 CONFIG_JSON_FILE = "config.json"
 TRADING_START_ASSET_FILE = "start.json"
 TRADING_END_ASSET_FILE = "end.json"
+
+REPORT_BACKTEST = "backtest.ipynb"
+REPORT_TRADE = "trade.ipynb"
 
 # bakuchi_production
 PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH = os.path.join(PRODUCTION_DIR,
@@ -64,3 +69,6 @@ TRADES_ASSETS = [TRADING_START_ASSET_FILE_PATH, TRADING_END_ASSET_FILE_PATH]
 
 # logs/cron
 CRON_ASSET_LOG_FILE_PATH = os.path.join(CRON_LOG_DIR, ASSET_LOG_FILE)
+
+# notebooks
+NOTEBOOK_TEMPLATES_DIR = os.path.join(NOTEBOOKS_DIR, TEMPLATES_DIR)
