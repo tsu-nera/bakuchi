@@ -91,6 +91,22 @@ class TradeAnalysis():
         self.result["total_profit_jpy"] = self.result[
             "total_end_price_jpy"] - self.result["total_start_price_jpy"]
 
+        notrade_start_total_jpy = self.start_asset['total']['total_jpy']
+        notrade_end_total_jpy = format_jpy_float(
+            self.start_asset['total']['jpy'] + sum([
+                btc_to_jpy(self.start_asset[exchange_id]['btc'],
+                           self.end_asset[exchange_id]['bid'])
+                for exchange_id in ccxtconst.EXCHANGE_ID_LIST
+            ]))
+        self.result["bot_profit_jpy"] = format_jpy_float(
+            self.end_asset["total"]["total_jpy"] -
+            self.start_asset["total"]["total_jpy"])
+
+        self.result["market_profit_jpy"] = format_jpy_float(
+            notrade_end_total_jpy - notrade_start_total_jpy)
+        self.result["trade_profit_jpy"] = self.result[
+            "bot_profit_jpy"] - self.result["market_profit_jpy"]
+
     def _report_trade_meta(self):
         data = []
 
@@ -134,24 +150,14 @@ class TradeAnalysis():
         print(tabulate(data, tablefmt="grid", numalign="right"))
 
     def _report_trade_profits(self):
-        notrade_start_total_jpy = self.start_asset['total']['total_jpy']
-        notrade_end_total_jpy = format_jpy_float(
-            self.start_asset['total']['jpy'] + sum([
-                btc_to_jpy(self.start_asset[exchange_id]['btc'],
-                           self.end_asset[exchange_id]['bid'])
-                for exchange_id in ccxtconst.EXCHANGE_ID_LIST
-            ]))
-        market_profit_jpy = format_jpy_float(notrade_end_total_jpy -
-                                             notrade_start_total_jpy)
 
         profits = []
         profits.append(["Bot利益", "トレード利益", "市場利益"])
 
-        bot_profit = format_jpy_float(self.end_asset["total"]["total_jpy"] -
-                                      self.start_asset["total"]["total_jpy"])
-
-        trade_profit = bot_profit - market_profit_jpy
-        profits.append([bot_profit, trade_profit, market_profit_jpy])
+        profits.append([
+            self.result["bot_profit_jpy"], self.result["trade_profit_jpy"],
+            self.result["market_profit_jpy"]
+        ])
 
         print("トレード分析")
         print(
