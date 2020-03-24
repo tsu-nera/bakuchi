@@ -1,9 +1,4 @@
-import os
-import shutil
-import src.utils.datetime as dt
-
 import src.constants.ccxtconst as ccxtconst
-import src.constants.path as path
 
 from src.libs.ccxt_client import CcxtClient
 
@@ -35,5 +30,4 @@ def check_profit_margin():
 
     print(output1)
     print(output2)
-
 
