@@ -303,3 +303,12 @@ def save_report_trades(dir_name, start_timestamp, end_timestamp):
 
         file_path = os.path.join(to_dir, "{}.csv".format(exchange_id))
         df.to_csv(file_path, index=None)
+
+
+def get_trades(exchange_id, count=None):
+    trades = fetch_trades(exchange_id)
+
+    if count:
+        return trades[:count]
+    else:
+        return trades

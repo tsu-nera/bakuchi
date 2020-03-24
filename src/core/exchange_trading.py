@@ -48,7 +48,8 @@ class ExchangeTrading(ExchangeBase):
         if ask_for_coincheck:
             # coincheckでは buyでどうも実際よりも低い値で注文が成立されるので
             # 補正値でrequestを出してみる
-            adjusted_amount = amount + COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC
+            # adjusted_amount = amount + COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC
+            adjusted_amount = amount
             price = int(ask_for_coincheck * adjusted_amount)
             response = self.client.create_market_buy_order(price)
         else:
