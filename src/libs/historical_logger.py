@@ -37,10 +37,16 @@ class HistoricalLogger():
 
     def _dump_config(self):
         config_dict = {
-            "amount": config.TRADE_AMOUNT,
-            "open_threshold": config.TRADE_OPEN_THRESHOLD,
-            "profit_margin_diff": config.TRADE_PROFIT_MARGIN_DIFF,
-            "open_threshold_change_sec": config.OPEN_THRESHOLD_CHANGE_SEC
+            "amount":
+            config.TRADE_AMOUNT,
+            "open_threshold":
+            config.TRADE_OPEN_THRESHOLD,
+            "profit_margin_diff":
+            config.TRADE_PROFIT_MARGIN_DIFF,
+            "open_threshold_change_sec":
+            config.OPEN_THRESHOLD_CHANGE_SEC,
+            "coincheck_order_buy_adjust_amount_btc":
+            config.COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC
         }
 
         json.write(self.config_file_path, config_dict)
