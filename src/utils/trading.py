@@ -1,4 +1,5 @@
 import os
+import ccxt
 import shutil
 import traceback
 
@@ -84,6 +85,10 @@ def run_trading(demo_mode=False):
     except KeyboardInterrupt:
         # Botを手動で止めるときはCtrl+Cなのでそのアクションを捕捉
         logger.info("keyboard interuption occured. stop trading bot...")
+    except ccxt.InsufficientFunds:
+        # circuit breaker でログを残しているのでここでログしなくてもいい。
+        slack_error = SlackClient(env.SLACK_WEBHOOK_URL_ERROR)
+        slack_error.notify_error(traceback.format_exc())
     except Exception as e:
         # エラー発生したらログとslack通知
         slack_error = SlackClient(env.SLACK_WEBHOOK_URL_ERROR)

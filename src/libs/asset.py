@@ -163,29 +163,42 @@ class Asset():
         bid, _ = self._get_tick(exchange_id)
         return format_jpy(btc_amount * bid)
 
-    def calc_btc_to_jpy(self, btc_amount):
+    def calc_btc_to_jpy(self, btc_amount, verbose=True):
         '''
         与えられたBTCの量から日本円の価格を計算する
         '''
+        result = {}
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
             price = self._calc_btc_to_jpy(exchange_id, btc_amount)
             output = "{}[BTC] to {}[JPY] ({})".format(btc_amount, price,
                                                       exchange_id)
-            print(output)
+
+            if verbose:
+                print(output)
+
+            result[exchange_id] = price
+
+        return result
 
     def _calc_jpy_to_btc(self, exchange_id, jpy_price):
         _, ask = self._get_tick(exchange_id)
         return format_btc_more(jpy_price / ask)
 
-    def calc_jpy_to_btc(self, jpy_price):
+    def calc_jpy_to_btc(self, jpy_price, verbose=True):
         '''
         与えられた日本円の価格で購入できるBTCの量を計算する
         '''
+        result = {}
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
             btc_amount = self._calc_jpy_to_btc(exchange_id, jpy_price)
             output = "{}[JPY] to {}[BTC] ({})".format(jpy_price, btc_amount,
                                                       exchange_id)
-            print(output)
+            if verbose:
+                print(output)
+
+            result[exchange_id] = btc_amount
+
+        return result
 
     def _log_format(self):
         return "({}) {}[JPY]/{}[BTC]({})/{}[TOTAL JPY]"

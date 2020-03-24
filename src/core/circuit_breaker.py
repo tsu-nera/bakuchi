@@ -1,9 +1,12 @@
 import datetime
 import time
+import ccxt
 
 from src.libs.logger import get_trading_logger_with_stdout
 import src.constants.ccxtconst as ccxtconst
 import src.utils.private as private
+
+from src.libs.asset import Asset
 
 import src.config as config
 
@@ -86,14 +89,36 @@ class CircuitBreaker():
         # 資産状況のチェック
         assets_btc = []
         assets_jpy = []
+        balances = {}
 
         for exchange_id in self.exchange_ids:
             balance = private.fetch_balance(exchange_id)
+
+            balances[exchange_id] = balance
 
             asset_btc = {"id": exchange_id, "value": balance["BTC"]}
             asset_jpy = {"id": exchange_id, "value": balance["JPY"]}
             assets_btc.append(asset_btc)
             assets_jpy.append(asset_jpy)
+
+        # 資金不足でBotを落とすかどうかを判定
+        trade_amount_btc = config.TRADE_AMOUNT
+        trade_amount_jpys = Asset().calc_btc_to_jpy(config.TRADE_AMOUNT,
+                                                    verbose=False)
+        for exchange_id, balance in balances.items():
+            btc = balance["BTC"]
+            jpy = balance["JPY"]
+
+            trade_amount_jpy = trade_amount_jpys[exchange_id]
+
+            if btc < trade_amount_btc and jpy < trade_amount_jpy:
+                self.logger.error(
+                    "{} don't have enough btc={} amount_btc={}/jpy={} amount_jpy={}"
+                    .format(exchange_id, btc, trade_amount_btc, jpy,
+                            trade_amount_jpy))
+
+                self.logger.info("!!! STOP BOT TRADING !!!")
+                raise ccxt.InsufficientFunds
 
         for asset in assets_btc:
             exchange_id = asset['id']
