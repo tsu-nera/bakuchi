@@ -2,11 +2,9 @@ from invoke import task, run
 
 import os
 import glob
-import time
 
 import importlib
 import psutil
-import numpy as np
 from distutils.dir_util import copy_tree
 
 import src.utils.public as public
@@ -425,46 +423,4 @@ def is_bot(c):
 
 @task
 def adjust_coincheck_buy_amount(c):
-    adjust_amount_diff_list = [
-        0, 0.000001, 0.000002, 0.000003, 0.000004, 0.000005
-    ]
-    amount = 0.006
-
-    for adjust_amount_diff in adjust_amount_diff_list:
-        print("amount={}, adjust_amount_diff={}".format(
-            amount, adjust_amount_diff))
-
-        adjusted_amount = amount + adjust_amount_diff
-
-        count = 10
-
-        print("order start count={}".format(count))
-
-        for _ in range(count):
-            order_info = private.create_coincheck_buy_order(
-                ccxtconst.SYMBOL_BTC_JPY, adjusted_amount)
-            print(order_info)
-            time.sleep(5)
-
-            order_info = private.create_coincheck_sell_order(
-                ccxtconst.SYMBOL_BTC_JPY, amount)
-            print(order_info)
-            time.sleep(5)
-
-        print("order end")
-
-        print("get trade histories")
-        trades = trade_history.get_trades(ccxtconst.EXCHANGE_ID_COINCHECK,
-                                          count * 2)
-
-        amounts = []
-        for trade in trades:
-            if trade["side"] == "buy":
-                amounts.append(trade["amount"])
-
-        print(amounts)
-
-        print("buy amount mean: {}, std: {}".format(np.mean(amounts),
-                                                    np.std(amounts)))
-
-        print()
+    tool.adjust_coincheck_buy_amount()

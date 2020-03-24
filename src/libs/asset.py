@@ -16,7 +16,7 @@ import src.env as env
 import src.utils.datetime as dt
 import src.constants.path as path
 
-from src.utils.asset import format_jpy, format_btc_more, format_btc
+from src.utils.asset import format_jpy, format_btc_more
 
 
 class Asset():
@@ -65,7 +65,7 @@ class Asset():
 
         self.total["id"] = "total"
         self.total["jpy"] = _sum("jpy")
-        self.total["btc"] = _sum("btc")
+        self.total["btc"] = format_btc_more(_sum("btc"))
         self.total["btc_as_jpy"] = _sum("btc_as_jpy")
         self.total["total_jpy"] = _sum("total_jpy")
 
@@ -175,7 +175,7 @@ class Asset():
 
     def _calc_jpy_to_btc(self, exchange_id, jpy_price):
         _, ask = self._get_tick(exchange_id)
-        return format_btc(jpy_price / ask)
+        return format_btc_more(jpy_price / ask)
 
     def calc_jpy_to_btc(self, jpy_price):
         '''
