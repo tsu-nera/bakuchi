@@ -20,7 +20,7 @@ def _create_trade(id, order_id, datetime, pair, side, fee, amount, price,
         "pair": pair,
         "side": side,
         "fee": fee,
-        "amount": round(float(amount), 9),
+        "amount": abs(round(float(amount), 9)),
         "price": round(abs(float(price)), 3),
         "rate": round(float(rate), 3)
     }

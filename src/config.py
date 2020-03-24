@@ -15,3 +15,6 @@ BACKTEST_OPEN_THRESHOLD = int(config["backtest"]["open_threshold"])
 BACKTEST_PROFIT_MARGIN_DIFF = int(config["backtest"]["profit_margin_diff"])
 BACKTEST_BALANCE_BTC = float(config["backtest"]["balance_btc"])
 BACKTEST_BALANCE_JPY = int(config["backtest"]["balance_jpy"])
+
+COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC = float(
+    config["coincheck"]["buy_adjusted_amount_btc"])

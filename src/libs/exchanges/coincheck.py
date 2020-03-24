@@ -3,7 +3,6 @@ import time
 import hmac
 import hashlib
 import urllib
-import datetime
 
 import src.env as env
 
