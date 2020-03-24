@@ -38,6 +38,9 @@ def check_profit_margin():
 
 
 def adjust_coincheck_buy_amount():
+    '''
+    coincheck buyを orderしたときの価格の誤差を調査するツール
+    '''
     adjust_amount_diff_list = [
         0, 0.000001, 0.000002, 0.000003, 0.000004, 0.000005
     ]
