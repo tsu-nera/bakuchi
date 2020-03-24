@@ -16,7 +16,7 @@ import src.env as env
 import src.utils.datetime as dt
 import src.constants.path as path
 
-from src.utils.asset import format_jpy, format_btc
+from src.utils.asset import format_jpy, format_btc_more, format_btc
 
 
 class Asset():
@@ -38,7 +38,7 @@ class Asset():
         return {
             "id": id,
             "jpy": format_jpy(jpy),
-            "btc": format_btc(btc),
+            "btc": format_btc_more(btc),
             "btc_as_jpy": format_jpy(btc_as_jpy),
             "total_jpy": format_jpy(total_jpy),
             "bid": bid,

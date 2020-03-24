@@ -26,5 +26,9 @@ def format_btc(btc):
     return round(btc, 3)
 
 
+def format_btc_more(btc):
+    return round(btc, 6)
+
+
 def btc_to_jpy(btc_amount, bid):
     return btc_amount * bid
