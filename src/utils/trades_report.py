@@ -6,6 +6,8 @@ import pandas as pd
 import src.utils.json as json
 import src.constants.path as path
 
+from src.utils.backtesting import Backtesting
+
 
 def read_results():
     dir_path = path.REPORTS_DIR
@@ -20,5 +22,11 @@ def read_results():
     df = pd.DataFrame(results)
     df = df.set_index("start_timestamp")
     df.index.name = "timestamp"
+
+    return df
+
+
+def get_profit_diff_df(timestamp):
+    df = []
 
     return df

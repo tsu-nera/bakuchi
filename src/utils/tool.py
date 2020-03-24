@@ -30,4 +30,3 @@ def check_profit_margin():
 
     print(output1)
     print(output2)
-
