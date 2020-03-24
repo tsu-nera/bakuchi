@@ -2,6 +2,8 @@ from invoke import task, run
 
 import os
 import glob
+import time
+import datetime
 
 import importlib
 import psutil
@@ -435,3 +437,36 @@ def is_bot(c):
 @task
 def adjust_coincheck_buy_amount(c):
     tool.adjust_coincheck_buy_amount()
+
+
+###############
+# perf tools
+###############
+
+
+def perf_func_execution_time(func):
+    start_time = datetime.datetime.now()
+    func()
+    end_time = datetime.datetime.now()
+
+    exec_time_ms = round((end_time - start_time).microseconds / 1000, 2)
+
+    return exec_time_ms
+
+
+@task
+def perf_fetch_tick(c):
+    def fetch_tick_with_serial():
+        ret1 = public.fetch_tick(ccxtconst.EXCHANGE_ID_COINCHECK)
+        ret2 = public.fetch_tick(ccxtconst.EXCHANGE_ID_LIQUID)
+
+        return ret1, ret2
+
+    for _ in range(10):
+        time_ms = perf_func_execution_time(lambda: tool.ping_with_thread())
+        print("get tick parallel time={} ms".format(time_ms))
+        time.sleep(1)
+
+        time_ms = perf_func_execution_time(fetch_tick_with_serial)
+        print("get tick serial   time={} ms".format(time_ms))
+        time.sleep(1)

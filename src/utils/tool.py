@@ -1,5 +1,9 @@
 import time
 import datetime
+import queue
+import threading
+import traceback
+
 import numpy as np
 
 import src.constants.ccxtconst as ccxtconst
@@ -7,6 +11,7 @@ import src.utils.trade_history as trade_history
 import src.utils.private as private
 
 from src.libs.ccxt_client import CcxtClient
+from src.core.arbitrage_parallel import ArbitrageParallel
 
 
 def _get_tick(exchange_id):
@@ -108,3 +113,13 @@ def ping(exchange_id):
             print("{} can't access {}".format(start_timestamp, exchange_id))
 
         time.sleep(1)
+
+
+def ping_with_thread():
+    parallel = ArbitrageParallel(ccxtconst.EXCHANGE_ID_COINCHECK,
+                                 ccxtconst.EXCHANGE_ID_LIQUID,
+                                 ccxtconst.SYMBOL_BTC_JPY)
+
+    responses = parallel.fetch_tick()
+
+    return responses
