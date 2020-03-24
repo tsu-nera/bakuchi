@@ -434,16 +434,9 @@ def is_bot(c):
         print("trading bot is stopped.")
 
 
-@task
-def adjust_coincheck_buy_amount(c):
-    tool.adjust_coincheck_buy_amount()
-
-
 ###############
 # perf tools
 ###############
-
-
 def perf_func_execution_time(func):
     start_time = datetime.datetime.now()
     func()
@@ -470,3 +463,8 @@ def perf_fetch_tick(c):
         time_ms = perf_func_execution_time(fetch_tick_with_serial)
         print("get tick serial   time={} ms".format(time_ms))
         time.sleep(1)
+
+
+@task
+def perf_coincheck_buy_amount(c):
+    tool.adjust_coincheck_buy_amount()
