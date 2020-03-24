@@ -1,6 +1,5 @@
 import queue
 import threading
-import traceback
 
 from src.core.exchange_trading import ExchangeTrading as Exchange
 
@@ -27,9 +26,8 @@ class ArbitrageParallel():
                     responses[thread] = func_x()
                 if thread == 1:
                     responses[thread] = func_y()
-            except Exception:
-                print("tick error: " + str(traceback.format_exc()))
-                responses[thread] = None
+            except Exception as e:
+                responses[thread] = e
 
             thread_queue.task_done()
 

@@ -60,7 +60,9 @@ class ArbitrageTrading(ArbitrageBase):
 
             try:
                 self.next()
-            except (ccxt.ExchangeNotAvailable, ccxt.InsufficientFunds):
+            except ccxt.ExchangeNotAvailable:
+                self.circuit_breaker.recover_exchange_not_available()
+            except ccxt.InsufficientFunds:
                 self.circuit_breaker.recover_exchange_not_available()
             except ccxt.NetworkError:
                 self.circuit_breaker.recover_network_error()
@@ -169,6 +171,15 @@ class ArbitrageTrading(ArbitrageBase):
             label, buy_exchange_id, round(buy_price_jpy, 3), sell_exchange_id,
             round(sell_price_jpy, 3), profit_margin, actual_profit)
 
+    def _check_order_responses(self, buy, sell):
+        def _check_insufficientfunds(e):
+            if type(e) == ccxt.ExchangeNotAvailable or type(
+                    e) == ccxt.InsufficientFunds:
+                raise e
+
+        _check_insufficientfunds(buy)
+        _check_insufficientfunds(sell)
+
     def _action(self, result, x, y):
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
             ask_for_coincheck = x.ask if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
@@ -178,6 +189,8 @@ class ArbitrageTrading(ArbitrageBase):
                 self.trade_amount,
                 bid=bid_for_coincheck,
                 ask=ask_for_coincheck)
+
+            self._check_order_responses(buy_resp, sell_resp)
 
             profit_margin = self._get_profit_margin(y.bid, x.ask)
 
@@ -209,6 +222,8 @@ class ArbitrageTrading(ArbitrageBase):
                 self.trade_amount,
                 bid=bid_for_coincheck,
                 ask=ask_for_coincheck)
+
+            self._check_order_responses(buy_resp, sell_resp)
 
             profit_margin = self._get_profit_margin(x.bid, y.ask)
 
