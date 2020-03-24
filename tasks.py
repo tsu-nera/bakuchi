@@ -374,6 +374,11 @@ def run_notebook(c, file_path):
 
 
 @task
+def export_trade_result(c, timestamp):
+    report.export_trade_result(timestamp)
+
+
+@task
 def generate_latest_report(c):
     report.generate_latest()
 

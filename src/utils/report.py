@@ -13,6 +13,8 @@ from src.utils.backtesting import Backtesting
 from src.utils.trade_analysis import TradeAnalysis
 
 from src.utils.trade_history import save_report_trades
+import src.utils.json as json
+import src.utils.datetime as dt
 
 
 def get_latest_dirpath(dir_path):
@@ -30,17 +32,22 @@ def generate(dir_name):
 def generate_latest():
     production_dir = path.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
     from_dir = get_latest_dirpath(production_dir)
-    dir_name = from_dir.split('/')[-2]
+    timestamp = from_dir.split('/')[-2]
 
-    generate(dir_name)
+    # ログをバックアップ
+    generate(timestamp)
 
-    _fetch_trades(dir_name)
+    # trade履歴をサイトから取得
+    _fetch_trades(timestamp)
 
     # jupyter notebookの実行
-    generate_notebook(dir_name)
+    generate_notebook(timestamp)
 
     # 結果の出力
-    display(dir_name)
+    display(timestamp)
+
+    # 結果のエクスポート
+    export_trade_result(timestamp)
 
 
 def run_notebook(file_path):
@@ -155,3 +162,19 @@ def display(timestamp):
     _report_trade_meta(backtest_data, trade_data)
     print()
     _report_trade_stats(backtest_data, trade_data)
+
+
+def export_trade_result(timestamp):
+    trade_analysis = TradeAnalysis(timestamp)
+    trade_data = trade_analysis.get_result_data()
+
+    trade_data["start_timestamp"] = dt.format_timestamp(
+        trade_data["start_timestamp"])
+    trade_data["end_timestamp"] = dt.format_timestamp(
+        trade_data["end_timestamp"])
+    trade_data["duration"] = int(trade_data["duration"].total_seconds())
+
+    file_path = os.path.join(path.REPORTS_DIR, timestamp,
+                             path.RESULT_JSON_FILE)
+
+    json.write(file_path, trade_data)

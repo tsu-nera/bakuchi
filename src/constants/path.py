@@ -23,6 +23,7 @@ ASSET_LOG_FILE = "asset.log"
 CONFIG_JSON_FILE = "config.json"
 TRADING_START_ASSET_FILE = "start.json"
 TRADING_END_ASSET_FILE = "end.json"
+RESULT_JSON_FILE = "result.json"
 
 REPORT_BACKTEST = "backtest.ipynb"
 REPORT_TRADE = "trade.ipynb"
