@@ -29,10 +29,21 @@ import src.env as env
 
 import logging
 from logging import basicConfig
+
 basicConfig(level=logging.INFO, handlers=[])
 
 TRADING_MODULE = importlib.import_module('src.utils.trading')
 PUBLIC_MODULE = importlib.import_module('src.utils.public')
+
+
+@task
+def ping_coincheck(c):
+    tool.ping(ccxtconst.EXCHANGE_ID_COINCHECK)
+
+
+@task
+def ping_liquid(c):
+    tool.ping(ccxtconst.EXCHANGE_ID_LIQUID)
 
 
 @task

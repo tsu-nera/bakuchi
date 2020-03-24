@@ -1,4 +1,5 @@
 import time
+import datetime
 import numpy as np
 
 import src.constants.ccxtconst as ccxtconst
@@ -84,3 +85,26 @@ def adjust_coincheck_buy_amount():
                                                     np.std(amounts)))
 
         print()
+
+
+def ping(exchange_id):
+    client = CcxtClient(exchange_id, ccxtconst.SYMBOL_BTC_JPY)
+
+    print("PING {}".format(exchange_id))
+
+    while True:
+        start_timestamp = datetime.datetime.now()
+        tick = client.fetch_tick()
+
+        if tick:
+            end_timestamp = datetime.datetime.now()
+
+            ping_time_msec = round(
+                (end_timestamp - start_timestamp).microseconds / 1000, 2)
+
+            print("{} ping {} time={} ms ".format(start_timestamp, exchange_id,
+                                                  ping_time_msec))
+        else:
+            print("{} can't access {}".format(start_timestamp, exchange_id))
+
+        time.sleep(1)
