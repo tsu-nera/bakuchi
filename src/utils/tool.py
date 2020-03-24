@@ -1,8 +1,5 @@
 import time
 import datetime
-import queue
-import threading
-import traceback
 
 import numpy as np
 

@@ -45,7 +45,7 @@ class ArbitrageParallel():
 
         thread_queue.join()
 
-        return responses
+        return responses[0], responses[1]
 
     def fetch_tick(self):
         func_x = lambda: self.exchange_x.fetch_tick()
@@ -53,8 +53,18 @@ class ArbitrageParallel():
 
         return self._request(func_x, func_y)
 
-    def order_buyx_selly(self):
-        pass
+    def order_buyx_selly(self, amount, bid=None, ask=None):
+        func_x = lambda: self.exchange_x.order_buy(amount,
+                                                   ask_for_coincheck=ask)
+        func_y = lambda: self.exchange_y.order_sell(amount,
+                                                    bid_for_coincheck=bid)
 
-    def order_sellx_buyy(self):
-        pass
+        return self._request(func_x, func_y)
+
+    def order_buyy_sellx(self, amount, bid=None, ask=None):
+        func_x = lambda: self.exchange_y.order_buy(amount,
+                                                   ask_for_coincheck=ask)
+        func_y = lambda: self.exchange_x.order_sell(amount,
+                                                    bid_for_coincheck=bid)
+
+        return self._request(func_x, func_y)

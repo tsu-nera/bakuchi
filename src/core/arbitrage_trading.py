@@ -1,23 +1,24 @@
 from time import sleep
 import ccxt
 
-from .arbitrage_base import ArbitrageBase
-from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK
-from .tick import Tick
-from src.core.exchange_trading import ExchangeTrading as Exchange
+from src.core.tick import Tick
+from src.core.arbitrage_base import ArbitrageBase
+from src.core.arbitrage_parallel import ArbitrageParallel
+from src.core.circuit_breaker import CircuitBreaker
+
 from src.libs.asset import Asset
 from src.libs.slack_client import SlackClient
 
-import src.config as config
 from src.libs.logger import get_trading_logger
 from src.libs.logger import get_trading_logger_with_stdout
-
 from src.libs.logger import get_margin_logger
 from src.libs.historical_logger import HistoricalLogger
+
 import src.utils.datetime as dt
 
-from src.core.circuit_breaker import CircuitBreaker
 import src.env as env
+import src.config as config
+from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK
 
 
 class ArbitrageTrading(ArbitrageBase):
@@ -30,9 +31,6 @@ class ArbitrageTrading(ArbitrageBase):
 
         self.symbol = symbol
         self.demo_mode = demo_mode
-
-        self.exchange_x = Exchange(exchange_id_x, symbol, demo_mode=demo_mode)
-        self.exchange_y = Exchange(exchange_id_y, symbol, demo_mode=demo_mode)
 
         self.logger = get_trading_logger()
         self.logger_with_stdout = get_trading_logger_with_stdout()
@@ -47,6 +45,9 @@ class ArbitrageTrading(ArbitrageBase):
         self.historical_logger = HistoricalLogger()
 
         self.circuit_breaker = CircuitBreaker(self.exchage_ids)
+
+        self.parallel = ArbitrageParallel(exchange_id_x, exchange_id_y, symbol,
+                                          demo_mode)
 
     def run(self):
         self._logging_trading_metadata()
@@ -129,8 +130,7 @@ class ArbitrageTrading(ArbitrageBase):
             self.logger_with_stdout.info(message)
 
     def _get_tick(self):
-        x = self.exchange_x.fetch_tick()
-        y = self.exchange_y.fetch_tick()
+        x, y = self.parallel.fetch_tick()
 
         tick_x = Tick(x["timestamp"], x["bid"], x["ask"]) if x else None
         tick_y = Tick(y["timestamp"], y["bid"], y["ask"]) if y else None
@@ -174,10 +174,10 @@ class ArbitrageTrading(ArbitrageBase):
             ask_for_coincheck = x.ask if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
             bid_for_coincheck = y.bid if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
 
-            buy_resp = self.exchange_x.order_buy(
-                self.trade_amount, ask_for_coincheck=ask_for_coincheck)
-            sell_resp = self.exchange_y.order_sell(
-                self.trade_amount, bid_for_coincheck=bid_for_coincheck)
+            buy_resp, sell_resp = self.parallel.order_buyx_selly(
+                self.trade_amount,
+                bid=bid_for_coincheck,
+                ask=ask_for_coincheck)
 
             profit_margin = self._get_profit_margin(y.bid, x.ask)
 
@@ -205,10 +205,10 @@ class ArbitrageTrading(ArbitrageBase):
             ask_for_coincheck = y.ask if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
             bid_for_coincheck = x.bid if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
 
-            buy_resp = self.exchange_y.order_buy(
-                self.trade_amount, ask_for_coincheck=ask_for_coincheck)
-            sell_resp = self.exchange_x.order_sell(
-                self.trade_amount, bid_for_coincheck=bid_for_coincheck)
+            buy_resp, sell_resp = self.parallel.order_buyy_sellx(
+                self.trade_amount,
+                bid=bid_for_coincheck,
+                ask=ask_for_coincheck)
 
             profit_margin = self._get_profit_margin(x.bid, y.ask)
 
