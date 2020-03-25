@@ -1,0 +1,7 @@
+{
+  "amount": 0.006,
+  "open_threshold": 2000,
+  "profit_margin_diff": 1000,
+  "open_threshold_change_sec": 300,
+  "coincheck_order_buy_adjust_amount_btc": 2e-06
+}

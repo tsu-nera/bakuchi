@@ -10,6 +10,8 @@ import src.constants.path as path
 import src.constants.ccxtconst as ccxtconst
 import src.utils.datetime as dt
 
+import src.config as config
+
 
 def _create_trade(id, order_id, datetime, pair, side, fee, amount, price,
                   rate):
@@ -36,6 +38,14 @@ def _get_latest_file_name(exchange_id):
     return "latest_trades_{}.csv".format(exchange_id)
 
 
+def _is_normal_amount(amount):
+    amount_margin = 0.0005
+    lower_limit = config.TRADE_AMOUNT - amount_margin
+    upper_limit = config.TRADE_AMOUNT + amount_margin
+
+    return lower_limit <= amount and amount < upper_limit
+
+
 def _marge_duplicated_trades(trades):
     dup = [trade['datetime'] for trade in trades]
     dup_count_list = [dup.count(x) for x in dup]
@@ -45,21 +55,26 @@ def _marge_duplicated_trades(trades):
     i = 0
     while i < len(dup):
         n = dup_count_list[i]
+
         if n > 1:
             current_trade = trades[i]
             total_amount = sum([trades[i + j]["amount"] for j in range(n)])
             total_price = sum([trades[i + j]["price"] for j in range(n)])
             average_rate = mean([trades[i + j]["rate"] for j in range(n)])
 
-            merged_trade = _create_trade(
-                current_trade["id"], current_trade["order_id"],
-                current_trade["datetime"], current_trade["pair"],
-                current_trade["side"], current_trade["fee"], total_amount,
-                total_price, average_rate)
-            filterd_trades.append(merged_trade)
+            trade = _create_trade(current_trade["id"],
+                                  current_trade["order_id"],
+                                  current_trade["datetime"],
+                                  current_trade["pair"], current_trade["side"],
+                                  current_trade["fee"], total_amount,
+                                  total_price, average_rate)
         else:
             trade = trades[i]
-            filterd_trades.append(trade)
+        # if _is_normal_amount(trade["amount"]):
+        #
+        # else:
+        #     print(trade)
+        filterd_trades.append(trade)
         i += n
 
     return filterd_trades
@@ -119,9 +134,6 @@ def save_trades(exchange_id):
 def show_recent_profits(hours=None):
     cc_trades = fetch_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
     lq_trades = fetch_trades(ccxtconst.EXCHANGE_ID_LIQUID)
-
-    # print([trade["datetime"] for trade in cc_trades])
-    # print([trade["datetime"] for trade in lq_trades])
 
     if len(cc_trades) < len(lq_trades):
         base_trades = cc_trades

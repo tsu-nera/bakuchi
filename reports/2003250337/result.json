@@ -1,0 +1,22 @@
+{
+  "record_count": 22070,
+  "trade_count": 95,
+  "start_timestamp": "2020-03-25 03:54:00",
+  "end_timestamp": "2020-03-25 10:16:22",
+  "duration": 22942,
+  "trade_amount": 0.006,
+  "open_threshold": 2000,
+  "profit_margin_diff": 1000,
+  "start_price_jpy": 11776,
+  "end_price_jpy": 11788,
+  "profit_jpy": 12,
+  "start_price_btc": 0.021338,
+  "end_price_btc": 0.021122,
+  "profit_btc": -0.0002160000000000009,
+  "total_start_price_jpy": 27607,
+  "total_end_price_jpy": 27453,
+  "total_profit_jpy": -154,
+  "bot_profit_jpy": -154,
+  "market_profit_jpy": -5.199,
+  "trade_profit_jpy": -148.801
+}

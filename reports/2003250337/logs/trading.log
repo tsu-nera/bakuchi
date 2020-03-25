@@ -1,0 +1,180 @@
+[INFO:2020-03-25 03:37:35,200] =========================
+[INFO:2020-03-25 03:37:35,200] === trading bot start ===
+[INFO:2020-03-25 03:37:35,200] =========================
+[INFO:2020-03-25 03:37:36,968] amount=0.006, open_threshold=2000, profit_margin_diff=1000
+[INFO:2020-03-25 03:42:55,830] open threshold changed from 2000 to 1000
+[INFO:2020-03-25 03:48:14,984] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 03:53:40,596] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 03:54:01,028] OPENING buy-coincheck(4459.0), sell-liquid(4462.302), margin=1026, profit=3.3
+[INFO:2020-03-25 03:55:36,061] CLOSING buy-liquid(4457.898), sell-coincheck(4457.94), margin=55, profit=0.0
+[INFO:2020-03-25 03:59:01,487] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 04:04:22,245] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 04:09:39,322] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 04:14:56,620] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 04:15:15,858] OPENING buy-coincheck(4441.0), sell-liquid(4447.5), margin=1383, profit=6.5
+[INFO:2020-03-25 04:15:31,201] CLOSING buy-liquid(4450.86), sell-coincheck(4447.08), margin=-199, profit=-3.8
+[INFO:2020-03-25 04:16:53,235] OPENING buy-coincheck(4430.0), sell-liquid(4434.492), margin=1154, profit=4.5
+[INFO:2020-03-25 04:17:22,386] CLOSING buy-liquid(4436.13), sell-coincheck(4436.46), margin=-119, profit=0.3
+[INFO:2020-03-25 04:20:17,463] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 04:25:36,591] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 04:30:55,416] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 04:34:10,855] OPENING buy-coincheck(4454.0), sell-liquid(4461.066), margin=1106, profit=7.1
+[INFO:2020-03-25 04:34:18,869] CLOSING buy-liquid(4458.12), sell-coincheck(4456.296), margin=73, profit=-1.8
+[INFO:2020-03-25 04:36:15,218] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 04:41:33,377] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 04:46:50,824] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 04:52:09,060] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 04:54:00,310] OPENING buy-coincheck(4479.0), sell-liquid(4487.46), margin=1607, profit=8.5
+[INFO:2020-03-25 04:54:05,470] CLOSING buy-liquid(4487.502), sell-coincheck(4486.356), margin=477, profit=-1.1
+[INFO:2020-03-25 04:54:52,433] OPENING buy-coincheck(4495.0), sell-liquid(4503.198), margin=1575, profit=8.2
+[INFO:2020-03-25 04:55:05,746] CLOSING buy-liquid(4502.028), sell-coincheck(4499.994), margin=-269, profit=-2.0
+[INFO:2020-03-25 04:55:16,012] OPENING buy-coincheck(4498.0), sell-liquid(4504.866), margin=1154, profit=6.9
+[INFO:2020-03-25 04:55:34,590] CLOSING buy-liquid(4506.108), sell-coincheck(4512.27), margin=1041, profit=6.2
+[INFO:2020-03-25 04:55:36,212] OPENING buy-liquid(4509.342), sell-coincheck(4512.27), margin=1041, profit=2.9
+[INFO:2020-03-25 04:55:58,021] CLOSING buy-coincheck(4508.0), sell-liquid(4507.482), margin=10, profit=-0.5
+[INFO:2020-03-25 04:57:32,871] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 05:02:45,957] OPENING buy-coincheck(4518.0), sell-liquid(4523.724), margin=1140, profit=5.7
+[INFO:2020-03-25 05:02:51,917] CLOSING buy-liquid(4522.23), sell-coincheck(4522.212), margin=-88, profit=-0.0
+[INFO:2020-03-25 05:02:53,367] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 05:04:01,546] OPENING buy-coincheck(4515.0), sell-liquid(4519.836), margin=1024, profit=4.8
+[INFO:2020-03-25 05:04:36,966] CLOSING buy-liquid(4517.88), sell-coincheck(4517.598), margin=293, profit=-0.3
+[INFO:2020-03-25 05:08:14,655] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 05:13:33,987] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 05:14:47,051] OPENING buy-liquid(4529.55), sell-coincheck(4536.072), margin=1087, profit=6.5
+[INFO:2020-03-25 05:15:11,976] CLOSING buy-coincheck(4518.0), sell-liquid(4519.578), margin=503, profit=1.6
+[INFO:2020-03-25 05:18:54,389] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 05:22:03,811] OPENING buy-coincheck(4518.0), sell-liquid(4525.764), margin=2266, profit=7.8
+[INFO:2020-03-25 05:22:05,532] CLOSING buy-liquid(4529.304), sell-coincheck(4524.54), margin=-794, profit=-4.8
+[INFO:2020-03-25 05:24:14,446] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 05:26:15,258] OPENING buy-liquid(4494.198), sell-coincheck(4503.0), margin=1190, profit=8.8
+[INFO:2020-03-25 05:26:25,306] CLOSING buy-coincheck(4497.0), sell-liquid(4496.748), margin=76, profit=-0.3
+[INFO:2020-03-25 05:26:41,951] OPENING buy-liquid(4490.712), sell-coincheck(4497.594), margin=1096, profit=6.9
+[INFO:2020-03-25 05:26:46,752] CLOSING buy-coincheck(4492.0), sell-liquid(4490.466), margin=59, profit=-1.5
+[INFO:2020-03-25 05:29:35,159] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 05:31:13,794] OPENING buy-coincheck(4493.0), sell-liquid(4498.986), margin=1236, profit=6.0
+[INFO:2020-03-25 05:31:57,758] CLOSING buy-liquid(4502.532), sell-coincheck(4499.808), margin=-139, profit=-2.7
+[INFO:2020-03-25 05:34:54,756] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 05:40:12,390] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 05:45:31,985] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 05:50:50,536] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 05:56:08,611] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:01:28,135] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:06:46,174] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:12:04,313] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:17:23,039] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:22:40,847] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:27:59,520] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:33:18,375] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:37:01,075] OPENING buy-liquid(4487.166), sell-coincheck(4494.0), margin=1139, profit=6.8
+[INFO:2020-03-25 06:37:07,960] CLOSING buy-coincheck(4483.0), sell-liquid(4483.638), margin=-102, profit=0.6
+[INFO:2020-03-25 06:38:38,068] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:43:56,735] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:45:17,458] OPENING buy-liquid(4460.256), sell-coincheck(4473.006), margin=2059, profit=12.8
+[INFO:2020-03-25 06:45:19,141] CLOSING buy-coincheck(4463.0), sell-liquid(4458.0), margin=-355, profit=-5.0
+[INFO:2020-03-25 06:45:24,013] OPENING buy-liquid(4450.74), sell-coincheck(4460.01), margin=1598, profit=9.3
+[INFO:2020-03-25 06:45:34,163] CLOSING buy-coincheck(4450.0), sell-liquid(4451.796), margin=48, profit=1.8
+[INFO:2020-03-25 06:45:45,671] OPENING buy-coincheck(4453.0), sell-liquid(4457.112), margin=1504, profit=4.1
+[INFO:2020-03-25 06:45:51,572] CLOSING buy-liquid(4453.824), sell-coincheck(4452.294), margin=-255, profit=-1.5
+[INFO:2020-03-25 06:46:12,176] OPENING buy-coincheck(4451.0), sell-liquid(4454.19), margin=1110, profit=3.2
+[INFO:2020-03-25 06:46:20,424] CLOSING buy-liquid(4454.67), sell-coincheck(4455.666), margin=165, profit=1.0
+[INFO:2020-03-25 06:49:20,493] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:50:46,306] OPENING buy-coincheck(4459.0), sell-liquid(4464.93), margin=1200, profit=5.9
+[INFO:2020-03-25 06:51:30,320] CLOSING buy-liquid(4471.14), sell-coincheck(4470.264), margin=-146, profit=-0.9
+[INFO:2020-03-25 06:54:39,644] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 06:55:00,761] liquid is currently daily server maintenance...(6:55-7:05)
+[INFO:2020-03-25 07:09:59,097] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 07:15:18,098] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 07:20:37,014] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 07:25:56,028] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 07:31:16,801] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 07:31:59,455] OPENING buy-coincheck(4534.0), sell-liquid(4540.506), margin=1077, profit=6.5
+[INFO:2020-03-25 07:32:09,805] CLOSING buy-liquid(4536.54), sell-coincheck(4539.816), margin=685, profit=3.3
+[INFO:2020-03-25 07:32:15,715] OPENING buy-liquid(4530.852), sell-coincheck(4539.816), margin=1494, profit=9.0
+[INFO:2020-03-25 07:32:17,398] CLOSING buy-coincheck(4529.0), sell-liquid(4529.292), margin=144, profit=0.3
+[INFO:2020-03-25 07:32:26,416] OPENING buy-coincheck(4529.0), sell-liquid(4537.5), margin=1135, profit=8.5
+[INFO:2020-03-25 07:32:51,319] CLOSING buy-liquid(4543.47), sell-coincheck(4543.938), margin=77, profit=0.5
+[INFO:2020-03-25 07:33:03,549] OPENING buy-coincheck(4537.0), sell-liquid(4546.542), margin=1294, profit=9.5
+[INFO:2020-03-25 07:33:10,675] CLOSING buy-liquid(4540.2), sell-coincheck(4539.708), margin=-24, profit=-0.5
+[INFO:2020-03-25 07:35:32,838] OPENING buy-coincheck(4543.0), sell-liquid(4550.658), margin=1491, profit=7.7
+[INFO:2020-03-25 07:35:39,783] CLOSING buy-liquid(4548.816), sell-coincheck(4547.334), margin=-283, profit=-1.5
+[INFO:2020-03-25 07:36:42,426] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 07:42:00,568] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 07:47:19,760] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 07:52:37,969] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 07:57:56,602] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 08:03:15,525] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 08:08:33,540] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 08:13:51,889] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 08:15:04,022] OPENING buy-coincheck(4526.0), sell-liquid(4530.642), margin=1005, profit=4.6
+[INFO:2020-03-25 08:15:09,944] CLOSING buy-liquid(4526.862), sell-coincheck(4528.968), margin=200, profit=2.1
+[INFO:2020-03-25 08:19:11,768] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 08:24:21,236] OPENING buy-coincheck(4526.0), sell-liquid(4531.578), margin=1018, profit=5.6
+[INFO:2020-03-25 08:24:31,150] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 08:24:44,119] CLOSING buy-liquid(4530.714), sell-coincheck(4530.336), margin=-2, profit=-0.4
+[INFO:2020-03-25 08:29:49,847] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 08:33:35,591] OPENING buy-liquid(4534.38), sell-coincheck(4543.446), margin=1490, profit=9.1
+[INFO:2020-03-25 08:33:55,372] CLOSING buy-coincheck(4535.0), sell-liquid(4530.816), margin=-446, profit=-4.2
+[INFO:2020-03-25 08:34:19,223] OPENING buy-coincheck(4529.0), sell-liquid(4533.396), margin=1305, profit=4.4
+[INFO:2020-03-25 08:34:26,214] CLOSING buy-liquid(4534.572), sell-coincheck(4532.946), margin=-273, profit=-1.6
+[INFO:2020-03-25 08:35:11,534] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 08:40:31,799] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 08:44:40,947] OPENING buy-liquid(4523.364), sell-coincheck(4527.174), margin=1354, profit=3.8
+[INFO:2020-03-25 08:45:12,139] CLOSING buy-coincheck(4526.0), sell-liquid(4523.082), margin=-323, profit=-2.9
+[INFO:2020-03-25 08:45:51,600] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 08:50:18,038] OPENING buy-liquid(4495.71), sell-coincheck(4508.592), margin=2146, profit=12.9
+[INFO:2020-03-25 08:50:19,739] CLOSING buy-coincheck(4499.0), sell-liquid(4493.652), margin=-920, profit=-5.3
+[INFO:2020-03-25 08:51:12,263] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 08:56:31,268] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 09:00:22,452] OPENING buy-liquid(4498.794), sell-coincheck(4508.19), margin=1688, profit=9.4
+[INFO:2020-03-25 09:00:32,662] CLOSING buy-coincheck(4504.0), sell-liquid(4499.94), margin=-454, profit=-4.1
+[INFO:2020-03-25 09:01:14,893] OPENING buy-liquid(4484.586), sell-coincheck(4495.398), margin=1610, profit=10.8
+[INFO:2020-03-25 09:01:17,642] CLOSING buy-coincheck(4483.0), sell-liquid(4482.66), margin=102, profit=-0.3
+[INFO:2020-03-25 09:01:25,766] OPENING buy-liquid(4473.408), sell-coincheck(4482.006), margin=1365, profit=8.6
+[INFO:2020-03-25 09:01:28,516] CLOSING buy-coincheck(4472.0), sell-liquid(4472.82), margin=313, profit=0.8
+[INFO:2020-03-25 09:01:31,274] OPENING buy-liquid(4463.484), sell-coincheck(4470.0), margin=1086, profit=6.5
+[INFO:2020-03-25 09:01:48,463] CLOSING buy-coincheck(4475.0), sell-liquid(4475.766), margin=193, profit=0.8
+[INFO:2020-03-25 09:01:53,305] OPENING buy-coincheck(4475.0), sell-liquid(4480.776), margin=1127, profit=5.8
+[INFO:2020-03-25 09:01:57,078] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 09:02:16,344] CLOSING buy-liquid(4483.08), sell-coincheck(4483.188), margin=18, profit=0.1
+[INFO:2020-03-25 09:03:20,321] OPENING buy-liquid(4473.264), sell-coincheck(4478.658), margin=1283, profit=5.4
+[INFO:2020-03-25 09:03:58,826] CLOSING buy-coincheck(4471.0), sell-liquid(4469.97), margin=-20, profit=-1.0
+[INFO:2020-03-25 09:07:16,601] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 09:07:40,968] OPENING buy-liquid(4461.102), sell-coincheck(4470.198), margin=1344, profit=9.1
+[INFO:2020-03-25 09:07:55,300] CLOSING buy-coincheck(4468.0), sell-liquid(4466.28), margin=-199, profit=-1.7
+[INFO:2020-03-25 09:08:52,897] OPENING buy-liquid(4450.23), sell-coincheck(4455.726), margin=1163, profit=5.5
+[INFO:2020-03-25 09:09:11,623] CLOSING buy-coincheck(4448.0), sell-liquid(4447.212), margin=-77, profit=-0.8
+[INFO:2020-03-25 09:09:21,674] OPENING buy-liquid(4435.812), sell-coincheck(4447.578), margin=1569, profit=11.8
+[INFO:2020-03-25 09:09:34,049] CLOSING buy-coincheck(4444.0), sell-liquid(4434.552), margin=-471, profit=-9.4
+[INFO:2020-03-25 09:12:39,173] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 09:17:15,567] OPENING buy-liquid(4445.28), sell-coincheck(4452.0), margin=1120, profit=6.7
+[INFO:2020-03-25 09:17:42,561] CLOSING buy-coincheck(4444.0), sell-liquid(4441.59), margin=-50, profit=-2.4
+[INFO:2020-03-25 09:17:59,906] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 09:18:43,936] OPENING buy-liquid(4446.144), sell-coincheck(4452.12), margin=1263, profit=6.0
+[INFO:2020-03-25 09:19:40,501] CLOSING buy-coincheck(4451.0), sell-liquid(4449.564), margin=-133, profit=-1.4
+[INFO:2020-03-25 09:23:20,508] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 09:28:39,638] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 09:33:58,706] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 09:38:08,275] OPENING buy-liquid(4458.024), sell-coincheck(4464.45), margin=1071, profit=6.4
+[INFO:2020-03-25 09:39:18,474] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 09:40:13,621] CLOSING buy-coincheck(4448.0), sell-liquid(4449.084), margin=1121, profit=1.1
+[INFO:2020-03-25 09:40:15,482] OPENING buy-coincheck(4448.0), sell-liquid(4453.098), margin=1121, profit=5.1
+[INFO:2020-03-25 09:40:18,264] CLOSING buy-liquid(4451.904), sell-coincheck(4451.466), margin=-89, profit=-0.4
+[INFO:2020-03-25 09:44:38,513] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 09:48:41,921] OPENING buy-liquid(4486.428), sell-coincheck(4494.0), margin=1080, profit=7.6
+[INFO:2020-03-25 09:49:57,450] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 09:51:45,527] CLOSING buy-coincheck(4477.0), sell-liquid(4475.958), margin=-11, profit=-1.0
+[INFO:2020-03-25 09:55:17,689] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 10:00:38,015] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 10:05:51,760] OPENING buy-liquid(4478.28), sell-coincheck(4483.398), margin=1226, profit=5.1
+[INFO:2020-03-25 10:05:57,429] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 10:06:08,216] CLOSING buy-coincheck(4481.0), sell-liquid(4478.94), margin=-97, profit=-2.1
+[INFO:2020-03-25 10:10:33,000] OPENING buy-liquid(4463.64), sell-coincheck(4470.0), margin=1047, profit=6.4
+[INFO:2020-03-25 10:11:16,921] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 10:11:26,724] CLOSING buy-coincheck(4459.0), sell-liquid(4459.692), margin=141, profit=0.7
+[INFO:2020-03-25 10:12:55,161] OPENING buy-liquid(4451.91), sell-coincheck(4458.888), margin=1078, profit=7.0
+[INFO:2020-03-25 10:16:22,812] CLOSING buy-coincheck(4466.0), sell-liquid(4465.146), margin=93, profit=-0.9
+[INFO:2020-03-25 10:16:37,963] open threshold changed from 1000 to 1000
+[INFO:2020-03-25 10:18:21,533] keyboard interuption occured. stop trading bot...
+[INFO:2020-03-25 10:18:21,533] =======================
+[INFO:2020-03-25 10:18:21,533] === trading bot end ===
+[INFO:2020-03-25 10:18:21,534] =======================

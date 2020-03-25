@@ -21,21 +21,13 @@ def get_latest_dirpath(dir_path):
     return max(glob.glob(os.path.join(dir_path, '*/')), key=os.path.getmtime)
 
 
-def generate(dir_name):
+def generate(timestamp):
     production_dir = path.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
-    from_dir = os.path.join(production_dir, dir_name)
-    to_dir = os.path.join(path.REPORTS_DIR, dir_name)
-
-    copy_tree(from_dir, to_dir)
-
-
-def generate_latest():
-    production_dir = path.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
-    from_dir = get_latest_dirpath(production_dir)
-    timestamp = from_dir.split('/')[-2]
+    from_dir = os.path.join(production_dir, timestamp)
+    to_dir = os.path.join(path.REPORTS_DIR, timestamp)
 
     # ログをバックアップ
-    generate(timestamp)
+    copy_tree(from_dir, to_dir)
 
     # trade履歴をサイトから取得
     _fetch_trades(timestamp)
@@ -48,6 +40,14 @@ def generate_latest():
 
     # 結果のエクスポート
     export_trade_result(timestamp)
+
+
+def generate_latest():
+    production_dir = path.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
+    from_dir = get_latest_dirpath(production_dir)
+    timestamp = from_dir.split('/')[-2]
+
+    generate(timestamp)
 
 
 def run_notebook(file_path):
