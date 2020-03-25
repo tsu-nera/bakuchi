@@ -415,8 +415,15 @@ def slack(c, message):
 
 
 @task
-def check_error(c):
-    root_dir_path = "./data/historicals"
+def check_error(c, timestamp):
+    root_dir_path = path.REPORTS_DIR
+    dir_path = os.path.join(root_dir_path, timestamp)
+    run('find {} -type f -name "*.log" | xargs grep ERROR'.format(dir_path))
+
+
+@task
+def check_latest_error(c):
+    root_dir_path = path.REPORTS_DIR
     dir_path = get_latest_dirpath(root_dir_path)
     run('find {} -type f -name "*.log" | xargs grep ERROR'.format(dir_path))
 
