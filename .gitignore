@@ -7,3 +7,4 @@ logs/trades
 logs/cron
 logs/assets
 rawdata
+tmp
