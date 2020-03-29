@@ -8,7 +8,7 @@ from src.libs.asset import Asset
 
 from src.core.arbitrage_trading import ArbitrageTrading
 
-from src.libs.logger import get_trading_logger_with_stdout
+from src.loggers.logger import get_trading_logger_with_stdout
 
 from src.libs.slack_client import SlackClient
 import src.env as env

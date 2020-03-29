@@ -2,7 +2,7 @@ import datetime
 import time
 import ccxt
 
-from src.libs.logger import get_trading_logger_with_stdout
+from src.loggers.logger import get_trading_logger_with_stdout
 import src.constants.ccxtconst as ccxtconst
 import src.utils.private as private
 

@@ -9,10 +9,10 @@ from src.core.circuit_breaker import CircuitBreaker
 from src.libs.asset import Asset
 from src.libs.slack_client import SlackClient
 
-from src.libs.logger import get_trading_logger
-from src.libs.logger import get_trading_logger_with_stdout
-from src.libs.logger import get_margin_logger
-from src.libs.historical_logger import HistoricalLogger
+from src.loggers.logger import get_trading_logger
+from src.loggers.logger import get_trading_logger_with_stdout
+from src.loggers.logger import get_margin_logger
+from src.loggers.historical_logger import HistoricalLogger
 
 import src.utils.datetime as dt
 

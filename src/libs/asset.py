@@ -4,13 +4,13 @@ import ccxt
 from tabulate import tabulate
 
 import src.constants.ccxtconst as ccxtconst
-from src.libs.logger import get_asset_logger, get_asset_append_logger
+from src.loggers.logger import get_asset_logger, get_asset_append_logger
 import src.utils.private as private
 import src.utils.json as json
 
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
-from src.libs.asset_logger import AssetLogger
+from src.loggers.asset_logger import AssetLogger
 
 import src.env as env
 import src.utils.datetime as dt

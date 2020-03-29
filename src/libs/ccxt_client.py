@@ -1,6 +1,6 @@
 import sys
 import ccxt
-from src.libs.logger import get_ccxt_logger
+from src.loggers.logger import get_ccxt_logger
 import src.constants.ccxtconst as ccxtconst
 import src.utils.datetime as dt
 from src.libs.exchanges.coincheck import Coincheck

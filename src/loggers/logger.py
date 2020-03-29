@@ -8,7 +8,6 @@ LOGGER_NAME_CCXT = "ccxt"
 LOGGER_NAME_MARGIN = "margin"
 LOGGER_NAME_ASSET = "asset"
 LOGGER_NAME_ASSET_CRON = "asset_cron"
-LOGGER_NAME_ASSET_CSV = "asset_csv"
 
 formatter = logging.Formatter('[%(levelname)s:%(asctime)s] %(message)s')
 csv_formatter = logging.Formatter('%(message)s')
@@ -68,7 +67,3 @@ def get_asset_logger():
 
 def get_asset_append_logger():
     return logging.getLogger(LOGGER_NAME_ASSET_CRON)
-
-
-def get_asset_csv_logger():
-    return logging.getLogger(LOGGER_NAME_ASSET_CSV)
