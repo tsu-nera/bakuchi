@@ -15,17 +15,18 @@ class OrderLogger():
 
         self._logging_header()
 
-    def logging(self, order_type, buy_exchange, buy_price, sell_exchange,
-                sell_price, profit, profit_margin):
+    def logging(self, order_type, buy_exchange, buy_rate, buy_price,
+                sell_exchange, sell_rate, sell_price, profit, profit_margin):
         logger = getLogger(LOGGER_NAME_ORDER)
         timestamp = dt.now_timestamp()
         message = "{},{},{},{},{},{},{},{}".format(timestamp, order_type,
-                                                   buy_exchange, buy_price,
-                                                   sell_exchange, sell_price,
+                                                   buy_exchange, buy_rate,
+                                                   buy_price, sell_exchange,
+                                                   sell_rate, sell_price,
                                                    profit, profit_margin)
         logger.info(message)
 
     def _logging_header(self):
-        header = 'timestamp,order_type,buy_exchange,buy_price,sell_exchange,sell_price,profit,profit_margin'
+        header = 'timestamp,order_type,buy_exchange,buy_rate,buy_price,sell_exchange,sell_rate,sell_price,profit,profit_margin'
         logger = getLogger(LOGGER_NAME_ORDER)
         logger.info(header)

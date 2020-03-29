@@ -154,6 +154,9 @@ class ArbitrageTrading(ArbitrageBase):
         price = sell_jpy - buy_jpy
         return round(price, 1)
 
+    def _calc_price(self, rate):
+        return self.trade_amount * rate
+
     def _get_log_label(self):
         return self.ACTION_CLOSING if self.opened else self.ACTION_OPENING
 
@@ -211,8 +214,10 @@ class ArbitrageTrading(ArbitrageBase):
 
             self.logger_with_stdout.info(message)
 
-            self.order_logger.logging(label, self.ex_id_x, x.ask, self.ex_id_y,
-                                      y.bid, profit, profit_margin)
+            self.order_logger.logging(label, self.ex_id_x, x.ask,
+                                      self._calc_price(x.ask), self.ex_id_y,
+                                      y.bid, self._calc_price(y.bid), profit,
+                                      profit_margin)
 
             if not self.demo_mode:
                 self.slack.notify_order(self.ex_id_x, self.ex_id_y,
@@ -246,8 +251,10 @@ class ArbitrageTrading(ArbitrageBase):
                     profit_margin)
 
             self.logger_with_stdout.info(message)
-            self.order_logger.logging(label, self.ex_id_y, y.ask, self.ex_id_x,
-                                      x.bid, profit, profit_margin)
+            self.order_logger.logging(label, self.ex_id_y, y.ask,
+                                      self._calc_price(y.ask), self.ex_id_x,
+                                      x.bid, self._calc_price(x.bid), profit,
+                                      profit_margin)
 
             if not self.demo_mode:
                 self.slack.notify_order(self.ex_id_y, self.ex_id_x,
