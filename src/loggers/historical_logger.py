@@ -2,11 +2,10 @@ import os
 import shutil
 from logging import getLogger
 
-from src.libs.logger import create_csv_logger
+from src.loggers.logger import create_csv_logger
 import src.constants.ccxtconst as ccxtconst
 import src.constants.path as path
 import src.config as config
-# from src.libs.asset import Asset
 import src.utils.datetime as dt
 import src.utils.json as json
 

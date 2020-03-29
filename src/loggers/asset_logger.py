@@ -2,7 +2,7 @@ import os
 from logging import getLogger
 
 import src.utils.datetime as dt
-from src.libs.logger import create_csv_logger
+from src.loggers.logger import create_csv_logger
 import src.constants.ccxtconst as ccxtconst
 import src.constants.path as path
 

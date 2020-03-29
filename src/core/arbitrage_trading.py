@@ -9,10 +9,11 @@ from src.core.circuit_breaker import CircuitBreaker
 from src.libs.asset import Asset
 from src.libs.slack_client import SlackClient
 
-from src.libs.logger import get_trading_logger
-from src.libs.logger import get_trading_logger_with_stdout
-from src.libs.logger import get_margin_logger
-from src.libs.historical_logger import HistoricalLogger
+from src.loggers.logger import get_trading_logger
+from src.loggers.logger import get_trading_logger_with_stdout
+from src.loggers.logger import get_margin_logger
+from src.loggers.historical_logger import HistoricalLogger
+from src.loggers.order_logger import OrderLogger
 
 import src.utils.datetime as dt
 
@@ -43,6 +44,7 @@ class ArbitrageTrading(ArbitrageBase):
         self.asset = Asset()
         self.slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
         self.historical_logger = HistoricalLogger()
+        self.order_logger = OrderLogger()
 
         self.circuit_breaker = CircuitBreaker(self.exchage_ids)
 
@@ -152,6 +154,9 @@ class ArbitrageTrading(ArbitrageBase):
         price = sell_jpy - buy_jpy
         return round(price, 1)
 
+    def _calc_price(self, rate):
+        return self.trade_amount * rate
+
     def _get_log_label(self):
         return self.ACTION_CLOSING if self.opened else self.ACTION_OPENING
 
@@ -181,6 +186,8 @@ class ArbitrageTrading(ArbitrageBase):
         _check_insufficientfunds(sell)
 
     def _action(self, result, x, y):
+        label = self._get_log_label()
+
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
             ask_for_coincheck = x.ask if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
             bid_for_coincheck = y.bid if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
@@ -206,6 +213,11 @@ class ArbitrageTrading(ArbitrageBase):
                     profit_margin)
 
             self.logger_with_stdout.info(message)
+
+            self.order_logger.logging(label, self.ex_id_x, x.ask,
+                                      self._calc_price(x.ask), self.ex_id_y,
+                                      y.bid, self._calc_price(y.bid), profit,
+                                      profit_margin)
 
             if not self.demo_mode:
                 self.slack.notify_order(self.ex_id_x, self.ex_id_y,
@@ -239,6 +251,10 @@ class ArbitrageTrading(ArbitrageBase):
                     profit_margin)
 
             self.logger_with_stdout.info(message)
+            self.order_logger.logging(label, self.ex_id_y, y.ask,
+                                      self._calc_price(y.ask), self.ex_id_x,
+                                      x.bid, self._calc_price(x.bid), profit,
+                                      profit_margin)
 
             if not self.demo_mode:
                 self.slack.notify_order(self.ex_id_y, self.ex_id_x,

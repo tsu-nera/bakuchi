@@ -8,7 +8,7 @@ from src.libs.asset import Asset
 
 from src.core.arbitrage_trading import ArbitrageTrading
 
-from src.libs.logger import get_trading_logger_with_stdout
+from src.loggers.logger import get_trading_logger_with_stdout
 
 from src.libs.slack_client import SlackClient
 import src.env as env
@@ -35,6 +35,17 @@ def backup_trading_assets(current_trading_dir):
             file_name = os.path.basename(file)
             target_file_path = os.path.join(target_dir_path, file_name)
             shutil.copy(file, target_file_path)
+
+
+def backup_trading_orders(current_trading_dir):
+    target_dir_path = os.path.join(current_trading_dir, path.ORDERS_DIR)
+    os.mkdir(target_dir_path)
+
+    file = path.ORDER_CSV_FILE_PATH
+    if os.path.exists(file):
+        file_name = os.path.basename(file)
+        target_file_path = os.path.join(target_dir_path, file_name)
+        shutil.copy(file, target_file_path)
 
 
 def clean_trading_logs():
@@ -108,4 +119,5 @@ def run_trading(demo_mode=False):
             asset.save(asset.TRADING_END)
             backup_trading_logs(current_trading_dir)
             backup_trading_assets(current_trading_dir)
+            backup_trading_orders(current_trading_dir)
             slack.notify_with_datetime("Trading Botの稼働を終了しました。")
