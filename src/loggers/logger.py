@@ -20,8 +20,8 @@ def create_file_logger(file_path, logger_name):
     logger.addHandler(logfile)
 
 
-def create_csv_logger(file_path, logger_name):
-    logfile = logging.FileHandler(file_path, "a")
+def create_csv_logger(file_path, logger_name, mode="a"):
+    logfile = logging.FileHandler(file_path, mode)
     logfile.setFormatter(csv_formatter)
     logger = logging.getLogger(logger_name)
     logger.addHandler(logfile)

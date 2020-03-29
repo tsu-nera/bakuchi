@@ -1,7 +1,6 @@
 import ccxt  # noqa
 import time
 import os
-import pandas as pd
 
 import src.utils.datetime as dt
 from src.libs.ccxt_client import CcxtClient
