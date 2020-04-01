@@ -158,17 +158,13 @@ class CcxtClient():
             while t <= size:
                 t += book['bids'][j][1]
                 j += 1
-                
+
             bid = book['bids'][i - 1][0]
             ask = book['asks'][j - 1][0]
 
             self._logging_tick(bid, ask)
-            
-            return {
-                "timestamp": timestamp,
-                "bid": bid,
-                "ask": ask
-            }
+
+            return {"timestamp": timestamp, "bid": bid, "ask": ask}
         else:
             self.logger.error('(%s) %s', self.exchange_id, "can't get tick")
             return None

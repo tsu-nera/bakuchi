@@ -2,7 +2,7 @@ from src.libs.ccxt_client import CcxtClient
 from .exchange_base import ExchangeBase
 import src.constants.ccxtconst as ccxtconst
 
-from src.config import COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC
+from src.config import COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC, TRADE_AMOUNT
 
 
 class ExchangeTrading(ExchangeBase):
@@ -13,8 +13,11 @@ class ExchangeTrading(ExchangeBase):
 
         self.client = CcxtClient(exchange_id, symbol, demo_mode=demo_mode)
 
-    def fetch_tick(self):
-        return self.client.fetch_tick()
+    def fetch_tick(self, eff=False):
+        if not eff:
+            return self.client.fetch_tick()
+        else:
+            return self.client.fetch_eff_tick(size=TRADE_AMOUNT)
 
     def _format_order_response(self, response, amount, bid_for_coincheck=None):
         info = response["info"]
