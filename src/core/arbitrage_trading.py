@@ -134,7 +134,7 @@ class ArbitrageTrading(ArbitrageBase):
             self.logger_with_stdout.info(message)
 
     def _get_tick(self):
-        x, y = self.parallel.fetch_tick()
+        x, y = self.parallel.fetch_tick(eff=True)
 
         tick_x = Tick(x["timestamp"], x["bid"], x["ask"]) if x else None
         tick_y = Tick(y["timestamp"], y["bid"], y["ask"]) if y else None

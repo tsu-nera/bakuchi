@@ -89,14 +89,18 @@ def adjust_coincheck_buy_amount():
         print()
 
 
-def ping(exchange_id):
+def ping(exchange_id, eff=False):
     client = CcxtClient(exchange_id, ccxtconst.SYMBOL_BTC_JPY)
 
     print("PING {}".format(exchange_id))
 
     while True:
         start_timestamp = datetime.datetime.now()
-        tick = client.fetch_tick()
+
+        if not eff:
+            tick = client.fetch_tick()
+        else:
+            tick = client.fetch_eff_tick()
 
         if tick:
             end_timestamp = datetime.datetime.now()

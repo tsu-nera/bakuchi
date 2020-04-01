@@ -45,9 +45,9 @@ class ArbitrageParallel():
 
         return responses[0], responses[1]
 
-    def fetch_tick(self):
-        func_x = lambda: self.exchange_x.fetch_tick()
-        func_y = lambda: self.exchange_y.fetch_tick()
+    def fetch_tick(self, eff=False):
+        func_x = lambda: self.exchange_x.fetch_tick(eff=eff)
+        func_y = lambda: self.exchange_y.fetch_tick(eff=eff)
 
         return self._request(func_x, func_y)
 

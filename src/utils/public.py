@@ -8,13 +8,16 @@ def _logging(timestamp, bid, ask):
     print(output)
 
 
-def fetch_ticks(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
+def fetch_ticks(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY, eff=False):
     client = CcxtClient(exchange_id, symbol)
 
     while True:
         time.sleep(ccxtconst.TICK_INTERVAL_SEC)
 
-        tick = client.fetch_tick()
+        if not eff:
+            tick = client.fetch_tick()
+        else:
+            tick = client.fetch_eff_tick()
 
         if not tick:
             print("no data...")
