@@ -2,7 +2,7 @@ from src.libs.ccxt_client import CcxtClient
 from .exchange_base import ExchangeBase
 import src.constants.ccxtconst as ccxtconst
 
-from src.config import COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC, TRADE_AMOUNT
+from src.config import COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC  # , TRADE_AMOUNT
 
 
 class ExchangeTrading(ExchangeBase):
@@ -17,7 +17,9 @@ class ExchangeTrading(ExchangeBase):
         if not eff:
             return self.client.fetch_tick()
         else:
-            return self.client.fetch_eff_tick(size=TRADE_AMOUNT)
+            # 取引が成立しないのでamountをわたさない
+            # return self.client.fetch_eff_tick()
+            return self.client.fetch_eff_tick()
 
     def _format_order_response(self, response, amount, bid_for_coincheck=None):
         info = response["info"]
