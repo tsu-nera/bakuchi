@@ -138,3 +138,37 @@ class CcxtClient():
             trade["pair"] = self.symbol
             res.append(trade)
         return res
+
+    def fetch_eff_tick(self, size=1):
+        timestamp = dt.now_timestamp()
+
+        book = self.exchange.fetch_order_book(self.symbol)
+
+        if book:
+            # 実効ASK計算
+            i = 0
+            s = 0
+            while s <= size:
+                s += book['asks'][i][1]
+                i += 1
+
+            # 実効BID計算
+            j = 0
+            t = 0
+            while t <= size:
+                t += book['bids'][j][1]
+                j += 1
+                
+            bid = book['bids'][i - 1][0]
+            ask = book['asks'][j - 1][0]
+
+            self._logging_tick(bid, ask)
+            
+            return {
+                "timestamp": timestamp,
+                "bid": bid,
+                "ask": ask
+            }
+        else:
+            self.logger.error('(%s) %s', self.exchange_id, "can't get tick")
+            return None

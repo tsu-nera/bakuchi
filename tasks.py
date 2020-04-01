@@ -86,6 +86,26 @@ def tick_gemini_sandbox(c):
 
 
 @task
+def ping_eff_coincheck(c):
+    tool.ping(ccxtconst.EXCHANGE_ID_COINCHECK, eff=True)
+
+
+@task
+def ping_eff_liquid(c):
+    tool.ping(ccxtconst.EXCHANGE_ID_LIQUID, eff=True)
+
+
+@task
+def tick_eff_coincheck(c):
+    public.fetch_ticks(ccxtconst.EXCHANGE_ID_COINCHECK, eff=True)
+
+
+@task
+def tick_eff_liquid(c):
+    public.fetch_ticks(ccxtconst.EXCHANGE_ID_LIQUID, eff=True)
+
+
+@task
 def balance_bitflyer(c):
     print(private.fetch_balance(ccxtconst.EXCHANGE_ID_BITFLYER))
 
