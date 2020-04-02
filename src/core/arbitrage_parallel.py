@@ -3,6 +3,8 @@ import threading
 
 from src.core.exchange_trading import ExchangeTrading as Exchange
 
+import traceback
+
 
 class ArbitrageParallel():
     def __init__(self, exchange_id_x, exchange_id_y, symbol, demo_mode=False):
@@ -26,7 +28,10 @@ class ArbitrageParallel():
                     responses[thread] = func_x()
                 if thread == 1:
                     responses[thread] = func_y()
+            except IndexError:
+                responses[thread] = None
             except Exception as e:
+                traceback.format_exc(e)
                 responses[thread] = e
 
             thread_queue.task_done()

@@ -17,7 +17,7 @@ class ExchangeTrading(ExchangeBase):
         if not eff:
             return self.client.fetch_tick()
         else:
-            # 取引が成立しないのでamountをわたさない
+            # 取引が成立しないのでamountを設定しない。
             # return self.client.fetch_eff_tick()
             return self.client.fetch_eff_tick()
 
