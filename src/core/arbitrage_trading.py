@@ -134,7 +134,7 @@ class ArbitrageTrading(ArbitrageBase):
             self.logger_with_stdout.info(message)
 
     def _get_tick(self):
-        x, y = self.parallel.fetch_tick(eff=True)
+        x, y = self.parallel.fetch_tick(eff=False)
 
         self.raise_exception_if_occured(x)
         self.raise_exception_if_occured(y)
