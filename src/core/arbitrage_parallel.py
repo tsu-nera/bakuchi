@@ -28,8 +28,6 @@ class ArbitrageParallel():
                     responses[thread] = func_x()
                 if thread == 1:
                     responses[thread] = func_y()
-            except IndexError:
-                responses[thread] = None
             except Exception as e:
                 traceback.format_exc(e)
                 responses[thread] = e

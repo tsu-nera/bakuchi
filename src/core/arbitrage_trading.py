@@ -134,7 +134,10 @@ class ArbitrageTrading(ArbitrageBase):
             self.logger_with_stdout.info(message)
 
     def _get_tick(self):
-        x, y = self.parallel.fetch_tick(eff=True)
+        x, y = self.parallel.fetch_tick(eff=False)
+
+        self.raise_exception_if_occured(x)
+        self.raise_exception_if_occured(y)
 
         tick_x = Tick(x["timestamp"], x["bid"], x["ask"]) if x else None
         tick_y = Tick(y["timestamp"], y["bid"], y["ask"]) if y else None
@@ -267,3 +270,7 @@ class ArbitrageTrading(ArbitrageBase):
 
     def get_current_trading_data_dir(self):
         return self.historical_logger.dir_path
+
+    def raise_exception_if_occured(self, e):
+        if isinstance(e, Exception):
+            raise (e)
