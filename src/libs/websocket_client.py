@@ -11,7 +11,8 @@ class WebsocketClient():
         self.ws = create_connection(WEBSOCKET_ENDPOINTS[exchange_id])
 
         symbols = symbol.split("/")
-        channel = "{}_{}-orderbook".format(symbols[0], symbols[1])
+        channel = "{}_{}-orderbook".format(str.lower(symbols[0]),
+                                           str.lower(symbols[1]))
 
         self.ws.send(json.dumps({"type": "subscribe", "channel": channel}))
 
