@@ -106,6 +106,16 @@ def tick_eff_liquid(c):
 
 
 @task
+def tick_ws_coincheck(c):
+    public.fetch_ws_ticks(ccxtconst.EXCHANGE_ID_COINCHECK)
+
+
+@task
+def tick_ws_liquid(c):
+    public.fetch_ws_ticks(ccxtconst.EXCHANGE_ID_LIQUID)
+
+
+@task
 def balance_bitflyer(c):
     print(private.fetch_balance(ccxtconst.EXCHANGE_ID_BITFLYER))
 
@@ -318,11 +328,17 @@ def bot_asset(c):
 
 @task
 def calc_btcjpy(c, btc_amount):
+    '''
+    BTCをJPYに変換した場合の金額を求める
+    '''
     Asset().calc_btc_to_jpy(float(btc_amount))
 
 
 @task
 def calc_jpybtc(c, jpy_price):
+    '''
+    JPYで購入できるBTCの値を求める
+    '''
     Asset().calc_jpy_to_btc(int(jpy_price))
 
 
