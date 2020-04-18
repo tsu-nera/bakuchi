@@ -3,6 +3,8 @@ import socketio
 from src.libs.websockets.websocket_client_base import WebsocketClientBase
 from src.constants.wsconst import SOCKETIO_URL
 
+import src.utils.datetime as dt
+
 
 class WebsocketClientCoincheck(WebsocketClientBase):
     def __init__(self, exchange_id, symbol):
@@ -19,13 +21,18 @@ class WebsocketClientCoincheck(WebsocketClientBase):
     def connect(self):
         self.sio.on('connect', self.on_connect)
         self.sio.on('orderbook', self.on_orderbook)
-
         self.sio.connect(SOCKETIO_URL,
                          transports=['polling'],
                          socketio_path='socket.io')
 
     def on_orderbook(self, data):
-        print(data)
+        timestamp = dt.now_timestamp_ms()
+        ticks = {
+            "timestamp": timestamp,
+            "bids": data[1]["bids"],
+            "asks": data[1]["asks"]
+        }
+        print(ticks)
 
     def on_connect(self):
         self.sio.emit('subscribe', self.CHANNEL)
