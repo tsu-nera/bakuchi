@@ -13,13 +13,13 @@ class Backtesting():
         self.timestamp = timestamp
         self.csv_driver = CsvDriver()
 
-        self.df_cc = self._read_df(ccxtconst.EXCHANGE_ID_COINCHECK)
-        self.df_lq = self._read_df(ccxtconst.EXCHANGE_ID_LIQUID)
+        self.df_cc = self._read_df(ccxtconst.ExchangeId.COINCHECK)
+        self.df_lq = self._read_df(ccxtconst.ExchangeId.LIQUID)
 
         self.arbitrage = ArbitrageBacktesting(self.df_cc, self.df_lq,
                                               ccxtconst.SYMBOL_BTC_JPY,
-                                              ccxtconst.EXCHANGE_ID_COINCHECK,
-                                              ccxtconst.EXCHANGE_ID_LIQUID,
+                                              ccxtconst.ExchangeId.COINCHECK,
+                                              ccxtconst.ExchangeId.LIQUID,
                                               simulate_mode)
 
     def _get_file_path(self, exchange_id):

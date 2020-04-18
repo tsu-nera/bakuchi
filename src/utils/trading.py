@@ -73,8 +73,8 @@ def run_trading(demo_mode=False):
     slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
 
     # run trade
-    arbitrage = ArbitrageTrading(ccxtconst.EXCHANGE_ID_LIQUID,
-                                 ccxtconst.EXCHANGE_ID_COINCHECK,
+    arbitrage = ArbitrageTrading(ccxtconst.ExchangeId.LIQUID,
+                                 ccxtconst.ExchangeId.COINCHECK,
                                  ccxtconst.SYMBOL_BTC_JPY,
                                  demo_mode=demo_mode)
 

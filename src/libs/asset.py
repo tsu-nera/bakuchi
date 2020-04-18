@@ -49,7 +49,7 @@ class Asset():
         self.assets = []
         self.total = {}
 
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        for exchange_id in ccxtconst.ExchangeId.LIST:
             jpy, btc = self._get_balance(exchange_id)
 
             btc_as_jpy = self._calc_btc_to_jpy(exchange_id, btc)
@@ -168,7 +168,7 @@ class Asset():
         与えられたBTCの量から日本円の価格を計算する
         '''
         result = {}
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        for exchange_id in ccxtconst.ExchangeId.LIST:
             price = self._calc_btc_to_jpy(exchange_id, btc_amount)
             output = "{}[BTC] to {}[JPY] ({})".format(btc_amount, price,
                                                       exchange_id)
@@ -189,7 +189,7 @@ class Asset():
         与えられた日本円の価格で購入できるBTCの量を計算する
         '''
         result = {}
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        for exchange_id in ccxtconst.ExchangeId.LIST:
             btc_amount = self._calc_jpy_to_btc(exchange_id, jpy_price)
             output = "{}[JPY] to {}[BTC] ({})".format(jpy_price, btc_amount,
                                                       exchange_id)

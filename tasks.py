@@ -40,69 +40,69 @@ PUBLIC_MODULE = importlib.import_module('src.utils.public')
 
 @task
 def ping_coincheck(c):
-    tool.ping(ccxtconst.EXCHANGE_ID_COINCHECK)
+    tool.ping(ccxtconst.ExchangeId.COINCHECK)
 
 
 @task
 def ping_liquid(c):
-    tool.ping(ccxtconst.EXCHANGE_ID_LIQUID)
+    tool.ping(ccxtconst.ExchangeId.LIQUID)
 
 
 @task
 def tick_bitflyer(c):
-    public.fetch_ticks(ccxtconst.EXCHANGE_ID_BITFLYER)
+    public.fetch_ticks(ccxtconst.ExchangeId.BITFLYER)
 
 
 @task
 def tick_coincheck(c):
-    public.fetch_ticks(ccxtconst.EXCHANGE_ID_COINCHECK)
+    public.fetch_ticks(ccxtconst.ExchangeId.COINCHECK)
 
 
 @task
 def tick_liquid(c):
-    public.fetch_ticks(ccxtconst.EXCHANGE_ID_LIQUID)
+    public.fetch_ticks(ccxtconst.ExchangeId.LIQUID)
 
 
 @task
 def tick_bitbank(c):
-    public.fetch_ticks(ccxtconst.EXCHANGE_ID_BITBANK)
+    public.fetch_ticks(ccxtconst.ExchangeId.BITBANK)
 
 
 @task
 def tick_bitmex(c):
-    public.fetch_ticks(ccxtconst.EXCHANGE_ID_BITMEX, ccxtconst.SYMBOL_BTC_USD)
+    public.fetch_ticks(ccxtconst.ExchangeId.BITMEX, ccxtconst.SYMBOL_BTC_USD)
 
 
 @task
 def tick_testnet(c):
-    public.fetch_ticks(ccxtconst.EXCHANGE_ID_BITMEX_DEMO,
+    public.fetch_ticks(ccxtconst.ExchangeId.BITMEX_DEMO,
                        ccxtconst.SYMBOL_BTC_USD)
 
 
 @task
 def tick_gemini_sandbox(c):
-    public.fetch_ticks(ccxtconst.EXCHANGE_ID_GEMINI_DEMO,
+    public.fetch_ticks(ccxtconst.ExchangeId.GEMINI_DEMO,
                        ccxtconst.SYMBOL_BTC_USD)
 
 
 @task
 def ping_eff_coincheck(c):
-    tool.ping(ccxtconst.EXCHANGE_ID_COINCHECK, eff=True)
+    tool.ping(ccxtconst.ExchangeId.COINCHECK, eff=True)
 
 
 @task
 def ping_eff_liquid(c):
-    tool.ping(ccxtconst.EXCHANGE_ID_LIQUID, eff=True)
+    tool.ping(ccxtconst.ExchangeId.LIQUID, eff=True)
 
 
 @task
 def tick_eff_coincheck(c):
-    public.fetch_ticks(ccxtconst.EXCHANGE_ID_COINCHECK, eff=True)
+    public.fetch_ticks(ccxtconst.ExchangeId.COINCHECK, eff=True)
 
 
 @task
 def tick_eff_liquid(c):
-    public.fetch_ticks(ccxtconst.EXCHANGE_ID_LIQUID, eff=True)
+    public.fetch_ticks(ccxtconst.ExchangeId.LIQUID, eff=True)
 
 
 @task
@@ -110,7 +110,7 @@ def tick_ws_coincheck(c):
     '''
     websocket通信を利用したtickの取得(coincheck)
     '''
-    public.fetch_ws_ticks(ccxtconst.EXCHANGE_ID_COINCHECK)
+    public.fetch_ws_ticks(ccxtconst.ExchangeId.COINCHECK)
 
 
 @task
@@ -118,37 +118,37 @@ def tick_ws_liquid(c):
     '''
     websocket通信を利用したtickの取得(liquid)
     '''
-    public.fetch_ws_ticks(ccxtconst.EXCHANGE_ID_LIQUID)
+    public.fetch_ws_ticks(ccxtconst.ExchangeId.LIQUID)
 
 
 @task
 def balance_bitflyer(c):
-    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_BITFLYER))
+    print(private.fetch_balance(ccxtconst.ExchangeId.BITFLYER))
 
 
 @task
 def balance_coincheck(c):
-    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_COINCHECK))
+    print(private.fetch_balance(ccxtconst.ExchangeId.COINCHECK))
 
 
 @task
 def balance_liquid(c):
-    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_LIQUID))
+    print(private.fetch_balance(ccxtconst.ExchangeId.LIQUID))
 
 
 @task
 def balance_bitbank(c):
-    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_BITBANK))
+    print(private.fetch_balance(ccxtconst.ExchangeId.BITBANK))
 
 
 @task
 def balance_testnet(c):
-    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_BITMEX_DEMO))
+    print(private.fetch_balance(ccxtconst.ExchangeId.BITMEX_DEMO))
 
 
 @task
 def balance_gemini_sandbox(c):
-    print(private.fetch_balance(ccxtconst.EXCHANGE_ID_GEMINI_DEMO))
+    print(private.fetch_balance(ccxtconst.ExchangeId.GEMINI_DEMO))
 
 
 @task
@@ -236,22 +236,22 @@ def buy_coincheck(c):
 
 @task
 def sell_liquid_with_amount(c, amount):
-    return sell_with_amount(c, ccxtconst.EXCHANGE_ID_LIQUID, amount)
+    return sell_with_amount(c, ccxtconst.ExchangeId.LIQUID, amount)
 
 
 @task
 def sell_liquid(c):
-    return sell(c, ccxtconst.EXCHANGE_ID_LIQUID)
+    return sell(c, ccxtconst.ExchangeId.LIQUID)
 
 
 @task
 def buy_liquid_with_amount(c, amount):
-    return buy_with_amount(c, ccxtconst.EXCHANGE_ID_LIQUID, amount)
+    return buy_with_amount(c, ccxtconst.ExchangeId.LIQUID, amount)
 
 
 @task
 def buy_liquid(c):
-    return buy(c, ccxtconst.EXCHANGE_ID_LIQUID)
+    return buy(c, ccxtconst.ExchangeId.LIQUID)
 
 
 @task
@@ -274,38 +274,38 @@ def sell_coincheck_buy_liquid(c):
 
 @task
 def buy_testnet(c):
-    private.create_buy_order(ccxtconst.EXCHANGE_ID_BITMEX_DEMO,
+    private.create_buy_order(ccxtconst.ExchangeId.BITMEX_DEMO,
                              ccxtconst.SYMBOL_BTC_USD, 1)
 
 
 @task
 def sell_testnet(c):
-    private.create_sell_order(ccxtconst.EXCHANGE_ID_BITMEX_DEMO,
+    private.create_sell_order(ccxtconst.ExchangeId.BITMEX_DEMO,
                               ccxtconst.SYMBOL_BTC_USD, 1)
 
 
 @task
 def fetch_orders(c):
-    private.fetch_open_orders(ccxtconst.EXCHANGE_ID_BITMEX_DEMO)
-    private.fetch_open_orders(ccxtconst.EXCHANGE_ID_COINCHECK)
-    private.fetch_open_orders(ccxtconst.EXCHANGE_ID_LIQUID)
+    private.fetch_open_orders(ccxtconst.ExchangeId.BITMEX_DEMO)
+    private.fetch_open_orders(ccxtconst.ExchangeId.COINCHECK)
+    private.fetch_open_orders(ccxtconst.ExchangeId.LIQUID)
 
 
 @task
 def fetch_positions(c):
-    private.get_positions(ccxtconst.EXCHANGE_ID_BITMEX_DEMO)
-    private.get_positions(ccxtconst.EXCHANGE_ID_COINCHECK)
-    private.get_positions(ccxtconst.EXCHANGE_ID_LIQUID)
+    private.get_positions(ccxtconst.ExchangeId.BITMEX_DEMO)
+    private.get_positions(ccxtconst.ExchangeId.COINCHECK)
+    private.get_positions(ccxtconst.ExchangeId.LIQUID)
 
 
 @task
 def save_coincheck_trades(c):
-    trade_history.save_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
+    trade_history.save_trades(ccxtconst.ExchangeId.COINCHECK)
 
 
 @task
 def save_liquid_trades(c):
-    trade_history.save_trades(ccxtconst.EXCHANGE_ID_LIQUID)
+    trade_history.save_trades(ccxtconst.ExchangeId.LIQUID)
 
 
 @task
@@ -499,8 +499,8 @@ def perf_func_execution_time(func):
 @task
 def perf_fetch_tick(c):
     def fetch_tick_with_serial():
-        ret1 = public.fetch_tick(ccxtconst.EXCHANGE_ID_COINCHECK)
-        ret2 = public.fetch_tick(ccxtconst.EXCHANGE_ID_LIQUID)
+        ret1 = public.fetch_tick(ccxtconst.ExchangeId.COINCHECK)
+        ret2 = public.fetch_tick(ccxtconst.ExchangeId.LIQUID)
 
         return ret1, ret2
 

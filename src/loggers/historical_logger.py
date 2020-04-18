@@ -12,7 +12,7 @@ import src.utils.json as json
 
 class HistoricalLogger():
     def __init__(self):
-        self.exchange_ids = ccxtconst.EXCHANGE_ID_LIST
+        self.exchange_ids = ccxtconst.ExchangeId.LIST
         self.dir_path = self._get_dir_path()
         self.config_file_path = self._get_config_file_path(self.dir_path)
 

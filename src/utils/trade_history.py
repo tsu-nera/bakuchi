@@ -110,7 +110,7 @@ def _format_fetched_trades(data):
 def fetch_trades(exchange_id):
     trades = private.fetch_trades(exchange_id)
 
-    if exchange_id == ccxtconst.EXCHANGE_ID_COINCHECK:
+    if exchange_id == ccxtconst.ExchangeId.COINCHECK:
         trades = _format_coincheck_trades(trades)
     else:
         trades = _format_fetched_trades(trades)
@@ -132,19 +132,19 @@ def save_trades(exchange_id):
 
 
 def show_recent_profits(hours=None):
-    cc_trades = fetch_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
-    lq_trades = fetch_trades(ccxtconst.EXCHANGE_ID_LIQUID)
+    cc_trades = fetch_trades(ccxtconst.ExchangeId.COINCHECK)
+    lq_trades = fetch_trades(ccxtconst.ExchangeId.LIQUID)
 
     if len(cc_trades) < len(lq_trades):
         base_trades = cc_trades
         target_trades = lq_trades
-        base_exchange_id = ccxtconst.EXCHANGE_ID_COINCHECK
-        target_exchange_id = ccxtconst.EXCHANGE_ID_LIQUID
+        base_exchange_id = ccxtconst.ExchangeId.COINCHECK
+        target_exchange_id = ccxtconst.ExchangeId.LIQUID
     else:
         base_trades = lq_trades
         target_trades = cc_trades
-        base_exchange_id = ccxtconst.EXCHANGE_ID_LIQUID
-        target_exchange_id = ccxtconst.EXCHANGE_ID_COINCHECK
+        base_exchange_id = ccxtconst.ExchangeId.LIQUID
+        target_exchange_id = ccxtconst.ExchangeId.COINCHECK
 
     def _to_dict(trades):
         trade_dict = {}
@@ -223,7 +223,7 @@ def show_recent_profits(hours=None):
 def backup_trades():
     from_dir_path = path.TRADES_RAWDATA_DIR_PATH
 
-    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+    for exchange_id in ccxtconst.ExchangeId.LIST:
         from_file_name = _get_latest_file_name(exchange_id)
 
         from_file_path = os.path.join(from_dir_path, from_file_name)
@@ -258,12 +258,12 @@ def _read_trades(timestamp, exchange_id):
 
 
 def read_coincheck(timestamp):
-    exchange_id = ccxtconst.EXCHANGE_ID_COINCHECK
+    exchange_id = ccxtconst.ExchangeId.COINCHECK
     return _read_trades(timestamp, exchange_id)
 
 
 def read_liquid(timestamp):
-    exchange_id = ccxtconst.EXCHANGE_ID_LIQUID
+    exchange_id = ccxtconst.ExchangeId.LIQUID
     return _read_trades(timestamp, exchange_id)
 
 
@@ -303,7 +303,7 @@ def save_report_trades(dir_name, start_timestamp, end_timestamp):
     if not os.path.exists(to_dir):
         os.mkdir(to_dir)
 
-    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+    for exchange_id in ccxtconst.ExchangeId.LIST:
         trades = fetch_trades(exchange_id)
         df = pd.DataFrame.from_dict(trades)
 

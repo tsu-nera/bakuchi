@@ -18,7 +18,7 @@ class CcxtClient():
         self.logger = get_ccxt_logger()
 
         # for demo trade
-        exchange_id_for_eval = exchange_id.replace("_demo", "")
+        exchange_id_for_eval = exchange_id.value.replace("_demo", "")
 
         self.exchange = eval('ccxt.{}()'.format(exchange_id_for_eval))
 
@@ -116,7 +116,7 @@ class CcxtClient():
         return order_info
 
     def fetch_trades(self):
-        if self.exchange_id == ccxtconst.EXCHANGE_ID_COINCHECK:
+        if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
             client = Coincheck()
             trades = client.fetch_my_trades()
         elif self.exchange.has['fetchMyTrades']:

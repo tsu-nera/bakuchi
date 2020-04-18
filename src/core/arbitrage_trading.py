@@ -19,7 +19,7 @@ import src.utils.datetime as dt
 
 import src.env as env
 import src.config as config
-from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK
+from src.constants.ccxtconst import TICK_INTERVAL_SEC, ExchangeId
 
 
 class ArbitrageTrading(ArbitrageBase):
@@ -192,8 +192,8 @@ class ArbitrageTrading(ArbitrageBase):
         label = self._get_log_label()
 
         if result == self.STRATEGY_BUY_X_AND_SELL_Y:
-            ask_for_coincheck = x.ask if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
-            bid_for_coincheck = y.bid if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
+            ask_for_coincheck = x.ask if self.ex_id_x == ExchangeId.COINCHECK else None
+            bid_for_coincheck = y.bid if self.ex_id_y == ExchangeId.COINCHECK else None
 
             buy_resp, sell_resp = self.parallel.order_buyx_selly(
                 self.trade_amount,
@@ -230,8 +230,8 @@ class ArbitrageTrading(ArbitrageBase):
             self._change_status_buyx_selly()
 
         elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
-            ask_for_coincheck = y.ask if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
-            bid_for_coincheck = x.bid if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
+            ask_for_coincheck = y.ask if self.ex_id_y == ExchangeId.COINCHECK else None
+            bid_for_coincheck = x.bid if self.ex_id_x == ExchangeId.COINCHECK else None
 
             buy_resp, sell_resp = self.parallel.order_buyy_sellx(
                 self.trade_amount,

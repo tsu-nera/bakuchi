@@ -9,9 +9,9 @@ class WebsocketClient():
         self.exchange_id = exchange_id
         self.symbol = symbol
 
-        if self.exchange_id == ccxtconst.EXCHANGE_ID_COINCHECK:
+        if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
             self.ws = WebsocketClientCoincheck(exchange_id, symbol)
-        elif self.exchange_id == ccxtconst.EXCHANGE_ID_LIQUID:
+        elif self.exchange_id == ccxtconst.ExchangeId.LIQUID:
             self.ws = WebsocketClientLiquid(exchange_id, symbol)
         else:
             self.ws = None

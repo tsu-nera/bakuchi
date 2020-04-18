@@ -22,8 +22,8 @@ def check_profit_margin():
     二つの取引所の価格差をチェックするツール
     '''
     # とりあえずこの2つで決め打ち
-    ex_x_id = ccxtconst.EXCHANGE_ID_COINCHECK
-    ex_y_id = ccxtconst.EXCHANGE_ID_LIQUID
+    ex_x_id = ccxtconst.ExchangeId.COINCHECK
+    ex_y_id = ccxtconst.ExchangeId.LIQUID
 
     bid_x, ask_x = _get_tick(ex_x_id)
     bid_y, ask_y = _get_tick(ex_y_id)
@@ -73,7 +73,7 @@ def adjust_coincheck_buy_amount():
         print("order end")
 
         print("get trade histories")
-        trades = trade_history.get_trades(ccxtconst.EXCHANGE_ID_COINCHECK,
+        trades = trade_history.get_trades(ccxtconst.ExchangeId.COINCHECK,
                                           count * 2)
 
         amounts = []
@@ -117,8 +117,8 @@ def ping(exchange_id, eff=False):
 
 
 def ping_with_thread():
-    parallel = ArbitrageParallel(ccxtconst.EXCHANGE_ID_COINCHECK,
-                                 ccxtconst.EXCHANGE_ID_LIQUID,
+    parallel = ArbitrageParallel(ccxtconst.ExchangeId.COINCHECK,
+                                 ccxtconst.ExchangeId.LIQUID,
                                  ccxtconst.SYMBOL_BTC_JPY)
 
     responses = parallel.fetch_tick()
