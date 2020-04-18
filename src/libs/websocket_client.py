@@ -17,5 +17,4 @@ class WebsocketClient():
             self.ws = None
 
     def fetch_ticks(self):
-        while True:
-            print(self.ws.fetch_ticks())
+        self.ws.fetch_ticks()
