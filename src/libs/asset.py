@@ -32,7 +32,7 @@ class Asset():
     def _get_tick(self, exchange_id):
         c = CcxtClient(exchange_id)
         tick = c.fetch_tick()
-        return tick["bid"], tick["ask"]
+        return tick.bid, tick.ask
 
     def _create_asset(self, id, jpy, btc, btc_as_jpy, total_jpy, bid, ask):
         return {

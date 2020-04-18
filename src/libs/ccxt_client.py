@@ -1,9 +1,12 @@
 import sys
+
 import ccxt
+
 from src.loggers.logger import get_ccxt_logger
 import src.constants.ccxtconst as ccxtconst
 import src.utils.datetime as dt
 from src.libs.exchanges.coincheck import Coincheck
+from src.core.tick import Tick
 
 
 class CcxtClient():
@@ -11,6 +14,7 @@ class CcxtClient():
                  exchange_id,
                  symbol=ccxtconst.SYMBOL_BTC_JPY,
                  demo_mode=False):
+
         self.demo_mode = demo_mode
 
         self.exchange_id = exchange_id
@@ -60,11 +64,7 @@ class CcxtClient():
 
         if tick:
             self._logging_tick(tick["bid"], tick["ask"])
-            return {
-                "timestamp": timestamp,
-                "bid": tick["bid"],
-                "ask": tick["ask"]
-            }
+            return Tick(timestamp, tick["bid"], tick["ask"])
         else:
             self.logger.error('(%s) %s', self.exchange_id, "can't get tick")
             return None
@@ -164,7 +164,7 @@ class CcxtClient():
 
             self._logging_tick(bid, ask)
 
-            return {"timestamp": timestamp, "bid": bid, "ask": ask}
+            return Tick(timestamp, bid, ask)
         else:
             self.logger.error('(%s) %s', self.exchange_id, "can't get tick")
             return None
