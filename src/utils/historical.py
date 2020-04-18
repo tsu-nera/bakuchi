@@ -54,14 +54,14 @@ def save_ticks():
             tick_bb = client_bb.fetch_tick()
 
             if tick_bf and tick_cc and tick_lq and tick_bb:
-                output_bf = _format_csv(tick_bf["timestamp"], tick_bf["bid"],
-                                        tick_bf["ask"])
-                output_cc = _format_csv(tick_cc["timestamp"], tick_cc["bid"],
-                                        tick_cc["ask"])
-                output_lq = _format_csv(tick_lq["timestamp"], tick_lq["bid"],
-                                        tick_lq["ask"])
-                output_bb = _format_csv(tick_bb["timestamp"], tick_bb["bid"],
-                                        tick_bb["ask"])
+                output_bf = _format_csv(tick_bf.timestamp, tick_bf.bid,
+                                        tick_bf.ask)
+                output_cc = _format_csv(tick_cc.timestamp, tick_cc.bid,
+                                        tick_cc.ask)
+                output_lq = _format_csv(tick_lq.timestamp, tick_lq.bid,
+                                        tick_lq.ask)
+                output_bb = _format_csv(tick_bb.timestamp, tick_bb.bid,
+                                        tick_bb.ask)
 
                 fs_bf.write(output_bf + '\n')
                 fs_bf.flush()

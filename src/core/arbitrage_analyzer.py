@@ -1,5 +1,6 @@
-from src.config import OPEN_THRESHOLD_CHANGE_SEC
 from statistics import mean
+
+from src.config import OPEN_THRESHOLD_CHANGE_SEC
 
 
 class ArbitrageAnalyzer():

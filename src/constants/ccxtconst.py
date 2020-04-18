@@ -1,5 +1,6 @@
-import src.env as env
 from enum import Enum
+
+import src.env as env
 
 TICK_INTERVAL_SEC = 1
 

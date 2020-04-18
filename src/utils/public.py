@@ -25,7 +25,7 @@ def fetch_ticks(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY, eff=False):
             print("no data...")
             continue
 
-        _logging(tick["timestamp"], tick["bid"], tick["ask"])
+        _logging(tick.timestamp, tick.bid, tick.ask)
 
 
 def fetch_tick(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
