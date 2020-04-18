@@ -33,13 +33,13 @@ class WebsocketClientLiquid(WebsocketClientBase):
 
     def fetch_ticks_asks(self, data):
         self.asks_buffer = data
-        self.update_buffer()
+        self.update_buffers()
 
     def fetch_ticks_bids(self, data):
         self.bids_buffer = data
-        self.update_buffer()
+        self.update_buffers()
 
-    def update_buffer(self):
+    def update_buffers(self):
         if self.asks_buffer and self.bids_buffer:
             timestamp = dt.now_timestamp_ms()
             ticks = {

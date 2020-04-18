@@ -25,7 +25,8 @@ class WebsocketClientCoincheck(WebsocketClientBase):
     def fetch_ticks(self):
         while True:
             timestamp = dt.now_timestamp_ms()
-            data = json.loads(self.ws.recv())
+            data = self.ws.recv()
+            data = json.loads(data)
             ticks = {
                 "timestamp": timestamp,
                 "bids": data[1]["bids"],
