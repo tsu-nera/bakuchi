@@ -1,8 +1,9 @@
 import liquidtap
 import time
+from src.libs.websockets.websocket_client_base import WebsocketClientBase
 
 
-class WebsocketClientLiquid():
+class WebsocketClientLiquid(WebsocketClientBase):
     def __init__(self, exchange_id, symbol):
         self.exchange_id = exchange_id
         self.symbol = symbol

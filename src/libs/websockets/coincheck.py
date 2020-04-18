@@ -1,10 +1,11 @@
 import json
 from websocket import create_connection
 
+from src.libs.websockets.websocket_client_base import WebsocketClientBase
 from src.constants.wsconst import WEBSOCKET_API_ENDPOINT_COINCHECK
 
 
-class WebsocketClientCoincheck():
+class WebsocketClientCoincheck(WebsocketClientBase):
     def __init__(self, exchange_id, symbol):
         self.exchange_id = exchange_id
         self.symbol = symbol
