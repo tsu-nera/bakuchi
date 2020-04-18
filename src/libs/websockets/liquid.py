@@ -1,5 +1,7 @@
 import liquidtap
 import time
+
+import src.utils.datetime as dt
 from src.libs.websockets.websocket_client_base import WebsocketClientBase
 
 
@@ -27,7 +29,11 @@ class WebsocketClientLiquid(WebsocketClientBase):
             self.channel)).bind('updated', self.fetch_sell_ticks)
 
     def fetch_buy_ticks(self, data):
-        print("buy:" + data)
+        timestamp = dt.now_timestamp()
+        ticks = {"timestamp": timestamp, "asks": data}
+        print(ticks)
 
     def fetch_sell_ticks(self, data):
-        print("sell:" + data)
+        timestamp = dt.now_timestamp_ms()
+        ticks = {"timestamp": timestamp, "bids": data}
+        print(ticks)

@@ -3,6 +3,7 @@ import datetime
 DATETIME_BASE_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATETIME_DIR_FORMAT = '%y%m%d%H%M'
 DATE_DIR_FORMAT = '%y%m%d'
+DATETIME_MS_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
 
 
 def format_timestamp(timestamp):
@@ -28,3 +29,8 @@ def today_dirname():
 def now_timestamp():
     format_string = DATETIME_BASE_FORMAT
     return datetime.datetime.now().strftime(format_string)
+
+
+def now_timestamp_ms():
+    format_string = DATETIME_MS_FORMAT
+    return datetime.datetime.now().strftime(format_string)[:-3]
