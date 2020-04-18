@@ -223,7 +223,7 @@ def show_recent_profits(hours=None):
 def backup_trades():
     from_dir_path = path.TRADES_RAWDATA_DIR_PATH
 
-    for exchange_id in ccxtconst.ExchangeId.LIST:
+    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
         from_file_name = _get_latest_file_name(exchange_id)
 
         from_file_path = os.path.join(from_dir_path, from_file_name)
@@ -303,7 +303,7 @@ def save_report_trades(dir_name, start_timestamp, end_timestamp):
     if not os.path.exists(to_dir):
         os.mkdir(to_dir)
 
-    for exchange_id in ccxtconst.ExchangeId.LIST:
+    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
         trades = fetch_trades(exchange_id)
         df = pd.DataFrame.from_dict(trades)
 

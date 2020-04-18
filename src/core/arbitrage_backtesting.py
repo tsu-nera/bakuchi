@@ -9,6 +9,7 @@ from src.core.tick import Tick
 from src.core.exchange_backtesting import ExchangeBacktesting as Exchange
 
 from src.utils.asset import format_btc, format_jpy
+from src.constants.arbitrage import Strategy
 
 
 class ArbitrageBacktesting(ArbitrageBase):
@@ -104,7 +105,7 @@ class ArbitrageBacktesting(ArbitrageBase):
             time.sleep(1)
         timestamp_string = x.timestamp.strftime(dt.DATETIME_BASE_FORMAT)
 
-        if result == self.STRATEGY_BUY_X_AND_SELL_Y:
+        if result == Strategy.BUY_X_SELL_Y:
             self.trade_count += 1
             self.exchange_x.order_buy(self.symbol, self.trade_amount, x.ask)
             self._record_history(timestamp_string, "買い", self.exchange_x_id,
@@ -126,7 +127,7 @@ class ArbitrageBacktesting(ArbitrageBase):
             self._update_entry_open_margin(profit_margin)
             self._change_status_buyx_selly()
 
-        elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
+        elif result == Strategy.BUY_Y_SELL_X:
             self.trade_count += 1
             self.exchange_y.order_buy(self.symbol, self.trade_amount, y.ask)
             self._record_history(timestamp_string, "買い", self.exchange_y_id,

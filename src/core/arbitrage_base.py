@@ -1,14 +1,9 @@
 from abc import ABCMeta, abstractmethod
 from src.core.arbitrage_analyzer import ArbitrageAnalyzer
+from src.constants.arbitrage import Strategy
 
 
 class ArbitrageBase(metaclass=ABCMeta):
-    STRATEGY_BUY_X_AND_SELL_Y = "buy x and sell y"
-    STRATEGY_BUY_Y_AND_SELL_X = "buy y and sell x"
-    STRATEGY_DO_NOTHING = "no strategy"
-    ACTION_OPENING = "OPENING"
-    ACTION_CLOSING = "CLOSING"
-
     def __init__(self, open_threshold_change_sec=None):
         self._closing()
         self.analyzer = ArbitrageAnalyzer(open_threshold_change_sec)
@@ -41,11 +36,11 @@ class ArbitrageBase(metaclass=ABCMeta):
             self.analyzer.reset()
 
         if self._check_status_buyx_selly(y.bid, x.ask):
-            return self.STRATEGY_BUY_X_AND_SELL_Y
+            return Strategy.BUY_X_SELL_Y
         elif self._check_status_buyy_sellx(x.bid, y.ask):
-            return self.STRATEGY_BUY_Y_AND_SELL_X
+            return Strategy.BUY_Y_SELL_X
         else:
-            return self.STRATEGY_DO_NOTHING
+            return Strategy.DO_NOTHING
 
     @abstractmethod
     def _action(self, result, x, y):

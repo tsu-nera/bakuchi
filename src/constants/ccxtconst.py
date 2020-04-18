@@ -15,7 +15,7 @@ class ExchangeId(Enum):
 
 
 # 現在対応している取引所
-ExchangeId.LIST = [ExchangeId.COINCHECK, ExchangeId.LIQUID]
+EXCHANGE_ID_LIST = [ExchangeId.COINCHECK, ExchangeId.LIQUID]
 
 SYMBOL_BTC_JPY = "BTC/JPY"
 SYMBOL_BTC_USD = "BTC/USD"

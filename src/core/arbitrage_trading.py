@@ -20,6 +20,7 @@ import src.utils.datetime as dt
 import src.env as env
 import src.config as config
 from src.constants.ccxtconst import TICK_INTERVAL_SEC, ExchangeId
+from src.constants.arbitrage import Strategy, Action
 
 
 class ArbitrageTrading(ArbitrageBase):
@@ -100,16 +101,16 @@ class ArbitrageTrading(ArbitrageBase):
             self._get_close_threshold())
 
         if self.opened:
-            message = "waiting {} {}, {}".format(self.ACTION_CLOSING,
+            message = "waiting {} {}, {}".format(Action.CLOSING.value,
                                                  message_format,
                                                  close_threshold_format)
             self.logger_margin.info(message)
         else:
             message_buyx_selly = "waiting {} {}, {}".format(
-                self.ACTION_OPENING, message_buyx_selly_format,
+                Action.OPENING.value, message_buyx_selly_format,
                 open_threshold_format)
             message_buyy_sellx = "waiting {} {}, {}".format(
-                self.ACTION_OPENING, message_buyy_sellx_format,
+                Action.OPENING.value, message_buyy_sellx_format,
                 open_threshold_format)
 
             if margin_buyx_selly > margin_buyy_sellx:
@@ -161,7 +162,7 @@ class ArbitrageTrading(ArbitrageBase):
         return self.trade_amount * rate
 
     def _get_log_label(self):
-        return self.ACTION_CLOSING if self.opened else self.ACTION_OPENING
+        return Action.CLOSING.value if self.opened else Action.OPENING.value
 
     def _format_expected_profit_message(self, buy_exchange_id, buy_ask,
                                         sell_exchange_id, sell_bid,
@@ -191,7 +192,7 @@ class ArbitrageTrading(ArbitrageBase):
     def _action(self, result, x, y):
         label = self._get_log_label()
 
-        if result == self.STRATEGY_BUY_X_AND_SELL_Y:
+        if result == Strategy.BUY_X_SELL_Y:
             ask_for_coincheck = x.ask if self.ex_id_x == ExchangeId.COINCHECK else None
             bid_for_coincheck = y.bid if self.ex_id_y == ExchangeId.COINCHECK else None
 
@@ -229,7 +230,7 @@ class ArbitrageTrading(ArbitrageBase):
             self._update_entry_open_margin(profit_margin)
             self._change_status_buyx_selly()
 
-        elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
+        elif result == Strategy.BUY_Y_SELL_X:
             ask_for_coincheck = y.ask if self.ex_id_y == ExchangeId.COINCHECK else None
             bid_for_coincheck = x.bid if self.ex_id_x == ExchangeId.COINCHECK else None
 

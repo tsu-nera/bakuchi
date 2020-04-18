@@ -96,7 +96,7 @@ class TradeAnalysis():
             self.start_asset['total']['jpy'] + sum([
                 btc_to_jpy(self.start_asset[exchange_id]['btc'],
                            self.end_asset[exchange_id]['bid'])
-                for exchange_id in ccxtconst.ExchangeId.LIST
+                for exchange_id in ccxtconst.EXCHANGE_ID_LIST
             ]))
         self.result["bot_profit_jpy"] = format_jpy_float(
             self.end_asset["total"]["total_jpy"] -
