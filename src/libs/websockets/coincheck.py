@@ -11,12 +11,14 @@ class WebsocketClientCoincheck(WebsocketClientBase):
         self.exchange_id = exchange_id
         self.symbol = symbol
 
-        self.sio = socketio.Client(SOCKETIO_URL)
+        self.sio = socketio.Client()
 
         symbols = symbol.split("/")
         self.PAIR = "{}_{}".format(str.lower(symbols[0]),
                                    str.lower(symbols[1]))
         self.CHANNEL = "{}-orderbook".format(self.PAIR)
+
+        self.connect()
 
     def connect(self):
         self.sio.on('connect', self.on_connect)
@@ -38,4 +40,4 @@ class WebsocketClientCoincheck(WebsocketClientBase):
         self.sio.emit('subscribe', self.CHANNEL)
 
     def fetch_ticks(self):
-        self.connect()
+        self.sio.wait()
