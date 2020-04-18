@@ -1,5 +1,5 @@
-import liquidtap
 import time
+import liquidtap
 
 import src.utils.datetime as dt
 from src.libs.websockets.websocket_client_base import WebsocketClientBase
@@ -18,22 +18,36 @@ class WebsocketClientLiquid(WebsocketClientBase):
                                        self.on_connect)
         self.ws.pusher.connect()
 
+        self.bids_buffer = None
+        self.asks_buffer = None
+
     def fetch_ticks(self):
         while True:
             time.sleep(1)
 
     def on_connect(self, data):
         self.ws.pusher.subscribe("price_ladders_cash_{}_buy".format(
-            self.channel)).bind('updated', self.fetch_buy_ticks)
+            self.channel)).bind('updated', self.fetch_ticks_asks)
         self.ws.pusher.subscribe("price_ladders_cash_{}_sell".format(
-            self.channel)).bind('updated', self.fetch_sell_ticks)
+            self.channel)).bind('updated', self.fetch_ticks_bids)
 
-    def fetch_buy_ticks(self, data):
-        timestamp = dt.now_timestamp()
-        ticks = {"timestamp": timestamp, "asks": data}
-        print(ticks)
+    def fetch_ticks_asks(self, data):
+        self.asks_buffer = data
+        self.update_buffer()
 
-    def fetch_sell_ticks(self, data):
-        timestamp = dt.now_timestamp_ms()
-        ticks = {"timestamp": timestamp, "bids": data}
-        print(ticks)
+    def fetch_ticks_bids(self, data):
+        self.bids_buffer = data
+        self.update_buffer()
+
+    def update_buffer(self):
+        if self.asks_buffer and self.bids_buffer:
+            timestamp = dt.now_timestamp_ms()
+            ticks = {
+                "timestamp": timestamp,
+                "bids": self.bids_buffer,
+                "asks": self.asks_buffer
+            }
+            print(ticks)
+
+            self.asks_buffer = None
+            self.bids_buffer = None
