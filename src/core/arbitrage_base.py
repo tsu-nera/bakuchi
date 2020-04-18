@@ -12,7 +12,7 @@ class ArbitrageBase(metaclass=ABCMeta):
 
     @abstractmethod
     def run(self):
-        pass
+        raise NotImplementedError
 
     def next(self):
         # tick取得
@@ -27,7 +27,7 @@ class ArbitrageBase(metaclass=ABCMeta):
 
     @abstractmethod
     def _get_tick(self):
-        pass
+        raise NotImplementedError
 
     def _evaluate(self, x, y):
         self.analyzer.update(y.bid - x.ask, x.bid - y.ask)
@@ -44,7 +44,7 @@ class ArbitrageBase(metaclass=ABCMeta):
 
     @abstractmethod
     def _action(self, result, x, y):
-        pass
+        raise NotImplementedError
 
     def _get_profit_margin(self, bid, ask):
         return int(bid - ask)
