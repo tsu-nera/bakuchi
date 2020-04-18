@@ -107,11 +107,17 @@ def tick_eff_liquid(c):
 
 @task
 def tick_ws_coincheck(c):
+    '''
+    websocket通信を利用したtickの取得(coincheck)
+    '''
     public.fetch_ws_ticks(ccxtconst.EXCHANGE_ID_COINCHECK)
 
 
 @task
 def tick_ws_liquid(c):
+    '''
+    websocket通信を利用したtickの取得(liquid)
+    '''
     public.fetch_ws_ticks(ccxtconst.EXCHANGE_ID_LIQUID)
 
 
