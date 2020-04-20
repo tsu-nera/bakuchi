@@ -2,7 +2,7 @@ import ast
 import time
 import liquidtap
 
-from src.constants.wsconst import WsDataOrderbook
+from src.constants.wsconst import WsDataOrderbook, WsDataTrade
 from src.libs.websockets.websocket_client_base import WebsocketClientBase
 
 
@@ -26,6 +26,9 @@ class WebsocketClientLiquid(WebsocketClientBase):
             self.CHANNEL)).bind('updated', self.on_orderbook_asks)
         self.ws.pusher.subscribe("price_ladders_cash_{}_sell".format(
             self.CHANNEL)).bind('updated', self.on_orderbook_bids)
+        self.ws.pusher.subscribe("executions_cash_{}".format(
+            self.CHANNEL)).bind('created', self.on_trades)
+        # execution_details_cash も追加して executions_cashが遅延したときの対策をいれるか？
 
     def on_orderbook_asks(self, data):
         data = ast.literal_eval(data)
@@ -36,6 +39,12 @@ class WebsocketClientLiquid(WebsocketClientBase):
         data = ast.literal_eval(data)
         orderbook = WsDataOrderbook(data, [])
         self.queue.put(orderbook)
+
+    def on_trades(self, data):
+        data = ast.literal_eval(data)
+        trade = WsDataTrade(data["price"], data["quantity"],
+                            data["taker_side"])
+        self.queue.put(trade)
 
     def fetch_ticks(self):
         while True:
