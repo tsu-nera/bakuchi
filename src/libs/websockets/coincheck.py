@@ -7,7 +7,8 @@ import src.utils.datetime as dt
 
 
 class WebsocketClientCoincheck(WebsocketClientBase):
-    def __init__(self, exchange_id, symbol):
+    def __init__(self, queue, exchange_id, symbol):
+        self.queue = queue
         self.exchange_id = exchange_id
         self.symbol = symbol
 
@@ -16,12 +17,14 @@ class WebsocketClientCoincheck(WebsocketClientBase):
         symbols = symbol.split("/")
         self.PAIR = "{}_{}".format(str.lower(symbols[0]),
                                    str.lower(symbols[1]))
-        self.CHANNEL = "{}-orderbook".format(self.PAIR)
+        self.CHANNEL_ORDERBOOK = "{}-orderbook".format(self.PAIR)
+        self.CHANNEL_TRADES = "{}-trades".format(self.PAIR)
 
         self.connect()
 
     def connect(self):
         self.sio.on('connect', self.on_connect)
+        self.sio.on('trades', self.on_trades)
         self.sio.on('orderbook', self.on_orderbook)
         self.sio.connect(SOCKETIO_URL,
                          transports=['polling'],
@@ -29,15 +32,27 @@ class WebsocketClientCoincheck(WebsocketClientBase):
 
     def on_orderbook(self, data):
         timestamp = dt.now_timestamp_ms()
-        ticks = {
+        orderbook = {
             "timestamp": timestamp,
             "bids": data[1]["bids"],
             "asks": data[1]["asks"]
         }
-        print(ticks)
+        self.queue.put(orderbook)
+
+    def on_trades(self, data):
+        pass
+        # print(data)
+        # timestamp = dt.now_timestamp_ms()
+        # orderbooks = {
+        #     "timestamp": timestamp,
+        #     "bids": data[1]["bids"],
+        #     "asks": data[1]["asks"]
+        # }
+        # self.queue.put(orderbooks)
 
     def on_connect(self):
-        self.sio.emit('subscribe', self.CHANNEL)
+        self.sio.emit('subscribe', self.CHANNEL_ORDERBOOK)
+        self.sio.emit('subscribe', self.CHANNEL_TRADES)
 
     def fetch_ticks(self):
         self.sio.wait()

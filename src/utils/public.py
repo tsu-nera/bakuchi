@@ -3,6 +3,7 @@ import time
 from src.libs.ccxt_client import CcxtClient
 from src.libs.websocket_client import WebsocketClient
 import src.constants.ccxtconst as ccxtconst
+from src.core.board import Board
 
 
 def _logging(timestamp, bid, ask):
@@ -36,3 +37,11 @@ def fetch_tick(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
 def fetch_ws_ticks(exhange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
     client = WebsocketClient(exhange_id, symbol)
     client.fetch_ticks()
+
+
+def fetch_board(exhange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
+    board = Board(exhange_id, symbol)
+
+    while True:
+        board.show()
+        time.sleep(5)

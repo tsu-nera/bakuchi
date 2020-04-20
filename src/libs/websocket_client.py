@@ -5,14 +5,15 @@ from src.libs.websockets.liquid import WebsocketClientLiquid
 
 
 class WebsocketClient():
-    def __init__(self, exchange_id, symbol):
+    def __init__(self, queue, exchange_id, symbol):
+        self.queue = queue
         self.exchange_id = exchange_id
         self.symbol = symbol
 
         if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
-            self.ws = WebsocketClientCoincheck(exchange_id, symbol)
+            self.ws = WebsocketClientCoincheck(queue, exchange_id, symbol)
         elif self.exchange_id == ccxtconst.ExchangeId.LIQUID:
-            self.ws = WebsocketClientLiquid(exchange_id, symbol)
+            self.ws = WebsocketClientLiquid(queue, exchange_id, symbol)
         else:
             self.ws = None
 

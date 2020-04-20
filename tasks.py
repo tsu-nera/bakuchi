@@ -152,6 +152,22 @@ def balance_gemini_sandbox(c):
 
 
 @task
+def board_coincheck(c):
+    '''
+    websocket通信を利用した板情報の取得(coincheck)
+    '''
+    public.fetch_board(ccxtconst.ExchangeId.COINCHECK)
+
+
+@task
+def board_liquid(c):
+    '''
+    websocket通信を利用した板情報の取得(liquid)
+    '''
+    public.fetch_board(ccxtconst.ExchangeId.LIQUID)
+
+
+@task
 def bot(c):
     run_trading()
 
