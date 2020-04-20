@@ -113,32 +113,33 @@ class Board():
         self.__logger.info('tick bid=%s ask=%s (%s:%s)', bid, ask,
                            self.__exchange_id.value, self.__symbol)
 
-    def get_tick(self, amount=1.0):
-        bids = list(self.bids.items()[::-1])
-        asks = list(self.asks.items())
+    def get_eff_tick(self, amount=1.0):
+        bids = self.bids.items()[::-1]
+        asks = self.asks.items()
 
         if len(bids) == 0 or len(asks) == 0:
             return None
 
-        i = 0
-        s = 0
-        while s <= amount:
-            s += bids[i][1]
-            i += 1
+        bid_total_amount = 0
+        bid_rate = bids[0][0]
+        for bid in bids:
+            bid_total_amount += bid[1]
+            if bid_total_amount >= amount:
+                bid_rate = bid[0]
+                break
 
-        bid = bids[i - 1][0]
+        ask_total_amount = 0
+        ask_rate = asks[0][0]
+        for ask in asks:
+            ask_total_amount += ask[1]
+            if ask_total_amount >= amount:
+                ask_rate = ask[0]
+                break
 
-        j = 0
-        t = 0
-        while t <= amount:
-            t += asks[j][1]
-            j += 1
-        ask = asks[j - 1][0]
-
-        self.__logging_tick(bid, ask)
+        self.__logging_tick(bid_rate, ask_rate)
 
         timestamp = dt.now_timestamp_ms()
-        tick = Tick(timestamp, bid, ask)
+        tick = Tick(timestamp, bid_rate, ask_rate)
 
         return tick
 

@@ -140,8 +140,8 @@ class ArbitrageTrading(ArbitrageBase):
 
     def _get_tick(self):
         # tick_x, tick_y = self.parallel.fetch_tick(eff=False)
-        tick_x = self.board_x.get_tick(self.trade_amount)
-        tick_y = self.board_y.get_tick(self.trade_amount)
+        tick_x = self.board_x.get_eff_tick(self.trade_amount)
+        tick_y = self.board_y.get_eff_tick(self.trade_amount)
 
         self.__raise_exception_if_occured(tick_x)
         self.__raise_exception_if_occured(tick_y)

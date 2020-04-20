@@ -23,9 +23,9 @@ class WebsocketClientLiquid(WebsocketClientBase):
 
     def __on_connect(self, data):
         self.__ws.pusher.subscribe("price_ladders_cash_{}_buy".format(
-            self.CHANNEL)).bind('updated', self.__on_orderbook_asks)
-        self.__ws.pusher.subscribe("price_ladders_cash_{}_sell".format(
             self.CHANNEL)).bind('updated', self.__on_orderbook_bids)
+        self.__ws.pusher.subscribe("price_ladders_cash_{}_sell".format(
+            self.CHANNEL)).bind('updated', self.__on_orderbook_asks)
         self.__ws.pusher.subscribe("executions_cash_{}".format(
             self.CHANNEL)).bind('created', self.__on_trades)
         # execution_details_cash も追加して executions_cashが遅延したときの対策をいれるか？
