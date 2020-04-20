@@ -168,6 +168,16 @@ def board_liquid(c):
 
 
 @task
+def tick_board_coincheck(c):
+    public.fetch_board_tick(ccxtconst.ExchangeId.COINCHECK)
+
+
+@task
+def tick_board_liquid(c):
+    public.fetch_board_tick(ccxtconst.ExchangeId.LIQUID)
+
+
+@task
 def bot(c):
     run_trading()
 

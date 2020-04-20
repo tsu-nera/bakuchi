@@ -45,3 +45,12 @@ def fetch_board(exhange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
     while True:
         board.display()
         time.sleep(5)
+
+
+def fetch_board_tick(exhange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
+    board = Board(exhange_id, symbol)
+
+    while True:
+        time.sleep(1)
+        tick = board.get_tick(1)
+        print(tick)

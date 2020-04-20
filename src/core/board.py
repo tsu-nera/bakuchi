@@ -4,6 +4,8 @@ from queue import Queue
 
 from sortedcontainers import SortedDict
 
+import src.utils.datetime as dt
+from src.core.tick import Tick
 from src.constants.wsconst import WsDataType
 from src.libs.ccxt_client import CcxtClient
 from src.libs.websocket_client import WebsocketClient
@@ -102,9 +104,35 @@ class Board():
         for rate in rates:
             del board[rate]
 
+    def get_tick(self, amount):
+        asks = list(self.asks.items())
+        bids = list(self.bids.items()[::-1])
+
+        # 実効ASK計算
+        i = 0
+        s = 0
+        while s <= amount:
+            s += asks[i][1]
+            i += 1
+
+        # 実効BID計算
+        j = 0
+        t = 0
+        while t <= amount:
+            t += bids[j][1]
+            j += 1
+
+        bid = bids[i - 1][0]
+        ask = asks[j - 1][0]
+
+        timestamp = dt.now_timestamp_ms()
+        tick = Tick(timestamp, bid, ask)
+
+        return tick
+
     def display(self):
         print("=== bids(買い注文) ===")
-        print(self.bids)
+        print(list(self.bids.items()))
         print("=== asks(売り注文) ===")
-        print(self.asks)
+        print(list(self.asks.items()))
         print()
