@@ -16,31 +16,31 @@ class WebsocketClientLiquid(WebsocketClientBase):
         self.CHANNEL = "{}{}".format(str.lower(symbols[0]),
                                      str.lower(symbols[1]))
 
-        self.ws = liquidtap.Client()
-        self.ws.pusher.connection.bind('pusher:connection_established',
-                                       self.on_connect)
-        self.ws.pusher.connect()
+        self.__ws = liquidtap.Client()
+        self.__ws.pusher.connection.bind('pusher:connection_established',
+                                         self.__on_connect)
+        self.__ws.pusher.connect()
 
-    def on_connect(self, data):
-        self.ws.pusher.subscribe("price_ladders_cash_{}_buy".format(
-            self.CHANNEL)).bind('updated', self.on_orderbook_asks)
-        self.ws.pusher.subscribe("price_ladders_cash_{}_sell".format(
-            self.CHANNEL)).bind('updated', self.on_orderbook_bids)
-        self.ws.pusher.subscribe("executions_cash_{}".format(
-            self.CHANNEL)).bind('created', self.on_trades)
+    def __on_connect(self, data):
+        self.__ws.pusher.subscribe("price_ladders_cash_{}_buy".format(
+            self.CHANNEL)).bind('updated', self.__on_orderbook_asks)
+        self.__ws.pusher.subscribe("price_ladders_cash_{}_sell".format(
+            self.CHANNEL)).bind('updated', self.__on_orderbook_bids)
+        self.__ws.pusher.subscribe("executions_cash_{}".format(
+            self.CHANNEL)).bind('created', self.__on_trades)
         # execution_details_cash も追加して executions_cashが遅延したときの対策をいれるか？
 
-    def on_orderbook_asks(self, data):
+    def __on_orderbook_asks(self, data):
         data = ast.literal_eval(data)
         orderbook = WsDataOrderbook([], data)
         self.queue.put(orderbook)
 
-    def on_orderbook_bids(self, data):
+    def __on_orderbook_bids(self, data):
         data = ast.literal_eval(data)
         orderbook = WsDataOrderbook(data, [])
         self.queue.put(orderbook)
 
-    def on_trades(self, data):
+    def __on_trades(self, data):
         data = ast.literal_eval(data)
         trade = WsDataTrade(data["price"], data["quantity"],
                             data["taker_side"])

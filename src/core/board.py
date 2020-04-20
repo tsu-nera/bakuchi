@@ -5,24 +5,50 @@ from queue import Queue
 from sortedcontainers import SortedDict
 
 from src.constants.wsconst import WsDataType
+from src.libs.ccxt_client import CcxtClient
 from src.libs.websocket_client import WebsocketClient
 
 
 class Board():
     def __init__(self, exchange_id, symbol):
         self.__queue = Queue()
-        self.__client = WebsocketClient(self.__queue, exchange_id, symbol)
+        self.__wsclient = WebsocketClient(self.__queue, exchange_id, symbol)
+        self.__ccxtclient = CcxtClient(exchange_id, symbol)
 
         self.bids = SortedDict()
         self.asks = SortedDict()
 
-        producer_worker = threading.Thread(target=self.__client.fetch_ticks,
+        self.__build_board()
+
+        producer_worker = threading.Thread(target=self.__wsclient.fetch_ticks,
                                            daemon=True)
         consumer_worker = threading.Thread(target=self.__update_board,
                                            daemon=True)
 
         producer_worker.start()
         consumer_worker.start()
+
+    def __append_to_board(self, board, order_list):
+        if len(order_list) == 0:
+            return
+
+        for order in order_list:
+            rate = int(float(order[0]))
+            amount = float(order[1])
+
+            if amount != 0:
+                board[rate] = amount
+            elif rate in board:
+                del board[rate]
+
+    def __build_board(self):
+        res = self.__ccxtclient.fetch_order_book()
+
+        bids = res["bids"]
+        asks = res["asks"]
+
+        self.__append_to_board(self.bids, bids)
+        self.__append_to_board(self.asks, asks)
 
     def __update_board(self):
         while True:
@@ -37,21 +63,8 @@ class Board():
                 self.__queue.task_done()
 
     def __append_order(self, data):
-        def __append(board, order_list):
-            if len(order_list) == 0:
-                return
-
-            for order in order_list:
-                rate = int(float(order[0]))
-                amount = float(order[1])
-
-                if amount != 0:
-                    board[rate] = amount
-                elif rate in board:
-                    del board[rate]
-
-        __append(self.bids, data.bids)
-        __append(self.asks, data.asks)
+        self.__append_to_board(self.bids, data.bids)
+        self.__append_to_board(self.asks, data.asks)
 
     def __remove_order(self, data):
         rate = int(data.rate)

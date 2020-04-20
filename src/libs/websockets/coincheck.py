@@ -18,25 +18,25 @@ class WebsocketClientCoincheck(WebsocketClientBase):
         self.CHANNEL_ORDERBOOK = "{}-orderbook".format(self.PAIR)
         self.CHANNEL_TRADES = "{}-trades".format(self.PAIR)
 
-        self.connect()
+        self.__connect()
 
-    def connect(self):
-        self.sio.on('connect', self.on_connect)
-        self.sio.on('trades', self.on_trades)
-        self.sio.on('orderbook', self.on_orderbook)
+    def __connect(self):
+        self.sio.on('connect', self.__on_connect)
+        self.sio.on('trades', self.__on_trades)
+        self.sio.on('orderbook', self.__on_orderbook)
         self.sio.connect(SOCKETIO_URL,
                          transports=['polling'],
                          socketio_path='socket.io')
 
-    def on_orderbook(self, data):
+    def __on_orderbook(self, data):
         orderbook = WsDataOrderbook(data[1]["bids"], data[1]["asks"])
         self.queue.put(orderbook)
 
-    def on_trades(self, data):
+    def __on_trades(self, data):
         trade = WsDataTrade(float(data[2]), float(data[3]), data[4])
         self.queue.put(trade)
 
-    def on_connect(self):
+    def __on_connect(self):
         self.sio.emit('subscribe', self.CHANNEL_ORDERBOOK)
         self.sio.emit('subscribe', self.CHANNEL_TRADES)
 

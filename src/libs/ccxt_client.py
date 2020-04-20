@@ -83,6 +83,9 @@ class CcxtClient():
     def fetch_open_orders(self):
         return self.exchange.fetch_open_orders()
 
+    def fetch_order_book(self):
+        return self.exchange.fetch_order_book(self.symbol)
+
     def get_positions(self):
         try:
             resp = self.exchange.private_get_position()
