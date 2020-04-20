@@ -66,7 +66,8 @@ class CcxtClient():
             self._logging_tick(tick["bid"], tick["ask"])
             return Tick(timestamp, tick["bid"], tick["ask"])
         else:
-            self.logger.error('(%s) %s', self.exchange_id, "can't get tick")
+            self.logger.error('(%s) %s', self.exchange_id.value,
+                              "can't get tick")
             return None
 
     def fetch_balance(self):
@@ -90,14 +91,14 @@ class CcxtClient():
         try:
             resp = self.exchange.private_get_position()
         except Exception as e:  # noqa
-            print("{} api not found".format(self.exchange_id))
+            print("{} api not found".format(self.exchange_id.value))
             resp = []
 
         return resp
 
     def create_market_sell_order(self, amount):
-        self.logger.info('(%s:%s) order sell amount=%s', self.exchange_id,
-                         self.symbol, amount)
+        self.logger.info('(%s:%s) order sell amount=%s',
+                         self.exchange_id.value, self.symbol, amount)
 
         if self.demo_mode:
             return None
@@ -133,7 +134,7 @@ class CcxtClient():
                 trades.append(trade)
         else:
             print("fetch_trades api is not supported in {}".format(
-                self.exchange_id))
+                self.exchange_id.value))
             return []
 
         res = []
@@ -169,5 +170,6 @@ class CcxtClient():
 
             return Tick(timestamp, bid, ask)
         else:
-            self.logger.error('(%s) %s', self.exchange_id, "can't get tick")
+            self.logger.error('(%s) %s', self.exchange_id.value,
+                              "can't get tick")
             return None
