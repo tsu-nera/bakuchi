@@ -1,7 +1,7 @@
 import socketio
 
 from src.libs.websockets.websocket_client_base import WebsocketClientBase
-from src.constants.wsconst import SOCKETIO_URL, WsDataType
+from src.constants.wsconst import SOCKETIO_URL, WsDataType, WsDataOrderbook, WsDataTrade
 
 
 class WebsocketClientCoincheck(WebsocketClientBase):
@@ -29,20 +29,11 @@ class WebsocketClientCoincheck(WebsocketClientBase):
                          socketio_path='socket.io')
 
     def on_orderbook(self, data):
-        orderbook = {
-            "type": WsDataType.ORDERBOOK,
-            "bids": data[1]["bids"],
-            "asks": data[1]["asks"]
-        }
+        orderbook = WsDataOrderbook(data[1]["bids"], data[1]["asks"])
         self.queue.put(orderbook)
 
     def on_trades(self, data):
-        trade = {
-            "type": WsDataType.TRADES,
-            "rate": float(data[2]),
-            "amount": float(data[3]),
-            "side": data[4]
-        }
+        trade = WsDataTrade(float(data[2]), float(data[3]), data[4])
         self.queue.put(trade)
 
     def on_connect(self):

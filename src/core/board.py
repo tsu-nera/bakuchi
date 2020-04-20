@@ -29,7 +29,7 @@ class Board():
             if not self.queue.empty():
                 data = self.queue.get()
 
-                if data["type"] == WsDataType.TRADES:
+                if data.type == WsDataType.TRADES:
                     print(data)
                 self.queue.task_done()
 
