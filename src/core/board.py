@@ -1,7 +1,7 @@
 import threading
 from queue import Queue
 
-from src.constants.wsconst import DataType
+from src.constants.wsconst import WsDataType
 from src.libs.websocket_client import WebsocketClient
 
 
@@ -29,7 +29,7 @@ class Board():
             if not self.queue.empty():
                 data = self.queue.get()
 
-                if data["type"] == DataType.TRADES:
+                if data["type"] == WsDataType.TRADES:
                     print(data)
                 self.queue.task_done()
 

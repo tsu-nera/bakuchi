@@ -1,7 +1,7 @@
 import socketio
 
 from src.libs.websockets.websocket_client_base import WebsocketClientBase
-from src.constants.wsconst import SOCKETIO_URL, DataType
+from src.constants.wsconst import SOCKETIO_URL, WsDataType
 
 
 class WebsocketClientCoincheck(WebsocketClientBase):
@@ -30,7 +30,7 @@ class WebsocketClientCoincheck(WebsocketClientBase):
 
     def on_orderbook(self, data):
         orderbook = {
-            "type": DataType.ORDERBOOK,
+            "type": WsDataType.ORDERBOOK,
             "bids": data[1]["bids"],
             "asks": data[1]["asks"]
         }
@@ -38,7 +38,7 @@ class WebsocketClientCoincheck(WebsocketClientBase):
 
     def on_trades(self, data):
         trade = {
-            "type": DataType.TRADES,
+            "type": WsDataType.TRADES,
             "rate": float(data[2]),
             "amount": float(data[3]),
             "side": data[4]

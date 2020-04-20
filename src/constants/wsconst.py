@@ -11,6 +11,6 @@ WEBSOCKET_ENDPOINTS = {
 }
 
 
-class DataType(Enum):
+class WsDataType(Enum):
     ORDERBOOK = auto()
     TRADES = auto()
