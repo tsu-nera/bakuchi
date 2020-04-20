@@ -171,12 +171,12 @@ class Asset():
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
             price = self._calc_btc_to_jpy(exchange_id, btc_amount)
             output = "{}[BTC] to {}[JPY] ({})".format(btc_amount, price,
-                                                      exchange_id)
+                                                      exchange_id.value)
 
             if verbose:
                 print(output)
 
-            result[exchange_id] = price
+            result[exchange_id.value] = price
 
         return result
 
@@ -192,11 +192,11 @@ class Asset():
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
             btc_amount = self._calc_jpy_to_btc(exchange_id, jpy_price)
             output = "{}[JPY] to {}[BTC] ({})".format(jpy_price, btc_amount,
-                                                      exchange_id)
+                                                      exchange_id.value)
             if verbose:
                 print(output)
 
-            result[exchange_id] = btc_amount
+            result[exchange_id.value] = btc_amount
 
         return result
 
