@@ -32,14 +32,14 @@ class ExchangeTrading(ExchangeBase):
                 "btc": btc
             }
 
-        if self.exchange_id == ccxtconst.EXCHANGE_ID_COINCHECK:
+        if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
             if info["order_type"] == "market_buy":
                 jpy = float(info["market_buy_amount"])
             else:
                 jpy = amount * bid_for_coincheck
             btc = amount
             return _to_json(jpy, btc)
-        elif self.exchange_id == ccxtconst.EXCHANGE_ID_LIQUID:
+        elif self.exchange_id == ccxtconst.ExchangeId.LIQUID:
             btc = float(info["quantity"])
             jpy = float(info["price"]) * btc
             return _to_json(jpy, btc)

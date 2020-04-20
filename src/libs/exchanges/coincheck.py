@@ -6,10 +6,12 @@ import urllib
 
 import src.env as env
 
+BASE_URL = "https://coincheck.com"
+
 
 class Coincheck():
     def __init__(self):
-        self.base_url = "https://coincheck.com"
+        self.base_url = BASE_URL
         self.access_key = env.COINCHECK_API_KEY
         self.secret_key = env.COINCHECK_API_SECRET
 

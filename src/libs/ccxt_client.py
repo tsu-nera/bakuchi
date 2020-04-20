@@ -1,9 +1,12 @@
 import sys
+
 import ccxt
+
 from src.loggers.logger import get_ccxt_logger
 import src.constants.ccxtconst as ccxtconst
 import src.utils.datetime as dt
 from src.libs.exchanges.coincheck import Coincheck
+from src.core.tick import Tick
 
 
 class CcxtClient():
@@ -11,6 +14,7 @@ class CcxtClient():
                  exchange_id,
                  symbol=ccxtconst.SYMBOL_BTC_JPY,
                  demo_mode=False):
+
         self.demo_mode = demo_mode
 
         self.exchange_id = exchange_id
@@ -18,7 +22,7 @@ class CcxtClient():
         self.logger = get_ccxt_logger()
 
         # for demo trade
-        exchange_id_for_eval = exchange_id.replace("_demo", "")
+        exchange_id_for_eval = exchange_id.value.replace("_demo", "")
 
         self.exchange = eval('ccxt.{}()'.format(exchange_id_for_eval))
 
@@ -52,7 +56,7 @@ class CcxtClient():
 
     def _logging_tick(self, bid, ask):
         self.logger.info('tick bid=%s ask=%s (%s:%s)', bid, ask,
-                         self.exchange_id, self.symbol)
+                         self.exchange_id.value, self.symbol)
 
     def fetch_tick(self):
         timestamp = dt.now_timestamp()
@@ -60,11 +64,7 @@ class CcxtClient():
 
         if tick:
             self._logging_tick(tick["bid"], tick["ask"])
-            return {
-                "timestamp": timestamp,
-                "bid": tick["bid"],
-                "ask": tick["ask"]
-            }
+            return Tick(timestamp, tick["bid"], tick["ask"])
         else:
             self.logger.error('(%s) %s', self.exchange_id, "can't get tick")
             return None
@@ -82,6 +82,9 @@ class CcxtClient():
 
     def fetch_open_orders(self):
         return self.exchange.fetch_open_orders()
+
+    def fetch_order_book(self):
+        return self.exchange.fetch_order_book(self.symbol)
 
     def get_positions(self):
         try:
@@ -104,7 +107,7 @@ class CcxtClient():
         return order_info
 
     def create_market_buy_order(self, amount):
-        self.logger.info('(%s:%s) order buy amount=%s', self.exchange_id,
+        self.logger.info('(%s:%s) order buy amount=%s', self.exchange_id.value,
                          self.symbol, amount)
 
         if self.demo_mode:
@@ -116,7 +119,7 @@ class CcxtClient():
         return order_info
 
     def fetch_trades(self):
-        if self.exchange_id == ccxtconst.EXCHANGE_ID_COINCHECK:
+        if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
             client = Coincheck()
             trades = client.fetch_my_trades()
         elif self.exchange.has['fetchMyTrades']:
@@ -164,7 +167,7 @@ class CcxtClient():
 
             self._logging_tick(bid, ask)
 
-            return {"timestamp": timestamp, "bid": bid, "ask": ask}
+            return Tick(timestamp, bid, ask)
         else:
             self.logger.error('(%s) %s', self.exchange_id, "can't get tick")
             return None

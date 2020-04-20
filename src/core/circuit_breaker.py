@@ -52,7 +52,7 @@ class CircuitBreaker():
     def _is_server_maintenance(self, exchange_id):
         # 臨時サーバメンテナンスのときもとりあえずここに判定を追記していく。
 
-        if exchange_id == ccxtconst.EXCHANGE_ID_LIQUID:
+        if exchange_id == ccxtconst.ExchangeId.LIQUID:
             return self._is_liquid_server_maintenance()
         else:
             return False
@@ -78,7 +78,7 @@ class CircuitBreaker():
 
     def _move_jpy_to_btc(self, exchange_id, amount):
         time.sleep(1)
-        if exchange_id == ccxtconst.EXCHANGE_ID_COINCHECK:
+        if exchange_id == ccxtconst.ExchangeId.COINCHECK:
             private.create_coincheck_buy_order(ccxtconst.SYMBOL_BTC_JPY,
                                                amount)
         else:

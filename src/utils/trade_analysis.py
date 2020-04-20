@@ -20,14 +20,14 @@ class TradeAnalysis():
         self.trades_dir_path = os.path.join(self.dir_path, path.TRADES_DIR)
         self.ticks_dir_path = os.path.join(self.dir_path, path.EXCHANGES_DIR)
 
-        self.trades_cc = self.read_trades(ccxtconst.EXCHANGE_ID_COINCHECK)
-        self.trades_lq = self.read_trades(ccxtconst.EXCHANGE_ID_LIQUID)
+        self.trades_cc = self.read_trades(ccxtconst.ExchangeId.COINCHECK)
+        self.trades_lq = self.read_trades(ccxtconst.ExchangeId.LIQUID)
 
         self.start_asset = self._read_asset("start")
         self.end_asset = self._read_asset("end")
 
-        self.ticks_cc = self.read_ticks(ccxtconst.EXCHANGE_ID_COINCHECK)
-        self.ticks_lq = self.read_ticks(ccxtconst.EXCHANGE_ID_LIQUID)
+        self.ticks_cc = self.read_ticks(ccxtconst.ExchangeId.COINCHECK)
+        self.ticks_lq = self.read_ticks(ccxtconst.ExchangeId.LIQUID)
 
         self.result = {}
 

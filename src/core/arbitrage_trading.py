@@ -1,10 +1,11 @@
 from time import sleep
+
 import ccxt
 
-from src.core.tick import Tick
 from src.core.arbitrage_base import ArbitrageBase
 from src.core.arbitrage_parallel import ArbitrageParallel
 from src.core.circuit_breaker import CircuitBreaker
+from src.core.board import Board
 
 from src.libs.asset import Asset
 from src.libs.slack_client import SlackClient
@@ -19,7 +20,8 @@ import src.utils.datetime as dt
 
 import src.env as env
 import src.config as config
-from src.constants.ccxtconst import TICK_INTERVAL_SEC, EXCHANGE_ID_COINCHECK
+from src.constants.ccxtconst import TICK_INTERVAL_SEC, ExchangeId
+from src.constants.arbitrage import Strategy, Action
 
 
 class ArbitrageTrading(ArbitrageBase):
@@ -50,6 +52,9 @@ class ArbitrageTrading(ArbitrageBase):
 
         self.parallel = ArbitrageParallel(exchange_id_x, exchange_id_y, symbol,
                                           demo_mode)
+
+        self.board_x = Board(exchange_id_x, symbol)
+        self.board_y = Board(exchange_id_y, symbol)
 
     def run(self):
         self._logging_trading_metadata()
@@ -85,31 +90,31 @@ class ArbitrageTrading(ArbitrageBase):
         if self.opened:
             if self.open_direction:
                 message_format = base_message_format.format(
-                    self.ex_id_y, self.ex_id_x, margin_buyx_selly)
+                    self.ex_id_y.value, self.ex_id_x.value, margin_buyx_selly)
             else:
                 message_format = base_message_format.format(
-                    self.ex_id_x, self.ex_id_y, margin_buyy_sellx)
+                    self.ex_id_x.value, self.ex_id_y.value, margin_buyy_sellx)
         else:
             message_buyx_selly_format = base_message_format.format(
-                self.ex_id_y, self.ex_id_x, margin_buyx_selly)
+                self.ex_id_y.value, self.ex_id_x.value, margin_buyx_selly)
             message_buyy_sellx_format = base_message_format.format(
-                self.ex_id_x, self.ex_id_y, margin_buyy_sellx)
+                self.ex_id_x.value, self.ex_id_y.value, margin_buyy_sellx)
 
         open_threshold_format = "open_threshold:{}".format(self.open_threshold)
         close_threshold_format = "close_threshold:{}".format(
             self._get_close_threshold())
 
         if self.opened:
-            message = "waiting {} {}, {}".format(self.ACTION_CLOSING,
+            message = "waiting {} {}, {}".format(Action.CLOSING.value,
                                                  message_format,
                                                  close_threshold_format)
             self.logger_margin.info(message)
         else:
             message_buyx_selly = "waiting {} {}, {}".format(
-                self.ACTION_OPENING, message_buyx_selly_format,
+                Action.OPENING.value, message_buyx_selly_format,
                 open_threshold_format)
             message_buyy_sellx = "waiting {} {}, {}".format(
-                self.ACTION_OPENING, message_buyy_sellx_format,
+                Action.OPENING.value, message_buyy_sellx_format,
                 open_threshold_format)
 
             if margin_buyx_selly > margin_buyy_sellx:
@@ -134,15 +139,14 @@ class ArbitrageTrading(ArbitrageBase):
             self.logger_with_stdout.info(message)
 
     def _get_tick(self):
-        x, y = self.parallel.fetch_tick(eff=False)
+        # tick_x, tick_y = self.parallel.fetch_tick(eff=False)
+        tick_x = self.board_x.get_eff_tick(self.trade_amount)
+        tick_y = self.board_y.get_eff_tick(self.trade_amount)
 
-        self.raise_exception_if_occured(x)
-        self.raise_exception_if_occured(y)
+        self.__raise_exception_if_occured(tick_x)
+        self.__raise_exception_if_occured(tick_y)
 
-        tick_x = Tick(x["timestamp"], x["bid"], x["ask"]) if x else None
-        tick_y = Tick(y["timestamp"], y["bid"], y["ask"]) if y else None
-
-        if x and y:
+        if tick_x and tick_y:
             self._logging_tick_margin(tick_x, tick_y)
             self._logging_tick_historical(tick_x, tick_y)
             self._logging_open_threshold_change()
@@ -161,22 +165,23 @@ class ArbitrageTrading(ArbitrageBase):
         return self.trade_amount * rate
 
     def _get_log_label(self):
-        return self.ACTION_CLOSING if self.opened else self.ACTION_OPENING
+        return Action.CLOSING.value if self.opened else Action.OPENING.value
 
     def _format_expected_profit_message(self, buy_exchange_id, buy_ask,
                                         sell_exchange_id, sell_bid,
                                         expected_profit, profit_margin):
         label = self._get_log_label()
         return "{} buy-{}({}), sell-{}({}), margin={}, profit={}".format(
-            label, buy_exchange_id, buy_ask, sell_exchange_id, sell_bid,
-            profit_margin, expected_profit)
+            label, buy_exchange_id.value, buy_ask, sell_exchange_id.value,
+            sell_bid, profit_margin, expected_profit)
 
     def _format_actual_profit_message(self, buy_exchange_id, buy_price_jpy,
                                       sell_exchange_id, sell_price_jpy,
                                       actual_profit, profit_margin):
         label = self._get_log_label()
         return "{} buy-{}({}), sell-{}({}), margin={}, profit={}".format(
-            label, buy_exchange_id, round(buy_price_jpy, 3), sell_exchange_id,
+            label, buy_exchange_id.value, round(buy_price_jpy,
+                                                3), sell_exchange_id.value,
             round(sell_price_jpy, 3), profit_margin, actual_profit)
 
     def _check_order_responses(self, buy, sell):
@@ -191,9 +196,9 @@ class ArbitrageTrading(ArbitrageBase):
     def _action(self, result, x, y):
         label = self._get_log_label()
 
-        if result == self.STRATEGY_BUY_X_AND_SELL_Y:
-            ask_for_coincheck = x.ask if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
-            bid_for_coincheck = y.bid if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
+        if result == Strategy.BUY_X_SELL_Y:
+            ask_for_coincheck = x.ask if self.ex_id_x == ExchangeId.COINCHECK else None
+            bid_for_coincheck = y.bid if self.ex_id_y == ExchangeId.COINCHECK else None
 
             buy_resp, sell_resp = self.parallel.order_buyx_selly(
                 self.trade_amount,
@@ -229,9 +234,9 @@ class ArbitrageTrading(ArbitrageBase):
             self._update_entry_open_margin(profit_margin)
             self._change_status_buyx_selly()
 
-        elif result == self.STRATEGY_BUY_Y_AND_SELL_X:
-            ask_for_coincheck = y.ask if self.ex_id_y == EXCHANGE_ID_COINCHECK else None
-            bid_for_coincheck = x.bid if self.ex_id_x == EXCHANGE_ID_COINCHECK else None
+        elif result == Strategy.BUY_Y_SELL_X:
+            ask_for_coincheck = y.ask if self.ex_id_y == ExchangeId.COINCHECK else None
+            bid_for_coincheck = x.bid if self.ex_id_x == ExchangeId.COINCHECK else None
 
             buy_resp, sell_resp = self.parallel.order_buyy_sellx(
                 self.trade_amount,
@@ -271,6 +276,6 @@ class ArbitrageTrading(ArbitrageBase):
     def get_current_trading_data_dir(self):
         return self.historical_logger.dir_path
 
-    def raise_exception_if_occured(self, e):
+    def __raise_exception_if_occured(self, e):
         if isinstance(e, Exception):
             raise (e)

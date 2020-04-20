@@ -10,7 +10,7 @@ import src.constants.path as path
 class AssetLogger():
     def __init__(self):
         self.exchange_ids = [
-            ccxtconst.EXCHANGE_ID_COINCHECK, ccxtconst.EXCHANGE_ID_LIQUID,
+            ccxtconst.ExchangeId.COINCHECK, ccxtconst.ExchangeId.LIQUID,
             "total"
         ]
         self.dir_path = path.ASSET_DATA_DIR_PATH

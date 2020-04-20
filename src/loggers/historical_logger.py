@@ -26,11 +26,14 @@ class HistoricalLogger():
         self._dump_config()
 
         # initialze loggers
-        [self._create_logger(exchange_id) for exchange_id in self.exchange_ids]
+        [
+            self._create_logger(exchange_id.value)
+            for exchange_id in self.exchange_ids
+        ]
 
         # add header
         [
-            self._logging_header(exchange_id)
+            self._logging_header(exchange_id.value)
             for exchange_id in self.exchange_ids
         ]
 
@@ -51,7 +54,7 @@ class HistoricalLogger():
         json.write(self.config_file_path, config_dict)
 
     def logging(self, exchange_id, timestamp, bid, ask, tick_timestamp):
-        logger = self._get_logger(exchange_id)
+        logger = self._get_logger(exchange_id.value)
         message = "{},{},{},{}".format(timestamp, bid, ask, tick_timestamp)
         logger.info(message)
 

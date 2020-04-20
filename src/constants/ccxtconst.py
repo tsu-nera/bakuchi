@@ -1,17 +1,22 @@
+from enum import Enum
+
 import src.env as env
 
 TICK_INTERVAL_SEC = 1
 
-EXCHANGE_ID_BITFLYER = "bitflyer"
-EXCHANGE_ID_COINCHECK = "coincheck"
-EXCHANGE_ID_LIQUID = "liquid"
-EXCHANGE_ID_BITBANK = "bitbank"
-EXCHANGE_ID_BITMEX = "bitmex"
-EXCHANGE_ID_BITMEX_DEMO = "bitmex_demo"
-EXCHANGE_ID_GEMINI_DEMO = "gemini_demo"
+
+class ExchangeId(Enum):
+    BITFLYER = "bitflyer"
+    COINCHECK = "coincheck"
+    LIQUID = "liquid"
+    BITBANK = "bitbank"
+    BITMEX = "bitmex"
+    BITMEX_DEMO = "bitmex_demo"
+    GEMINI_DEMO = "gemini_demo"
+
 
 # 現在対応している取引所
-EXCHANGE_ID_LIST = [EXCHANGE_ID_COINCHECK, EXCHANGE_ID_LIQUID]
+EXCHANGE_ID_LIST = [ExchangeId.COINCHECK, ExchangeId.LIQUID]
 
 SYMBOL_BTC_JPY = "BTC/JPY"
 SYMBOL_BTC_USD = "BTC/USD"
@@ -20,37 +25,32 @@ API_KEY = "apiKey"
 API_SECRET = "apiSecret"
 
 EXCHANGE_AUTH_DICT = {
-    EXCHANGE_ID_BITFLYER: {
+    ExchangeId.BITFLYER: {
         API_KEY: env.BITFLYER_API_KEY,
         API_SECRET: env.BITFLYER_API_SECRET
     },
-    EXCHANGE_ID_COINCHECK: {
+    ExchangeId.COINCHECK: {
         API_KEY: env.COINCHECK_API_KEY,
         API_SECRET: env.COINCHECK_API_SECRET
     },
-    EXCHANGE_ID_LIQUID: {
+    ExchangeId.LIQUID: {
         API_KEY: env.LIQUID_API_KEY,
         API_SECRET: env.LIQUID_API_SECRET
     },
-    EXCHANGE_ID_BITBANK: {
+    ExchangeId.BITBANK: {
         API_KEY: env.BITBANK_API_KEY,
         API_SECRET: env.BITBANK_API_SECRET
     },
-    EXCHANGE_ID_BITMEX: {
+    ExchangeId.BITMEX: {
         API_KEY: env.BITMEX_API_KEY,
         API_SECRET: env.BITMEX_API_SECRET
     },
-    EXCHANGE_ID_BITMEX_DEMO: {
+    ExchangeId.BITMEX_DEMO: {
         API_KEY: env.BITMEX_TESTNET_API_KEY,
         API_SECRET: env.BITMEX_TESTNET_API_SECRET
     },
-    EXCHANGE_ID_GEMINI_DEMO: {
+    ExchangeId.GEMINI_DEMO: {
         API_KEY: env.GEMINI_SANDBOX_API_KEY,
         API_SECRET: env.GEMINI_SANDBOX_API_SECRET
     }
 }
-
-ORDER_TYPE_LIMIT = "limit"  # 指値注文
-ORDER_TYPE_MARKET = "market"  # 成功注文
-ORDER_SIDE_BUY = "buy"
-ORDER_SIDE_SELL = "sell"

@@ -25,10 +25,10 @@ def save_ticks():
     dir_path = _get_dir_path()
     os.mkdir(dir_path)
 
-    bf_file_path = _get_file_path(dir_path, ccxtconst.EXCHANGE_ID_BITFLYER)
-    cc_file_path = _get_file_path(dir_path, ccxtconst.EXCHANGE_ID_COINCHECK)
-    lq_file_path = _get_file_path(dir_path, ccxtconst.EXCHANGE_ID_LIQUID)
-    bb_file_path = _get_file_path(dir_path, ccxtconst.EXCHANGE_ID_BITBANK)
+    bf_file_path = _get_file_path(dir_path, ccxtconst.ExchangeId.BITFLYER)
+    cc_file_path = _get_file_path(dir_path, ccxtconst.ExchangeId.COINCHECK)
+    lq_file_path = _get_file_path(dir_path, ccxtconst.ExchangeId.LIQUID)
+    bb_file_path = _get_file_path(dir_path, ccxtconst.ExchangeId.BITBANK)
 
     fs_bf = open(bf_file_path, mode='w')
     fs_cc = open(cc_file_path, mode='w')
@@ -41,10 +41,10 @@ def save_ticks():
     fs_lq.write(header_string)
     fs_bb.write(header_string)
 
-    client_bf = CcxtClient(ccxtconst.EXCHANGE_ID_BITFLYER)
-    client_cc = CcxtClient(ccxtconst.EXCHANGE_ID_COINCHECK)
-    client_lq = CcxtClient(ccxtconst.EXCHANGE_ID_LIQUID)
-    client_bb = CcxtClient(ccxtconst.EXCHANGE_ID_BITBANK)
+    client_bf = CcxtClient(ccxtconst.ExchangeId.BITFLYER)
+    client_cc = CcxtClient(ccxtconst.ExchangeId.COINCHECK)
+    client_lq = CcxtClient(ccxtconst.ExchangeId.LIQUID)
+    client_bb = CcxtClient(ccxtconst.ExchangeId.BITBANK)
 
     try:
         for _ in range(1000000):
@@ -54,14 +54,14 @@ def save_ticks():
             tick_bb = client_bb.fetch_tick()
 
             if tick_bf and tick_cc and tick_lq and tick_bb:
-                output_bf = _format_csv(tick_bf["timestamp"], tick_bf["bid"],
-                                        tick_bf["ask"])
-                output_cc = _format_csv(tick_cc["timestamp"], tick_cc["bid"],
-                                        tick_cc["ask"])
-                output_lq = _format_csv(tick_lq["timestamp"], tick_lq["bid"],
-                                        tick_lq["ask"])
-                output_bb = _format_csv(tick_bb["timestamp"], tick_bb["bid"],
-                                        tick_bb["ask"])
+                output_bf = _format_csv(tick_bf.timestamp, tick_bf.bid,
+                                        tick_bf.ask)
+                output_cc = _format_csv(tick_cc.timestamp, tick_cc.bid,
+                                        tick_cc.ask)
+                output_lq = _format_csv(tick_lq.timestamp, tick_lq.bid,
+                                        tick_lq.ask)
+                output_bb = _format_csv(tick_bb.timestamp, tick_bb.bid,
+                                        tick_bb.ask)
 
                 fs_bf.write(output_bf + '\n')
                 fs_bf.flush()
