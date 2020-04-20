@@ -1,9 +1,7 @@
 import socketio
 
 from src.libs.websockets.websocket_client_base import WebsocketClientBase
-from src.constants.wsconst import SOCKETIO_URL
-
-import src.utils.datetime as dt
+from src.constants.wsconst import SOCKETIO_URL, DataType
 
 
 class WebsocketClientCoincheck(WebsocketClientBase):
@@ -31,24 +29,21 @@ class WebsocketClientCoincheck(WebsocketClientBase):
                          socketio_path='socket.io')
 
     def on_orderbook(self, data):
-        timestamp = dt.now_timestamp_ms()
         orderbook = {
-            "timestamp": timestamp,
+            "type": DataType.ORDERBOOK,
             "bids": data[1]["bids"],
             "asks": data[1]["asks"]
         }
         self.queue.put(orderbook)
 
     def on_trades(self, data):
-        pass
-        # print(data)
-        # timestamp = dt.now_timestamp_ms()
-        # orderbooks = {
-        #     "timestamp": timestamp,
-        #     "bids": data[1]["bids"],
-        #     "asks": data[1]["asks"]
-        # }
-        # self.queue.put(orderbooks)
+        trade = {
+            "type": DataType.TRADES,
+            "rate": float(data[2]),
+            "amount": float(data[3]),
+            "side": data[4]
+        }
+        self.queue.put(trade)
 
     def on_connect(self):
         self.sio.emit('subscribe', self.CHANNEL_ORDERBOOK)
