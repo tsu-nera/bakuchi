@@ -36,7 +36,7 @@ class Asset():
 
     def _create_asset(self, id, jpy, btc, btc_as_jpy, total_jpy, bid, ask):
         return {
-            "id": id,
+            "id": id.value,
             "jpy": format_jpy(jpy),
             "btc": format_btc_more(btc),
             "btc_as_jpy": format_jpy(btc_as_jpy),
