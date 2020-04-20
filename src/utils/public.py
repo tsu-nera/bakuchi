@@ -43,5 +43,5 @@ def fetch_board(exhange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
     board = Board(exhange_id, symbol)
 
     while True:
-        board.show()
+        board.display()
         time.sleep(5)

@@ -1,7 +1,8 @@
+import ast
 import time
 import liquidtap
 
-import src.utils.datetime as dt
+from src.constants.wsconst import WsDataOrderbook
 from src.libs.websockets.websocket_client_base import WebsocketClientBase
 
 
@@ -11,7 +12,8 @@ class WebsocketClientLiquid(WebsocketClientBase):
         self.exchange_id = exchange_id
         self.symbol = symbol
         symbols = symbol.split("/")
-        self.channel = "{}{}".format(str.lower(symbols[0]),
+
+        self.CHANNEL = "{}{}".format(str.lower(symbols[0]),
                                      str.lower(symbols[1]))
 
         self.ws = liquidtap.Client()
@@ -19,36 +21,22 @@ class WebsocketClientLiquid(WebsocketClientBase):
                                        self.on_connect)
         self.ws.pusher.connect()
 
-        self.bids_buffer = None
-        self.asks_buffer = None
+    def on_connect(self, data):
+        self.ws.pusher.subscribe("price_ladders_cash_{}_buy".format(
+            self.CHANNEL)).bind('updated', self.on_orderbook_asks)
+        self.ws.pusher.subscribe("price_ladders_cash_{}_sell".format(
+            self.CHANNEL)).bind('updated', self.on_orderbook_bids)
+
+    def on_orderbook_asks(self, data):
+        data = ast.literal_eval(data)
+        orderbook = WsDataOrderbook([], data)
+        self.queue.put(orderbook)
+
+    def on_orderbook_bids(self, data):
+        data = ast.literal_eval(data)
+        orderbook = WsDataOrderbook(data, [])
+        self.queue.put(orderbook)
 
     def fetch_ticks(self):
         while True:
-            time.sleep(1)
-
-    def on_connect(self, data):
-        self.ws.pusher.subscribe("price_ladders_cash_{}_buy".format(
-            self.channel)).bind('updated', self.fetch_ticks_asks)
-        self.ws.pusher.subscribe("price_ladders_cash_{}_sell".format(
-            self.channel)).bind('updated', self.fetch_ticks_bids)
-
-    def fetch_ticks_asks(self, data):
-        self.asks_buffer = data
-        self.update_buffers()
-
-    def fetch_ticks_bids(self, data):
-        self.bids_buffer = data
-        self.update_buffers()
-
-    def update_buffers(self):
-        if self.asks_buffer and self.bids_buffer:
-            timestamp = dt.now_timestamp_ms()
-            ticks = {
-                "timestamp": timestamp,
-                "bids": self.bids_buffer,
-                "asks": self.asks_buffer
-            }
-            print(ticks)
-
-            self.asks_buffer = None
-            self.bids_buffer = None
+            time.sleep(0)

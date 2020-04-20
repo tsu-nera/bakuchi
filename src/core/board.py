@@ -38,6 +38,9 @@ class Board():
 
     def __append_order(self, data):
         def __append(board, order_list):
+            if len(order_list) == 0:
+                return
+
             for order in order_list:
                 rate = int(float(order[0]))
                 amount = float(order[1])
@@ -86,7 +89,7 @@ class Board():
         for rate in rates:
             del board[rate]
 
-    def show(self):
+    def display(self):
         print("=== bids(買い注文) ===")
         print(self.bids)
         print("=== asks(売り注文) ===")

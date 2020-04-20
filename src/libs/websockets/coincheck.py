@@ -1,7 +1,7 @@
 import socketio
 
 from src.libs.websockets.websocket_client_base import WebsocketClientBase
-from src.constants.wsconst import SOCKETIO_URL, WsDataType, WsDataOrderbook, WsDataTrade
+from src.constants.wsconst import SOCKETIO_URL, WsDataOrderbook, WsDataTrade
 
 
 class WebsocketClientCoincheck(WebsocketClientBase):
