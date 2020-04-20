@@ -9,13 +9,18 @@ from src.core.tick import Tick
 from src.constants.wsconst import WsDataType
 from src.libs.ccxt_client import CcxtClient
 from src.libs.websocket_client import WebsocketClient
+from src.loggers.logger import get_ccxt_logger
 
 
 class Board():
     def __init__(self, exchange_id, symbol):
+        self.__exchange_id = exchange_id
+        self.__symbol = symbol
+
         self.__queue = Queue()
         self.__wsclient = WebsocketClient(self.__queue, exchange_id, symbol)
         self.__ccxtclient = CcxtClient(exchange_id, symbol)
+        self.__logger = get_ccxt_logger()
 
         self.bids = SortedDict()
         self.asks = SortedDict()
@@ -104,26 +109,33 @@ class Board():
         for rate in rates:
             del board[rate]
 
-    def get_tick(self, amount):
-        asks = list(self.asks.items())
-        bids = list(self.bids.items()[::-1])
+    def __logging_tick(self, bid, ask):
+        self.__logger.info('tick bid=%s ask=%s (%s:%s)', bid, ask,
+                           self.__exchange_id.value, self.__symbol)
 
-        # 実効ASK計算
+    def get_tick(self, amount=1.0):
+        bids = list(self.bids.items()[::-1])
+        asks = list(self.asks.items())
+
+        if len(bids) == 0 or len(asks) == 0:
+            return None
+
         i = 0
         s = 0
         while s <= amount:
-            s += asks[i][1]
+            s += bids[i][1]
             i += 1
 
-        # 実効BID計算
+        bid = bids[i - 1][0]
+
         j = 0
         t = 0
         while t <= amount:
-            t += bids[j][1]
+            t += asks[j][1]
             j += 1
-
-        bid = bids[i - 1][0]
         ask = asks[j - 1][0]
+
+        self.__logging_tick(bid, ask)
 
         timestamp = dt.now_timestamp_ms()
         tick = Tick(timestamp, bid, ask)

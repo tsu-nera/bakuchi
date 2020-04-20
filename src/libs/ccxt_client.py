@@ -56,7 +56,7 @@ class CcxtClient():
 
     def _logging_tick(self, bid, ask):
         self.logger.info('tick bid=%s ask=%s (%s:%s)', bid, ask,
-                         self.exchange_id, self.symbol)
+                         self.exchange_id.value, self.symbol)
 
     def fetch_tick(self):
         timestamp = dt.now_timestamp()
@@ -107,7 +107,7 @@ class CcxtClient():
         return order_info
 
     def create_market_buy_order(self, amount):
-        self.logger.info('(%s:%s) order buy amount=%s', self.exchange_id,
+        self.logger.info('(%s:%s) order buy amount=%s', self.exchange_id.value,
                          self.symbol, amount)
 
         if self.demo_mode:

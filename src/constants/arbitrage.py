@@ -2,8 +2,8 @@ from enum import Enum, auto
 
 
 class Action(Enum):
-    OPENING = auto()
-    CLOSING = auto()
+    OPENING = "OPENING"
+    CLOSING = "CLOSING"
 
 
 class Strategy(Enum):

@@ -57,7 +57,7 @@ class HistoricalLogger():
 
     def _logging_header(self, exchange_id):
         header = 'timestamp,bid,ask,tick_timestamp'
-        logger = self._get_logger(exchange_id)
+        logger = self._get_logger(exchange_id.value)
         logger.info(header)
 
     def _get_dir_path(self):

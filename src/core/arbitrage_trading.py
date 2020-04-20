@@ -1,10 +1,11 @@
 from time import sleep
+
 import ccxt
 
-from src.core.tick import Tick
 from src.core.arbitrage_base import ArbitrageBase
 from src.core.arbitrage_parallel import ArbitrageParallel
 from src.core.circuit_breaker import CircuitBreaker
+from src.core.board import Board
 
 from src.libs.asset import Asset
 from src.libs.slack_client import SlackClient
@@ -52,6 +53,9 @@ class ArbitrageTrading(ArbitrageBase):
         self.parallel = ArbitrageParallel(exchange_id_x, exchange_id_y, symbol,
                                           demo_mode)
 
+        self.board_x = Board(exchange_id_x, symbol)
+        self.board_y = Board(exchange_id_y, symbol)
+
     def run(self):
         self._logging_trading_metadata()
 
@@ -86,15 +90,15 @@ class ArbitrageTrading(ArbitrageBase):
         if self.opened:
             if self.open_direction:
                 message_format = base_message_format.format(
-                    self.ex_id_y, self.ex_id_x, margin_buyx_selly)
+                    self.ex_id_y.value, self.ex_id_x.value, margin_buyx_selly)
             else:
                 message_format = base_message_format.format(
-                    self.ex_id_x, self.ex_id_y, margin_buyy_sellx)
+                    self.ex_id_x.value, self.ex_id_y.value, margin_buyy_sellx)
         else:
             message_buyx_selly_format = base_message_format.format(
-                self.ex_id_y, self.ex_id_x, margin_buyx_selly)
+                self.ex_id_y.value, self.ex_id_x.value, margin_buyx_selly)
             message_buyy_sellx_format = base_message_format.format(
-                self.ex_id_x, self.ex_id_y, margin_buyy_sellx)
+                self.ex_id_x.value, self.ex_id_y.value, margin_buyy_sellx)
 
         open_threshold_format = "open_threshold:{}".format(self.open_threshold)
         close_threshold_format = "close_threshold:{}".format(
@@ -135,7 +139,9 @@ class ArbitrageTrading(ArbitrageBase):
             self.logger_with_stdout.info(message)
 
     def _get_tick(self):
-        tick_x, tick_y = self.parallel.fetch_tick(eff=False)
+        # tick_x, tick_y = self.parallel.fetch_tick(eff=False)
+        tick_x = self.board_x.get_tick(self.trade_amount)
+        tick_y = self.board_y.get_tick(self.trade_amount)
 
         self.__raise_exception_if_occured(tick_x)
         self.__raise_exception_if_occured(tick_y)
@@ -166,15 +172,16 @@ class ArbitrageTrading(ArbitrageBase):
                                         expected_profit, profit_margin):
         label = self._get_log_label()
         return "{} buy-{}({}), sell-{}({}), margin={}, profit={}".format(
-            label, buy_exchange_id, buy_ask, sell_exchange_id, sell_bid,
-            profit_margin, expected_profit)
+            label, buy_exchange_id.value, buy_ask, sell_exchange_id.value,
+            sell_bid, profit_margin, expected_profit)
 
     def _format_actual_profit_message(self, buy_exchange_id, buy_price_jpy,
                                       sell_exchange_id, sell_price_jpy,
                                       actual_profit, profit_margin):
         label = self._get_log_label()
         return "{} buy-{}({}), sell-{}({}), margin={}, profit={}".format(
-            label, buy_exchange_id, round(buy_price_jpy, 3), sell_exchange_id,
+            label, buy_exchange_id.value, round(buy_price_jpy,
+                                                3), sell_exchange_id.value,
             round(sell_price_jpy, 3), profit_margin, actual_profit)
 
     def _check_order_responses(self, buy, sell):
