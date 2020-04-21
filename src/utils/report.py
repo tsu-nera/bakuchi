@@ -79,7 +79,7 @@ def _get_trade_timestamps(timestamp):
     end_timestamps = []
 
     for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
-        file_name = "{}.csv".format(exchange_id)
+        file_name = "{}.csv".format(exchange_id.value)
         file_path = os.path.join(to_dir, path.EXCHANGES_DIR, file_name)
 
         trade_data = pd.read_csv(file_path,

@@ -36,7 +36,7 @@ class TradeAnalysis():
                            parse_dates=["datetime"]).sort_values('datetime')
 
     def read_trades(self, exchange_id):
-        file_name = "{}.csv".format(exchange_id)
+        file_name = "{}.csv".format(exchange_id.value)
         file_path = os.path.join(self.trades_dir_path, file_name)
         return self._read_trades(file_path)
 
@@ -46,7 +46,7 @@ class TradeAnalysis():
                            parse_dates=["timestamp"]).sort_values('timestamp')
 
     def read_ticks(self, exchange_id):
-        file_name = "{}.csv".format(exchange_id)
+        file_name = "{}.csv".format(exchange_id.value)
         file_path = os.path.join(self.ticks_dir_path, file_name)
         return self._read_ticks(file_path)
 
@@ -94,8 +94,8 @@ class TradeAnalysis():
         notrade_start_total_jpy = self.start_asset['total']['total_jpy']
         notrade_end_total_jpy = format_jpy_float(
             self.start_asset['total']['jpy'] + sum([
-                btc_to_jpy(self.start_asset[exchange_id]['btc'],
-                           self.end_asset[exchange_id]['bid'])
+                btc_to_jpy(self.start_asset[exchange_id.value]['btc'],
+                           self.end_asset[exchange_id.value]['bid'])
                 for exchange_id in ccxtconst.EXCHANGE_ID_LIST
             ]))
         self.result["bot_profit_jpy"] = format_jpy_float(

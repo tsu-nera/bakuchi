@@ -13,7 +13,7 @@ def _get_dir_path():
 
 
 def _get_file_path(dir_path, exchange_id):
-    file_name = "{}.csv".format(exchange_id)
+    file_name = "{}.csv".format(exchange_id.value)
     return os.path.join(dir_path, file_name)
 
 

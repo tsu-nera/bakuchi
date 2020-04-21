@@ -35,7 +35,7 @@ def _convert_coincheck_datetime(d_str):
 
 
 def _get_latest_file_name(exchange_id):
-    return "latest_trades_{}.csv".format(exchange_id)
+    return "latest_trades_{}.csv".format(exchange_id.value)
 
 
 def _is_normal_amount(amount):
@@ -251,7 +251,7 @@ def read_trades(path):
 
 
 def _read_trades(timestamp, exchange_id):
-    file_name = "{}.csv".format(exchange_id)
+    file_name = "{}.csv".format(exchange_id.value)
     file_path = os.path.join(path.REPORTS_DIR, timestamp, path.TRADES_DIR,
                              file_name)
     return read_trades(file_path)
@@ -282,7 +282,7 @@ def convert_trades(from_path, exchange_id):
         if not os.path.exists(to_dir_path):
             os.mkdir(to_dir_path)
 
-        to_file_name = "{}.csv".format(exchange_id)
+        to_file_name = "{}.csv".format(exchange_id.value)
         to_file_path = os.path.join(to_dir_path, to_file_name)
 
         df_date = df[df.datetime.dt.date == date]
@@ -313,7 +313,7 @@ def save_report_trades(dir_name, start_timestamp, end_timestamp):
         df = df[df['datetime'] >= start_timestamp]
         df = df[df["datetime"] < end_timestamp]
 
-        file_path = os.path.join(to_dir, "{}.csv".format(exchange_id))
+        file_path = os.path.join(to_dir, "{}.csv".format(exchange_id.value))
         df.to_csv(file_path, index=None)
 
 

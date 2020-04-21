@@ -23,7 +23,7 @@ class Backtesting():
                                               simulate_mode)
 
     def _get_file_path(self, exchange_id):
-        file_name = "{}.csv".format(exchange_id)
+        file_name = "{}.csv".format(exchange_id.value)
         return os.path.join(path.REPORTS_DIR, self.timestamp,
                             path.EXCHANGES_DIR, file_name)
 

@@ -26,14 +26,11 @@ class HistoricalLogger():
         self._dump_config()
 
         # initialze loggers
-        [
-            self._create_logger(exchange_id.value)
-            for exchange_id in self.exchange_ids
-        ]
+        [self._create_logger(exchange_id) for exchange_id in self.exchange_ids]
 
         # add header
         [
-            self._logging_header(exchange_id.value)
+            self._logging_header(exchange_id)
             for exchange_id in self.exchange_ids
         ]
 
@@ -54,7 +51,7 @@ class HistoricalLogger():
         json.write(self.config_file_path, config_dict)
 
     def logging(self, exchange_id, timestamp, bid, ask, tick_timestamp):
-        logger = self._get_logger(exchange_id.value)
+        logger = self._get_logger(exchange_id)
         message = "{},{},{},{}".format(timestamp, bid, ask, tick_timestamp)
         logger.info(message)
 
@@ -67,7 +64,7 @@ class HistoricalLogger():
         return os.path.join(path.HISTORICAL_RAWDATA_DIR_PATH, dt.now_dirname())
 
     def _get_file_path(self, dir_path, exchange_id):
-        file_name = "{}.csv".format(exchange_id)
+        file_name = "{}.csv".format(exchange_id.value)
         return os.path.join(dir_path, path.EXCHANGES_DIR, file_name)
 
     def _get_config_file_path(self, dir_path):
@@ -75,7 +72,7 @@ class HistoricalLogger():
         return os.path.join(dir_path, file_name)
 
     def _get_logger_name(self, exchange_id):
-        return "{}.historical".format(exchange_id)
+        return "{}.historical".format(exchange_id.value)
 
     def _create_logger(self, exchange_id):
         file_path = self._get_file_path(self.dir_path, exchange_id)
