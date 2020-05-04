@@ -20,7 +20,7 @@ import src.utils.datetime as dt
 
 import src.env as env
 import src.config as config
-from src.constants.ccxtconst import TICK_INTERVAL_SEC, ExchangeId
+from src.constants.ccxtconst import ExchangeId
 from src.constants.arbitrage import Strategy, Action
 
 
@@ -42,6 +42,7 @@ class ArbitrageTrading(ArbitrageBase):
         self.trade_amount = config.TRADE_AMOUNT
         self.open_threshold = config.TRADE_OPEN_THRESHOLD
         self.profit_margin_diff = config.TRADE_PROFIT_MARGIN_DIFF
+        self.tick_interval_sec = config.TRADE_TICK_INTERVAL_SEC
 
         self.asset = Asset()
         self.slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
@@ -60,7 +61,7 @@ class ArbitrageTrading(ArbitrageBase):
         self._logging_trading_metadata()
 
         while True:
-            sleep(TICK_INTERVAL_SEC)
+            sleep(self.tick_interval_sec)
 
             if self.circuit_breaker.is_server_maintenance():
                 continue

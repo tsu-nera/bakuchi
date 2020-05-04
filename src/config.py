@@ -9,6 +9,7 @@ OPEN_THRESHOLD_CHANGE_SEC = int(
 TRADE_AMOUNT = float(config["trade"]["amount"])
 TRADE_OPEN_THRESHOLD = int(config["trade"]["open_threshold"])
 TRADE_PROFIT_MARGIN_DIFF = int(config["trade"]["profit_margin_diff"])
+TRADE_TICK_INTERVAL_SEC = float(config["trade"]["tick_interval_sec"])
 
 BACKTEST_AMOUNT = float(config["backtest"]["amount"])
 BACKTEST_OPEN_THRESHOLD = int(config["backtest"]["open_threshold"])

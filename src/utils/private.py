@@ -56,8 +56,8 @@ def create_coincheck_buy_order(symbol, amount):
     client = CcxtClient(exchange_id)
     tick = client.fetch_tick()
 
-    ask = float(tick["ask"])
-    bid = float(tick["bid"])
+    ask = float(tick.ask)
+    bid = float(tick.bid)
 
     if amount < 0.005:
         n = int(amount * 1000)
@@ -85,8 +85,8 @@ def create_coincheck_sell_order(symbol, amount):
     exchange_id = ccxtconst.ExchangeId.COINCHECK
     client = CcxtClient(exchange_id)
     tick = client.fetch_tick()
-    ask = float(tick['ask'])
-    bid = float(tick["bid"])
+    ask = float(tick.ask)
+    bid = float(tick.bid)
 
     if amount < 0.005:
         n = int(amount * 1000)
