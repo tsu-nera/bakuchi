@@ -120,9 +120,7 @@ class TradeAnalysis():
         data.append(["損切りマージン[JPY]", self.result["profit_margin_diff"]])
 
         print("トレード情報")
-        print(
-            tabulate(data, tablefmt="grid", numalign="right",
-                     stralign="right"))
+        print(tabulate(data, numalign="right", stralign="right"))
 
     def _report_trade_stats(self):
         data = []
@@ -147,7 +145,7 @@ class TradeAnalysis():
                                        self.result["total_end_price_jpy"]))
 
         print("トレード結果")
-        print(tabulate(data, tablefmt="grid", numalign="right"))
+        print(tabulate(data, numalign="right"))
 
     def _report_trade_profits(self):
 
@@ -160,11 +158,7 @@ class TradeAnalysis():
         ])
 
         print("トレード分析")
-        print(
-            tabulate(profits,
-                     tablefmt="grid",
-                     numalign="right",
-                     headers="firstrow"))
+        print(tabulate(profits, numalign="right", headers="firstrow"))
 
     def display(self):
         self._prepare_result()
