@@ -238,9 +238,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         data.append(["損切りマージン[JPY]", self.result["profit_margin_diff"]])
 
         print("バックテスト情報")
-        print(
-            tabulate(data, tablefmt="grid", numalign="right",
-                     stralign="right"))
+        print(tabulate(data, numalign="right", stralign="right"))
 
     def _report_trade_stats(self):
         data = []
