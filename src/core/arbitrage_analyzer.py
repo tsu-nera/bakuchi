@@ -1,6 +1,6 @@
 from statistics import mean
 
-from src.config import OPEN_THRESHOLD_CHANGE_SEC
+from src.config import OPEN_THRESHOLD_CHANGE_SEC, TRADE_TICK_INTERVAL_SEC
 
 
 class ArbitrageAnalyzer():
@@ -20,7 +20,7 @@ class ArbitrageAnalyzer():
     def update(self, a, b):
         self.buyx_selly_margings.append(a)
         self.buyy_sellx_margings.append(b)
-        self.length += 1
+        self.length += TRADE_TICK_INTERVAL_SEC
 
     def check_period(self):
         return self.length > self.open_threshold_change_sec
@@ -30,7 +30,8 @@ class ArbitrageAnalyzer():
 
     def get_new_open_threshold(self):
         sample_length = 90
-        length = self.open_threshold_change_sec - sample_length
+        length = int((self.open_threshold_change_sec - sample_length) /
+                     TRADE_TICK_INTERVAL_SEC)
         buyx_selly_mean = mean(self.buyx_selly_margings[length:])
         buyy_sellx_mean = mean(self.buyy_sellx_margings[length:])
 
