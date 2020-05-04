@@ -3,8 +3,10 @@ import glob
 import shutil
 from distutils.dir_util import copy_tree
 import pandas as pd
+import datetime
 
 from tabulate import tabulate
+from jinja2 import Environment, FileSystemLoader
 
 import src.constants.path as path
 import src.constants.ccxtconst as ccxtconst
@@ -104,7 +106,7 @@ def display(timestamp):
     backtest_data = backtesting.get_result_data(report_mode=True)
     trade_data = trade_analysis.get_result_data()
 
-    def _report_trade_meta(backtest, trade):
+    def __report_trade_meta(backtest, trade):
         data = []
         data.append(["レコード数", backtest["record_count"], trade["record_count"]])
         data.append(["取引回数", backtest["trade_count"], trade["trade_count"]])
@@ -123,13 +125,17 @@ def display(timestamp):
             trade["profit_margin_diff"]
         ])
 
-        print("トレード情報")
-        headers = ["", "バックテスト", "トレード"]
-        print(
-            tabulate(data, numalign="right", stralign="right",
-                     headers=headers))
+        heading = "トレード情報"
 
-    def _report_trade_stats(backtest, trade):
+        headers = ["", "バックテスト", "トレード"]
+        body = tabulate(data,
+                        numalign="right",
+                        stralign="right",
+                        headers=headers)
+
+        return "\n".join([heading, body])
+
+    def __report_trade_stats(backtest, trade):
         data = []
 
         data.append(
@@ -155,13 +161,49 @@ def display(timestamp):
             trade["total_profit_jpy"]
         ])
 
-        print("トレード結果")
-        headers = ["", "バックテスト", "トレード"]
-        print(tabulate(data, numalign="right", headers=headers))
+        heading = "トレード結果"
 
-    _report_trade_meta(backtest_data, trade_data)
-    print()
-    _report_trade_stats(backtest_data, trade_data)
+        headers = ["", "バックテスト", "トレード"]
+        body = tabulate(data, numalign="right", headers=headers)
+
+        return "\n".join([heading, body])
+
+    def __report_trade_profits(trade):
+
+        profits = []
+        profits.append(["Bot利益", "トレード利益", "市場利益"])
+
+        profits.append([
+            trade["bot_profit_jpy"], trade["trade_profit_jpy"],
+            trade["market_profit_jpy"]
+        ])
+
+        heading = "トレード利益"
+        body = tabulate(profits, numalign="right", headers="firstrow")
+
+        return "\n".join([heading, body])
+
+    def __generate_readme(date, result, timestamp):
+        env = Environment(
+            loader=FileSystemLoader(path.REPORTS_DIR, encoding='utf8'))
+        template = env.get_template(path.README_TEMPLATE_FILE)
+        readme = template.render(date=date, result=result)
+
+        output_path = "/".join([path.REPORTS_DIR, timestamp, path.README_FILE])
+
+        with open(output_path, mode='w') as f:
+            f.write(str(readme))
+
+    output_meta = __report_trade_meta(backtest_data, trade_data)
+    output_stats = __report_trade_stats(backtest_data, trade_data)
+    output_profits = __report_trade_profits(trade_data)
+
+    header = datetime.datetime.strptime(
+        timestamp, dt.DATETIME_DIR_FORMAT).strftime(dt.README_HEADER_FORMAT)
+
+    body = "\n".join([output_meta, "\n", output_stats, "\n", output_profits])
+
+    __generate_readme(header, body, timestamp)
 
 
 def export_trade_result(timestamp):

@@ -30,6 +30,9 @@ ORDER_CSV_FILE = "order.csv"
 REPORT_BACKTEST = "backtest.ipynb"
 REPORT_TRADE = "trade.ipynb"
 
+README_TEMPLATE_FILE = "README.tpl.md"
+README_FILE = "README.md"
+
 # bakuchi_production
 PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH = os.path.join(PRODUCTION_DIR,
                                                       RAWDATA_DIR,

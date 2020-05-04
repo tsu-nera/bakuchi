@@ -119,10 +119,10 @@ class TradeAnalysis():
         data.append(["利確しきい値[JPY]", self.result["open_threshold"]])
         data.append(["損切りマージン[JPY]", self.result["profit_margin_diff"]])
 
-        print("トレード情報")
-        print(
-            tabulate(data, tablefmt="grid", numalign="right",
-                     stralign="right"))
+        heading = "トレード情報"
+        body = tabulate(data, numalign="right", stralign="right")
+
+        return "\n".join([heading, body])
 
     def _report_trade_stats(self):
         data = []
@@ -146,8 +146,10 @@ class TradeAnalysis():
                                        self.result["total_start_price_jpy"],
                                        self.result["total_end_price_jpy"]))
 
-        print("トレード結果")
-        print(tabulate(data, tablefmt="grid", numalign="right"))
+        heading = "トレード結果"
+        body = tabulate(data, numalign="right")
+
+        return "\n".join([heading, body])
 
     def _report_trade_profits(self):
 
@@ -159,21 +161,22 @@ class TradeAnalysis():
             self.result["market_profit_jpy"]
         ])
 
-        print("トレード分析")
-        print(
-            tabulate(profits,
-                     tablefmt="grid",
-                     numalign="right",
-                     headers="firstrow"))
+        heading = "トレード利益"
+        body = tabulate(profits, numalign="right", headers="firstrow")
+
+        return "\n".join([heading, body])
 
     def display(self):
         self._prepare_result()
 
-        self._report_trade_meta()
-        print()
-        self._report_trade_stats()
-        print()
-        self._report_trade_profits()
+        output_meta = self._report_trade_meta()
+        output_stats = self._report_trade_stats()
+        output_profits = self._report_trade_profits()
+
+        output = "\n".join(
+            [output_meta, "\n", output_stats, "\n", output_profits])
+
+        print(output)
 
     def get_coincheck_trades_df(self):
         return self.trades_cc
