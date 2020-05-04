@@ -1,0 +1,4 @@
+timestamp,order_type,buy_exchange,buy_rate,buy_price,sell_exchange,sell_rate,sell_price,profit,profit_margin
+2020-05-04 18:41:29,OPENING,ExchangeId.LIQUID,924487,4622.435,ExchangeId.COINCHECK,926069,4630.345
+2020-05-04 19:21:47,CLOSING,ExchangeId.COINCHECK,929475,4647.375,ExchangeId.LIQUID,929199,4645.995
+2020-05-04 19:22:01,OPENING,ExchangeId.LIQUID,927980,4639.900000000001,ExchangeId.COINCHECK,929015,4645.075

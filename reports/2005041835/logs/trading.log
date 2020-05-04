@@ -1,0 +1,52 @@
+[INFO:2020-05-04 18:35:24,469] =========================
+[INFO:2020-05-04 18:35:24,469] === trading bot start ===
+[INFO:2020-05-04 18:35:24,469] =========================
+[INFO:2020-05-04 18:35:29,645] amount=0.005, open_threshold=2000, profit_margin_diff=1000
+[INFO:2020-05-04 18:38:40,235] open threshold changed from 2000 to 1338
+[INFO:2020-05-04 18:41:29,528] OPENING buy-liquid(4623.13), sell-coincheck(4630.345), margin=1582, profit=7.2
+[INFO:2020-05-04 18:41:58,529] open threshold changed from 1334 to 1051
+[INFO:2020-05-04 18:45:13,274] open threshold changed from 1052 to 1000
+[INFO:2020-05-04 18:48:19,568] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 18:51:24,841] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 18:54:29,821] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 18:57:38,557] open threshold changed from 1000 to 1190
+[INFO:2020-05-04 19:00:45,637] open threshold changed from 1189 to 1124
+[INFO:2020-05-04 19:03:47,880] open threshold changed from 1123 to 1074
+[INFO:2020-05-04 19:06:46,399] open threshold changed from 1077 to 1000
+[INFO:2020-05-04 19:09:48,181] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:12:47,792] open threshold changed from 1000 to 1127
+[INFO:2020-05-04 19:15:53,420] open threshold changed from 1130 to 1277
+[INFO:2020-05-04 19:18:58,892] open threshold changed from 1276 to 1000
+[INFO:2020-05-04 19:21:47,771] CLOSING buy-coincheck(4650.0), sell-liquid(4637.79), margin=-276, profit=-12.2
+[INFO:2020-05-04 19:21:55,305] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:22:01,832] OPENING buy-liquid(4641.455), sell-coincheck(4645.075), margin=1035, profit=3.6
+[INFO:2020-05-04 19:24:53,300] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:27:49,548] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:30:55,791] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:34:02,058] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:37:12,958] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:40:16,073] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:43:31,830] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:46:41,650] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:49:50,599] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:53:02,264] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:56:06,905] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 19:59:11,334] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 20:02:18,616] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 20:05:28,782] open threshold changed from 1000 to 1185
+[INFO:2020-05-04 20:08:33,786] open threshold changed from 1184 to 1000
+[INFO:2020-05-04 20:11:36,965] open threshold changed from 1000 to 1114
+[INFO:2020-05-04 20:14:43,152] open threshold changed from 1110 to 1000
+[INFO:2020-05-04 20:17:48,099] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 20:20:56,394] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 20:24:20,859] open threshold changed from 1000 to 1039
+[INFO:2020-05-04 20:27:29,330] open threshold changed from 1039 to 1000
+[INFO:2020-05-04 20:30:25,644] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 20:33:18,311] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 20:36:18,579] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 20:39:24,253] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 20:42:28,981] open threshold changed from 1000 to 1000
+[INFO:2020-05-04 20:44:08,233] keyboard interuption occured. stop trading bot...
+[INFO:2020-05-04 20:44:08,238] =======================
+[INFO:2020-05-04 20:44:08,238] === trading bot end ===
+[INFO:2020-05-04 20:44:08,238] =======================

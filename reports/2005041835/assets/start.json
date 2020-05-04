@@ -1,0 +1,28 @@
+{
+  "timestamp": "2020-05-04 18:35:29",
+  "total": {
+    "id": "total",
+    "jpy": 10746,
+    "btc": 0.022335,
+    "btc_as_jpy": 20664,
+    "total_jpy": 31410
+  },
+  "coincheck": {
+    "id": "coincheck",
+    "jpy": 5087,
+    "btc": 0.011335,
+    "btc_as_jpy": 10496,
+    "total_jpy": 15583,
+    "bid": 926018.0,
+    "ask": 926063.0
+  },
+  "liquid": {
+    "id": "liquid",
+    "jpy": 5659,
+    "btc": 0.011,
+    "btc_as_jpy": 10168,
+    "total_jpy": 15827,
+    "bid": 924444.0,
+    "ask": 924586.0
+  }
+}
