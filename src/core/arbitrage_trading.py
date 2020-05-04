@@ -79,9 +79,9 @@ class ArbitrageTrading(ArbitrageBase):
 
     def _logging_trading_metadata(self):
         self.logger_with_stdout.info(
-            "amount={}, open_threshold={}, profit_margin_diff={}".format(
-                self.trade_amount, self.open_threshold,
-                self.profit_margin_diff))
+            "amount={}, open_threshold={}, profit_margin_diff={}, tick_inverval_sec={}"
+            .format(self.trade_amount, self.open_threshold,
+                    self.profit_margin_diff, self.tick_interval_sec))
 
     def _logging_tick_margin(self, x, y):
         margin_buyx_selly = self._get_profit_margin(y.bid, x.ask)
