@@ -59,6 +59,13 @@ def run_notebook(file_path):
     os.system(command)
 
 
+def convert_nb_html(file_path):
+    command_base = "jupyter nbconvert --to html"
+    command = " ".join([command_base, file_path])
+
+    os.system(command)
+
+
 def generate_notebook(dir_name):
     from_dir = path.NOTEBOOK_TEMPLATES_DIR
     to_dir = os.path.join(path.REPORTS_DIR, dir_name)
@@ -72,6 +79,7 @@ def generate_notebook(dir_name):
         shutil.copy(from_path, to_path)
 
         run_notebook(to_path)
+        convert_nb_html(to_path)
 
 
 def _get_trade_timestamps(timestamp):

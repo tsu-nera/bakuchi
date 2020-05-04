@@ -86,7 +86,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         return tick_x, tick_y
 
     def _record_history(self, timestamp, exchange_id, order_type, price):
-        history = [timestamp, exchange_id, order_type, price]
+        history = [timestamp, exchange_id.value, order_type, price]
         self.histories.append(history)
 
     def _record_arbitrage_history(self, timestamp, buy_exchange_id,
@@ -94,8 +94,8 @@ class ArbitrageBacktesting(ArbitrageBase):
         expected_profit = int(margin * amount)
 
         history = [
-            timestamp, buy_exchange_id, sell_exchange_id, symbol, amount,
-            expected_profit
+            timestamp, buy_exchange_id.value, sell_exchange_id.value, symbol,
+            amount, expected_profit
         ]
 
         self.arbitrage_histories.append(history)
@@ -108,11 +108,11 @@ class ArbitrageBacktesting(ArbitrageBase):
         if result == Strategy.BUY_X_SELL_Y:
             self.trade_count += 1
             self.exchange_x.order_buy(self.symbol, self.trade_amount, x.ask)
-            self._record_history(timestamp_string, "買い", self.exchange_x_id,
+            self._record_history(timestamp_string, self.exchange_x_id, "買い",
                                  x.ask)
 
             self.exchange_y.order_sell(self.symbol, self.trade_amount, y.bid)
-            self._record_history(timestamp_string, "売り", self.exchange_y_id,
+            self._record_history(timestamp_string, self.exchange_y_id, "売り",
                                  y.bid)
 
             profit_margin = self._get_profit_margin(y.bid, x.ask)
@@ -130,11 +130,11 @@ class ArbitrageBacktesting(ArbitrageBase):
         elif result == Strategy.BUY_Y_SELL_X:
             self.trade_count += 1
             self.exchange_y.order_buy(self.symbol, self.trade_amount, y.ask)
-            self._record_history(timestamp_string, "買い", self.exchange_y_id,
+            self._record_history(timestamp_string, self.exchange_y_id, "買い",
                                  y.ask)
 
             self.exchange_x.order_sell(self.symbol, self.trade_amount, x.bid)
-            self._record_history(timestamp_string, "売り", self.exchange_x_id,
+            self._record_history(timestamp_string, self.exchange_x_id, "売り",
                                  x.bid)
 
             profit_margin = self._get_profit_margin(x.bid, y.ask)
@@ -264,7 +264,7 @@ class ArbitrageBacktesting(ArbitrageBase):
                                        self.result["total_end_price_jpy"]))
 
         print("バックテスト結果")
-        print(tabulate(data, tablefmt="grid", numalign="right"))
+        print(tabulate(data, numalign="right"))
 
     def _report_histories(self):
         data = self.histories
