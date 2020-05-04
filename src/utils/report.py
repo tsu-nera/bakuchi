@@ -168,6 +168,21 @@ def display(timestamp):
 
         return "\n".join([heading, body])
 
+    def __report_trade_profits(trade):
+
+        profits = []
+        profits.append(["Bot利益", "トレード利益", "市場利益"])
+
+        profits.append([
+            trade["bot_profit_jpy"], trade["trade_profit_jpy"],
+            trade["market_profit_jpy"]
+        ])
+
+        heading = "トレード利益"
+        body = tabulate(profits, numalign="right", headers="firstrow")
+
+        return "\n".join([heading, body])
+
     def __generate_readme(date, result, timestamp):
         env = Environment(
             loader=FileSystemLoader(path.REPORTS_DIR, encoding='utf8'))
@@ -181,11 +196,12 @@ def display(timestamp):
 
     output_meta = __report_trade_meta(backtest_data, trade_data)
     output_stats = __report_trade_stats(backtest_data, trade_data)
+    output_profits = __report_trade_profits(trade_data)
 
     header = datetime.datetime.strptime(
         timestamp, dt.DATETIME_DIR_FORMAT).strftime(dt.README_HEADER_FORMAT)
 
-    body = "\n".join([output_meta, "\n", output_stats])
+    body = "\n".join([output_meta, "\n", output_stats, "\n", output_profits])
 
     __generate_readme(header, body, timestamp)
 
