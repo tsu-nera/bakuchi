@@ -1,0 +1,70 @@
+[INFO:2020-05-05 08:13:27,554] =========================
+[INFO:2020-05-05 08:13:27,554] === trading bot start ===
+[INFO:2020-05-05 08:13:27,554] =========================
+[INFO:2020-05-05 08:13:35,662] amount=0.0051, open_threshold=2000, profit_margin_diff=1000, tick_inverval_sec=0.25
+[INFO:2020-05-05 08:19:55,062] open threshold changed from 2000 to 1000
+[INFO:2020-05-05 08:26:23,834] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 08:30:59,128] OPENING buy-liquid(4823.81), sell-coincheck(4823.636), margin=1051, profit=-0.2
+[INFO:2020-05-05 08:31:02,976] CLOSING buy-coincheck(4825.0), sell-liquid(4822.795), margin=229, profit=-2.2
+[INFO:2020-05-05 08:33:25,587] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 08:40:52,710] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 08:48:38,434] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 08:49:43,565] OPENING buy-liquid(4842.45), sell-coincheck(4841.384), margin=1131, profit=-1.1
+[INFO:2020-05-05 08:49:48,550] CLOSING buy-coincheck(4838.0), sell-liquid(4834.81), margin=737, profit=-3.2
+[INFO:2020-05-05 08:49:54,112] OPENING buy-coincheck(4840.0), sell-liquid(4836.167), margin=1059, profit=-3.8
+[INFO:2020-05-05 08:50:05,779] CLOSING buy-liquid(4839.91), sell-coincheck(4836.111), margin=127, profit=-3.8
+[INFO:2020-05-05 08:56:11,646] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 09:02:59,858] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 09:09:49,987] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 09:16:28,522] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 09:23:10,705] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 09:30:10,004] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 09:36:51,358] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 09:40:56,469] OPENING buy-liquid(4837.013), sell-coincheck(4839.594), margin=1240, profit=2.6
+[INFO:2020-05-05 09:43:35,811] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 09:47:49,867] CLOSING buy-coincheck(4844.0), sell-liquid(4840.915), margin=-229, profit=-3.1
+[INFO:2020-05-05 09:50:22,150] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 09:57:08,572] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 10:04:08,419] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 10:10:58,498] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 10:12:06,268] OPENING buy-liquid(4831.771), sell-coincheck(4836.279), margin=1139, profit=4.5
+[INFO:2020-05-05 10:12:09,956] CLOSING buy-coincheck(4833.0), sell-liquid(4825.136), margin=-111, profit=-7.9
+[INFO:2020-05-05 10:18:15,411] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 10:25:08,167] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 10:26:45,125] OPENING buy-liquid(4822.988), sell-coincheck(4827.686), margin=1048, profit=4.7
+[INFO:2020-05-05 10:31:45,583] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 10:38:26,838] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 10:45:58,985] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 10:53:34,689] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 11:01:08,908] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 11:08:55,756] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 11:09:22,786] CLOSING buy-coincheck(4835.0), sell-liquid(4832.454), margin=-13, profit=-2.5
+[INFO:2020-05-05 11:16:27,378] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 11:24:09,716] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 11:26:06,642] OPENING buy-liquid(4817.914), sell-coincheck(4822.05), margin=1047, profit=4.1
+[INFO:2020-05-05 11:31:50,300] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 11:39:21,074] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 11:46:54,780] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 11:54:44,386] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 12:02:18,715] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 12:10:18,599] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 12:17:59,664] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 12:25:39,906] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 12:33:10,585] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 12:40:46,652] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 12:48:32,718] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 12:56:19,707] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 13:04:01,825] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 13:08:28,054] CLOSING buy-coincheck(4863.0), sell-liquid(4860.234), margin=-44, profit=-2.8
+[INFO:2020-05-05 13:11:24,527] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 13:18:57,153] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 13:26:35,774] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 13:34:10,252] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 13:41:54,101] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 13:49:18,822] open threshold changed from 1000 to 1000
+[INFO:2020-05-05 13:51:02,662] OPENING buy-coincheck(4916.0), sell-liquid(4912.182), margin=1330, profit=-3.8
+[INFO:2020-05-05 13:51:17,349] CLOSING buy-liquid(4915.574), sell-coincheck(4913.977), margin=-61, profit=-1.6
+[INFO:2020-05-05 15:42:53,497] keyboard interuption occured. stop trading bot...
+[INFO:2020-05-05 15:42:53,513] =======================
+[INFO:2020-05-05 15:42:53,513] === trading bot end ===
+[INFO:2020-05-05 15:42:53,832] =======================

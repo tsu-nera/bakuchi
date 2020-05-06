@@ -29,7 +29,7 @@ class ArbitrageParallel():
                 if thread == 1:
                     responses[thread] = func_y()
             except Exception as e:
-                traceback.format_exc(e)
+                print(traceback.format_exc())
                 responses[thread] = e
 
             thread_queue.task_done()
