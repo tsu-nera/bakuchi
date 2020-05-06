@@ -15,7 +15,7 @@ import src.utils.datetime as dt
 
 
 class Profit():
-    def __init__(self, retry=True):
+    def __init__(self):
         self.orders = {}
 
         order_columns = [
@@ -25,8 +25,15 @@ class Profit():
             self.orders[exchange_id] = pd.DataFrame(columns=order_columns)
 
         self.profits = []
+        self.start_timestamp = datetime.datetime.now()
+
+        self.total_profit = 0
 
     def __update(self):
+        self.__update_orders()
+        self.__update_profits()
+
+    def __update_orders(self):
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
             client = CcxtClient(exchange_id)
             orders = client.fetch_trades(ccxtconst.TradeMode.BOT)
@@ -36,13 +43,13 @@ class Profit():
             else:
                 orders = self.__format_fetched_orders(orders)
 
-            fetced_df = pd.DataFrame.from_dict(orders)
+            fetched_df = pd.DataFrame.from_dict(orders)
             pre_df = self.orders[exchange_id]
 
-            merged_df = pd.concat([pre_df, fetced_df]).drop_duplicates()
+            merged_df = pd.concat([pre_df, fetched_df]).drop_duplicates()
             self.orders[exchange_id] = merged_df
 
-    def __create_trade(self, datetime, pair, side, fee, amount, price, rate):
+    def __create_order(self, datetime, pair, side, fee, amount, price, rate):
         return {
             "datetime": datetime,
             "pair": pair,
@@ -58,13 +65,23 @@ class Profit():
         timestamp = timestamp + datetime.timedelta(hours=9)
         return timestamp.strftime(dt.DATETIME_BASE_FORMAT)
 
+    def __is_valid_timestamp(self, timestamp):
+        timestamp = datetime.datetime.strptime(timestamp,
+                                               dt.DATETIME_BASE_FORMAT)
+        return timestamp > self.start_timestamp
+
     def __format_coincheck_orders(self, data):
         orders = []
         for t in data:
-            trade = self.__create_trade(
-                self.__convert_coincheck_datetime(t["created_at"]), t["pair"],
-                t["side"], float(t["fee"]), float(t["funds"]["btc"]),
-                float(t["funds"]["jpy"]), float(t["rate"]))
+            timestamp = self.__convert_coincheck_datetime(t["created_at"])
+            if not self.__is_valid_timestamp(timestamp):
+                continue
+
+            trade = self.__create_order(timestamp, t["pair"], t["side"],
+                                        float(t["fee"]),
+                                        float(t["funds"]["btc"]),
+                                        float(t["funds"]["jpy"]),
+                                        float(t["rate"]))
             orders.append(trade)
 
         return self.__marge_duplicated_orders(orders)
@@ -75,8 +92,10 @@ class Profit():
         for t in data:
             created_at = datetime.datetime.fromtimestamp(t["created_at"])
             timestamp = dt.format_timestamp(created_at)
+            if not self.__is_valid_timestamp(timestamp):
+                continue
 
-            trade = self.__create_trade(timestamp, t["pair"], t["taker_side"],
+            trade = self.__create_order(timestamp, t["pair"], t["taker_side"],
                                         0, t["quantity"], t["price"],
                                         t["rate"])
             orders.append(trade)
@@ -98,17 +117,65 @@ class Profit():
                 total_price = sum([orders[i + j]["price"] for j in range(n)])
                 average_rate = mean([orders[i + j]["rate"] for j in range(n)])
 
-                trade = self.__create_trade(current_trade["datetime"],
+                order = self.__create_order(current_trade["datetime"],
                                             current_trade["pair"],
                                             current_trade["side"],
                                             current_trade["fee"], total_amount,
                                             total_price, average_rate)
             else:
-                trade = orders[i]
-            filterd_orders.append(trade)
+                order = orders[i]
+            filterd_orders.append(order)
             i += n
 
         return filterd_orders
+
+    def __update_profits(self):
+        def __calc_profit(x_side, x_price, y_side, y_price):
+            if x_side == 'sell':
+                cc_price = x_price
+            else:
+                cc_price = -1 * x_price
+
+            if y_side == 'sell':
+                lq_price = y_price
+            else:
+                lq_price = -1 * y_price
+
+            return int(cc_price + lq_price)
+
+        # とりあえずcoincheckとliquid固定で。
+        cc_orders = self.orders[ccxtconst.ExchangeId.COINCHECK]
+        lq_orders = self.orders[ccxtconst.ExchangeId.LIQUID]
+
+        if len(cc_orders) > len(lq_orders):
+            cc_orders = cc_orders[:len(lq_orders)]
+        elif len(cc_orders) < len(lq_orders):
+            lq_orders = lq_orders[:len(cc_orders)]
+
+        cc_orders.index = cc_orders["datetime"]
+        lq_orders.index = lq_orders["datetime"]
+        cc_orders = cc_orders.sort_index()
+        lq_orders = lq_orders.sort_index()
+
+        timestamps = cc_orders["datetime"].tolist()
+        cc_sides = cc_orders["side"].tolist()
+        cc_prices = cc_orders["price"].tolist()
+        lq_sides = lq_orders["side"].tolist()
+        lq_prices = lq_orders["price"].tolist()
+
+        for timestamp, cc_side, cc_price, lq_side, lq_price in zip(
+                timestamps, cc_sides, cc_prices, lq_sides, lq_prices):
+            profit = __calc_profit(cc_side, cc_price, lq_side, lq_price)
+            data = {
+                "timestamp": timestamp,
+                "cc_side": cc_side,
+                "cc_price": cc_price,
+                "lq_side": lq_side,
+                "lq_price": lq_price,
+                "profit": profit
+            }
+            self.profits.append(data)
+            self.total_profit += profit
 
     def run_bot(self):
         '''
@@ -119,7 +186,9 @@ class Profit():
         # orders log
         self.__orders_to_csv()
 
-        # profits log
+        print(self.total_profit)
+
+        # profit log
         # self.__append_csv()
         # # ログ出力
         # self.__append_log()
