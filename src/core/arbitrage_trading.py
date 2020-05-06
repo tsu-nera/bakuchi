@@ -297,4 +297,4 @@ class ArbitrageTrading(ArbitrageBase):
         tick_x = self.board_x.get_eff_tick(self.trade_amount)
         tick_y = self.board_y.get_eff_tick(self.trade_amount)
 
-        self.__action(stragegy, tick_x, tick_y)
+        self._action(stragegy, tick_x, tick_y)

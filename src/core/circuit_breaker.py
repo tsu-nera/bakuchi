@@ -167,11 +167,15 @@ class CircuitBreaker():
         self.__wait(5)
 
     def is_opening_longtime(self, timestamp):
+        '''
+        openしてから一定時間経過したかどうかチェック
+        '''
         if not timestamp:
             return False
         else:
             now = datetime.datetime.now()
-            if now > timestamp + datetime.timedelta(hours=1):
+            # TODO
+            if now > timestamp + datetime.timedelta(minutes=30):
                 return True
             else:
                 return False

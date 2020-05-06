@@ -125,7 +125,7 @@ class ArbitrageBacktesting(ArbitrageBase):
                                            self.exchange_y_id, self.symbol,
                                            self.trade_amount, profit_margin)
             if self.simulate_mode:
-                print(x.timestamp, result, profit_margin)
+                print(tick_x.timestamp, result, profit_margin)
 
             self._update_entry_open_margin(profit_margin)
             self._change_status_buyx_selly()
