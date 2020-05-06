@@ -27,6 +27,10 @@ def today_dirname():
     return datetime.datetime.now().strftime(format_string)
 
 
+def now():
+    return datetime.datetime.now()
+
+
 def now_timestamp():
     format_string = DATETIME_BASE_FORMAT
     return datetime.datetime.now().strftime(format_string)

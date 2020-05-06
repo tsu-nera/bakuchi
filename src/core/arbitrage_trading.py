@@ -65,6 +65,8 @@ class ArbitrageTrading(ArbitrageBase):
 
             if self.circuit_breaker.is_server_maintenance():
                 continue
+            if self.circuit_breaker.is_opening_longtime(self.opened_timestamp):
+                self.circuit_breaker.recover_opening_longtime(self)
 
             try:
                 self.next()
@@ -194,12 +196,12 @@ class ArbitrageTrading(ArbitrageBase):
         _check_insufficientfunds(buy)
         _check_insufficientfunds(sell)
 
-    def _action(self, result, x, y):
+    def _action(self, stragegy, tick_x, tick_y):
         label = self._get_log_label()
 
-        if result == Strategy.BUY_X_SELL_Y:
-            ask_for_coincheck = x.ask if self.ex_id_x == ExchangeId.COINCHECK else None
-            bid_for_coincheck = y.bid if self.ex_id_y == ExchangeId.COINCHECK else None
+        if stragegy == Strategy.BUY_X_SELL_Y:
+            ask_for_coincheck = tick_x.ask if self.ex_id_x == ExchangeId.COINCHECK else None
+            bid_for_coincheck = tick_y.bid if self.ex_id_y == ExchangeId.COINCHECK else None
 
             buy_resp, sell_resp = self.parallel.order_buyx_selly(
                 self.trade_amount,
@@ -208,7 +210,7 @@ class ArbitrageTrading(ArbitrageBase):
 
             self._check_order_responses(buy_resp, sell_resp)
 
-            profit_margin = self._get_profit_margin(y.bid, x.ask)
+            profit_margin = self._get_profit_margin(tick_y.bid, tick_x.ask)
 
             if (not self.demo_mode) or (buy_resp and sell_resp):
                 profit = self._calc_profit(buy_resp["jpy"], sell_resp["jpy"])
@@ -216,16 +218,17 @@ class ArbitrageTrading(ArbitrageBase):
                     self.ex_id_x, buy_resp["jpy"], self.ex_id_y,
                     sell_resp["jpy"], profit, profit_margin)
             else:
-                profit = self._calc_expected_profit(y.bid, x.ask)
+                profit = self._calc_expected_profit(tick_y.bid, tick_x.ask)
                 message = self._format_expected_profit_message(
-                    self.ex_id_x, x.ask, self.ex_id_y, y.bid, profit,
+                    self.ex_id_x, tick_x.ask, self.ex_id_y, tick_y.bid, profit,
                     profit_margin)
 
             self.logger_with_stdout.info(message)
 
-            self.order_logger.logging(label, self.ex_id_x, x.ask,
-                                      self._calc_price(x.ask), self.ex_id_y,
-                                      y.bid, self._calc_price(y.bid), profit,
+            self.order_logger.logging(label, self.ex_id_x, tick_x.ask,
+                                      self._calc_price(tick_x.ask),
+                                      self.ex_id_y, tick_y.bid,
+                                      self._calc_price(tick_y.bid), profit,
                                       profit_margin)
 
             if not self.demo_mode:
@@ -235,9 +238,9 @@ class ArbitrageTrading(ArbitrageBase):
             self._update_entry_open_margin(profit_margin)
             self._change_status_buyx_selly()
 
-        elif result == Strategy.BUY_Y_SELL_X:
-            ask_for_coincheck = y.ask if self.ex_id_y == ExchangeId.COINCHECK else None
-            bid_for_coincheck = x.bid if self.ex_id_x == ExchangeId.COINCHECK else None
+        elif stragegy == Strategy.BUY_Y_SELL_X:
+            ask_for_coincheck = tick_y.ask if self.ex_id_y == ExchangeId.COINCHECK else None
+            bid_for_coincheck = tick_x.bid if self.ex_id_x == ExchangeId.COINCHECK else None
 
             buy_resp, sell_resp = self.parallel.order_buyy_sellx(
                 self.trade_amount,
@@ -246,7 +249,7 @@ class ArbitrageTrading(ArbitrageBase):
 
             self._check_order_responses(buy_resp, sell_resp)
 
-            profit_margin = self._get_profit_margin(x.bid, y.ask)
+            profit_margin = self._get_profit_margin(tick_x.bid, tick_y.ask)
 
             if (not self.demo_mode) or (buy_resp and sell_resp):
                 profit = self._calc_profit(buy_resp["jpy"], sell_resp["jpy"])
@@ -254,15 +257,16 @@ class ArbitrageTrading(ArbitrageBase):
                     self.ex_id_y, buy_resp["jpy"], self.ex_id_x,
                     sell_resp["jpy"], profit, profit_margin)
             else:
-                profit = self._calc_expected_profit(x.bid, y.ask)
+                profit = self._calc_expected_profit(tick_x.bid, tick_y.ask)
                 message = self._format_expected_profit_message(
-                    self.ex_id_y, y.ask, self.ex_id_x, x.bid, profit,
+                    self.ex_id_y, tick_y.ask, self.ex_id_x, tick_x.bid, profit,
                     profit_margin)
 
             self.logger_with_stdout.info(message)
-            self.order_logger.logging(label, self.ex_id_y, y.ask,
-                                      self._calc_price(y.ask), self.ex_id_x,
-                                      x.bid, self._calc_price(x.bid), profit,
+            self.order_logger.logging(label, self.ex_id_y, tick_y.ask,
+                                      self._calc_price(tick_y.ask),
+                                      self.ex_id_x, tick_x.bid,
+                                      self._calc_price(tick_x.bid), profit,
                                       profit_margin)
 
             if not self.demo_mode:
@@ -280,3 +284,17 @@ class ArbitrageTrading(ArbitrageBase):
     def __raise_exception_if_occured(self, e):
         if isinstance(e, Exception):
             raise (e)
+
+    def force_closing(self):
+        if not self.opened:
+            return
+
+        if self.open_direction:
+            stragegy = Strategy.BUY_X_SELL_Y
+        else:
+            stragegy = Strategy.BUY_Y_SELL_X
+
+        tick_x = self.board_x.get_eff_tick(self.trade_amount)
+        tick_y = self.board_y.get_eff_tick(self.trade_amount)
+
+        self.__action(stragegy, tick_x, tick_y)

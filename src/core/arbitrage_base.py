@@ -1,14 +1,19 @@
 from abc import ABCMeta, abstractmethod
+
+import src.utils.datetime as dt
+
 from src.core.arbitrage_analyzer import ArbitrageAnalyzer
 from src.constants.arbitrage import Strategy
 
 
 class ArbitrageBase(metaclass=ABCMeta):
     def __init__(self, open_threshold_change_sec=None):
-        self._closing()
-        self.analyzer = ArbitrageAnalyzer(open_threshold_change_sec)
         self.opened = False
+        self.open_direction = None
+        self.opened_timestamp = None
         self.entry_open_margin = None
+
+        self.analyzer = ArbitrageAnalyzer(open_threshold_change_sec)
 
     @abstractmethod
     def run(self):
@@ -16,34 +21,34 @@ class ArbitrageBase(metaclass=ABCMeta):
 
     def next(self):
         # tick取得
-        x, y = self._get_tick()
+        tick_x, tick_y = self._get_tick()
 
-        if x and y:
+        if tick_x and tick_y:
             # 判定
-            result = self._evaluate(x, y)
+            stragegy = self._evaluate(tick_x, tick_y)
 
             # アクション
-            self._action(result, x, y)
+            self._action(stragegy, tick_x, tick_y)
 
     @abstractmethod
     def _get_tick(self):
         raise NotImplementedError
 
-    def _evaluate(self, x, y):
-        self.analyzer.update(y.bid - x.ask, x.bid - y.ask)
+    def _evaluate(self, tick_x, tick_y):
+        self.analyzer.update(tick_y.bid - tick_x.ask, tick_x.bid - tick_y.ask)
         if self.analyzer.check_period():
             self.open_threshold = self.analyzer.get_new_open_threshold()
             self.analyzer.reset()
 
-        if self._check_status_buyx_selly(y.bid, x.ask):
+        if self._check_status_buyx_selly(tick_y.bid, tick_x.ask):
             return Strategy.BUY_X_SELL_Y
-        elif self._check_status_buyy_sellx(x.bid, y.ask):
+        elif self._check_status_buyy_sellx(tick_x.bid, tick_y.ask):
             return Strategy.BUY_Y_SELL_X
         else:
             return Strategy.DO_NOTHING
 
     @abstractmethod
-    def _action(self, result, x, y):
+    def _action(self, result, tick_x, tick_y):
         raise NotImplementedError
 
     def _get_profit_margin(self, bid, ask):
@@ -104,11 +109,14 @@ class ArbitrageBase(metaclass=ABCMeta):
     def _closing(self):
         self.opened = False
         self.open_direction = None
+        self.opened_timestamp = None
 
     def _opening_buyx_selly(self):
         self.opened = True
         self.open_direction = False
+        self.opened_timestamp = dt.now()
 
     def _opening_buyy_sellx(self):
         self.opened = True
         self.open_direction = True
+        self.opened_timestamp = dt.now()
