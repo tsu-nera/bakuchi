@@ -174,13 +174,13 @@ def show_recent_profits(hours=None):
             info = {}
             info["timestamp"] = timestamp
             if base_data['side'] == 'buy':
-                info['buy_id'] = base_exchange_id
-                info['sell_id'] = target_exchange_id
+                info['buy_id'] = base_exchange_id.value
+                info['sell_id'] = target_exchange_id.value
                 info['buy_price'] = int(base_data['price'])
                 info['sell_price'] = int(target_data['price'])
             else:
-                info['buy_id'] = target_exchange_id
-                info['sell_id'] = base_exchange_id
+                info['buy_id'] = target_exchange_id.value
+                info['sell_id'] = base_exchange_id.value
                 info['buy_price'] = int(target_data['price'])
                 info['sell_price'] = int(base_data['price'])
             info["profit"] = int(info["sell_price"] - info['buy_price'])
@@ -203,6 +203,7 @@ def show_recent_profits(hours=None):
         oldest_timestamp = timestamp_last
         latest_timestamp = timestamp_first
 
+    print("取引取得情報:")
     print("期間: {} - {}".format(oldest_timestamp, latest_timestamp))
     print("取引回数: {}".format(total_trade_count))
     print("利益: {}".format(total_profit))
@@ -217,6 +218,7 @@ def show_recent_profits(hours=None):
         ]
         table.append(table_row)
 
+    print()
     print(tabulate(table, headers="firstrow"))
 
 
