@@ -174,8 +174,8 @@ class CircuitBreaker():
             return False
         else:
             now = datetime.datetime.now()
-            # TODO
-            if now > timestamp + datetime.timedelta(minutes=30):
+            if now > timestamp + datetime.timedelta(
+                    minutes=config.FORCE_CLOSING_MIN):
                 return True
             else:
                 return False
@@ -184,7 +184,9 @@ class CircuitBreaker():
         self.__display_message()
 
         self.__wait(3)
-        self.logger.info("opening for a long time, force closing start.")
+        message = "opening for {} minutes, force closing start.".format(
+            config.FORCE_CLOSING_MIN)
+        self.logger.info(message)
 
         arbitrage.force_closing()
 
