@@ -198,7 +198,7 @@ class Profit():
         # ログ出力
         self.__logging()
         # slack出力
-        # self.__notify_slack()
+        self.__notify_slack()
 
     def __orders_to_csv(self):
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
@@ -217,27 +217,10 @@ class Profit():
         self.__logger.info(message)
 
     def __notify_slack(self):
-        slack = SlackClient(env.SLACK_WEBHOOK_URL_ASSET)
-
-        lines = []
-        lines.append("現在の資産状況は以下の通り({})".format(dt.now_timestamp()))
-        lines.append("")
-
-        for asset in self.assets:
-            line = "[{}] {}円/{}BTC({}) 計{}円".format(asset["id"], asset["jpy"],
-                                                    asset["btc"],
-                                                    asset["btc_as_jpy"],
-                                                    asset["total_jpy"])
-            lines.append(line)
-        line = "[{}] {}円/{}BTC({}) 計{}円".format(self.total["id"],
-                                                self.total["jpy"],
-                                                self.total["btc"],
-                                                self.total["btc_as_jpy"],
-                                                self.total["total_jpy"])
-        lines.append(line)
-
-        message = "\n".join(lines)
-        slack.notify(message)
+        slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
+        emoji_gold = "💰"
+        message = "[速報] {}円の利益がでました{}".format(self.total_profit, emoji_gold)
+        slack.notify_with_datetime(message)
 
     def display(self):
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
