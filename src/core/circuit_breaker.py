@@ -20,12 +20,12 @@ class CircuitBreaker():
 
         self.maintenance_log_flag = False
 
-    def _display_message(self):
+    def __display_message(self):
         self.logger.info("=============================")
         self.logger.info("= CIRCUIT BREAKER CALLED!!! =")
         self.logger.info("=============================")
 
-    def _wait(self, sec):
+    def __wait(self, sec):
         self.logger.info("waiting for {} sec ...".format(sec))
         time.sleep(sec)
 
@@ -66,9 +66,9 @@ class CircuitBreaker():
         ])
 
     def recover_exchange_not_available(self):
-        self._display_message()
+        self.__display_message()
 
-        self._wait(3)
+        self.__wait(3)
 
         self.logger.info("exchange not available error recovery start")
 
@@ -139,7 +139,7 @@ class CircuitBreaker():
         # 現状coincheckのBTCが不足するエラーのみなので
 
     def recover_ddos_protection(self):
-        self._display_message()
+        self.__display_message()
 
         self.logger.info("ddos protection error recovery start")
 
@@ -150,10 +150,10 @@ class CircuitBreaker():
     def _recover_ddos_protection(self):
         # liquid API rate limit exceeded. Please retry after 300s
         # こういうエラーなので、 300secだけsleepする。
-        self._wait(300)
+        self.__wait(300)
 
     def recover_network_error(self):
-        self._display_message()
+        self.__display_message()
 
         self.logger.info("network error recovery start")
 
@@ -164,4 +164,29 @@ class CircuitBreaker():
     def _recover_network_error(self):
         # ネットワークエラーはとりあえず5秒sleep
         # 様子を見て追加対応する
-        self._wait(5)
+        self.__wait(5)
+
+    def is_opening_longtime(self, timestamp):
+        '''
+        openしてから一定時間経過したかどうかチェック
+        '''
+        if not timestamp:
+            return False
+        else:
+            now = datetime.datetime.now()
+            # TODO
+            if now > timestamp + datetime.timedelta(minutes=30):
+                return True
+            else:
+                return False
+
+    def recover_opening_longtime(self, arbitrage):
+        self.__display_message()
+
+        self.__wait(3)
+        self.logger.info("opening for a long time, force closing start.")
+
+        arbitrage.force_closing()
+
+        self.__wait(3)
+        self.logger.info("force closing end.")

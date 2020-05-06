@@ -100,57 +100,62 @@ class ArbitrageBacktesting(ArbitrageBase):
 
         self.arbitrage_histories.append(history)
 
-    def _action(self, result, x, y):
+    def _action(self, result, tick_x, tick_y):
         if self.simulate_mode:
             time.sleep(1)
-        timestamp_string = x.timestamp.strftime(dt.DATETIME_BASE_FORMAT)
+
+        timestamp_string = tick_x.timestamp.strftime(dt.DATETIME_BASE_FORMAT)
 
         if result == Strategy.BUY_X_SELL_Y:
             self.trade_count += 1
-            self.exchange_x.order_buy(self.symbol, self.trade_amount, x.ask)
+            self.exchange_x.order_buy(self.symbol, self.trade_amount,
+                                      tick_x.ask)
             self._record_history(timestamp_string, self.exchange_x_id, "買い",
-                                 x.ask)
+                                 tick_x.ask)
 
-            self.exchange_y.order_sell(self.symbol, self.trade_amount, y.bid)
+            self.exchange_y.order_sell(self.symbol, self.trade_amount,
+                                       tick_y.bid)
             self._record_history(timestamp_string, self.exchange_y_id, "売り",
-                                 y.bid)
+                                 tick_y.bid)
 
-            profit_margin = self._get_profit_margin(y.bid, x.ask)
+            profit_margin = self._get_profit_margin(tick_y.bid, tick_x.ask)
 
             self._record_arbitrage_history(timestamp_string,
                                            self.exchange_x_id,
                                            self.exchange_y_id, self.symbol,
                                            self.trade_amount, profit_margin)
             if self.simulate_mode:
-                print(x.timestamp, result, profit_margin)
+                print(tick_x.timestamp, result, profit_margin)
 
             self._update_entry_open_margin(profit_margin)
             self._change_status_buyx_selly()
 
         elif result == Strategy.BUY_Y_SELL_X:
             self.trade_count += 1
-            self.exchange_y.order_buy(self.symbol, self.trade_amount, y.ask)
+            self.exchange_y.order_buy(self.symbol, self.trade_amount,
+                                      tick_y.ask)
             self._record_history(timestamp_string, self.exchange_y_id, "買い",
-                                 y.ask)
+                                 tick_y.ask)
 
-            self.exchange_x.order_sell(self.symbol, self.trade_amount, x.bid)
+            self.exchange_x.order_sell(self.symbol, self.trade_amount,
+                                       tick_x.bid)
             self._record_history(timestamp_string, self.exchange_x_id, "売り",
-                                 x.bid)
+                                 tick_x.bid)
 
-            profit_margin = self._get_profit_margin(x.bid, y.ask)
+            profit_margin = self._get_profit_margin(tick_x.bid, tick_y.ask)
             self._record_arbitrage_history(timestamp_string,
                                            self.exchange_y_id,
                                            self.exchange_x_id, self.symbol,
                                            self.trade_amount, profit_margin)
 
             if self.simulate_mode:
-                print(x.timestamp, result, profit_margin)
+                print(tick_x.timestamp, result, profit_margin)
 
             self._update_entry_open_margin(profit_margin)
             self._change_status_buyy_sellx()
         else:
             if self.simulate_mode:
-                print(x.timestamp, result)
+                print(tick_x.timestamp, result)
             pass
 
     def _get_total_jpy(self):
