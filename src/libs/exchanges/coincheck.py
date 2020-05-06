@@ -5,6 +5,7 @@ import hashlib
 import urllib
 
 import src.env as env
+from src.constants.ccxtconst import TradeMode
 
 BASE_URL = "https://coincheck.com"
 
@@ -94,13 +95,18 @@ class Coincheck():
 
         return params
 
-    def fetch_my_trades(self):
+    def fetch_my_trades(self, mode=None):
         end_point = "api/exchange/orders/transactions_pagination"
 
         index_id = None
         trades = []
 
-        for _ in range(15):
+        if mode == TradeMode.NORMAL:
+            limit = 15
+        else:
+            limit = 1
+
+        for _ in range(limit):
             params = self._create_fetch_trades_params(index_id)
             res = self._get(end_point, params=params)
             time.sleep(1)

@@ -23,6 +23,7 @@ from src.utils.trade_analysis import run_analysis
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
 from src.libs.asset import Asset
+from src.libs.profit import Profit
 
 import src.constants.path as path
 import src.constants.ccxtconst as ccxtconst
@@ -543,3 +544,9 @@ def perf_fetch_tick(c):
 @task
 def perf_coincheck_buy_amount(c):
     tool.adjust_coincheck_buy_amount()
+
+
+@task
+def bot_profit(c):
+    profit = Profit()
+    profit.run_bot()

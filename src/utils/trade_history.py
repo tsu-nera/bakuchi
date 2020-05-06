@@ -107,8 +107,8 @@ def _format_fetched_trades(data):
     return _marge_duplicated_trades(trades)
 
 
-def fetch_trades(exchange_id):
-    trades = private.fetch_trades(exchange_id)
+def fetch_trades(exchange_id, mode=ccxtconst.TradeMode.NORMAL):
+    trades = private.fetch_trades(exchange_id, mode)
 
     if exchange_id == ccxtconst.ExchangeId.COINCHECK:
         trades = _format_coincheck_trades(trades)
@@ -193,6 +193,10 @@ def show_recent_profits(hours=None):
     total_profit = sum(profits)
     total_trade_count = len(summary)
 
+    if total_trade_count == 0:
+        print("取引はありません")
+        return
+
     timestamp_first = summary[0]["timestamp"]
     timestamp_last = summary[-1]["timestamp"]
 
@@ -203,7 +207,6 @@ def show_recent_profits(hours=None):
         oldest_timestamp = timestamp_last
         latest_timestamp = timestamp_first
 
-    print("取引取得情報:")
     print("期間: {} - {}".format(oldest_timestamp, latest_timestamp))
     print("取引回数: {}".format(total_trade_count))
     print("利益: {}".format(total_profit))
@@ -326,3 +329,9 @@ def get_trades(exchange_id, count=None):
         return trades[:count]
     else:
         return trades
+
+
+def run_bot():
+    res = fetch_trades(ccxtconst.ExchangeId.COINCHECK,
+                       mode=ccxtconst.TradeMode.BOT)
+    print(res)

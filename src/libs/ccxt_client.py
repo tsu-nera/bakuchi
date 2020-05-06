@@ -119,13 +119,19 @@ class CcxtClient():
 
         return order_info
 
-    def fetch_trades(self):
+    def fetch_trades(self, mode):
         if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
             client = Coincheck()
-            trades = client.fetch_my_trades()
+            trades = client.fetch_my_trades(mode)
         elif self.exchange.has['fetchMyTrades']:
+
+            if mode == ccxtconst.TradeMode.NORMAL:
+                limit = 500
+            else:
+                limit = 30
+
             trades = []
-            resp = self.exchange.fetch_my_trades(self.symbol, limit=500)
+            resp = self.exchange.fetch_my_trades(self.symbol, limit=limit)
             for x in resp:
                 trade = x['info']
                 trade["rate"] = float(trade["price"])

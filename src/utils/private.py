@@ -110,6 +110,6 @@ def create_coincheck_sell_order(symbol, amount):
     return order_info
 
 
-def fetch_trades(exchange_id):
+def fetch_trades(exchange_id, mode=ccxtconst.TradeMode.NORMAL):
     client = CcxtClient(exchange_id)
-    return client.fetch_trades()
+    return client.fetch_trades(mode)
