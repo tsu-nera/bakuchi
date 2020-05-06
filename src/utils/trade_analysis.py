@@ -210,7 +210,7 @@ class TradeAnalysis():
             else:
                 lq_price = -1 * x['lq_price']
 
-            return cc_price + lq_price
+            return round(cc_price + lq_price, 3)
 
         df['profit'] = df.apply(_calc_profit, axis=1)
 

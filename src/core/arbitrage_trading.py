@@ -162,7 +162,7 @@ class ArbitrageTrading(ArbitrageBase):
 
     def _calc_profit(self, buy_jpy, sell_jpy):
         price = sell_jpy - buy_jpy
-        return round(price, 1)
+        return round(price, 3)
 
     def _calc_price(self, rate):
         return self.trade_amount * rate

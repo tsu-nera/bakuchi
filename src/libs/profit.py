@@ -148,7 +148,7 @@ class Profit(Thread):
             else:
                 lq_price = -1 * y_price
 
-            return int(cc_price + lq_price)
+            return round(cc_price + lq_price, 3)
 
         self.profits = []
         self.total_profit = 0
