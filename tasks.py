@@ -544,9 +544,3 @@ def perf_fetch_tick(c):
 @task
 def perf_coincheck_buy_amount(c):
     tool.adjust_coincheck_buy_amount()
-
-
-@task
-def bot_profit(c):
-    profit = Profit()
-    profit.run_bot()

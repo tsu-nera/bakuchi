@@ -1,5 +1,7 @@
 import os
+import time
 import datetime
+from threading import Thread
 
 import pandas as pd
 from statistics import mean
@@ -14,9 +16,13 @@ import src.env as env
 import src.utils.datetime as dt
 from src.loggers.logger import get_profit_logger
 
+UPDATE_INTERVAL_MIN = 30
 
-class Profit():
+
+class Profit(Thread):
     def __init__(self):
+        Thread.__init__(self)
+
         self.orders = {}
 
         order_columns = [
@@ -26,9 +32,7 @@ class Profit():
             self.orders[exchange_id] = pd.DataFrame(columns=order_columns)
 
         self.profits = []
-        self.start_timestamp = datetime.datetime.now() - datetime.timedelta(
-            hours=8)
-
+        self.start_timestamp = datetime.datetime.now()
         self.total_profit = 0
 
         self.__logger = get_profit_logger()
@@ -183,6 +187,11 @@ class Profit():
             }
             self.profits.append(data)
             self.total_profit += profit
+
+    def run(self):
+        while True:
+            self.run_bot()
+            time.sleep(UPDATE_INTERVAL_MIN * 60)
 
     def run_bot(self):
         '''

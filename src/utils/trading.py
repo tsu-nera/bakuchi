@@ -5,6 +5,7 @@ import traceback
 
 import src.constants.ccxtconst as ccxtconst
 from src.libs.asset import Asset
+from src.libs.profit import Profit
 
 from src.core.arbitrage_trading import ArbitrageTrading
 
@@ -47,6 +48,19 @@ def backup_trading_orders(current_trading_dir):
         target_file_path = os.path.join(target_dir_path, file_name)
         shutil.copy(file, target_file_path)
 
+    file = path.PROFIT_CSV_FILE_PATH
+    if os.path.exists(file):
+        file_name = os.path.basename(file)
+        target_file_path = os.path.join(target_dir_path, file_name)
+        shutil.copy(file, target_file_path)
+
+    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        file = "{}.csv".format(exchange_id)
+        if os.path.exists(file):
+            file_name = os.path.basename(file)
+            target_file_path = os.path.join(target_dir_path, file_name)
+            shutil.copy(file, target_file_path)
+
 
 def clean_trading_logs():
     for file in path.TRADES_LOGS:
@@ -70,6 +84,8 @@ def run_trading(demo_mode=False):
 
     logger = get_trading_logger_with_stdout()
     asset = Asset()
+    profit = Profit()
+    profit.setDaemon(True)
     slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
 
     # run trade
@@ -90,6 +106,7 @@ def run_trading(demo_mode=False):
         logger.info("=========================")
         slack.notify_with_datetime("Trading Botの稼働を開始しました。")
         asset.save(asset.TRADIGNG_START)
+        profit.start()
 
     try:
         arbitrage.run()
