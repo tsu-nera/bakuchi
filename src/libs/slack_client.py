@@ -30,9 +30,10 @@ class SlackClient():
 
         profit_message = "{}円の利益{}".format(expected_profit, emoji_gold)
         order_message = "{}の{}を{}で買い{}で売りました。".format(amount, symbol,
-                                                      buy_exchange_id,
-                                                      sell_exchange_id)
+                                                      buy_exchange_id.value,
+                                                      sell_exchange_id.value)
 
-        message = NEWLINE.join([profit_message, "", now_timestamp, order_message])
+        message = NEWLINE.join(
+            [profit_message, "", now_timestamp, order_message])
 
         self.notify(message)
