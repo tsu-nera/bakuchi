@@ -84,7 +84,7 @@ class Profit(Thread):
             if not self.__is_valid_timestamp(timestamp):
                 continue
 
-            trade = self.__creppate_order(timestamp, t["pair"], t["side"],
+            trade = self.__create_order(timestamp, t["pair"], t["side"],
                                         float(t["fee"]),
                                         float(t["funds"]["btc"]),
                                         float(t["funds"]["jpy"]),
