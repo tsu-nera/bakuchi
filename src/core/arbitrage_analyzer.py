@@ -37,8 +37,8 @@ class ArbitrageAnalyzer():
 
         threshold = int(max(buyx_selly_mean, buyy_sellx_mean))
 
-        if threshold < 1000:
-            new_threshold = 1000
+        if threshold < 2000:
+            new_threshold = 2000
         else:
             new_threshold = threshold
 
