@@ -25,7 +25,8 @@ class Profit():
             self.orders[exchange_id] = pd.DataFrame(columns=order_columns)
 
         self.profits = []
-        self.start_timestamp = datetime.datetime.now()
+        self.start_timestamp = datetime.datetime.now() - datetime.timedelta(
+            hours=8)
 
         self.total_profit = 0
 
@@ -186,10 +187,8 @@ class Profit():
         # orders log
         self.__orders_to_csv()
 
-        print(self.total_profit)
-
         # profit log
-        # self.__append_csv()
+        self.__profits_to_csv()
         # # ログ出力
         # self.__append_log()
         # # slack出力
@@ -202,6 +201,10 @@ class Profit():
             target_path = os.path.join(path.ORDERS_LOG_DIR, target_file)
 
             orders.to_csv(target_path, index=None)
+
+    def __profits_to_csv(self):
+        df = pd.DataFrame.from_dict(self.profits)
+        df.to_csv(path.PROFIT_CSV_FILE_PATH, index=None)
 
     def __notify_slack(self):
         slack = SlackClient(env.SLACK_WEBHOOK_URL_ASSET)
