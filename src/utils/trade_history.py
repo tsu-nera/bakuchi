@@ -107,8 +107,8 @@ def _format_fetched_trades(data):
     return _marge_duplicated_trades(trades)
 
 
-def fetch_trades(exchange_id):
-    trades = private.fetch_trades(exchange_id)
+def fetch_trades(exchange_id, mode=ccxtconst.TradeMode.NORMAL):
+    trades = private.fetch_trades(exchange_id, mode)
 
     if exchange_id == ccxtconst.ExchangeId.COINCHECK:
         trades = _format_coincheck_trades(trades)
@@ -174,13 +174,13 @@ def show_recent_profits(hours=None):
             info = {}
             info["timestamp"] = timestamp
             if base_data['side'] == 'buy':
-                info['buy_id'] = base_exchange_id
-                info['sell_id'] = target_exchange_id
+                info['buy_id'] = base_exchange_id.value
+                info['sell_id'] = target_exchange_id.value
                 info['buy_price'] = int(base_data['price'])
                 info['sell_price'] = int(target_data['price'])
             else:
-                info['buy_id'] = target_exchange_id
-                info['sell_id'] = base_exchange_id
+                info['buy_id'] = target_exchange_id.value
+                info['sell_id'] = base_exchange_id.value
                 info['buy_price'] = int(target_data['price'])
                 info['sell_price'] = int(base_data['price'])
             info["profit"] = int(info["sell_price"] - info['buy_price'])
@@ -192,6 +192,10 @@ def show_recent_profits(hours=None):
     profits = [x['profit'] for x in summary]
     total_profit = sum(profits)
     total_trade_count = len(summary)
+
+    if total_trade_count == 0:
+        print("取引はありません")
+        return
 
     timestamp_first = summary[0]["timestamp"]
     timestamp_last = summary[-1]["timestamp"]
@@ -217,6 +221,7 @@ def show_recent_profits(hours=None):
         ]
         table.append(table_row)
 
+    print()
     print(tabulate(table, headers="firstrow"))
 
 
@@ -324,3 +329,9 @@ def get_trades(exchange_id, count=None):
         return trades[:count]
     else:
         return trades
+
+
+def run_bot():
+    res = fetch_trades(ccxtconst.ExchangeId.COINCHECK,
+                       mode=ccxtconst.TradeMode.BOT)
+    print(res)

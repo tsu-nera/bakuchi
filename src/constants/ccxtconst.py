@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto
 
 import src.env as env
 
@@ -13,6 +13,11 @@ class ExchangeId(Enum):
     BITMEX = "bitmex"
     BITMEX_DEMO = "bitmex_demo"
     GEMINI_DEMO = "gemini_demo"
+
+
+class TradeMode(Enum):
+    NORMAL = auto()
+    BOT = auto()
 
 
 # 現在対応している取引所
