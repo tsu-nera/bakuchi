@@ -8,6 +8,7 @@ from statistics import mean
 
 import src.constants.ccxtconst as ccxtconst
 import src.constants.path as path
+from src.config import PROFIT_UPDATE_INTERVAL_MIN
 
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
@@ -15,8 +16,6 @@ from src.libs.slack_client import SlackClient
 import src.env as env
 import src.utils.datetime as dt
 from src.loggers.logger import get_profit_logger
-
-UPDATE_INTERVAL_MIN = 15
 
 
 class Profit(Thread):
@@ -85,7 +84,7 @@ class Profit(Thread):
             if not self.__is_valid_timestamp(timestamp):
                 continue
 
-            trade = self.__create_order(timestamp, t["pair"], t["side"],
+            trade = self.__creppate_order(timestamp, t["pair"], t["side"],
                                         float(t["fee"]),
                                         float(t["funds"]["btc"]),
                                         float(t["funds"]["jpy"]),
@@ -191,7 +190,7 @@ class Profit(Thread):
     def run(self):
         while True:
             self.run_bot()
-            time.sleep(UPDATE_INTERVAL_MIN * 60)
+            time.sleep(PROFIT_UPDATE_INTERVAL_MIN * 60)
 
     def run_bot(self):
         '''

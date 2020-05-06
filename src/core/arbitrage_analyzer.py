@@ -1,6 +1,7 @@
 from statistics import mean
 
 from src.config import OPEN_THRESHOLD_CHANGE_SEC, TRADE_TICK_INTERVAL_SEC
+from src.config import TRADE_MINIMUM_OPEN_THRESHOLD
 
 
 class ArbitrageAnalyzer():
@@ -37,8 +38,8 @@ class ArbitrageAnalyzer():
 
         threshold = int(max(buyx_selly_mean, buyy_sellx_mean))
 
-        if threshold < 2000:
-            new_threshold = 2000
+        if threshold < TRADE_MINIMUM_OPEN_THRESHOLD:
+            new_threshold = TRADE_MINIMUM_OPEN_THRESHOLD
         else:
             new_threshold = threshold
 
