@@ -12,6 +12,7 @@ from src.libs.slack_client import SlackClient
 
 import src.env as env
 import src.utils.datetime as dt
+from src.loggers.logger import get_profit_logger
 
 
 class Profit():
@@ -29,6 +30,8 @@ class Profit():
             hours=8)
 
         self.total_profit = 0
+
+        self.__logger = get_profit_logger()
 
     def __update(self):
         self.__update_orders()
@@ -144,6 +147,9 @@ class Profit():
 
             return int(cc_price + lq_price)
 
+        self.profits = []
+        self.total_profit = 0
+
         # とりあえずcoincheckとliquid固定で。
         cc_orders = self.orders[ccxtconst.ExchangeId.COINCHECK]
         lq_orders = self.orders[ccxtconst.ExchangeId.LIQUID]
@@ -189,9 +195,9 @@ class Profit():
 
         # profit log
         self.__profits_to_csv()
-        # # ログ出力
-        # self.__append_log()
-        # # slack出力
+        # ログ出力
+        self.__logging()
+        # slack出力
         # self.__notify_slack()
 
     def __orders_to_csv(self):
@@ -205,6 +211,10 @@ class Profit():
     def __profits_to_csv(self):
         df = pd.DataFrame.from_dict(self.profits)
         df.to_csv(path.PROFIT_CSV_FILE_PATH, index=None)
+
+    def __logging(self):
+        message = "profit={}".format(self.total_profit)
+        self.__logger.info(message)
 
     def __notify_slack(self):
         slack = SlackClient(env.SLACK_WEBHOOK_URL_ASSET)
@@ -228,44 +238,6 @@ class Profit():
 
         message = "\n".join(lines)
         slack.notify(message)
-
-    def _log_format(self):
-        return "({}) {}[JPY]/{}[BTC]({})/{}[TOTAL JPY]"
-
-    def _logging(self):
-        def _log(id, jpy, btc, btc_as_jpy, total_jpy):
-            log_format = self._log_format()
-            self.logger.info(
-                log_format.format(id, jpy, btc, btc_as_jpy, total_jpy))
-
-        for asset in self.assets:
-            _log(asset["id"], asset["jpy"], asset["btc"], asset["btc_as_jpy"],
-                 asset["total_jpy"])
-
-        _log(self.total["id"], self.total["jpy"], self.total["btc"],
-             self.total["btc_as_jpy"], self.total["total_jpy"])
-
-    def _append_log(self):
-        def _log(id, jpy, btc, btc_as_jpy, total_jpy):
-            log_format = self._log_format()
-            self.append_logger.info(
-                log_format.format(id, jpy, btc, btc_as_jpy, total_jpy))
-
-        for asset in self.assets:
-            _log(asset["id"], asset["jpy"], asset["btc"], asset["btc_as_jpy"],
-                 asset["total_jpy"])
-
-        _log(self.total["id"], self.total["jpy"], self.total["btc"],
-             self.total["btc_as_jpy"], self.total["total_jpy"])
-
-    def _append_csv(self):
-        for asset in self.assets:
-            self.csv_logger.logging(asset["id"], asset["jpy"], asset["btc"],
-                                    asset["btc_as_jpy"], asset["total_jpy"])
-
-        self.csv_logger.logging(self.total["id"], self.total["jpy"],
-                                self.total["btc"], self.total["btc_as_jpy"],
-                                self.total["total_jpy"])
 
     def display(self):
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
