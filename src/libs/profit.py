@@ -16,7 +16,7 @@ import src.env as env
 import src.utils.datetime as dt
 from src.loggers.logger import get_profit_logger
 
-UPDATE_INTERVAL_MIN = 30
+UPDATE_INTERVAL_MIN = 15
 
 
 class Profit(Thread):
