@@ -24,9 +24,12 @@ $ cp src/.env.sample src/.env
 $ emacs -nw src/.env
 
 # pythonのライブラリいろいろいれる(TODO: あとで必須のものを追記)
+$ conda install numpy pandas jupyter notebook matplotlib
 $ pip install ccxt invoke python-dotenv
-$ pip install tablulate urllib3
-$ pip install numpy pandas jupyter notebook matplotlib
+$ pip install tablulate urllib3 
+$ conda install psutil python-socketio
+$ pip install liquidtap --use-deprecated=legacy-resolver
+$ pip install yapf flake8
 
 # Bot稼働
 $ inv bot
