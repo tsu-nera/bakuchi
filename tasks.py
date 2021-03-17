@@ -106,21 +106,24 @@ def tick_eff_liquid(c):
     public.fetch_ticks(ccxtconst.ExchangeId.LIQUID, eff=True)
 
 
+'''
+websocket通信の現状の立ち位置を忘れてしまったので修正は保留
+ひょっとしたら不要なのでメンテナンスされずに残っていたのかも。
+
 @task
 def tick_ws_coincheck(c):
-    '''
-    websocket通信を利用したtickの取得(coincheck)
-    '''
+    
+    # websocket通信を利用したtickの取得(coincheck)
+    
     public.fetch_ws_ticks(ccxtconst.ExchangeId.COINCHECK)
 
 
 @task
 def tick_ws_liquid(c):
-    '''
-    websocket通信を利用したtickの取得(liquid)
-    '''
+    # websocket通信を利用したtickの取得(liquid)
+    
     public.fetch_ws_ticks(ccxtconst.ExchangeId.LIQUID)
-
+'''
 
 @task
 def balance_bitflyer(c):

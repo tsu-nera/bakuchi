@@ -27,7 +27,8 @@ $ emacs -nw src/.env
 $ conda install numpy pandas jupyter notebook matplotlib
 $ pip install ccxt invoke python-dotenv
 $ pip install tablulate urllib3 
-$ conda install psutil python-socketio sortedcontainers
+$ conda install psutil sortedcontainers
+$ pip install python-socketio[client]==4.x.x # 5はダメっぽい
 $ pip install liquidtap --use-deprecated=legacy-resolver
 $ pip install yapf flake8
 
