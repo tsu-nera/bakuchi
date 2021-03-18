@@ -102,6 +102,11 @@ def ping_eff_liquid(c):
 
 
 @task
+def ping_eff_bitbank(c):
+    tool.ping(ccxtconst.ExchangeId.BITBANK, eff=True)
+
+
+@task
 def tick_eff_coincheck(c):
     public.fetch_ticks(ccxtconst.ExchangeId.COINCHECK, eff=True)
 
@@ -109,6 +114,11 @@ def tick_eff_coincheck(c):
 @task
 def tick_eff_liquid(c):
     public.fetch_ticks(ccxtconst.ExchangeId.LIQUID, eff=True)
+
+
+@task
+def tick_eff_bitbank(c):
+    public.fetch_ticks(ccxtconst.ExchangeId.BITBANK, eff=True)
 
 
 '''
