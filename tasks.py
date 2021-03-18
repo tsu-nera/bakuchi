@@ -187,6 +187,15 @@ def board_liquid(c):
     public.fetch_board(ccxtconst.ExchangeId.LIQUID)
 
 
+# TODO bitbankのwebsocket対応は後回し
+@task
+def board_bitbank(c):
+    '''
+    websocket通信を利用した板情報の取得(bitbank)
+    '''
+    public.fetch_board(ccxtconst.ExchangeId.BITBANK)
+
+
 @task
 def tick_board_coincheck(c):
     public.fetch_board_tick(ccxtconst.ExchangeId.COINCHECK)
@@ -195,6 +204,12 @@ def tick_board_coincheck(c):
 @task
 def tick_board_liquid(c):
     public.fetch_board_tick(ccxtconst.ExchangeId.LIQUID)
+
+
+# TODO bitbankのwebsocket対応は後回し
+@task
+def tick_board_bitbank(c):
+    public.fetch_board_tick(ccxtconst.ExchangeId.BITBANK)
 
 
 @task
