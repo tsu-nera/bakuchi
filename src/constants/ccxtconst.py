@@ -21,11 +21,12 @@ class TradeMode(Enum):
 
 
 # 現在対応している取引所
-EXCHANGE_ID_LIST = [ExchangeId.COINCHECK, ExchangeId.LIQUID]
+EXCHANGE_ID_LIST = [ExchangeId.BITBANK, ExchangeId.LIQUID]
 
 EXCHANGE_ID_DICT = {
     ExchangeId.COINCHECK.value: ExchangeId.COINCHECK,
-    ExchangeId.LIQUID.value: ExchangeId.LIQUID
+    ExchangeId.LIQUID.value: ExchangeId.LIQUID,
+    ExchangeId.BITBANK.value: ExchangeId.BITBANK,
 }
 
 SYMBOL_BTC_JPY = "BTC/JPY"
