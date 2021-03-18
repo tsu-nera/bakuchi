@@ -50,6 +50,11 @@ def ping_liquid(c):
 
 
 @task
+def ping_bitbank(c):
+    tool.ping(ccxtconst.ExchangeId.BITBANK)
+
+
+@task
 def tick_bitflyer(c):
     public.fetch_ticks(ccxtconst.ExchangeId.BITFLYER)
 
