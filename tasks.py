@@ -106,20 +106,24 @@ def tick_eff_liquid(c):
     public.fetch_ticks(ccxtconst.ExchangeId.LIQUID, eff=True)
 
 
+'''
+websocket通信の現状の立ち位置を忘れてしまったので修正は保留
+ひょっとしたら不要なのでメンテナンスされずに残っていたのかも。
+
 @task
 def tick_ws_coincheck(c):
-    '''
-    websocket通信を利用したtickの取得(coincheck)
-    '''
+    
+    # websocket通信を利用したtickの取得(coincheck)
+    
     public.fetch_ws_ticks(ccxtconst.ExchangeId.COINCHECK)
 
 
 @task
 def tick_ws_liquid(c):
-    '''
-    websocket通信を利用したtickの取得(liquid)
-    '''
+    # websocket通信を利用したtickの取得(liquid)
+    
     public.fetch_ws_ticks(ccxtconst.ExchangeId.LIQUID)
+'''
 
 
 @task
@@ -205,12 +209,12 @@ def get_historical_data(c):
 
 @task
 def symbols(c, exchange_id):
-    c = CcxtClient(exchange_id)
+    __exchange_id = ccxtconst.EXCHANGE_ID_DICT[exchange_id]
+    c = CcxtClient(__exchange_id)
     print(c.symbols())
 
 
-@task
-def buy_with_amount(c, exchange_id, amount):
+def __buy_with_amount(c, exchange_id, amount):
     response = private.create_buy_order(exchange_id, ccxtconst.SYMBOL_BTC_JPY,
                                         float(amount))
     print(response)
@@ -219,11 +223,10 @@ def buy_with_amount(c, exchange_id, amount):
 
 @task
 def buy(c, exchange_id):
-    return buy_with_amount(c, exchange_id, config.TRADE_AMOUNT)
+    return __buy_with_amount(c, exchange_id, config.TRADE_AMOUNT)
 
 
-@task
-def sell_with_amount(c, exchange_id, amount):
+def __sell_with_amount(c, exchange_id, amount):
     response = private.create_sell_order(exchange_id, ccxtconst.SYMBOL_BTC_JPY,
                                          float(amount))
     print(response)
@@ -232,7 +235,7 @@ def sell_with_amount(c, exchange_id, amount):
 
 @task
 def sell(c, exchange_id):
-    return sell_with_amount(c, exchange_id, config.TRADE_AMOUNT)
+    return __sell_with_amount(c, exchange_id, config.TRADE_AMOUNT)
 
 
 @task
@@ -263,7 +266,7 @@ def buy_coincheck(c):
 
 @task
 def sell_liquid_with_amount(c, amount):
-    return sell_with_amount(c, ccxtconst.ExchangeId.LIQUID, amount)
+    return __sell_with_amount(c, ccxtconst.ExchangeId.LIQUID, amount)
 
 
 @task
@@ -273,7 +276,7 @@ def sell_liquid(c):
 
 @task
 def buy_liquid_with_amount(c, amount):
-    return buy_with_amount(c, ccxtconst.ExchangeId.LIQUID, amount)
+    return __buy_with_amount(c, ccxtconst.ExchangeId.LIQUID, amount)
 
 
 @task
