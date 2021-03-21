@@ -333,6 +333,16 @@ def sell_coincheck_buy_liquid(c):
 
 
 @task
+def buy_bitbank_with_amount(c, amount):
+    return __buy_with_amount(c, ccxtconst.ExchangeId.BITBANK, amount)
+
+
+@task
+def sell_bitbank_with_amount(c, amount):
+    return __sell_with_amount(c, ccxtconst.ExchangeId.BITBANK, amount)
+
+
+@task
 def buy_testnet(c):
     private.create_buy_order(ccxtconst.ExchangeId.BITMEX_DEMO,
                              ccxtconst.SYMBOL_BTC_USD, 1)
