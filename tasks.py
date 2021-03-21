@@ -50,6 +50,11 @@ def ping_liquid(c):
 
 
 @task
+def ping_bitbank(c):
+    tool.ping(ccxtconst.ExchangeId.BITBANK)
+
+
+@task
 def tick_bitflyer(c):
     public.fetch_ticks(ccxtconst.ExchangeId.BITFLYER)
 
@@ -97,6 +102,11 @@ def ping_eff_liquid(c):
 
 
 @task
+def ping_eff_bitbank(c):
+    tool.ping(ccxtconst.ExchangeId.BITBANK, eff=True)
+
+
+@task
 def tick_eff_coincheck(c):
     public.fetch_ticks(ccxtconst.ExchangeId.COINCHECK, eff=True)
 
@@ -104,6 +114,11 @@ def tick_eff_coincheck(c):
 @task
 def tick_eff_liquid(c):
     public.fetch_ticks(ccxtconst.ExchangeId.LIQUID, eff=True)
+
+
+@task
+def tick_eff_bitbank(c):
+    public.fetch_ticks(ccxtconst.ExchangeId.BITBANK, eff=True)
 
 
 '''
@@ -172,6 +187,15 @@ def board_liquid(c):
     public.fetch_board(ccxtconst.ExchangeId.LIQUID)
 
 
+# TODO bitbankのwebsocket対応は後回し
+@task
+def board_bitbank(c):
+    '''
+    websocket通信を利用した板情報の取得(bitbank)
+    '''
+    public.fetch_board(ccxtconst.ExchangeId.BITBANK)
+
+
 @task
 def tick_board_coincheck(c):
     public.fetch_board_tick(ccxtconst.ExchangeId.COINCHECK)
@@ -180,6 +204,12 @@ def tick_board_coincheck(c):
 @task
 def tick_board_liquid(c):
     public.fetch_board_tick(ccxtconst.ExchangeId.LIQUID)
+
+
+# TODO bitbankのwebsocket対応は後回し
+@task
+def tick_board_bitbank(c):
+    public.fetch_board_tick(ccxtconst.ExchangeId.BITBANK)
 
 
 @task
@@ -300,6 +330,16 @@ def sell_coincheck_buy_liquid(c):
 
     print("buy liquid {}, sell coincheck {}, profit={}".format(
         lq_jpy, cc_jpy, cc_jpy - lq_jpy))
+
+
+@task
+def buy_bitbank_with_amount(c, amount):
+    return __buy_with_amount(c, ccxtconst.ExchangeId.BITBANK, amount)
+
+
+@task
+def sell_bitbank_with_amount(c, amount):
+    return __sell_with_amount(c, ccxtconst.ExchangeId.BITBANK, amount)
 
 
 @task

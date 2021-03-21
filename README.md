@@ -78,11 +78,11 @@ $ inv simulate [data/historicals配下のディレクトリ名]
 
 - [Coincheck](https://coincheck.com/ja/)
 - [Liquid](https://www.liquid.com/ja/)
+- [bitbank](https://bitbank.cc/)
 
 ### 口座開設済みの取引所
 
 - [bitFlyer](https://bitflyer.com/ja-jp/)
-- [bitbank](https://bitbank.cc/)
 - [BitMEX](https://www.bitmex.com/)
 
 ### 口座開設はしないが検討はしている取引所
@@ -99,6 +99,7 @@ $ inv simulate [data/historicals配下のディレクトリ名]
 - [cctx doc](https://github.com/ccxt/ccxt/wiki)
 - [coincheck api](https://coincheck.com/ja/documents/exchange/api)
 - [liquid api](https://developers.liquid.com)
+- [bitbank api](https://github.com/bitbankinc/bitbank-api-docs)
 
 ## References
 

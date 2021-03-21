@@ -103,6 +103,13 @@ class CcxtClient():
         if self.demo_mode:
             return None
 
+        if self.exchange_id == ccxtconst.ExchangeId.BITBANK:
+            order_info = self.exchange.create_market_order(symbol=self.symbol,
+                                                           side="sell",
+                                                           amount=amount,
+                                                           price=1)
+            return order_info
+
         order_info = self.exchange.create_market_sell_order(symbol=self.symbol,
                                                             amount=amount)
         return order_info
@@ -114,9 +121,17 @@ class CcxtClient():
         if self.demo_mode:
             return None
 
+        # bitbankはpriceに値を設定しないと謎のエラールートにはいるので。
+        # なんだこれは、バグか？へんなワークアラウンドロジックはいれたくないなあ。
+        if self.exchange_id == ccxtconst.ExchangeId.BITBANK:
+            order_info = self.exchange.create_market_order(symbol=self.symbol,
+                                                           side="buy",
+                                                           amount=amount,
+                                                           price=1)
+            return order_info
+
         order_info = self.exchange.create_market_buy_order(symbol=self.symbol,
                                                            amount=amount)
-
         return order_info
 
     def fetch_trades(self, mode):
