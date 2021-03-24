@@ -421,8 +421,9 @@ def save_bitbank_trades(c):
 
 @task
 def save_trades(c):
-    save_coincheck_trades(c)
+    # save_coincheck_trades(c)
     save_liquid_trades(c)
+    save_bitbank_trades(c)
 
 
 ###############
