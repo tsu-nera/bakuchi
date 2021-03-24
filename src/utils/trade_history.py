@@ -93,16 +93,35 @@ def _format_coincheck_trades(data):
     return _marge_duplicated_trades(trades)
 
 
-def _format_fetched_trades(data):
+def _format_liquid_trades(data):
     trades = []
 
     for t in data:
         created_at = datetime.datetime.fromtimestamp(t["created_at"])
         timestamp = dt.format_timestamp(created_at)
+        amount = t["quantity"]
+        rate = float(t["price"])
+        price = round(rate * float(amount), 3)
 
         trade = _create_trade(t["id"], t["order_id"], timestamp, t["pair"],
-                              t["taker_side"], 0, t["quantity"], t["price"],
-                              t["rate"])
+                              t["taker_side"], 0, amount, rate, price)
+        trades.append(trade)
+    return _marge_duplicated_trades(trades)
+
+
+def _format_bitbank_trades(data):
+    trades = []
+
+    for t in data:
+        created_at = datetime.datetime.fromtimestamp(
+            int(t["executed_at"] / 1000))
+        timestamp = dt.format_timestamp(created_at)
+
+        amount = t["amount"]
+        rate = float(t["price"])
+        price = round(rate * float(amount), 3)
+        trade = _create_trade(t["trade_id"], t["order_id"], timestamp,
+                              t["pair"], t["side"], 0, amount, rate, price)
         trades.append(trade)
     return _marge_duplicated_trades(trades)
 
@@ -112,8 +131,12 @@ def fetch_trades(exchange_id, mode=ccxtconst.TradeMode.NORMAL):
 
     if exchange_id == ccxtconst.ExchangeId.COINCHECK:
         trades = _format_coincheck_trades(trades)
+    elif exchange_id == ccxtconst.ExchangeId.LIQUID:
+        trades = _format_liquid_trades(trades)
+    elif exchange_id == ccxtconst.ExchangeId.BITBANK:
+        trades = _format_bitbank_trades(trades)
     else:
-        trades = _format_fetched_trades(trades)
+        trades = []
 
     return trades
 

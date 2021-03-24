@@ -106,7 +106,7 @@ def run_trading(demo_mode=False):
         logger.info("=========================")
         slack.notify_with_datetime("Trading Botの稼働を開始しました。")
         asset.save(asset.TRADIGNG_START)
-        # profit.start() TODO
+        profit.start()
 
     try:
         arbitrage.run()

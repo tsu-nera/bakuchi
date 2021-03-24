@@ -339,7 +339,8 @@ def buy_bitbank(c):
 
 @task
 def buy_bitbank_with_amount(c, amount):
-    response = private.create_bitbank_buy_order(ccxtconst.SYMBOL_BTC_JPY, amount)
+    response = private.create_bitbank_buy_order(ccxtconst.SYMBOL_BTC_JPY,
+                                                amount)
     print(response)
     return response
 
@@ -351,7 +352,8 @@ def sell_bitbank(c):
 
 @task
 def sell_bitbank_with_amount(c, amount):
-    response = private.create_bitbank_sell_order(ccxtconst.SYMBOL_BTC_JPY, amount)
+    response = private.create_bitbank_sell_order(ccxtconst.SYMBOL_BTC_JPY,
+                                                 amount)
     print(response)
     return response
 
@@ -388,16 +390,18 @@ def sell_testnet(c):
 
 @task
 def fetch_orders(c):
-    private.fetch_open_orders(ccxtconst.ExchangeId.BITMEX_DEMO)
-    private.fetch_open_orders(ccxtconst.ExchangeId.COINCHECK)
+    # private.fetch_open_orders(ccxtconst.ExchangeId.BITMEX_DEMO)
+    # private.fetch_open_orders(ccxtconst.ExchangeId.COINCHECK)
     private.fetch_open_orders(ccxtconst.ExchangeId.LIQUID)
+    private.fetch_open_orders(ccxtconst.ExchangeId.BITBANK)
 
 
 @task
 def fetch_positions(c):
-    private.get_positions(ccxtconst.ExchangeId.BITMEX_DEMO)
-    private.get_positions(ccxtconst.ExchangeId.COINCHECK)
+    # private.get_positions(ccxtconst.ExchangeId.BITMEX_DEMO)
+    # private.get_positions(ccxtconst.ExchangeId.COINCHECK)
     private.get_positions(ccxtconst.ExchangeId.LIQUID)
+    private.get_positions(ccxtconst.ExchangeId.BITBANK)
 
 
 @task
@@ -408,6 +412,11 @@ def save_coincheck_trades(c):
 @task
 def save_liquid_trades(c):
     trade_history.save_trades(ccxtconst.ExchangeId.LIQUID)
+
+
+@task
+def save_bitbank_trades(c):
+    trade_history.save_trades(ccxtconst.ExchangeId.BITBANK)
 
 
 @task
