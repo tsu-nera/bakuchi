@@ -39,15 +39,43 @@ def get_positions(exchange_id):
     print(data)
 
 
-def create_buy_order(exchange_id, symbol, amount, ask_for_coincheck=None):
+def create_buy_order(exchange_id, symbol, amount, extinfo_ask=None):
     ex = Exchange(exchange_id, symbol)
-    order_info = ex.order_buy(amount, ask_for_coincheck)
+    order_info = ex.order_buy(amount, extinfo_ask)
     return order_info
 
 
-def create_sell_order(exchange_id, symbol, amount, bid_for_coincheck=None):
+def create_sell_order(exchange_id, symbol, amount, extinfo_bid=None):
     ex = Exchange(exchange_id, symbol)
-    order_info = ex.order_sell(amount, bid_for_coincheck)
+    order_info = ex.order_sell(amount, extinfo_bid)
+    return order_info
+
+
+def create_bitbank_buy_order(symbol, amount):
+    exchange_id = ccxtconst.ExchangeId.BITBANK
+    ex = Exchange(exchange_id, symbol)
+
+    client = CcxtClient(exchange_id)
+    tick = client.fetch_tick()
+
+    ask = float(tick.ask)
+    bid = float(tick.bid)
+
+    order_info = ex.order_buy(amount, ask)
+    return order_info
+
+
+def create_bitbank_sell_order(symbol, amount):
+    exchange_id = ccxtconst.ExchangeId.BITBANK
+    ex = Exchange(exchange_id, symbol)
+
+    client = CcxtClient(exchange_id)
+    tick = client.fetch_tick()
+
+    ask = float(tick.ask)
+    bid = float(tick.bid)
+
+    order_info = ex.order_sell(amount, bid)
     return order_info
 
 
