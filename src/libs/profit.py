@@ -47,8 +47,12 @@ class Profit(Thread):
 
             if exchange_id == ccxtconst.ExchangeId.COINCHECK:
                 orders = self.__format_coincheck_orders(orders)
+            elif exchange_id == ccxtconst.ExchangeId.LIQUID:
+                orders = self.__format_liquid_orders(orders)
+            elif exchange_id == ccxtconst.ExchangeId.BITBANK:
+                orders = self.__format_bitbank_orders(orders)
             else:
-                orders = self.__format_fetched_orders(orders)
+                orders = []
 
             fetched_df = pd.DataFrame.from_dict(orders)
             pre_df = self.orders[exchange_id]
@@ -93,7 +97,7 @@ class Profit(Thread):
 
         return self.__marge_duplicated_orders(orders)
 
-    def __format_fetched_orders(self, data):
+    def __format_liquid_orders(self, data):
         orders = []
 
         for t in data:
@@ -105,6 +109,24 @@ class Profit(Thread):
             trade = self.__create_order(timestamp, t["pair"], t["taker_side"],
                                         0, t["quantity"], t["price"],
                                         t["rate"])
+            orders.append(trade)
+        return self.__marge_duplicated_orders(orders)
+
+    def __format_bitbank_orders(self, data):
+        orders = []
+
+        for t in data:
+            created_at = datetime.datetime.fromtimestamp(
+                int(t["executed_at"] / 1000))
+            timestamp = dt.format_timestamp(created_at)
+            if not self.__is_valid_timestamp(timestamp):
+                continue
+
+            amount = t["amount"]
+            rate = t["price"]
+            price = amount * rate
+            trade = self.__create_order(timestamp, t["pair"], t["side"], 0,
+                                        amount, price, rate)
             orders.append(trade)
         return self.__marge_duplicated_orders(orders)
 
@@ -139,49 +161,48 @@ class Profit(Thread):
     def __update_profits(self):
         def __calc_profit(x_side, x_price, y_side, y_price):
             if x_side == 'sell':
-                cc_price = x_price
+                x_price = x_price
             else:
-                cc_price = -1 * x_price
+                x_price = -1 * x_price
 
             if y_side == 'sell':
-                lq_price = y_price
+                y_price = y_price
             else:
-                lq_price = -1 * y_price
+                y_price = -1 * y_price
 
-            return round(cc_price + lq_price, 3)
+            return round(x_price + y_price, 3)
 
         self.profits = []
         self.total_profit = 0
 
-        # とりあえずcoincheckとliquid固定で。
-        cc_orders = self.orders[ccxtconst.ExchangeId.COINCHECK]
-        lq_orders = self.orders[ccxtconst.ExchangeId.LIQUID]
+        x_orders = self.orders[ccxtconst.EXCHANGE_ID_LIST[0]]
+        y_orders = self.orders[ccxtconst.EXCHANGE_ID_LIST[1]]
 
-        if len(cc_orders) > len(lq_orders):
-            cc_orders = cc_orders[:len(lq_orders)]
-        elif len(cc_orders) < len(lq_orders):
-            lq_orders = lq_orders[:len(cc_orders)]
+        if len(x_orders) > len(y_orders):
+            x_orders = x_orders[:len(y_orders)]
+        elif len(x_orders) < len(y_orders):
+            y_orders = y_orders[:len(x_orders)]
 
-        cc_orders.index = cc_orders["datetime"]
-        lq_orders.index = lq_orders["datetime"]
-        cc_orders = cc_orders.sort_index()
-        lq_orders = lq_orders.sort_index()
+        x_orders.index = x_orders["datetime"]
+        y_orders.index = y_orders["datetime"]
+        x_orders = x_orders.sort_index()
+        y_orders = y_orders.sort_index()
 
-        timestamps = cc_orders["datetime"].tolist()
-        cc_sides = cc_orders["side"].tolist()
-        cc_prices = cc_orders["price"].tolist()
-        lq_sides = lq_orders["side"].tolist()
-        lq_prices = lq_orders["price"].tolist()
+        timestamps = x_orders["datetime"].tolist()
+        x_sides = x_orders["side"].tolist()
+        x_prices = x_orders["price"].tolist()
+        y_sides = y_orders["side"].tolist()
+        y_prices = y_orders["price"].tolist()
 
-        for timestamp, cc_side, cc_price, lq_side, lq_price in zip(
-                timestamps, cc_sides, cc_prices, lq_sides, lq_prices):
-            profit = __calc_profit(cc_side, cc_price, lq_side, lq_price)
+        for timestamp, x_side, x_price, y_side, y_price in zip(
+                timestamps, x_sides, x_prices, y_sides, y_prices):
+            profit = __calc_profit(x_side, x_price, y_side, y_price)
             data = {
                 "timestamp": timestamp,
-                "cc_side": cc_side,
-                "cc_price": cc_price,
-                "lq_side": lq_side,
-                "lq_price": lq_price,
+                "x_side": x_side,
+                "x_price": x_price,
+                "y_side": y_side,
+                "y_price": y_price,
                 "profit": profit
             }
             self.profits.append(data)
