@@ -55,17 +55,13 @@ class ArbitrageParallel():
         return self._request(func_x, func_y)
 
     def order_buyx_selly(self, amount, bid=None, ask=None):
-        func_x = lambda: self.exchange_x.order_buy(amount,
-                                                   ask_for_coincheck=ask)
-        func_y = lambda: self.exchange_y.order_sell(amount,
-                                                    bid_for_coincheck=bid)
+        func_x = lambda: self.exchange_x.order_buy(amount, extinfo_ask=ask)
+        func_y = lambda: self.exchange_y.order_sell(amount, extinfo_bid=bid)
 
         return self._request(func_x, func_y)
 
     def order_buyy_sellx(self, amount, bid=None, ask=None):
-        func_x = lambda: self.exchange_y.order_buy(amount,
-                                                   ask_for_coincheck=ask)
-        func_y = lambda: self.exchange_x.order_sell(amount,
-                                                    bid_for_coincheck=bid)
+        func_x = lambda: self.exchange_y.order_buy(amount, extinfo_ask=ask)
+        func_y = lambda: self.exchange_x.order_sell(amount, extinfo_bid=bid)
 
         return self._request(func_x, func_y)

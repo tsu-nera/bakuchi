@@ -21,7 +21,7 @@ class ExchangeTrading(ExchangeBase):
             # return self.client.fetch_eff_tick()
             return self.client.fetch_eff_tick()
 
-    def _format_order_response(self, response, amount, bid_for_coincheck=None):
+    def _format_order_response(self, response, amount, extinfo=None):
         info = response["info"]
 
         def _to_json(jpy, btc):
@@ -36,25 +36,29 @@ class ExchangeTrading(ExchangeBase):
             if info["order_type"] == "market_buy":
                 jpy = float(info["market_buy_amount"])
             else:
-                jpy = amount * bid_for_coincheck
+                jpy = amount * extinfo
             btc = amount
             return _to_json(jpy, btc)
         elif self.exchange_id == ccxtconst.ExchangeId.LIQUID:
             btc = float(info["quantity"])
             jpy = float(info["price"]) * btc
             return _to_json(jpy, btc)
+        elif amount and extinfo:
+            btc = amount
+            jpy = amount * extinfo
+            return _to_json(jpy, btc)
         else:
             return {}
 
-    def order_buy(self, amount, ask_for_coincheck=None):
+    def order_buy(self, amount, extinfo_ask=None):
 
         # coincheckは amountにBTCではなくて、JPYを指定する。
         # https://coincheck.com/ja/documents/exchange/api#order-new
-        if ask_for_coincheck:
+        if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
             # coincheckでは buyでどうも実際よりも低い値で注文が成立されるので
             # 補正値でrequestを出してみる
             adjusted_amount = amount + COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC
-            price = int(ask_for_coincheck * adjusted_amount)
+            price = int(extinfo_ask * adjusted_amount)
             response = self.client.create_market_buy_order(price)
         else:
             response = self.client.create_market_buy_order(amount)
@@ -62,13 +66,16 @@ class ExchangeTrading(ExchangeBase):
         if self.demo_mode or not response:
             return None
         else:
-            return self._format_order_response(response, amount)
+            return self._format_order_response(response,
+                                               amount,
+                                               extinfo=extinfo_ask)
 
-    def order_sell(self, amount, bid_for_coincheck=None):
+    def order_sell(self, amount, extinfo_bid=None):
         response = self.client.create_market_sell_order(amount)
 
         if self.demo_mode or not response:
             return None
         else:
-            return self._format_order_response(
-                response, amount, bid_for_coincheck=bid_for_coincheck)
+            return self._format_order_response(response,
+                                               amount,
+                                               extinfo=extinfo_bid)

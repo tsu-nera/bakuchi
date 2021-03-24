@@ -54,8 +54,9 @@ class ArbitrageTrading(ArbitrageBase):
         self.parallel = ArbitrageParallel(exchange_id_x, exchange_id_y, symbol,
                                           demo_mode)
 
-        self.board_x = Board(exchange_id_x, symbol)
-        self.board_y = Board(exchange_id_y, symbol)
+        # TODO とりあえず boardではなく普通にtickを取得
+        # self.board_x = Board(exchange_id_x, symbol)
+        # self.board_y = Board(exchange_id_y, symbol)
 
     def run(self):
         self._logging_trading_metadata()
@@ -142,9 +143,9 @@ class ArbitrageTrading(ArbitrageBase):
             self.logger_with_stdout.info(message)
 
     def _get_tick(self):
-        # tick_x, tick_y = self.parallel.fetch_tick(eff=False)
-        tick_x = self.board_x.get_eff_tick(self.trade_amount)
-        tick_y = self.board_y.get_eff_tick(self.trade_amount)
+        tick_x, tick_y = self.parallel.fetch_tick(eff=False)
+        # tick_x = self.board_x.get_eff_tick(self.trade_amount)
+        # tick_y = self.board_y.get_eff_tick(self.trade_amount)
 
         self.__raise_exception_if_occured(tick_x)
         self.__raise_exception_if_occured(tick_y)
@@ -200,13 +201,17 @@ class ArbitrageTrading(ArbitrageBase):
         label = self._get_log_label()
 
         if stragegy == Strategy.BUY_X_SELL_Y:
-            ask_for_coincheck = tick_x.ask if self.ex_id_x == ExchangeId.COINCHECK else None
-            bid_for_coincheck = tick_y.bid if self.ex_id_y == ExchangeId.COINCHECK else None
+            if self.ex_id_x == ExchangeId.COINCHECK or self.ex_id_x == ExchangeId.BITBANK:
+                extinfo_ask = tick_x.ask
+            else:
+                extinfo_ask = None
+            if self.ex_id_y == ExchangeId.COINCHECK or self.ex_id_y == ExchangeId.BITBANK:
+                extinfo_bid = tick_y.bid
+            else:
+                extinfo_bid = None
 
             buy_resp, sell_resp = self.parallel.order_buyx_selly(
-                self.trade_amount,
-                bid=bid_for_coincheck,
-                ask=ask_for_coincheck)
+                self.trade_amount, bid=extinfo_bid, ask=extinfo_ask)
 
             self._check_order_responses(buy_resp, sell_resp)
 
@@ -239,13 +244,17 @@ class ArbitrageTrading(ArbitrageBase):
             self._change_status_buyx_selly()
 
         elif stragegy == Strategy.BUY_Y_SELL_X:
-            ask_for_coincheck = tick_y.ask if self.ex_id_y == ExchangeId.COINCHECK else None
-            bid_for_coincheck = tick_x.bid if self.ex_id_x == ExchangeId.COINCHECK else None
+            if self.ex_id_y == ExchangeId.COINCHECK or self.ex_id_y == ExchangeId.BITBANK:
+                extinfo_ask = tick_x.ask
+            else:
+                extinfo_ask = None
+            if self.ex_id_x == ExchangeId.COINCHECK or self.ex_id_x == ExchangeId.BITBANK:
+                extinfo_bid = tick_y.bid
+            else:
+                extinfo_bid = None
 
             buy_resp, sell_resp = self.parallel.order_buyy_sellx(
-                self.trade_amount,
-                bid=bid_for_coincheck,
-                ask=ask_for_coincheck)
+                self.trade_amount, bid=extinfo_bid, ask=extinfo_ask)
 
             self._check_order_responses(buy_resp, sell_resp)
 
@@ -294,7 +303,8 @@ class ArbitrageTrading(ArbitrageBase):
         else:
             stragegy = Strategy.BUY_Y_SELL_X
 
-        tick_x = self.board_x.get_eff_tick(self.trade_amount)
-        tick_y = self.board_y.get_eff_tick(self.trade_amount)
+        tick_x, tick_y = self.parallel.fetch_tick(eff=False)
+        # tick_x = self.board_x.get_eff_tick(self.trade_amount)
+        # tick_y = self.board_y.get_eff_tick(self.trade_amount)
 
         self._action(stragegy, tick_x, tick_y)

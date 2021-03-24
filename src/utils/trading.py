@@ -90,7 +90,7 @@ def run_trading(demo_mode=False):
 
     # run trade
     arbitrage = ArbitrageTrading(ccxtconst.ExchangeId.LIQUID,
-                                 ccxtconst.ExchangeId.COINCHECK,
+                                 ccxtconst.ExchangeId.BITBANK,
                                  ccxtconst.SYMBOL_BTC_JPY,
                                  demo_mode=demo_mode)
 
@@ -106,7 +106,7 @@ def run_trading(demo_mode=False):
         logger.info("=========================")
         slack.notify_with_datetime("Trading Botの稼働を開始しました。")
         asset.save(asset.TRADIGNG_START)
-        profit.start()
+        # profit.start() TODO
 
     try:
         arbitrage.run()

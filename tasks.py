@@ -333,13 +333,45 @@ def sell_coincheck_buy_liquid(c):
 
 
 @task
+def buy_bitbank(c):
+    return buy_bitbank_with_amount(c, config.TRADE_AMOUNT)
+
+
+@task
 def buy_bitbank_with_amount(c, amount):
-    return __buy_with_amount(c, ccxtconst.ExchangeId.BITBANK, amount)
+    response = private.create_bitbank_buy_order(ccxtconst.SYMBOL_BTC_JPY, amount)
+    print(response)
+    return response
+
+
+@task
+def sell_bitbank(c):
+    return sell_bitbank_with_amount(c, config.TRADE_AMOUNT)
 
 
 @task
 def sell_bitbank_with_amount(c, amount):
-    return __sell_with_amount(c, ccxtconst.ExchangeId.BITBANK, amount)
+    response = private.create_bitbank_sell_order(ccxtconst.SYMBOL_BTC_JPY, amount)
+    print(response)
+    return response
+
+
+@task
+def buy_bitbank_sell_liquid(c):
+    cc_jpy = int(buy_bitbank(c)["jpy"])
+    lq_jpy = int(sell_liquid(c)["jpy"])
+
+    print("buy bitbank {}, sell liquid {}, profit={}".format(
+        cc_jpy, lq_jpy, lq_jpy - cc_jpy))
+
+
+@task
+def sell_bitbank_buy_liquid(c):
+    cc_jpy = int(sell_bitbank(c)["jpy"])
+    lq_jpy = int(buy_liquid(c)["jpy"])
+
+    print("buy liquid {}, sell coincheck {}, profit={}".format(
+        lq_jpy, cc_jpy, cc_jpy - lq_jpy))
 
 
 @task
