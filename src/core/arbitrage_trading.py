@@ -205,7 +205,7 @@ class ArbitrageTrading(ArbitrageBase):
                 extinfo_ask = tick_x.ask
             else:
                 extinfo_ask = None
-            if self.ex_id_x == ExchangeId.COINCHECK or self.ex_id_x == ExchangeId.BITBANK:
+            if self.ex_id_y == ExchangeId.COINCHECK or self.ex_id_y == ExchangeId.BITBANK:
                 extinfo_bid = tick_y.bid
             else:
                 extinfo_bid = None
@@ -244,7 +244,7 @@ class ArbitrageTrading(ArbitrageBase):
             self._change_status_buyx_selly()
 
         elif stragegy == Strategy.BUY_Y_SELL_X:
-            if self.ex_id_x == ExchangeId.COINCHECK or self.ex_id_x == ExchangeId.BITBANK:
+            if self.ex_id_y == ExchangeId.COINCHECK or self.ex_id_y == ExchangeId.BITBANK:
                 extinfo_ask = tick_x.ask
             else:
                 extinfo_ask = None
