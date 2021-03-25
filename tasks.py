@@ -617,7 +617,7 @@ def perf_fetch_tick(c):
         return ret1, ret2
 
     for _ in range(10):
-        time_ms = perf_func_execution_time(lambda: tool.ping_with_thread())
+        time_ms = perf_func_execution_time(lambda: tool.ping_with_thb())
         print("get tick parallel time={} ms".format(time_ms))
         time.sleep(1)
 

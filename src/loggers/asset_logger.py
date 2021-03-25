@@ -9,10 +9,12 @@ import src.constants.path as path
 
 class AssetLogger():
     def __init__(self):
-        self.exchange_ids = [
-            ccxtconst.ExchangeId.COINCHECK, ccxtconst.ExchangeId.LIQUID,
-            "total"
+        self.exchange_ids = ["total"]
+        [
+            self.exchange_ids.append(exchange_id.value)
+            for exchange_id in ccxtconst.EXCHANGE_ID_LIST
         ]
+
         self.dir_path = path.ASSET_DATA_DIR_PATH
 
         # initialze loggers
@@ -40,7 +42,11 @@ class AssetLogger():
     def _create_logger(self, exchange_id):
         file_path = self._get_file_path(self.dir_path, exchange_id)
         logger_name = self._get_logger_name(exchange_id)
+        is_file_exist = os.path.exists(file_path)
         create_csv_logger(file_path, logger_name)
+
+        if not is_file_exist:
+            self._logging_header(exchange_id)
 
     def _get_logger(self, exchange_id):
         logger_name = self._get_logger_name(exchange_id)
