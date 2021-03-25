@@ -11,6 +11,10 @@ class SlackClient():
         self.url = url
 
     def notify(self, message):
+        if self.url == "":
+            # URLが設定されていない場合は空通知 開発環境を想定
+            return
+
         payload = {"text": message}
         data = json.dumps(payload)
         requests.post(self.url, data=data)
