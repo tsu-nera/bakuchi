@@ -2,7 +2,7 @@ import sys
 
 import ccxt
 
-from src.loggers.logger import get_ccxt_logger
+from src.loggers.logger import get_ex1xt_logger
 import src.constants.ccxtconst as ccxtconst
 import src.utils.datetime as dt
 from src.libs.exchanges.coincheck import Coincheck
@@ -19,7 +19,7 @@ class CcxtClient():
 
         self.exchange_id = exchange_id
         self.symbol = symbol
-        self.logger = get_ccxt_logger()
+        self.logger = get_ex1xt_logger()
 
         # for demo trade
         exchange_id_for_eval = exchange_id.value.replace("_demo", "")

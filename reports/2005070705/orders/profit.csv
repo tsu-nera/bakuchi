@@ -1,4 +1,4 @@
-timestamp,cc_side,cc_price,lq_side,lq_price,profit
+timestamp,ex1_side,ex1_price,ex2_side,ex2_price,profit
 2020-05-07 07:08:24,buy,5949.993,sell,5951.094,1
 2020-05-07 07:08:40,sell,5951.142,buy,5958.0,-6
 2020-05-07 07:08:57,buy,5946.991,sell,5945.932,-1

@@ -2,7 +2,7 @@ name: bakuchi
 channels:
   - defaults
 dependencies:
-  - _libgcc_mutex=0.1=main
+  - _libgex1_mutex=0.1=main
   - attrs=19.3.0=py_0
   - backcall=0.1.0=py37_0
   - blas=1.0=mkl
