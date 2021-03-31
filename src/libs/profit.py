@@ -122,8 +122,8 @@ class Profit(Thread):
             if not self.__is_valid_timestamp(timestamp):
                 continue
 
-            amount = t["amount"]
-            rate = t["price"]
+            amount = float(t["amount"])
+            rate = float(t["price"])
             price = amount * rate
             trade = self.__create_order(timestamp, t["pair"], t["side"], 0,
                                         amount, price, rate)
