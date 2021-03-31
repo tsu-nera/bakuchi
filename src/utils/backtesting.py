@@ -13,12 +13,12 @@ class Backtesting():
         self.timestamp = timestamp
         self.csv_driver = CsvDriver()
 
-        self.df_cc = self._read_df(ccxtconst.ExchangeId.COINCHECK)
-        self.df_lq = self._read_df(ccxtconst.ExchangeId.LIQUID)
+        self.df_ex1 = self._read_df(ccxtconst.ExchangeId.BITBANK)
+        self.df_ex2 = self._read_df(ccxtconst.ExchangeId.LIQUID)
 
-        self.arbitrage = ArbitrageBacktesting(self.df_cc, self.df_lq,
+        self.arbitrage = ArbitrageBacktesting(self.df_ex1, self.df_ex2,
                                               ccxtconst.SYMBOL_BTC_JPY,
-                                              ccxtconst.ExchangeId.COINCHECK,
+                                              ccxtconst.ExchangeId.BITBANK,
                                               ccxtconst.ExchangeId.LIQUID,
                                               simulate_mode)
 
@@ -49,10 +49,10 @@ class Backtesting():
         self.arbitrage.report()
 
     def get_coincheck_df(self):
-        return self.df_cc
+        return self.df_ex1
 
     def get_liquid_df(self):
-        return self.df_lq
+        return self.df_ex2
 
     def get_result_data(self, report_mode=False):
         if report_mode:

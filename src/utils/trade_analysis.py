@@ -15,19 +15,22 @@ import matplotlib.dates as mdates
 
 class TradeAnalysis():
     def __init__(self, timestamp):
+        self.__ex1_id = ccxtconst.ExchangeId.BITBANK
+        self.__ex2_id = ccxtconst.ExchangeId.LIQUID
+
         self.timestamp = timestamp
         self.dir_path = os.path.join(path.REPORTS_DIR, timestamp)
         self.trades_dir_path = os.path.join(self.dir_path, path.TRADES_DIR)
         self.ticks_dir_path = os.path.join(self.dir_path, path.EXCHANGES_DIR)
 
-        self.trades_cc = self.read_trades(ccxtconst.ExchangeId.COINCHECK)
-        self.trades_lq = self.read_trades(ccxtconst.ExchangeId.LIQUID)
+        self.trades_ex1 = self.read_trades(self.__ex1_id)
+        self.trades_ex2 = self.read_trades(self.__ex2_id)
 
         self.start_asset = self._read_asset("start")
         self.end_asset = self._read_asset("end")
 
-        self.ticks_cc = self.read_ticks(ccxtconst.ExchangeId.COINCHECK)
-        self.ticks_lq = self.read_ticks(ccxtconst.ExchangeId.LIQUID)
+        self.ticks_ex1 = self.read_ticks(self.__ex1_id)
+        self.ticks_ex2 = self.read_ticks(self.__ex2_id)
 
         self.result = {}
 
@@ -63,10 +66,10 @@ class TradeAnalysis():
         config = self._read_config()
 
         # meta data
-        self.result["record_count"] = len(self.ticks_cc)
-        self.result["trade_count"] = len(self.trades_cc)
-        self.result["start_timestamp"] = self.trades_cc.iloc[0]["datetime"]
-        self.result["end_timestamp"] = self.trades_cc.iloc[-1]["datetime"]
+        self.result["record_count"] = len(self.ticks_ex1)
+        self.result["trade_count"] = len(self.trades_ex1)
+        self.result["start_timestamp"] = self.trades_ex1.iloc[0]["datetime"]
+        self.result["end_timestamp"] = self.trades_ex1.iloc[-1]["datetime"]
         self.result["duration"] = self.result["end_timestamp"] - self.result[
             "start_timestamp"]
         self.result["trade_amount"] = config["amount"]
@@ -179,38 +182,38 @@ class TradeAnalysis():
         print(output)
 
     def get_coincheck_trades_df(self):
-        return self.trades_cc
+        return self.trades_ex1
 
     def get_liquid_trades_df(self):
-        return self.trades_lq
+        return self.trades_ex2
 
     def get_coincheck_ticks_df(self):
-        return self.ticks_cc
+        return self.ticks_ex1
 
     def get_liquid_ticks_df(self):
-        return self.ticks_lq
+        return self.ticks_ex2
 
     def create_profit_df(self):
         df = pd.DataFrame({
-            'timestamp': self.trades_cc['datetime'].to_list(),
-            'cc_side': self.trades_cc['side'].to_list(),
-            'cc_price': self.trades_cc['price'].to_list(),
-            'lq_side': self.trades_lq['side'].to_list(),
-            'lq_price': self.trades_lq['price'].to_list()
+            'timestamp': self.trades_ex1['datetime'].to_list(),
+            'ex1_side': self.trades_ex1['side'].to_list(),
+            'ex1_price': self.trades_ex1['price'].to_list(),
+            'ex2_side': self.trades_ex2['side'].to_list(),
+            'ex2_price': self.trades_ex2['price'].to_list()
         })
 
         def _calc_profit(x):
-            if x['cc_side'] == 'sell':
-                cc_price = x['cc_price']
+            if x['ex1_side'] == 'sell':
+                ex1_price = x['ex1_price']
             else:
-                cc_price = -1 * x['cc_price']
+                ex1_price = -1 * x['ex1_price']
 
-            if x['lq_side'] == 'sell':
-                lq_price = x['lq_price']
+            if x['ex2_side'] == 'sell':
+                ex2_price = x['ex2_price']
             else:
-                lq_price = -1 * x['lq_price']
+                ex2_price = -1 * x['ex2_price']
 
-            return round(cc_price + lq_price, 3)
+            return round(ex1_price + ex2_price, 3)
 
         df['profit'] = df.apply(_calc_profit, axis=1)
 
@@ -221,11 +224,11 @@ class TradeAnalysis():
         return df
 
     def get_fig(
-            self,
-            tick_bids,
-            tick_asks,
+        self,
+        tick_bids,
+        tick_asks,
     ):
-        timestamps = self.ticks_cc.index
+        timestamps = self.ticks_ex1.index
 
         fig, ax = plt.subplots(figsize=(12, 5))
 
@@ -238,7 +241,7 @@ class TradeAnalysis():
         ax.plot(timestamps, tick_bids, lw=0.5)
         ax.plot(timestamps, tick_asks, lw=0.5)
 
-        ax.scatter(self.trades_cc['datetime'], self.trades_cc['rate'])
+        ax.scatter(self.trades_ex1['datetime'], self.trades_ex1['rate'])
 
         return fig, ax
 

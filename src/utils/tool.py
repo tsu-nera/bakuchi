@@ -22,7 +22,7 @@ def check_profit_margin():
     二つの取引所の価格差をチェックするツール
     '''
     # とりあえずこの2つで決め打ち
-    ex_x_id = ccxtconst.ExchangeId.COINCHECK
+    ex_x_id = ccxtconst.ExchangeId.BITBANK
     ex_y_id = ccxtconst.ExchangeId.LIQUID
 
     bid_x, ask_x = _get_tick(ex_x_id)
@@ -117,7 +117,7 @@ def ping(exchange_id, eff=False):
 
 
 def ping_with_thread():
-    parallel = ArbitrageParallel(ccxtconst.ExchangeId.COINCHECK,
+    parallel = ArbitrageParallel(ccxtconst.ExchangeId.BITBANK,
                                  ccxtconst.ExchangeId.LIQUID,
                                  ccxtconst.SYMBOL_BTC_JPY)
 

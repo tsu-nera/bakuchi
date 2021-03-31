@@ -9,7 +9,7 @@ from src.core.tick import Tick
 from src.constants.wsconst import WsDataType
 from src.libs.ccxt_client import CcxtClient
 from src.libs.websocket_client import WebsocketClient
-from src.loggers.logger import get_ccxt_logger
+from src.loggers.logger import get_ex1xt_logger
 
 
 class Board():
@@ -19,8 +19,8 @@ class Board():
 
         self.__queue = Queue()
         self.__wsclient = WebsocketClient(self.__queue, exchange_id, symbol)
-        self.__ccxtclient = CcxtClient(exchange_id, symbol)
-        self.__logger = get_ccxt_logger()
+        self.__ex1xtclient = CcxtClient(exchange_id, symbol)
+        self.__logger = get_ex1xt_logger()
 
         self.bids = SortedDict()
         self.asks = SortedDict()
@@ -49,7 +49,7 @@ class Board():
                 del board[rate]
 
     def __build_board(self):
-        res = self.__ccxtclient.fetch_order_book()
+        res = self.__ex1xtclient.fetch_order_book()
 
         bids = res["bids"]
         asks = res["asks"]

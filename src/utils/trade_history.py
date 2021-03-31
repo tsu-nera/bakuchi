@@ -155,19 +155,21 @@ def save_trades(exchange_id):
 
 
 def show_recent_profits(hours=None):
-    cc_trades = fetch_trades(ccxtconst.ExchangeId.COINCHECK)
-    lq_trades = fetch_trades(ccxtconst.ExchangeId.LIQUID)
+    ex1_id = ccxtconst.ExchangeId.LIQUID
+    ex2_id = ccxtconst.ExchangeId.BITBANK
+    ex1_trades = fetch_trades(ex1_id)
+    ex2_trades = fetch_trades(ex2_id)
 
-    if len(cc_trades) < len(lq_trades):
-        base_trades = cc_trades
-        target_trades = lq_trades
-        base_exchange_id = ccxtconst.ExchangeId.COINCHECK
-        target_exchange_id = ccxtconst.ExchangeId.LIQUID
+    if len(ex1_trades) < len(ex2_trades):
+        base_trades = ex1_trades
+        target_trades = ex2_trades
+        base_exchange_id = ex1_id
+        target_exchange_id = ex2_id
     else:
-        base_trades = lq_trades
-        target_trades = cc_trades
-        base_exchange_id = ccxtconst.ExchangeId.LIQUID
-        target_exchange_id = ccxtconst.ExchangeId.COINCHECK
+        base_trades = ex2_trades
+        target_trades = ex1_trades
+        base_exchange_id = ex2_id
+        target_exchange_id = ex1_id
 
     def _to_dict(trades):
         trade_dict = {}

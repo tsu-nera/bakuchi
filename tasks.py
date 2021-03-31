@@ -316,20 +316,20 @@ def buy_liquid(c):
 
 @task
 def buy_coincheck_sell_liquid(c):
-    cc_jpy = int(buy_coincheck(c)["jpy"])
-    lq_jpy = int(sell_liquid(c)["jpy"])
+    ex1_jpy = int(buy_coincheck(c)["jpy"])
+    ex2_jpy = int(sell_liquid(c)["jpy"])
 
     print("buy coincheck {}, sell liquid {}, profit={}".format(
-        cc_jpy, lq_jpy, lq_jpy - cc_jpy))
+        ex1_jpy, ex2_jpy, ex2_jpy - ex1_jpy))
 
 
 @task
 def sell_coincheck_buy_liquid(c):
-    cc_jpy = int(sell_coincheck(c)["jpy"])
-    lq_jpy = int(buy_liquid(c)["jpy"])
+    ex1_jpy = int(sell_coincheck(c)["jpy"])
+    ex2_jpy = int(buy_liquid(c)["jpy"])
 
     print("buy liquid {}, sell coincheck {}, profit={}".format(
-        lq_jpy, cc_jpy, cc_jpy - lq_jpy))
+        ex2_jpy, ex1_jpy, ex1_jpy - ex2_jpy))
 
 
 @task
@@ -360,20 +360,20 @@ def sell_bitbank_with_amount(c, amount):
 
 @task
 def buy_bitbank_sell_liquid(c):
-    cc_jpy = int(buy_bitbank(c)["jpy"])
-    lq_jpy = int(sell_liquid(c)["jpy"])
+    ex1_jpy = int(buy_bitbank(c)["jpy"])
+    ex2_jpy = int(sell_liquid(c)["jpy"])
 
     print("buy bitbank {}, sell liquid {}, profit={}".format(
-        cc_jpy, lq_jpy, lq_jpy - cc_jpy))
+        ex1_jpy, ex2_jpy, ex2_jpy - ex1_jpy))
 
 
 @task
 def sell_bitbank_buy_liquid(c):
-    cc_jpy = int(sell_bitbank(c)["jpy"])
-    lq_jpy = int(buy_liquid(c)["jpy"])
+    ex1_jpy = int(sell_bitbank(c)["jpy"])
+    ex2_jpy = int(buy_liquid(c)["jpy"])
 
     print("buy liquid {}, sell coincheck {}, profit={}".format(
-        lq_jpy, cc_jpy, cc_jpy - lq_jpy))
+        ex2_jpy, ex1_jpy, ex1_jpy - ex2_jpy))
 
 
 @task
