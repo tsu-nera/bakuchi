@@ -121,7 +121,7 @@ def _format_bitbank_trades(data):
         rate = float(t["price"])
         price = round(rate * float(amount), 3)
         trade = _create_trade(t["trade_id"], t["order_id"], timestamp,
-                              t["pair"], t["side"], 0, amount, price)
+                              t["pair"], t["side"], 0, amount, price, rate)
         trades.append(trade)
     return _marge_duplicated_trades(trades)
 
