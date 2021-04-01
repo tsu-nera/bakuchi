@@ -238,6 +238,7 @@ class TradeAnalysis():
         ax.grid()
         fig.tight_layout()
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%m/%d\n%H:%M'))
+        ax.ticklabel_format(style="plain", axis="y")
 
         ax.plot(timestamps, tick_bids, lw=0.5)
         ax.plot(timestamps, tick_asks, lw=0.5)
