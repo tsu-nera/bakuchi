@@ -208,7 +208,7 @@ class Profit(Thread):
                 "profit": profit
             }
             self.profits.append(data)
-            self.total_profit += profit
+            self.total_profit = round(self.total_profit + profit, 3)
 
     def run(self):
         while True:
