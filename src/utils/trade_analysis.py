@@ -15,6 +15,7 @@ import matplotlib.dates as mdates
 
 class TradeAnalysis():
     def __init__(self, timestamp):
+        # TODO 決め打ちの Exchange idなのであとで修正が入る
         self.__ex1_id = ccxtconst.ExchangeId.BITBANK
         self.__ex2_id = ccxtconst.ExchangeId.LIQUID
 
@@ -181,16 +182,16 @@ class TradeAnalysis():
 
         print(output)
 
-    def get_coincheck_trades_df(self):
+    def get_ex1_trades_df(self):
         return self.trades_ex1
 
-    def get_liquid_trades_df(self):
+    def get_ex2_trades_df(self):
         return self.trades_ex2
 
-    def get_coincheck_ticks_df(self):
+    def get_ex1_ticks_df(self):
         return self.ticks_ex1
 
-    def get_liquid_ticks_df(self):
+    def get_ex2_ticks_df(self):
         return self.ticks_ex2
 
     def create_profit_df(self):
