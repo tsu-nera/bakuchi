@@ -66,9 +66,9 @@ class Profit(Thread):
             "pair": pair,
             "side": side,
             "fee": fee,
-            "amount": abs(round(float(amount), 9)),
-            "price": round(abs(float(price)), 3),
-            "rate": round(float(rate), 3)
+            "amount": abs(round(float(amount), 9)),  # 注文量
+            "price": round(abs(float(price)), 3),  # 実際の価格 amount x rate
+            "rate": round(float(rate), 3)  # 現在の価値
         }
 
     def __convert_coincheck_datetime(self, d_str):
@@ -106,9 +106,11 @@ class Profit(Thread):
             if not self.__is_valid_timestamp(timestamp):
                 continue
 
+            amount = float(t["quantity"])
+            rate = float(t["price"])
+            price = amount * rate
             trade = self.__create_order(timestamp, t["pair"], t["taker_side"],
-                                        0, t["quantity"], t["price"],
-                                        t["rate"])
+                                        0, amount, price, rate)
             orders.append(trade)
         return self.__marge_duplicated_orders(orders)
 
