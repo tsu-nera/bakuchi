@@ -166,7 +166,7 @@ class ArbitrageTrading(ArbitrageBase):
         return round(price, 3)
 
     def _calc_price(self, rate):
-        return self.trade_amount * rate
+        return round(self.trade_amount * rate, 3)
 
     def _get_log_label(self):
         return Action.CLOSING.value if self.opened else Action.OPENING.value
