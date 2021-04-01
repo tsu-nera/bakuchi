@@ -1,7 +1,7 @@
 import datetime
 
 DATETIME_BASE_FORMAT = '%Y-%m-%d %H:%M:%S'
-DATETIME_DIR_FORMAT = '%y%m%d%H%M'
+DATETIME_DIR_FORMAT = '%y%m%d_%H%M'
 DATE_DIR_FORMAT = '%y%m%d'
 DATETIME_MS_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
 README_HEADER_FORMAT = '%Y/%m/%d'
