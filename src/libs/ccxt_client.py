@@ -141,7 +141,7 @@ class CcxtClient():
         elif self.exchange.has['fetchMyTrades']:
 
             if mode == ccxtconst.TradeMode.NORMAL:
-                limit = 500
+                limit = 1000
             else:
                 limit = 30
 

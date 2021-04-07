@@ -1,9 +1,9 @@
 {
   "record_count": 25496,
-  "trade_count": 500,
-  "start_timestamp": "2021-04-03 20:00:06",
-  "end_timestamp": "2021-04-04 07:19:36",
-  "duration": 40770,
+  "trade_count": 850,
+  "start_timestamp": "2021-04-03 09:23:35",
+  "end_timestamp": "2021-04-04 07:20:13",
+  "duration": 78998,
   "trade_amount": 0.0001,
   "open_threshold": 1000,
   "profit_margin_diff": 1000,

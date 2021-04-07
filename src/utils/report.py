@@ -83,23 +83,20 @@ def generate_notebook(dir_name):
 
 
 def _get_trade_timestamps(timestamp):
-    to_dir = os.path.join(path.REPORTS_DIR, timestamp)
+    dir_path = os.path.join(path.REPORTS_DIR, timestamp)
 
-    start_timestamps = []
-    end_timestamps = []
+    def __read_asset(keyword):
+        file_name = "{}.json".format(keyword)
+        file_path = os.path.join(dir_path, path.ASSETS_DIR, file_name)
+        return json.read(file_path)
 
-    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
-        file_name = "{}.csv".format(exchange_id.value)
-        file_path = os.path.join(to_dir, path.EXCHANGES_DIR, file_name)
+    start_asset = __read_asset("start")
+    end_asset = __read_asset("end")
 
-        trade_data = pd.read_csv(file_path,
-                                 parse_dates=["timestamp"
-                                              ]).sort_values('timestamp')
+    start_datetime = dt.parse_timestamp(start_asset["timestamp"])
+    end_datetime = dt.parse_timestamp(end_asset["timestamp"])
 
-        start_timestamps.append(trade_data.iloc[0]["timestamp"])
-        end_timestamps.append(trade_data.iloc[-1]["timestamp"])
-
-    return max(start_timestamps), min(end_timestamps)
+    return start_datetime, end_datetime
 
 
 def _fetch_trades(dir_name):

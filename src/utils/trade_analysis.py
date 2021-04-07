@@ -224,7 +224,7 @@ class TradeAnalysis():
 
             return round(ex1_price + ex2_price, 3)
 
-        df['profit'] = df.apply(_calc_profit, axis=1)
+        df['profit'] = df.apply(__calc_profit, axis=1)
 
         df.timestamp = pd.to_datetime(df.timestamp,
                                       format=dt.DATETIME_BASE_FORMAT)
