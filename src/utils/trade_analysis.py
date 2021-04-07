@@ -24,27 +24,34 @@ class TradeAnalysis():
         self.trades_dir_path = os.path.join(self.dir_path, path.TRADES_DIR)
         self.ticks_dir_path = os.path.join(self.dir_path, path.EXCHANGES_DIR)
 
+        self.start_asset = self.__read_asset("start")
+        self.end_asset = self.__read_asset("end")
+
+        self.__start_datetime = dt.parse_timestamp(
+            self.start_asset["timestamp"])
+        self.__end_datetime = dt.parse_timestamp(self.end_asset["timestamp"])
+
         self.trades_ex1 = self.read_trades(self.__ex1_id)
         self.trades_ex2 = self.read_trades(self.__ex2_id)
-
-        self.start_asset = self._read_asset("start")
-        self.end_asset = self._read_asset("end")
 
         self.ticks_ex1 = self.read_ticks(self.__ex1_id)
         self.ticks_ex2 = self.read_ticks(self.__ex2_id)
 
         self.result = {}
 
-    def _read_trades(self, file_path):
+    def __read_trades(self, file_path):
         return pd.read_csv(file_path, index_col="id",
                            parse_dates=["datetime"]).sort_values('datetime')
 
     def read_trades(self, exchange_id):
         file_name = "{}.csv".format(exchange_id.value)
         file_path = os.path.join(self.trades_dir_path, file_name)
-        return self._read_trades(file_path)
+        trades = self.__read_trades(file_path)
 
-    def _read_ticks(self, file_path):
+        return trades[(trades["datetime"] >= self.__start_datetime)
+                      & (trades["datetime"] < self.__end_datetime)]
+
+    def __read_ticks(self, file_path):
         return pd.read_csv(file_path,
                            index_col="timestamp",
                            parse_dates=["timestamp"]).sort_values('timestamp')
@@ -52,25 +59,26 @@ class TradeAnalysis():
     def read_ticks(self, exchange_id):
         file_name = "{}.csv".format(exchange_id.value)
         file_path = os.path.join(self.ticks_dir_path, file_name)
-        return self._read_ticks(file_path)
+        return self.__read_ticks(file_path)
 
-    def _read_config(self):
+    def __read_config(self):
         file_path = os.path.join(self.dir_path, path.CONFIG_JSON_FILE)
         return json.read(file_path)
 
-    def _read_asset(self, keyword):
+    def __read_asset(self, keyword):
         file_name = "{}.json".format(keyword)
         file_path = os.path.join(self.dir_path, path.ASSETS_DIR, file_name)
         return json.read(file_path)
 
-    def _prepare_result(self):
-        config = self._read_config()
+    def __prepare_result(self):
+        config = self.__read_config()
 
         # meta data
         self.result["record_count"] = len(self.ticks_ex1)
         self.result["trade_count"] = len(self.trades_ex1)
-        self.result["start_timestamp"] = self.trades_ex1.iloc[0]["datetime"]
-        self.result["end_timestamp"] = self.trades_ex1.iloc[-1]["datetime"]
+        self.result["start_timestamp"] = self.__start_datetime
+        self.result["end_timestamp"] = self.__end_datetime
+
         self.result["duration"] = self.result["end_timestamp"] - self.result[
             "start_timestamp"]
         self.result["trade_amount"] = config["amount"]
@@ -111,7 +119,7 @@ class TradeAnalysis():
         self.result["trade_profit_jpy"] = self.result[
             "bot_profit_jpy"] - self.result["market_profit_jpy"]
 
-    def _report_trade_meta(self):
+    def __report_trade_meta(self):
         data = []
 
         data.append(["レコード数", self.result["record_count"]])
@@ -128,10 +136,10 @@ class TradeAnalysis():
 
         return "\n".join([heading, body])
 
-    def _report_trade_stats(self):
+    def __report_trade_stats(self):
         data = []
 
-        def _report_trade_asset_result(label, start, end):
+        def __report_trade_asset_result(label, start, end):
             data = []
             profit = end - start
             data.append(["開始[{}]".format(label), start])
@@ -140,22 +148,22 @@ class TradeAnalysis():
             return data
 
         data.extend(
-            _report_trade_asset_result("JPY", self.result["start_price_jpy"],
-                                       self.result["end_price_jpy"]))
+            __report_trade_asset_result("JPY", self.result["start_price_jpy"],
+                                        self.result["end_price_jpy"]))
         data.extend(
-            _report_trade_asset_result("BTC", self.result["start_price_btc"],
-                                       self.result["end_price_btc"]))
+            __report_trade_asset_result("BTC", self.result["start_price_btc"],
+                                        self.result["end_price_btc"]))
         data.extend(
-            _report_trade_asset_result("TOTAL",
-                                       self.result["total_start_price_jpy"],
-                                       self.result["total_end_price_jpy"]))
+            __report_trade_asset_result("TOTAL",
+                                        self.result["total_start_price_jpy"],
+                                        self.result["total_end_price_jpy"]))
 
         heading = "トレード結果"
         body = tabulate(data, numalign="right")
 
         return "\n".join([heading, body])
 
-    def _report_trade_profits(self):
+    def __report_trade_profits(self):
 
         profits = []
         profits.append(["Bot利益", "トレード利益", "市場利益"])
@@ -171,11 +179,11 @@ class TradeAnalysis():
         return "\n".join([heading, body])
 
     def display(self):
-        self._prepare_result()
+        self.__prepare_result()
 
-        output_meta = self._report_trade_meta()
-        output_stats = self._report_trade_stats()
-        output_profits = self._report_trade_profits()
+        output_meta = self.__report_trade_meta()
+        output_stats = self.__report_trade_stats()
+        output_profits = self.__report_trade_profits()
 
         output = "\n".join(
             [output_meta, "\n", output_stats, "\n", output_profits])
@@ -203,7 +211,7 @@ class TradeAnalysis():
             'ex2_price': self.trades_ex2['price'].to_list()
         })
 
-        def _calc_profit(x):
+        def __calc_profit(x):
             if x['ex1_side'] == 'sell':
                 ex1_price = x['ex1_price']
             else:
@@ -248,7 +256,7 @@ class TradeAnalysis():
         return fig, ax
 
     def get_result_data(self):
-        self._prepare_result()
+        self.__prepare_result()
         return self.result
 
 

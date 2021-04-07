@@ -12,6 +12,11 @@ def format_timestamp(timestamp):
     return datetime.datetime.strftime(timestamp, format_string)
 
 
+def parse_timestamp(timestamp):
+    format_string = DATETIME_BASE_FORMAT
+    return datetime.datetime.strptime(timestamp, format_string)
+
+
 def get_dt_dirname(timestamp):
     format_string = DATETIME_DIR_FORMAT
     return datetime.datetime.strftime(timestamp, format_string)
