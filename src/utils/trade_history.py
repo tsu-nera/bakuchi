@@ -126,8 +126,8 @@ def _format_bitbank_trades(data):
     return _marge_duplicated_trades(trades)
 
 
-def fetch_trades(exchange_id, mode=ccxtconst.TradeMode.NORMAL):
-    trades = private.fetch_trades(exchange_id, mode)
+def fetch_trades(exchange_id, mode=ccxtconst.TradeMode.NORMAL, since=None):
+    trades = private.fetch_trades(exchange_id, mode, since)
 
     if exchange_id == ccxtconst.ExchangeId.COINCHECK:
         trades = _format_coincheck_trades(trades)
@@ -333,8 +333,13 @@ def save_report_trades(dir_name, start_timestamp, end_timestamp):
     if not os.path.exists(to_dir):
         os.mkdir(to_dir)
 
+    def __convert_timestamp_to_millsecond(timestamp):
+        return int(timestamp.timestamp() * 1000)
+
+    since = __convert_timestamp_to_millsecond(start_timestamp)
+
     for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
-        trades = fetch_trades(exchange_id)
+        trades = fetch_trades(exchange_id, since=since)
         df = pd.DataFrame.from_dict(trades)
 
         df["datetime"] = pd.to_datetime(df["datetime"])

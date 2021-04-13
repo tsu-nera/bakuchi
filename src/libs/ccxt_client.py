@@ -134,19 +134,27 @@ class CcxtClient():
                                                            amount=amount)
         return order_info
 
-    def fetch_trades(self, mode):
+    def fetch_trades(self, mode, since=None):
         if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
             client = Coincheck()
             trades = client.fetch_my_trades(mode)
         elif self.exchange.has['fetchMyTrades']:
 
-            if mode == ccxtconst.TradeMode.NORMAL:
-                limit = 1000
-            else:
-                limit = 30
-
             trades = []
-            resp = self.exchange.fetch_my_trades(self.symbol, limit=limit)
+
+            if since:
+                # liquidの制限だとlimitは1000らしい。エラーメッセージより。
+                limit = 1000
+                resp = self.exchange.fetch_my_trades(self.symbol,
+                                                     since=since,
+                                                     limit=limit)
+            else:
+                if mode == ccxtconst.TradeMode.NORMAL:
+                    limit = 100
+                else:
+                    limit = 30
+                resp = self.exchange.fetch_my_trades(self.symbol, limit=limit)
+
             for x in resp:
                 trade = x['info']
                 trades.append(trade)
