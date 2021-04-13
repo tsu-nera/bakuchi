@@ -96,12 +96,15 @@ class Profit(Thread):
             orders.append(trade)
 
         return self.__marge_duplicated_orders(orders)
+    
+    def __parse_datetime_str(self, datetime_str):
+        return datetime.datetime.fromtimestamp(int(int(datetime_str) / 1000))
 
     def __format_liquid_orders(self, data):
         orders = []
 
         for t in data:
-            created_at = datetime.datetime.fromtimestamp(t["created_at"])
+            created_at = self.__parse_datetime_str(t["created_at"])
             timestamp = dt.format_timestamp(created_at)
             if not self.__is_valid_timestamp(timestamp):
                 continue
@@ -118,8 +121,7 @@ class Profit(Thread):
         orders = []
 
         for t in data:
-            created_at = datetime.datetime.fromtimestamp(
-                int(t["executed_at"] / 1000))
+            created_at = self.__parse_datetime_str(t["executed_at"])
             timestamp = dt.format_timestamp(created_at)
             if not self.__is_valid_timestamp(timestamp):
                 continue
