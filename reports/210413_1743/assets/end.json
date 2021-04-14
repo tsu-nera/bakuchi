@@ -1,0 +1,28 @@
+{
+  "timestamp": "2021-04-14 04:42:08",
+  "total": {
+    "id": "total",
+    "jpy": 13043,
+    "btc": 0.0024,
+    "btc_as_jpy": 16428,
+    "total_jpy": 29471
+  },
+  "bitbank": {
+    "id": "bitbank",
+    "jpy": 2559,
+    "btc": 0.0017,
+    "btc_as_jpy": 11629,
+    "total_jpy": 14188,
+    "bid": 6840979.0,
+    "ask": 6844697.0
+  },
+  "liquid": {
+    "id": "liquid",
+    "jpy": 10484,
+    "btc": 0.0007,
+    "btc_as_jpy": 4799,
+    "total_jpy": 15283,
+    "bid": 6856254.0,
+    "ask": 6858614.0
+  }
+}

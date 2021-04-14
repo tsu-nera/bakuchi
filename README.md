@@ -68,6 +68,15 @@ $ inv backtest [data/historicals配下のディレクトリ名]
 $ inv simulate [data/historicals配下のディレクトリ名]
 ```
 
+### cron設定
+
+```
+$ crontab -e
+
+# 1時間ごとに実行
+0 */1 * * *　~/repo/bakuchi/bin/asset-bot.sh
+```
+
 ### その他
 
 あとでちゃんと書く。
