@@ -28,8 +28,13 @@ $ conda install numpy pandas jupyter notebook matplotlib
 $ pip install ccxt invoke python-dotenv
 $ pip install tablulate urllib3 
 $ conda install psutil sortedcontainers
-$ pip install python-socketio[client]==4.x.x # 5はダメっぽい
-$ pip install liquidtap --use-deprecated=legacy-resolver
+$ pip install python-socketio[client]==4.6.1 # 5はダメっぽい
+
+$ # pip install liquidtap --use-deprecated=legacy-resolver
+  # なんか0.56.0じゃないと動かないぞ？なんだこりゃ
+$ # https://reon777.com/2019/04/28/liquidtap/
+$ # pip install websocket-client==0.56.0
+
 $ pip install yapf flake8
 
 # Bot稼働

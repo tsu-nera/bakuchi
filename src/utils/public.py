@@ -1,4 +1,6 @@
 import time
+from queue import Queue
+import threading
 
 from src.libs.ccxt_client import CcxtClient
 from src.libs.websocket_client import WebsocketClient
@@ -37,9 +39,21 @@ def fetch_tick(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
     return client.fetch_tick()
 
 
-def fetch_ws_ticks(exhange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
-    client = WebsocketClient(exhange_id, symbol)
-    client.fetch_ticks()
+def fetch_ws_ticks(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
+    __queue = Queue()
+    client = WebsocketClient(__queue, exchange_id, symbol)
+
+    worker = threading.Thread(target=client.fetch_ticks, daemon=True)
+    worker.start()
+
+    while True:
+        if not __queue.empty():
+            data = __queue.get()
+            print(data)
+            __queue.task_done()
+        else:
+            print(__queue.qsize())
+        time.sleep(1)
 
 
 def fetch_board(exhange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):

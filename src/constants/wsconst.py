@@ -1,7 +1,8 @@
 import src.constants.ccxtconst as ccxtconst
 from enum import Enum, auto
 
-SOCKETIO_URL = 'https://ws.coincheck.com'
+SOCKETIO_URL_COINCHECK = 'https://ws.coincheck.com'
+WEBSOCKET_API_ENDPOINT_BITBANK = "wss://stream.bitbank.cc"
 
 
 class WsDataType(Enum):

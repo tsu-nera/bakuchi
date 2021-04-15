@@ -7,9 +7,8 @@ from src.libs.websockets.websocket_client_base import WebsocketClientBase
 
 
 class WebsocketClientLiquid(WebsocketClientBase):
-    def __init__(self, queue, exchange_id, symbol):
+    def __init__(self, queue, symbol):
         self.queue = queue
-        self.exchange_id = exchange_id
         self.symbol = symbol
         symbols = symbol.split("/")
 

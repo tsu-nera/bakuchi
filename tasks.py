@@ -122,23 +122,24 @@ def tick_eff_bitbank(c):
 
 
 '''
-websocket通信の現状の立ち位置を忘れてしまったので修正は保留
-ひょっとしたら不要なのでメンテナンスされずに残っていたのかも。
-
 @task
-def tick_ws_coincheck(c):
-    
+def tick_ws_coincheck(c):    
     # websocket通信を利用したtickの取得(coincheck)
     
     public.fetch_ws_ticks(ccxtconst.ExchangeId.COINCHECK)
+'''
 
 
 @task
 def tick_ws_liquid(c):
     # websocket通信を利用したtickの取得(liquid)
-    
     public.fetch_ws_ticks(ccxtconst.ExchangeId.LIQUID)
-'''
+
+
+@task
+def tick_ws_bitbank(c):
+    # websocket通信を利用したtickの取得(bitbank)
+    public.fetch_ws_ticks(ccxtconst.ExchangeId.BITBANK)
 
 
 @task
@@ -187,7 +188,6 @@ def board_liquid(c):
     public.fetch_board(ccxtconst.ExchangeId.LIQUID)
 
 
-# TODO bitbankのwebsocket対応は後回し
 @task
 def board_bitbank(c):
     '''
@@ -206,7 +206,6 @@ def tick_board_liquid(c):
     public.fetch_board_tick(ccxtconst.ExchangeId.LIQUID)
 
 
-# TODO bitbankのwebsocket対応は後回し
 @task
 def tick_board_bitbank(c):
     public.fetch_board_tick(ccxtconst.ExchangeId.BITBANK)
@@ -340,7 +339,7 @@ def buy_bitbank(c):
 @task
 def buy_bitbank_with_amount(c, amount):
     response = private.create_bitbank_buy_order(ccxtconst.SYMBOL_BTC_JPY,
-                                                amount)
+                                                float(amount))
     print(response)
     return response
 
@@ -353,7 +352,7 @@ def sell_bitbank(c):
 @task
 def sell_bitbank_with_amount(c, amount):
     response = private.create_bitbank_sell_order(ccxtconst.SYMBOL_BTC_JPY,
-                                                 amount)
+                                                 float(amount))
     print(response)
     return response
 

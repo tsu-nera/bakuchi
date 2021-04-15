@@ -54,9 +54,8 @@ class ArbitrageTrading(ArbitrageBase):
         self.parallel = ArbitrageParallel(exchange_id_x, exchange_id_y, symbol,
                                           demo_mode)
 
-        # TODO とりあえず boardではなく普通にtickを取得
-        # self.board_x = Board(exchange_id_x, symbol)
-        # self.board_y = Board(exchange_id_y, symbol)
+        self.board_x = Board(exchange_id_x, symbol)
+        self.board_y = Board(exchange_id_y, symbol)
 
     def run(self):
         self._logging_trading_metadata()
@@ -143,9 +142,9 @@ class ArbitrageTrading(ArbitrageBase):
             self.logger_with_stdout.info(message)
 
     def _get_tick(self):
-        tick_x, tick_y = self.parallel.fetch_tick(eff=False)
-        # tick_x = self.board_x.get_eff_tick(self.trade_amount)
-        # tick_y = self.board_y.get_eff_tick(self.trade_amount)
+        # tick_x, tick_y = self.parallel.fetch_tick(eff=False)
+        tick_x = self.board_x.get_eff_tick(self.trade_amount)
+        tick_y = self.board_y.get_eff_tick(self.trade_amount)
 
         self.__raise_exception_if_occured(tick_x)
         self.__raise_exception_if_occured(tick_y)
@@ -303,8 +302,8 @@ class ArbitrageTrading(ArbitrageBase):
         else:
             stragegy = Strategy.BUY_Y_SELL_X
 
-        tick_x, tick_y = self.parallel.fetch_tick(eff=False)
-        # tick_x = self.board_x.get_eff_tick(self.trade_amount)
-        # tick_y = self.board_y.get_eff_tick(self.trade_amount)
+        # tick_x, tick_y = self.parallel.fetch_tick(eff=False)
+        tick_x = self.board_x.get_eff_tick(self.trade_amount)
+        tick_y = self.board_y.get_eff_tick(self.trade_amount)
 
         self._action(stragegy, tick_x, tick_y)
