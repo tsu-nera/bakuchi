@@ -36,7 +36,7 @@ class ExchangeTrading(ExchangeBase):
             if info["order_type"] == "market_buy":
                 jpy = float(info["market_buy_amount"])
             else:
-                jpy = amount * extinfo
+                jpy = float(amount) * float(extinfo)
             btc = amount
             return _to_json(jpy, btc)
         elif self.exchange_id == ccxtconst.ExchangeId.LIQUID:

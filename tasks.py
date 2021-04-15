@@ -339,7 +339,7 @@ def buy_bitbank(c):
 @task
 def buy_bitbank_with_amount(c, amount):
     response = private.create_bitbank_buy_order(ccxtconst.SYMBOL_BTC_JPY,
-                                                amount)
+                                                float(amount))
     print(response)
     return response
 
@@ -352,7 +352,7 @@ def sell_bitbank(c):
 @task
 def sell_bitbank_with_amount(c, amount):
     response = private.create_bitbank_sell_order(ccxtconst.SYMBOL_BTC_JPY,
-                                                 amount)
+                                                 float(amount))
     print(response)
     return response
 
