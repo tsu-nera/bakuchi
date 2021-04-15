@@ -14,9 +14,7 @@ class WebsocketClientBitbank(WebsocketClientBase):
 
         self.sio = socketio.Client()
 
-        symbols = symbol.split("/")
-        self.PAIR = "{}_{}".format(str.lower(symbols[0]),
-                                   str.lower(symbols[1]))
+        self.PAIR = self._build_pair(symbol)
         self.CHANNEL_ORDERBOOK = "depth_whole_{}".format(self.PAIR)
         self.CHANNEL_TRADES = "transactions_{}".format(self.PAIR)
 
@@ -24,20 +22,30 @@ class WebsocketClientBitbank(WebsocketClientBase):
 
     def __connect(self):
         self.sio.on('connect', self.__on_connect)
-        self.sio.on('trades', self.__on_trades)
-        self.sio.on('orderbook', self.__on_orderbook)
+        self.sio.on('message', self.__on_message)
         self.sio.connect(
             WEBSOCKET_API_ENDPOINT_BITBANK,
             transports=['websocket'],
         )
 
-    def __on_orderbook(self, data):
-        orderbook = WsDataOrderbook(data[1]["bids"], data[1]["asks"])
-        self.queue.put(orderbook)
+    def __on_message(self, data):
+        room_name = data["room_name"]
+        data = data["message"]["data"]
 
-    def __on_trades(self, data):
-        trade = WsDataTrade(float(data[2]), float(data[3]), data[4])
-        self.queue.put(trade)
+        if room_name == self.CHANNEL_ORDERBOOK:
+            orderbook = WsDataOrderbook(data["bids"], data["asks"])
+            self.queue.put(orderbook)
+        elif room_name == self.CHANNEL_TRADES:
+            transactions = data["transactions"]
+
+            for transaction in transactions:
+                rate = int(transaction["price"])
+                amount = float(transaction["amount"])
+                side = transaction["side"]
+                trade = WsDataTrade(rate, amount, side)
+                self.queue.put(trade)
+        else:
+            pass
 
     def __on_connect(self):
         self.sio.emit('join-room', self.CHANNEL_ORDERBOOK)

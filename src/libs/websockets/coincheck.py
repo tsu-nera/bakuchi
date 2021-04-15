@@ -11,9 +11,7 @@ class WebsocketClientCoincheck(WebsocketClientBase):
 
         self.sio = socketio.Client()
 
-        symbols = symbol.split("/")
-        self.PAIR = "{}_{}".format(str.lower(symbols[0]),
-                                   str.lower(symbols[1]))
+        self.PAIR = self._build_pair(symbol)
         self.CHANNEL_ORDERBOOK = "{}-orderbook".format(self.PAIR)
         self.CHANNEL_TRADES = "{}-trades".format(self.PAIR)
 
