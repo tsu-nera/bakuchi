@@ -37,11 +37,6 @@ def fetch_tick(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
     return client.fetch_tick()
 
 
-def fetch_ws_ticks(exhange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
-    client = WebsocketClient(exhange_id, symbol)
-    client.fetch_ticks()
-
-
 def fetch_board(exhange_id, symbol=ccxtconst.SYMBOL_BTC_JPY):
     board = Board(exhange_id, symbol)
 

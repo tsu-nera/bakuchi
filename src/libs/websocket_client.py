@@ -2,6 +2,7 @@ import src.constants.ccxtconst as ccxtconst
 
 from src.libs.websockets.coincheck import WebsocketClientCoincheck
 from src.libs.websockets.liquid import WebsocketClientLiquid
+from src.libs.websockets.bitbank import WebsocketClientBitbank
 
 
 class WebsocketClient():
@@ -10,10 +11,13 @@ class WebsocketClient():
         self.exchange_id = exchange_id
         self.symbol = symbol
 
-        # if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
-        #     self.ws = WebsocketClientCoincheck(queue, exchange_id, symbol)
-        if self.exchange_id == ccxtconst.ExchangeId.LIQUID:
-            self.ws = WebsocketClientLiquid(queue, exchange_id, symbol)
+        # coincheck 動かん...
+        if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
+            self.ws = WebsocketClientCoincheck(queue, symbol)
+        elif self.exchange_id == ccxtconst.ExchangeId.LIQUID:
+            self.ws = WebsocketClientLiquid(queue, symbol)
+        elif self.exchange_id == ccxtconst.ExchangeId.BITBANK:
+            self.ws = WebsocketClientBitbank(queue, symbol)
         else:
             self.ws = None
 
