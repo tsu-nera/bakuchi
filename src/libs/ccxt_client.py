@@ -152,6 +152,7 @@ class CcxtClient():
                 if mode == ccxtconst.TradeMode.NORMAL:
                     limit = 100
                 else:
+                    # from bot
                     limit = 30
                 resp = self.exchange.fetch_my_trades(self.symbol, limit=limit)
 

@@ -13,6 +13,8 @@ from src.config import PROFIT_UPDATE_INTERVAL_MIN
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
 
+import src.utils.trade_history as history
+
 import src.env as env
 import src.utils.datetime as dt
 from src.loggers.logger import get_profit_logger
@@ -42,17 +44,7 @@ class Profit(Thread):
 
     def __update_orders(self):
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
-            client = CcxtClient(exchange_id)
-            orders = client.fetch_trades(ccxtconst.TradeMode.BOT)
-
-            if exchange_id == ccxtconst.ExchangeId.COINCHECK:
-                orders = self.__format_coincheck_orders(orders)
-            elif exchange_id == ccxtconst.ExchangeId.LIQUID:
-                orders = self.__format_liquid_orders(orders)
-            elif exchange_id == ccxtconst.ExchangeId.BITBANK:
-                orders = self.__format_bitbank_orders(orders)
-            else:
-                orders = []
+            orders = history.fetch_trades(exchange_id, ccxtconst.TradeMode.BOT)
 
             fetched_df = pd.DataFrame.from_dict(orders)
             pre_df = self.orders[exchange_id]
@@ -96,7 +88,7 @@ class Profit(Thread):
             orders.append(trade)
 
         return self.__marge_duplicated_orders(orders)
-    
+
     def __parse_datetime_str(self, datetime_str):
         return datetime.datetime.fromtimestamp(int(int(datetime_str) / 1000))
 
