@@ -44,7 +44,7 @@ class Profit(Thread):
 
     def __update_orders(self):
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
-            since = dt.to_millsecond(self.start_timestamp)
+            since = dt.to_since(self.start_timestamp.timestamp())
             orders = history.fetch_trades(exchange_id,
                                           ccxtconst.TradeMode.BOT,
                                           since=since)
