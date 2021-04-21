@@ -3,6 +3,7 @@ import datetime
 
 import numpy as np
 
+import src.constants.exchange as exchange
 import src.constants.ccxtconst as ccxtconst
 import src.utils.trade_history as trade_history
 import src.utils.private as private
@@ -22,8 +23,8 @@ def check_profit_margin():
     二つの取引所の価格差をチェックするツール
     '''
     # とりあえずこの2つで決め打ち
-    ex_x_id = ccxtconst.ExchangeId.BITBANK
-    ex_y_id = ccxtconst.ExchangeId.LIQUID
+    ex_x_id = exchange.ExchangeId.BITBANK
+    ex_y_id = exchange.ExchangeId.LIQUID
 
     bid_x, ask_x = _get_tick(ex_x_id)
     bid_y, ask_y = _get_tick(ex_y_id)
@@ -73,7 +74,7 @@ def adjust_coincheck_buy_amount():
         print("order end")
 
         print("get trade histories")
-        trades = trade_history.get_trades(ccxtconst.ExchangeId.COINCHECK,
+        trades = trade_history.get_trades(exchange.ExchangeId.COINCHECK,
                                           count * 2)
 
         amounts = []
@@ -117,8 +118,8 @@ def ping(exchange_id, eff=False):
 
 
 def ping_with_thread():
-    parallel = ArbitrageParallel(ccxtconst.ExchangeId.BITBANK,
-                                 ccxtconst.ExchangeId.LIQUID,
+    parallel = ArbitrageParallel(exchange.ExchangeId.BITBANK,
+                                 exchange.ExchangeId.LIQUID,
                                  ccxtconst.SYMBOL_BTC_JPY)
 
     responses = parallel.fetch_tick()

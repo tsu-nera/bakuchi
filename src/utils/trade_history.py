@@ -7,6 +7,7 @@ from tabulate import tabulate
 
 import src.utils.private as private
 import src.constants.path as path
+import src.constants.exchange as exchange
 import src.constants.ccxtconst as ccxtconst
 import src.utils.datetime as dt
 
@@ -127,11 +128,11 @@ def _format_bitbank_trades(data):
 def fetch_trades(exchange_id, mode=ccxtconst.TradeMode.NORMAL, since=None):
     trades = private.fetch_trades(exchange_id, mode, since)
 
-    if exchange_id == ccxtconst.ExchangeId.COINCHECK:
+    if exchange_id == exchange.ExchangeId.COINCHECK:
         trades = _format_coincheck_trades(trades)
-    elif exchange_id == ccxtconst.ExchangeId.LIQUID:
+    elif exchange_id == exchange.ExchangeId.LIQUID:
         trades = _format_liquid_trades(trades)
-    elif exchange_id == ccxtconst.ExchangeId.BITBANK:
+    elif exchange_id == exchange.ExchangeId.BITBANK:
         trades = _format_bitbank_trades(trades)
     else:
         trades = []
@@ -153,8 +154,8 @@ def save_trades(exchange_id):
 
 
 def show_recent_profits(hours=None):
-    ex1_id = ccxtconst.ExchangeId.LIQUID
-    ex2_id = ccxtconst.ExchangeId.BITBANK
+    ex1_id = exchange.ExchangeId.LIQUID
+    ex2_id = exchange.ExchangeId.BITBANK
     ex1_trades = fetch_trades(ex1_id)
     ex2_trades = fetch_trades(ex2_id)
 
@@ -251,7 +252,7 @@ def show_recent_profits(hours=None):
 def backup_trades():
     from_dir_path = path.TRADES_RAWDATA_DIR_PATH
 
-    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+    for exchange_id in exchange.EXCHANGE_ID_LIST:
         from_file_name = _get_latest_file_name(exchange_id)
 
         from_file_path = os.path.join(from_dir_path, from_file_name)
@@ -286,12 +287,12 @@ def _read_trades(timestamp, exchange_id):
 
 
 def read_coincheck(timestamp):
-    exchange_id = ccxtconst.ExchangeId.COINCHECK
+    exchange_id = exchange.ExchangeId.COINCHECK
     return _read_trades(timestamp, exchange_id)
 
 
 def read_liquid(timestamp):
-    exchange_id = ccxtconst.ExchangeId.LIQUID
+    exchange_id = exchange.ExchangeId.LIQUID
     return _read_trades(timestamp, exchange_id)
 
 
@@ -333,7 +334,7 @@ def save_report_trades(dir_name, start_timestamp, end_timestamp):
 
     since = dt.to_since(int(start_timestamp.timestamp()))
 
-    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+    for exchange_id in exchange.EXCHANGE_ID_LIST:
         trades = fetch_trades(exchange_id, since=since)
         df = pd.DataFrame.from_dict(trades)
 
@@ -357,6 +358,6 @@ def get_trades(exchange_id, count=None):
 
 
 def run_bot():
-    res = fetch_trades(ccxtconst.ExchangeId.COINCHECK,
+    res = fetch_trades(exchange.ExchangeId.COINCHECK,
                        mode=ccxtconst.TradeMode.BOT)
     print(res)

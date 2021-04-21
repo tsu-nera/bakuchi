@@ -9,7 +9,7 @@ from tabulate import tabulate
 from jinja2 import Environment, FileSystemLoader
 
 import src.constants.path as path
-import src.constants.ccxtconst as ccxtconst
+import src.constants.exchange as exchange
 
 from src.utils.backtesting import Backtesting
 from src.utils.trade_analysis import TradeAnalysis

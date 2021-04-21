@@ -1,4 +1,4 @@
-import src.constants.ccxtconst as ccxtconst
+import src.constants.exchange as exchange
 from enum import Enum, auto
 
 SOCKETIO_URL_COINCHECK = 'https://ws.coincheck.com'

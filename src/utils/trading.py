@@ -3,6 +3,7 @@ import ccxt
 import shutil
 import traceback
 
+import src.constants.exchange as exchange
 import src.constants.ccxtconst as ccxtconst
 from src.libs.asset import Asset
 from src.libs.profit import Profit
@@ -54,7 +55,7 @@ def backup_trading_orders(current_trading_dir):
         target_file_path = os.path.join(target_dir_path, file_name)
         shutil.copy(file, target_file_path)
 
-    for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+    for exchange_id in exchange.EXCHANGE_ID_LIST:
         file = "{}.csv".format(exchange_id)
         if os.path.exists(file):
             file_name = os.path.basename(file)
@@ -89,8 +90,8 @@ def run_trading(demo_mode=False):
     slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
 
     # run trade
-    arbitrage = ArbitrageTrading(ccxtconst.ExchangeId.LIQUID,
-                                 ccxtconst.ExchangeId.BITBANK,
+    arbitrage = ArbitrageTrading(exchange.ExchangeId.LIQUID,
+                                 exchange.ExchangeId.BITBANK,
                                  ccxtconst.SYMBOL_BTC_JPY,
                                  demo_mode=demo_mode)
 

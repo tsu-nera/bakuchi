@@ -3,7 +3,7 @@ from logging import getLogger
 
 import src.utils.datetime as dt
 from src.loggers.logger import create_csv_logger
-import src.constants.ccxtconst as ccxtconst
+import src.constants.exchange as exchange
 import src.constants.path as path
 
 
@@ -12,7 +12,7 @@ class AssetLogger():
         self.exchange_ids = ["total"]
         [
             self.exchange_ids.append(exchange_id.value)
-            for exchange_id in ccxtconst.EXCHANGE_ID_LIST
+            for exchange_id in exchange.EXCHANGE_ID_LIST
         ]
 
         self.dir_path = path.ASSET_DATA_DIR_PATH

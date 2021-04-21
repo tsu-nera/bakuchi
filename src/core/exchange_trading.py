@@ -1,6 +1,6 @@
 from src.libs.ccxt_client import CcxtClient
 from .exchange_base import ExchangeBase
-import src.constants.ccxtconst as ccxtconst
+import src.constants.exchange as exchange
 
 from src.config import COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC  # , TRADE_AMOUNT
 
@@ -32,14 +32,14 @@ class ExchangeTrading(ExchangeBase):
                 "btc": btc
             }
 
-        if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
+        if self.exchange_id == exchange.ExchangeId.COINCHECK:
             if info["order_type"] == "market_buy":
                 jpy = float(info["market_buy_amount"])
             else:
                 jpy = float(amount) * float(extinfo)
             btc = amount
             return _to_json(jpy, btc)
-        elif self.exchange_id == ccxtconst.ExchangeId.LIQUID:
+        elif self.exchange_id == exchange.ExchangeId.LIQUID:
             btc = float(info["quantity"])
             jpy = float(info["price"]) * btc
             return _to_json(jpy, btc)
@@ -54,7 +54,7 @@ class ExchangeTrading(ExchangeBase):
 
         # coincheckは amountにBTCではなくて、JPYを指定する。
         # https://coincheck.com/ja/documents/exchange/api#order-new
-        if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
+        if self.exchange_id == exchange.ExchangeId.COINCHECK:
             # coincheckでは buyでどうも実際よりも低い値で注文が成立されるので
             # 補正値でrequestを出してみる
             adjusted_amount = amount + COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC

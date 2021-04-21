@@ -1,4 +1,4 @@
-import src.constants.ccxtconst as ccxtconst
+import src.constants.exchange as exchange
 
 from src.libs.websockets.coincheck import WebsocketClientCoincheck
 from src.libs.websockets.liquid import WebsocketClientLiquid
@@ -12,11 +12,11 @@ class WebsocketClient():
         self.symbol = symbol
 
         # coincheck 動かん...
-        if self.exchange_id == ccxtconst.ExchangeId.COINCHECK:
+        if self.exchange_id == exchange.ExchangeId.COINCHECK:
             self.ws = WebsocketClientCoincheck(queue, symbol)
-        elif self.exchange_id == ccxtconst.ExchangeId.LIQUID:
+        elif self.exchange_id == exchange.ExchangeId.LIQUID:
             self.ws = WebsocketClientLiquid(queue, symbol)
-        elif self.exchange_id == ccxtconst.ExchangeId.BITBANK:
+        elif self.exchange_id == exchange.ExchangeId.BITBANK:
             self.ws = WebsocketClientBitbank(queue, symbol)
         else:
             self.ws = None

@@ -1,5 +1,6 @@
 import os
 
+import src.constants.exchange as exchange
 import src.constants.ccxtconst as ccxtconst
 import src.constants.path as path
 from src.drivers.csv_driver import CsvDriver
@@ -13,13 +14,13 @@ class Backtesting():
         self.timestamp = timestamp
         self.csv_driver = CsvDriver()
 
-        self.df_ex1 = self._read_df(ccxtconst.ExchangeId.BITBANK)
-        self.df_ex2 = self._read_df(ccxtconst.ExchangeId.LIQUID)
+        self.df_ex1 = self._read_df(exchange.ExchangeId.BITBANK)
+        self.df_ex2 = self._read_df(exchange.ExchangeId.LIQUID)
 
         self.arbitrage = ArbitrageBacktesting(self.df_ex1, self.df_ex2,
                                               ccxtconst.SYMBOL_BTC_JPY,
-                                              ccxtconst.ExchangeId.BITBANK,
-                                              ccxtconst.ExchangeId.LIQUID,
+                                              exchange.ExchangeId.BITBANK,
+                                              exchange.ExchangeId.LIQUID,
                                               simulate_mode)
 
     def _get_file_path(self, exchange_id):

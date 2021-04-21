@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from tabulate import tabulate
 
-import src.constants.ccxtconst as ccxtconst
+import src.constants.exchange as exchange
 import src.constants.path as path
 import src.utils.json as json
 import src.utils.datetime as dt
@@ -16,8 +16,8 @@ import matplotlib.dates as mdates
 class TradeAnalysis():
     def __init__(self, timestamp):
         # TODO 決め打ちの Exchange idなのであとで修正が入る
-        self.__ex1_id = ccxtconst.EXCHANGE_ID_LIST[0]
-        self.__ex2_id = ccxtconst.EXCHANGE_ID_LIST[1]
+        self.__ex1_id = exchange.EXCHANGE_ID_LIST[0]
+        self.__ex2_id = exchange.EXCHANGE_ID_LIST[1]
 
         self.timestamp = timestamp
         self.dir_path = os.path.join(path.REPORTS_DIR, timestamp)
@@ -108,7 +108,7 @@ class TradeAnalysis():
             self.start_asset['total']['jpy'] + sum([
                 btc_to_jpy(self.start_asset[exchange_id.value]['btc'],
                            self.end_asset[exchange_id.value]['bid'])
-                for exchange_id in ccxtconst.EXCHANGE_ID_LIST
+                for exchange_id in exchange.EXCHANGE_ID_LIST
             ]))
         self.result["bot_profit_jpy"] = format_jpy_float(
             self.end_asset["total"]["total_jpy"] -

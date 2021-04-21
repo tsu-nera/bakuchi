@@ -4,8 +4,10 @@ from threading import Thread
 
 import pandas as pd
 
+import src.constants.exchange as exchange
 import src.constants.ccxtconst as ccxtconst
 import src.constants.path as path
+
 from src.config import PROFIT_UPDATE_INTERVAL_MIN
 
 from src.libs.slack_client import SlackClient
@@ -14,7 +16,9 @@ import src.utils.trade_history as history
 
 import src.env as env
 import src.utils.datetime as dt
-from src.utils.asset import format_jpy_float, read_start_asset
+
+from src.utils.asset import format_jpy_float
+from src.libs.asset import Asset
 
 from src.loggers.logger import get_profit_logger
 
@@ -28,8 +32,10 @@ class Profit(Thread):
         order_columns = [
             "datetime", "pair", "side", "fee", "amount", "price", "rate"
         ]
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        for exchange_id in exchange.EXCHANGE_ID_LIST:
             self.orders[exchange_id] = pd.DataFrame(columns=order_columns)
+
+        self.asset = Asset()
 
         self.profits = []
         self.start_timestamp = dt.now()
@@ -43,7 +49,7 @@ class Profit(Thread):
         self.__update_profit_stats()
 
     def __update_orders(self):
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        for exchange_id in exchange.EXCHANGE_ID_LIST:
             since = dt.to_since(self.start_timestamp.timestamp())
             orders = history.fetch_trades(exchange_id,
                                           ccxtconst.TradeMode.BOT,
@@ -83,8 +89,8 @@ class Profit(Thread):
         self.profits = []
         self.total_profit = 0
 
-        x_orders = self.orders[ccxtconst.EXCHANGE_ID_LIST[0]]
-        y_orders = self.orders[ccxtconst.EXCHANGE_ID_LIST[1]]
+        x_orders = self.orders[exchange.EXCHANGE_ID_LIST[0]]
+        y_orders = self.orders[exchange.EXCHANGE_ID_LIST[1]]
 
         if len(x_orders) > len(y_orders):
             x_orders = x_orders[:len(y_orders)]
@@ -117,16 +123,25 @@ class Profit(Thread):
             self.total_profit = round(self.total_profit + profit, 3)
 
     def __update_profit_stats(self):
-        self.stats_bot = self.calc_bot_profit(self.start_asset_total,
-                                              self.current_asset_total)
-        self.stats_market = self.calc_market_profit(self.start_asset_total,
-                                                    self.start_asset_total)
+        self.current_asset_total = self.asset.get_total_jpy()
+
+        # Bot稼動での利益
+        self.stats_bot = self.calc_bot_profit()
+
+        # 市場利益
+        self.stats_market = self.calc_market_profit()
+
+        # 稼動時の利益から市場利益を除いた、純粋なトレード利益
         self.stats_trade = self.calc_trade_profit(self.stats_bot,
                                                   self.stats_market)
 
     def run(self):
-        self.start_asset = read_start_asset()
-        self.start_asset_total = self.start_asset["total"]["total_jpy"]
+        jpy, btc, btc_as_jpy, total_jpy = self.asset.get_total()
+
+        self.start_asset_jpy = jpy
+        self.start_asset_btc = btc
+        self.start_asset_btc_as_jpy = btc_as_jpy
+        self.start_asset_total = total_jpy
         self.current_asset_total = self.start_asset_total
 
         while True:
@@ -152,7 +167,7 @@ class Profit(Thread):
         self.__notify_slack()
 
     def __orders_to_csv(self):
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        for exchange_id in exchange.EXCHANGE_ID_LIST:
             orders = self.orders[exchange_id]
             target_file = "{}.csv".format(exchange_id.value)
             target_path = os.path.join(path.ORDERS_LOG_DIR, target_file)
@@ -176,16 +191,18 @@ class Profit(Thread):
         slack.notify_with_datetime(message)
 
     def display(self):
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        for exchange_id in exchange.EXCHANGE_ID_LIST:
             print(self.orders)
             print()
         print(self.profits)
 
-    def calc_bot_profit(self, asset_start, asset_end):
-        return format_jpy_float(asset_end - asset_start)
+    def calc_bot_profit(self):
+        return format_jpy_float(self.current_asset_total -
+                                self.start_asset_total)
 
-    def calc_market_profit(self, market_price_start, market_price_end):
-        return format_jpy_float(market_price_end - market_price_start)
+    def calc_market_profit(self):
+        # トレード開始時に保持していたBTCに市場の値動きの差分をかける
+        pass
 
     def calc_trade_profit(self, bot_profit, market_profit):
         return bot_profit - market_profit

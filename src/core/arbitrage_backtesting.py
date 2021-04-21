@@ -5,11 +5,13 @@ import src.config as config
 import src.utils.datetime as dt
 
 from src.core.arbitrage_base import ArbitrageBase
-from src.core.tick import Tick
+from src.models.tick import Tick
 from src.core.exchange_backtesting import ExchangeBacktesting as Exchange
 
 from src.utils.asset import format_btc, format_jpy
+
 from src.constants.arbitrage import Strategy
+from src.constants.exchange import EXCHANGE_ID_LIST
 
 
 class ArbitrageBacktesting(ArbitrageBase):
@@ -80,8 +82,9 @@ class ArbitrageBacktesting(ArbitrageBase):
         i = self.current_index
 
         timestamp = self.timestamps[i]
-        tick_x = Tick(timestamp, self.x_bids[i], self.x_asks[i])
-        tick_y = Tick(timestamp, self.y_bids[i], self.y_asks[i])
+        exchange_id = EXCHANGE_ID_LIST[i]
+        tick_x = Tick(exchange_id, timestamp, self.x_bids[i], self.x_asks[i])
+        tick_y = Tick(exchange_id, timestamp, self.y_bids[i], self.y_asks[i])
 
         return tick_x, tick_y
 
