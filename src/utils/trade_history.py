@@ -97,8 +97,7 @@ def _format_liquid_trades(data):
     trades = []
 
     for t in data:
-        created_at = datetime.datetime.fromtimestamp(int(t["created_at"]))
-        timestamp = dt.format_timestamp(created_at)
+        timestamp = dt.from_millsecond(int(t['created_at']))
         amount = t["quantity"]
         rate = float(t["price"])
         price = round(rate * float(amount), 3)
@@ -113,9 +112,7 @@ def _format_bitbank_trades(data):
     trades = []
 
     for t in data:
-        created_at = datetime.datetime.fromtimestamp(
-            int(int(t["executed_at"]) / 1000))
-        timestamp = dt.format_timestamp(created_at)
+        timestamp = dt.from_millsecond(int(t["executed_at"]))
 
         amount = t["amount"]
         rate = float(t["price"])
@@ -333,10 +330,7 @@ def save_report_trades(dir_name, start_timestamp, end_timestamp):
     if not os.path.exists(to_dir):
         os.mkdir(to_dir)
 
-    def __convert_timestamp_to_millsecond(timestamp):
-        return int(timestamp.timestamp() * 1000)
-
-    since = __convert_timestamp_to_millsecond(start_timestamp)
+    since = dt.to_millsecond(start_timestamp)
 
     for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
         trades = fetch_trades(exchange_id, since=since)

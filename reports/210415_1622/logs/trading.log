@@ -1,0 +1,19 @@
+[INFO:2021-04-15 16:22:41,424] =========================
+[INFO:2021-04-15 16:22:41,424] === trading bot start ===
+[INFO:2021-04-15 16:22:41,425] =========================
+[INFO:2021-04-15 16:22:45,626] amount=0.0007, open_threshold=5000, profit_margin_diff=5000, tick_inverval_sec=1.0
+[INFO:2021-04-15 16:23:54,061] OPENING buy-liquid(4808.758), sell-bitbank(4807.243), margin=5505, profit=-1.515
+[INFO:2021-04-15 16:24:09,201] CLOSING buy-bitbank(4803.772), sell-liquid(4802.876), margin=1716, profit=-0.897
+[INFO:2021-04-15 16:24:12,881] OPENING buy-bitbank(4805.854), sell-liquid(4802.244), margin=5141, profit=-3.611
+[INFO:2021-04-15 16:24:28,881] CLOSING buy-liquid(4803.561), sell-bitbank(4802.151), margin=213, profit=-1.41
+[INFO:2021-04-15 16:25:52,128] OPENING buy-bitbank(4804.294), sell-liquid(4801.264), margin=6747, profit=-3.03
+[INFO:2021-04-15 16:27:59,738] open threshold changed from 5000 to 8785
+[INFO:2021-04-15 16:29:27,358] CLOSING buy-liquid(4817.749), sell-bitbank(4814.253), margin=-2298, profit=-3.496
+[INFO:2021-04-15 16:33:12,986] open threshold changed from 8745 to 5000
+[INFO:2021-04-15 16:36:54,441] OPENING buy-bitbank(4806.376), sell-liquid(4803.777), margin=6265, profit=-2.599
+[INFO:2021-04-15 16:38:24,403] open threshold changed from 5000 to 5000
+[INFO:2021-04-15 16:38:28,664] CLOSING buy-liquid(4806.842), sell-bitbank(4806.06), margin=-1117, profit=-0.782
+[INFO:2021-04-15 16:38:34,438] keyboard interuption occured. stop trading bot...
+[INFO:2021-04-15 16:38:34,561] =======================
+[INFO:2021-04-15 16:38:34,561] === trading bot end ===
+[INFO:2021-04-15 16:38:34,562] =======================

@@ -1,6 +1,5 @@
 import os
 import time
-import datetime
 from threading import Thread
 
 import pandas as pd
@@ -12,6 +11,8 @@ from src.config import PROFIT_UPDATE_INTERVAL_MIN
 
 from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
+
+import src.utils.trade_history as history
 
 import src.env as env
 import src.utils.datetime as dt
@@ -31,7 +32,8 @@ class Profit(Thread):
             self.orders[exchange_id] = pd.DataFrame(columns=order_columns)
 
         self.profits = []
-        self.start_timestamp = datetime.datetime.now()
+        self.start_timestamp = dt.now()
+        self.start_timestamp_utc = dt.utcnow()
         self.total_profit = 0
 
         self.__logger = get_profit_logger()
@@ -42,17 +44,10 @@ class Profit(Thread):
 
     def __update_orders(self):
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
-            client = CcxtClient(exchange_id)
-            orders = client.fetch_trades(ccxtconst.TradeMode.BOT)
-
-            if exchange_id == ccxtconst.ExchangeId.COINCHECK:
-                orders = self.__format_coincheck_orders(orders)
-            elif exchange_id == ccxtconst.ExchangeId.LIQUID:
-                orders = self.__format_liquid_orders(orders)
-            elif exchange_id == ccxtconst.ExchangeId.BITBANK:
-                orders = self.__format_bitbank_orders(orders)
-            else:
-                orders = []
+            since = dt.to_millsecond(self.start_timestamp)
+            orders = history.fetch_trades(exchange_id,
+                                          ccxtconst.TradeMode.BOT,
+                                          since=since)
 
             fetched_df = pd.DataFrame.from_dict(orders)
             pre_df = self.orders[exchange_id]
@@ -60,9 +55,9 @@ class Profit(Thread):
             merged_df = pd.concat([pre_df, fetched_df]).drop_duplicates()
             self.orders[exchange_id] = merged_df
 
-    def __create_order(self, datetime, pair, side, fee, amount, price, rate):
+    def __create_order(self, timestamp, pair, side, fee, amount, price, rate):
         return {
-            "datetime": datetime,
+            "datetime": timestamp,
             "pair": pair,
             "side": side,
             "fee": fee,
@@ -70,97 +65,6 @@ class Profit(Thread):
             "price": round(abs(float(price)), 3),  # 実際の価格 amount x rate
             "rate": round(float(rate), 3)  # 現在の価値
         }
-
-    def __convert_coincheck_datetime(self, d_str):
-        timestamp = datetime.datetime.fromisoformat(d_str.replace('Z', ''))
-        timestamp = timestamp + datetime.timedelta(hours=9)
-        return timestamp.strftime(dt.DATETIME_BASE_FORMAT)
-
-    def __is_valid_timestamp(self, timestamp):
-        timestamp = datetime.datetime.strptime(timestamp,
-                                               dt.DATETIME_BASE_FORMAT)
-        return timestamp > self.start_timestamp
-
-    def __format_coincheck_orders(self, data):
-        orders = []
-        for t in data:
-            timestamp = self.__convert_coincheck_datetime(t["created_at"])
-            if not self.__is_valid_timestamp(timestamp):
-                continue
-
-            trade = self.__create_order(timestamp, t["pair"], t["side"],
-                                        float(t["fee"]),
-                                        float(t["funds"]["btc"]),
-                                        float(t["funds"]["jpy"]),
-                                        float(t["rate"]))
-            orders.append(trade)
-
-        return self.__marge_duplicated_orders(orders)
-    
-    def __parse_datetime_str(self, datetime_str):
-        return datetime.datetime.fromtimestamp(int(int(datetime_str) / 1000))
-
-    def __format_liquid_orders(self, data):
-        orders = []
-
-        for t in data:
-            created_at = self.__parse_datetime_str(t["created_at"])
-            timestamp = dt.format_timestamp(created_at)
-            if not self.__is_valid_timestamp(timestamp):
-                continue
-
-            amount = float(t["quantity"])
-            rate = float(t["price"])
-            price = amount * rate
-            trade = self.__create_order(timestamp, t["pair"], t["taker_side"],
-                                        0, amount, price, rate)
-            orders.append(trade)
-        return self.__marge_duplicated_orders(orders)
-
-    def __format_bitbank_orders(self, data):
-        orders = []
-
-        for t in data:
-            created_at = self.__parse_datetime_str(t["executed_at"])
-            timestamp = dt.format_timestamp(created_at)
-            if not self.__is_valid_timestamp(timestamp):
-                continue
-
-            amount = float(t["amount"])
-            rate = float(t["price"])
-            price = amount * rate
-            trade = self.__create_order(timestamp, t["pair"], t["side"], 0,
-                                        amount, price, rate)
-            orders.append(trade)
-        return self.__marge_duplicated_orders(orders)
-
-    def __marge_duplicated_orders(self, orders):
-        dup = [trade['datetime'] for trade in orders]
-        dup_count_list = [dup.count(x) for x in dup]
-
-        filterd_orders = []
-
-        i = 0
-        while i < len(dup):
-            n = dup_count_list[i]
-
-            if n > 1:
-                current_trade = orders[i]
-                total_amount = sum([orders[i + j]["amount"] for j in range(n)])
-                total_price = sum([orders[i + j]["price"] for j in range(n)])
-                average_rate = mean([orders[i + j]["rate"] for j in range(n)])
-
-                order = self.__create_order(current_trade["datetime"],
-                                            current_trade["pair"],
-                                            current_trade["side"],
-                                            current_trade["fee"], total_amount,
-                                            total_price, average_rate)
-            else:
-                order = orders[i]
-            filterd_orders.append(order)
-            i += n
-
-        return filterd_orders
 
     def __update_profits(self):
         def __calc_profit(x_side, x_price, y_side, y_price):
