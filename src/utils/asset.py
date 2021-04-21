@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 
+import src.utils.json as json
 import src.constants.path as path
 
 
@@ -12,6 +13,11 @@ def read_asset(exchange_id_str):
 
 def read_asset_total():
     return read_asset("total")
+
+
+def read_start_asset():
+    file_path = path.TRADING_START_ASSET_FILE_PATH
+    return json.read(file_path)
 
 
 def format_jpy(jpy):

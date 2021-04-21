@@ -100,9 +100,6 @@ def run_trading(demo_mode=False):
         logger.info("====================================")
         logger.info("=== trading bot start(demo mode) ===")
         logger.info("====================================")
-
-        # TODO
-        profit.start()
     else:
         logger.info("=========================")
         logger.info("=== trading bot start ===")

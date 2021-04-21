@@ -14,6 +14,8 @@ import src.utils.trade_history as history
 
 import src.env as env
 import src.utils.datetime as dt
+from src.utils.asset import format_jpy_float, read_start_asset
+
 from src.loggers.logger import get_profit_logger
 
 
@@ -38,6 +40,7 @@ class Profit(Thread):
     def __update(self):
         self.__update_orders()
         self.__update_profits()
+        self.__update_profit_stats()
 
     def __update_orders(self):
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
@@ -113,7 +116,19 @@ class Profit(Thread):
             self.profits.append(data)
             self.total_profit = round(self.total_profit + profit, 3)
 
+    def __update_profit_stats(self):
+        self.stats_bot = self.calc_bot_profit(self.start_asset_total,
+                                              self.current_asset_total)
+        self.stats_market = self.calc_market_profit(self.start_asset_total,
+                                                    self.start_asset_total)
+        self.stats_trade = self.calc_trade_profit(self.stats_bot,
+                                                  self.stats_market)
+
     def run(self):
+        self.start_asset = read_start_asset()
+        self.start_asset_total = self.start_asset["total"]["total_jpy"]
+        self.current_asset_total = self.start_asset_total
+
         while True:
             self.run_bot()
             time.sleep(PROFIT_UPDATE_INTERVAL_MIN * 60)
@@ -129,8 +144,10 @@ class Profit(Thread):
 
         # profit log
         self.__profits_to_csv()
+
         # ログ出力
         self.__logging()
+
         # slack出力
         self.__notify_slack()
 
@@ -147,7 +164,9 @@ class Profit(Thread):
         df.to_csv(path.PROFIT_CSV_FILE_PATH, index=None)
 
     def __logging(self):
-        message = "profit={}".format(self.total_profit)
+        message = "profit={}, bot={}, market={}, trade={}".format(
+            self.total_profit, self.stats_bot, self.stats_market,
+            self.stats_trade)
         self.__logger.info(message)
 
     def __notify_slack(self):
@@ -161,3 +180,12 @@ class Profit(Thread):
             print(self.orders)
             print()
         print(self.profits)
+
+    def calc_bot_profit(self, asset_start, asset_end):
+        return format_jpy_float(asset_end - asset_start)
+
+    def calc_market_profit(self, market_price_start, market_price_end):
+        return format_jpy_float(market_price_end - market_price_start)
+
+    def calc_trade_profit(self, bot_profit, market_profit):
+        return bot_profit - market_profit
