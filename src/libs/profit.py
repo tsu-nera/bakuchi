@@ -3,13 +3,11 @@ import time
 from threading import Thread
 
 import pandas as pd
-from statistics import mean
 
 import src.constants.ccxtconst as ccxtconst
 import src.constants.path as path
 from src.config import PROFIT_UPDATE_INTERVAL_MIN
 
-from src.libs.ccxt_client import CcxtClient
 from src.libs.slack_client import SlackClient
 
 import src.utils.trade_history as history
@@ -33,7 +31,6 @@ class Profit(Thread):
 
         self.profits = []
         self.start_timestamp = dt.now()
-        self.start_timestamp_utc = dt.utcnow()
         self.total_profit = 0
 
         self.__logger = get_profit_logger()
