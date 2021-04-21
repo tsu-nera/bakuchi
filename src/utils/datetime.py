@@ -54,6 +54,10 @@ def to_millsecond(timestamp):
     return int(timestamp.timestamp() * 1000)
 
 
+def from_millsecond(datetime_ms):
+    return datetime.datetime.fromtimestamp(int(datetime_ms / 1000))
+
+
 def convert_coincheck_datetime(d_str):
     timestamp = datetime.datetime.fromisoformat(d_str.replace('Z', ''))
     timestamp = timestamp + datetime.timedelta(hours=9)
@@ -61,5 +65,6 @@ def convert_coincheck_datetime(d_str):
 
 
 def to_timestamp(timestamp):
-    datetime = datetime.datetime.fromtimestamp(to_millsecond(timestamp))
-    return format_timestamp(datetime)
+    datetime_millsecond = datetime.datetime.fromtimestamp(
+        to_millsecond(timestamp))
+    return format_timestamp(datetime_millsecond)

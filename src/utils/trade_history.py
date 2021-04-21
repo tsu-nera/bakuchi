@@ -97,8 +97,7 @@ def _format_liquid_trades(data):
     trades = []
 
     for t in data:
-        created_at = datetime.datetime.fromtimestamp(int(t["created_at"]))
-        timestamp = dt.format_timestamp(created_at)
+        timestamp = dt.from_millsecond(int(t['created_at']))
         amount = t["quantity"]
         rate = float(t["price"])
         price = round(rate * float(amount), 3)
@@ -113,7 +112,7 @@ def _format_bitbank_trades(data):
     trades = []
 
     for t in data:
-        timestamp = dt.to_timestamp(t["executed_at"])
+        timestamp = dt.from_millsecond(int(t["executed_at"]))
 
         amount = t["amount"]
         rate = float(t["price"])

@@ -1,6 +1,5 @@
 import os
 import time
-import datetime
 from threading import Thread
 
 import pandas as pd
@@ -34,6 +33,7 @@ class Profit(Thread):
 
         self.profits = []
         self.start_timestamp = dt.now()
+        self.start_timestamp_utc = dt.utcnow()
         self.total_profit = 0
 
         self.__logger = get_profit_logger()
@@ -44,10 +44,10 @@ class Profit(Thread):
 
     def __update_orders(self):
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+            since = dt.to_millsecond(self.start_timestamp)
             orders = history.fetch_trades(exchange_id,
                                           ccxtconst.TradeMode.BOT,
-                                          since=dt.to_millsecond(
-                                              self.start_timestamp))
+                                          since=since)
 
             fetched_df = pd.DataFrame.from_dict(orders)
             pre_df = self.orders[exchange_id]
@@ -55,9 +55,9 @@ class Profit(Thread):
             merged_df = pd.concat([pre_df, fetched_df]).drop_duplicates()
             self.orders[exchange_id] = merged_df
 
-    def __create_order(self, datetime, pair, side, fee, amount, price, rate):
+    def __create_order(self, timestamp, pair, side, fee, amount, price, rate):
         return {
-            "datetime": datetime,
+            "datetime": timestamp,
             "pair": pair,
             "side": side,
             "fee": fee,
@@ -65,88 +65,6 @@ class Profit(Thread):
             "price": round(abs(float(price)), 3),  # 実際の価格 amount x rate
             "rate": round(float(rate), 3)  # 現在の価値
         }
-
-    def __is_valid_timestamp(self, timestamp):
-        return timestamp > self.start_timestamp
-
-    def __format_coincheck_orders(self, data):
-        orders = []
-        for t in data:
-            timestamp = dt.convert_coincheck_datetime(t["created_at"])
-
-            if not self.__is_valid_timestamp(timestamp):
-                continue
-
-            timestamp_str = timestamp.strftime(DATETIME_BASE_FORMAT)
-            trade = self.__create_order(timestamp_str, t["pair"], t["side"],
-                                        float(t["fee"]),
-                                        float(t["funds"]["btc"]),
-                                        float(t["funds"]["jpy"]),
-                                        float(t["rate"]))
-            orders.append(trade)
-
-        return self.__marge_duplicated_orders(orders)
-
-    def __format_liquid_orders(self, data):
-        orders = []
-
-        for t in data:
-            timestamp = dt.to_timestamp(t["created_at"])
-            if not self.__is_valid_timestamp(timestamp):
-                continue
-
-            amount = float(t["quantity"])
-            rate = float(t["price"])
-            price = amount * rate
-            trade = self.__create_order(timestamp, t["pair"], t["taker_side"],
-                                        0, amount, price, rate)
-            orders.append(trade)
-        return self.__marge_duplicated_orders(orders)
-
-    def __format_bitbank_orders(self, data):
-        orders = []
-
-        for t in data:
-            timestamp = dt.to_timestamp(t["executed_at"])
-
-            if not self.__is_valid_timestamp(timestamp):
-                continue
-
-            amount = float(t["amount"])
-            rate = float(t["price"])
-            price = amount * rate
-            trade = self.__create_order(timestamp, t["pair"], t["side"], 0,
-                                        amount, price, rate)
-            orders.append(trade)
-        return self.__marge_duplicated_orders(orders)
-
-    def __marge_duplicated_orders(self, orders):
-        dup = [trade['datetime'] for trade in orders]
-        dup_count_list = [dup.count(x) for x in dup]
-
-        filterd_orders = []
-
-        i = 0
-        while i < len(dup):
-            n = dup_count_list[i]
-
-            if n > 1:
-                current_trade = orders[i]
-                total_amount = sum([orders[i + j]["amount"] for j in range(n)])
-                total_price = sum([orders[i + j]["price"] for j in range(n)])
-                average_rate = mean([orders[i + j]["rate"] for j in range(n)])
-
-                order = self.__create_order(current_trade["datetime"],
-                                            current_trade["pair"],
-                                            current_trade["side"],
-                                            current_trade["fee"], total_amount,
-                                            total_price, average_rate)
-            else:
-                order = orders[i]
-            filterd_orders.append(order)
-            i += n
-
-        return filterd_orders
 
     def __update_profits(self):
         def __calc_profit(x_side, x_price, y_side, y_price):
