@@ -139,7 +139,7 @@ class Board():
         self.__logging_tick(bid_rate, ask_rate)
 
         timestamp = dt.now_timestamp_ms()
-        tick = Tick(timestamp, bid_rate, ask_rate)
+        tick = Tick(self.__exchange_id, timestamp, bid_rate, ask_rate)
 
         return tick
 
