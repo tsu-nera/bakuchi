@@ -16,8 +16,8 @@ import matplotlib.dates as mdates
 class TradeAnalysis():
     def __init__(self, timestamp):
         # TODO 決め打ちの Exchange idなのであとで修正が入る
-        self.__ex1_id = ccxtconst.ExchangeId.BITBANK
-        self.__ex2_id = ccxtconst.ExchangeId.LIQUID
+        self.__ex1_id = ccxtconst.EXCHANGE_ID_LIST[0]
+        self.__ex2_id = ccxtconst.EXCHANGE_ID_LIST[1]
 
         self.timestamp = timestamp
         self.dir_path = os.path.join(path.REPORTS_DIR, timestamp)

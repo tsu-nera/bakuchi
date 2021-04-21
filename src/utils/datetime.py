@@ -50,12 +50,12 @@ def now_timestamp_ms():
     return datetime.datetime.now().strftime(format_string)[:-3]
 
 
-def to_millsecond(timestamp):
-    return int(timestamp.timestamp() * 1000)
+def to_since(timestamp):
+    return int(timestamp * 1000)
 
 
-def from_millsecond(datetime_ms):
-    return datetime.datetime.fromtimestamp(int(datetime_ms / 1000))
+def from_timestamp_to_datetime(timestamp_ms):
+    return datetime.datetime.fromtimestamp(int(int(timestamp_ms)))
 
 
 def convert_coincheck_datetime(d_str):
@@ -64,7 +64,6 @@ def convert_coincheck_datetime(d_str):
     return timestamp
 
 
-def to_timestamp(timestamp):
-    datetime_millsecond = datetime.datetime.fromtimestamp(
-        to_millsecond(timestamp))
-    return format_timestamp(datetime_millsecond)
+def to_timestamp_str(timestamp_ms):
+    datetime = from_timestamp_to_datetime(timestamp_ms)
+    return format_timestamp(datetime)

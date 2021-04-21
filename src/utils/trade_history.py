@@ -13,12 +13,12 @@ import src.utils.datetime as dt
 import src.config as config
 
 
-def _create_trade(id, order_id, datetime, pair, side, fee, amount, price,
+def _create_trade(id, order_id, timestamp, pair, side, fee, amount, price,
                   rate):
     return {
         "id": int(id),
         "order_id": int(order_id),
-        "datetime": datetime,
+        "datetime": timestamp,
         "pair": pair,
         "side": side,
         "fee": fee,
@@ -97,12 +97,13 @@ def _format_liquid_trades(data):
     trades = []
 
     for t in data:
-        timestamp = dt.from_millsecond(int(t['created_at']))
+        timestamp_str = dt.to_timestamp_str(int(t['created_at']))
+
         amount = t["quantity"]
         rate = float(t["price"])
         price = round(rate * float(amount), 3)
 
-        trade = _create_trade(t["id"], t["order_id"], timestamp, t["pair"],
+        trade = _create_trade(t["id"], t["order_id"], timestamp_str, t["pair"],
                               t["taker_side"], 0, amount, price, rate)
         trades.append(trade)
     return _marge_duplicated_trades(trades)
@@ -112,12 +113,12 @@ def _format_bitbank_trades(data):
     trades = []
 
     for t in data:
-        timestamp = dt.from_millsecond(int(t["executed_at"]))
-
+        timestamp_str = dt.to_timestamp_str(int(t["executed_at"]) / 1000)
         amount = t["amount"]
         rate = float(t["price"])
         price = round(rate * float(amount), 3)
-        trade = _create_trade(t["trade_id"], t["order_id"], timestamp,
+
+        trade = _create_trade(t["trade_id"], t["order_id"], timestamp_str,
                               t["pair"], t["side"], 0, amount, price, rate)
         trades.append(trade)
     return _marge_duplicated_trades(trades)
@@ -330,7 +331,7 @@ def save_report_trades(dir_name, start_timestamp, end_timestamp):
     if not os.path.exists(to_dir):
         os.mkdir(to_dir)
 
-    since = dt.to_millsecond(start_timestamp)
+    since = dt.to_since(int(start_timestamp.timestamp()))
 
     for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
         trades = fetch_trades(exchange_id, since=since)
