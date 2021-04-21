@@ -33,7 +33,7 @@ class Profit(Thread):
             self.orders[exchange_id] = pd.DataFrame(columns=order_columns)
 
         self.profits = []
-        self.start_timestamp = datetime.datetime.now()
+        self.start_timestamp = dt.now()
         self.total_profit = 0
 
         self.__logger = get_profit_logger()
@@ -44,7 +44,10 @@ class Profit(Thread):
 
     def __update_orders(self):
         for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
-            orders = history.fetch_trades(exchange_id, ccxtconst.TradeMode.BOT)
+            orders = history.fetch_trades(exchange_id,
+                                          ccxtconst.TradeMode.BOT,
+                                          since=dt.to_millsecond(
+                                              self.start_timestamp))
 
             fetched_df = pd.DataFrame.from_dict(orders)
             pre_df = self.orders[exchange_id]
@@ -63,24 +66,19 @@ class Profit(Thread):
             "rate": round(float(rate), 3)  # 現在の価値
         }
 
-    def __convert_coincheck_datetime(self, d_str):
-        timestamp = datetime.datetime.fromisoformat(d_str.replace('Z', ''))
-        timestamp = timestamp + datetime.timedelta(hours=9)
-        return timestamp.strftime(dt.DATETIME_BASE_FORMAT)
-
     def __is_valid_timestamp(self, timestamp):
-        timestamp = datetime.datetime.strptime(timestamp,
-                                               dt.DATETIME_BASE_FORMAT)
         return timestamp > self.start_timestamp
 
     def __format_coincheck_orders(self, data):
         orders = []
         for t in data:
-            timestamp = self.__convert_coincheck_datetime(t["created_at"])
+            timestamp = dt.convert_coincheck_datetime(t["created_at"])
+
             if not self.__is_valid_timestamp(timestamp):
                 continue
 
-            trade = self.__create_order(timestamp, t["pair"], t["side"],
+            timestamp_str = timestamp.strftime(DATETIME_BASE_FORMAT)
+            trade = self.__create_order(timestamp_str, t["pair"], t["side"],
                                         float(t["fee"]),
                                         float(t["funds"]["btc"]),
                                         float(t["funds"]["jpy"]),
@@ -89,15 +87,11 @@ class Profit(Thread):
 
         return self.__marge_duplicated_orders(orders)
 
-    def __parse_datetime_str(self, datetime_str):
-        return datetime.datetime.fromtimestamp(int(int(datetime_str) / 1000))
-
     def __format_liquid_orders(self, data):
         orders = []
 
         for t in data:
-            created_at = self.__parse_datetime_str(t["created_at"])
-            timestamp = dt.format_timestamp(created_at)
+            timestamp = dt.to_timestamp(t["created_at"])
             if not self.__is_valid_timestamp(timestamp):
                 continue
 
@@ -113,8 +107,8 @@ class Profit(Thread):
         orders = []
 
         for t in data:
-            created_at = self.__parse_datetime_str(t["executed_at"])
-            timestamp = dt.format_timestamp(created_at)
+            timestamp = dt.to_timestamp(t["executed_at"])
+
             if not self.__is_valid_timestamp(timestamp):
                 continue
 

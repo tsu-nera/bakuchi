@@ -41,6 +41,25 @@ def now_timestamp():
     return datetime.datetime.now().strftime(format_string)
 
 
+def utcnow():
+    return datetime.datetime.utcnow()
+
+
 def now_timestamp_ms():
     format_string = DATETIME_MS_FORMAT
     return datetime.datetime.now().strftime(format_string)[:-3]
+
+
+def to_millsecond(timestamp):
+    return int(timestamp.timestamp() * 1000)
+
+
+def convert_coincheck_datetime(d_str):
+    timestamp = datetime.datetime.fromisoformat(d_str.replace('Z', ''))
+    timestamp = timestamp + datetime.timedelta(hours=9)
+    return timestamp
+
+
+def to_timestamp(timestamp):
+    datetime = datetime.datetime.fromtimestamp(to_millsecond(timestamp))
+    return format_timestamp(datetime)
