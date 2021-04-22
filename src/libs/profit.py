@@ -123,6 +123,7 @@ class Profit(Thread):
             self.total_profit = round(self.total_profit + profit, 3)
 
     def __update_profit_stats(self):
+        self.asset.force_update()
         _, _, _, self.current_asset_total = self.asset.get_total()
         self.current_btcs = self.asset.get_btcs()
 

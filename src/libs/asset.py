@@ -95,7 +95,7 @@ class Asset():
         return int(balance["JPY"]), round(float(balance["BTC"]), 6)
 
     def to_json(self):
-        self.__clear()        
+        self.__clear()
         self.__update()
 
         res = {}
@@ -144,7 +144,7 @@ class Asset():
         '''
         現在の資産を表示する
         '''
-        self.__clear()        
+        self.__clear()
         self.__update()
 
         data = []
@@ -214,7 +214,7 @@ class Asset():
         return "({}) {}[JPY]/{}[BTC]({})/{}[TOTAL JPY]"
 
     def save(self, keyword):
-        self.__clear()        
+        self.__clear()
         self.__update()
 
         # ログファイルへ
@@ -293,6 +293,9 @@ class Asset():
             btcs[exchange_id] = {"btc": asset["btc"], "bid": asset["bid"]}
 
         return btcs
+
+    def force_update(self):
+        self.__update()
 
     def is_equal_btc_amount(self):
         if not self.__is_cached():
