@@ -269,3 +269,13 @@ class Asset():
         self.__update()
         return self.total["jpy"], self.total["btc"], self.total[
             "btc_as_jpy"], self.total["total_jpy"]
+
+    def get_btcs(self):
+        self.__update()
+
+        btcs = {}
+        for asset in self.assets:
+            exchange_id = asset["id"]
+            btcs[exchange_id] = {"btc": asset["btc"], "bid": asset["bid"]}
+
+        return btcs

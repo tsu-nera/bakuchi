@@ -11,6 +11,7 @@ import src.constants.path as path
 from src.config import PROFIT_UPDATE_INTERVAL_MIN
 
 from src.libs.slack_client import SlackClient
+from src.libs.ccxt_client import CcxtClient
 
 import src.utils.trade_history as history
 
@@ -123,7 +124,8 @@ class Profit(Thread):
             self.total_profit = round(self.total_profit + profit, 3)
 
     def __update_profit_stats(self):
-        self.current_asset_total = self.asset.get_total_jpy()
+        _, _, _, self.current_asset_total = self.asset.get_total()
+        self.current_btcs = self.asset.get_btcs()
 
         # Bot稼動での利益
         self.stats_bot = self.calc_bot_profit()
@@ -139,10 +141,13 @@ class Profit(Thread):
         jpy, btc, btc_as_jpy, total_jpy = self.asset.get_total()
 
         self.start_asset_jpy = jpy
-        self.start_asset_btc = btc
+        self.start_asset_btc_total = btc
         self.start_asset_btc_as_jpy = btc_as_jpy
         self.start_asset_total = total_jpy
         self.current_asset_total = self.start_asset_total
+
+        self.start_btcs = self.asset.get_btcs()
+        self.current_btcs = self.start_btcs
 
         while True:
             self.run_bot()
@@ -202,7 +207,17 @@ class Profit(Thread):
 
     def calc_market_profit(self):
         # トレード開始時に保持していたBTCに市場の値動きの差分をかける
-        pass
+        market_profit = 0
+        for exchange_id in exchange.EXCHANGE_ID_LIST:
+            current_bid = self.current_btcs[exchange_id.value]["bid"]
+            start_bid = self.start_btcs[exchange_id.value]["bid"]
+
+            bid_diff = current_bid - start_bid
+
+            market_profit += self.start_btcs[
+                exchange_id.value]["btc"] * bid_diff
+
+        return format_jpy_float(market_profit)
 
     def calc_trade_profit(self, bot_profit, market_profit):
-        return bot_profit - market_profit
+        return format_jpy_float(bot_profit - market_profit)
