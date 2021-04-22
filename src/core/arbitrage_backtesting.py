@@ -82,7 +82,8 @@ class ArbitrageBacktesting(ArbitrageBase):
         i = self.current_index
 
         timestamp = self.timestamps[i]
-        exchange_id = EXCHANGE_ID_LIST[i]
+        # 暫定対処。xとyのロジックはいずれ撤廃するので、そのときの見直しでここも対応する。
+        exchange_id = None
         tick_x = Tick(exchange_id, timestamp, self.x_bids[i], self.x_asks[i])
         tick_y = Tick(exchange_id, timestamp, self.y_bids[i], self.y_asks[i])
 

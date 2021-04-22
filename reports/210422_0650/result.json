@@ -1,0 +1,22 @@
+{
+  "record_count": 7654,
+  "trade_count": 156,
+  "start_timestamp": "2021-04-22 06:50:57",
+  "end_timestamp": "2021-04-22 09:16:25",
+  "duration": 8728,
+  "trade_amount": 0.0006,
+  "open_threshold": 3000,
+  "profit_margin_diff": 3000,
+  "start_price_jpy": 12915,
+  "end_price_jpy": 12341,
+  "profit_jpy": -574,
+  "start_price_btc": 0.0024,
+  "end_price_btc": 0.0024,
+  "profit_btc": 0.0,
+  "total_start_price_jpy": 27163,
+  "total_end_price_jpy": 26237,
+  "total_profit_jpy": -926,
+  "bot_profit_jpy": -926,
+  "market_profit_jpy": -351.065,
+  "trade_profit_jpy": -574.935
+}
