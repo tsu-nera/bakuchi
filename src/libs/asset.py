@@ -295,6 +295,7 @@ class Asset():
         return btcs
 
     def force_update(self):
+        self.__clear()
         self.__update()
 
     def is_equal_btc_amount(self):
