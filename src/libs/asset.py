@@ -29,6 +29,8 @@ class Asset():
         self.append_logger = get_asset_append_logger()
         self.csv_logger = AssetLogger()
 
+        self.__clear()
+
     def _get_tick(self, exchange_id):
         c = CcxtClient(exchange_id)
         tick = c.fetch_tick()
@@ -45,9 +47,14 @@ class Asset():
             "ask": ask
         }
 
-    def __update(self):
+    def __clear(self):
         self.assets = []
         self.total = {}
+
+    def __is_cached(self):
+        return len(self.assets) != 0
+
+    def __update(self):
 
         for exchange_id in exchange.EXCHANGE_ID_LIST:
             jpy, btc = self._get_balance(exchange_id)
@@ -88,6 +95,7 @@ class Asset():
         return int(balance["JPY"]), round(float(balance["BTC"]), 6)
 
     def to_json(self):
+        self.__clear()        
         self.__update()
 
         res = {}
@@ -99,6 +107,7 @@ class Asset():
         '''
         botからの定期実行用
         '''
+        self.__clear()
         self.__update()
 
         # csv出力
@@ -135,6 +144,7 @@ class Asset():
         '''
         現在の資産を表示する
         '''
+        self.__clear()        
         self.__update()
 
         data = []
@@ -204,6 +214,7 @@ class Asset():
         return "({}) {}[JPY]/{}[BTC]({})/{}[TOTAL JPY]"
 
     def save(self, keyword):
+        self.__clear()        
         self.__update()
 
         # ログファイルへ
@@ -266,12 +277,15 @@ class Asset():
                                 self.total["total_jpy"])
 
     def get_total(self):
-        self.__update()
+        if not self.__is_cached():
+            self.__update()
+
         return self.total["jpy"], self.total["btc"], self.total[
             "btc_as_jpy"], self.total["total_jpy"]
 
     def get_btcs(self):
-        self.__update()
+        if not self.__is_cached():
+            self.__update()
 
         btcs = {}
         for asset in self.assets:
@@ -281,7 +295,8 @@ class Asset():
         return btcs
 
     def is_equal_btc_amount(self):
-        self.__update()
+        if not self.__is_cached():
+            self.__update()
 
         # すべての取引所のbtcが同じ値でない場合はbotを起動しない
         key = "btc"

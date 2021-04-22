@@ -11,7 +11,6 @@ import src.constants.path as path
 from src.config import PROFIT_UPDATE_INTERVAL_MIN
 
 from src.libs.slack_client import SlackClient
-from src.libs.ccxt_client import CcxtClient
 
 import src.utils.trade_history as history
 
