@@ -4,6 +4,7 @@ import threading
 
 from src.libs.ccxt_client import CcxtClient
 from src.libs.websocket_client import WebsocketClient
+import src.constants.exchange as exchange
 import src.constants.ccxtconst as ccxtconst
 from src.core.board import Board, Tick
 import src.utils.datetime as dt
@@ -18,7 +19,7 @@ def fetch_ticks(exchange_id, symbol=ccxtconst.SYMBOL_BTC_JPY, eff=False):
     client = CcxtClient(exchange_id, symbol)
 
     while True:
-        time.sleep(ccxtconst.TICK_INTERVAL_SEC)
+        time.sleep(exchange.TICK_INTERVAL_SEC)
 
         if not eff:
             tick = client.fetch_tick()

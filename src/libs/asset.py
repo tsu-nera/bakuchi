@@ -3,7 +3,7 @@ import time
 import ccxt
 from tabulate import tabulate
 
-import src.constants.ccxtconst as ccxtconst
+import src.constants.exchange as exchange
 from src.loggers.logger import get_asset_logger, get_asset_append_logger
 import src.utils.private as private
 import src.utils.json as json
@@ -45,11 +45,11 @@ class Asset():
             "ask": ask
         }
 
-    def _update(self):
+    def __update(self):
         self.assets = []
         self.total = {}
 
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        for exchange_id in exchange.EXCHANGE_ID_LIST:
             jpy, btc = self._get_balance(exchange_id)
 
             btc_as_jpy = self._calc_btc_to_jpy(exchange_id, btc)
@@ -88,7 +88,7 @@ class Asset():
         return int(balance["JPY"]), round(float(balance["BTC"]), 6)
 
     def to_json(self):
-        self._update()
+        self.__update()
 
         res = {}
         for asset in self.assets:
@@ -99,7 +99,7 @@ class Asset():
         '''
         botからの定期実行用
         '''
-        self._update()
+        self.__update()
 
         # csv出力
         self._append_csv()
@@ -135,7 +135,7 @@ class Asset():
         '''
         現在の資産を表示する
         '''
-        self._update()
+        self.__update()
 
         data = []
 
@@ -168,7 +168,7 @@ class Asset():
         与えられたBTCの量から日本円の価格を計算する
         '''
         result = {}
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        for exchange_id in exchange.EXCHANGE_ID_LIST:
             price = self._calc_btc_to_jpy(exchange_id, btc_amount)
             output = "{}[BTC] to {}[JPY] ({})".format(btc_amount, price,
                                                       exchange_id.value)
@@ -189,7 +189,7 @@ class Asset():
         与えられた日本円の価格で購入できるBTCの量を計算する
         '''
         result = {}
-        for exchange_id in ccxtconst.EXCHANGE_ID_LIST:
+        for exchange_id in exchange.EXCHANGE_ID_LIST:
             btc_amount = self._calc_jpy_to_btc(exchange_id, jpy_price)
             output = "{}[JPY] to {}[BTC] ({})".format(jpy_price, btc_amount,
                                                       exchange_id.value)
@@ -204,7 +204,7 @@ class Asset():
         return "({}) {}[JPY]/{}[BTC]({})/{}[TOTAL JPY]"
 
     def save(self, keyword):
-        self._update()
+        self.__update()
 
         # ログファイルへ
         self._logging()
@@ -264,3 +264,18 @@ class Asset():
         self.csv_logger.logging(self.total["id"], self.total["jpy"],
                                 self.total["btc"], self.total["btc_as_jpy"],
                                 self.total["total_jpy"])
+
+    def get_total(self):
+        self.__update()
+        return self.total["jpy"], self.total["btc"], self.total[
+            "btc_as_jpy"], self.total["total_jpy"]
+
+    def get_btcs(self):
+        self.__update()
+
+        btcs = {}
+        for asset in self.assets:
+            exchange_id = asset["id"]
+            btcs[exchange_id] = {"btc": asset["btc"], "bid": asset["bid"]}
+
+        return btcs

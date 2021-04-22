@@ -4,7 +4,7 @@ import os
 
 import src.utils.datetime as dt
 from src.libs.ccxt_client import CcxtClient
-import src.constants.ccxtconst as ccxtconst
+import src.constants.exchange as exchange
 from src.constants.path import HISTORICAL_DATA_DIR_PATH
 
 
@@ -25,10 +25,10 @@ def save_ticks():
     dir_path = _get_dir_path()
     os.mkdir(dir_path)
 
-    bf_file_path = _get_file_path(dir_path, ccxtconst.ExchangeId.BITFLYER)
-    ex1_file_path = _get_file_path(dir_path, ccxtconst.ExchangeId.COINCHECK)
-    ex2_file_path = _get_file_path(dir_path, ccxtconst.ExchangeId.LIQUID)
-    bb_file_path = _get_file_path(dir_path, ccxtconst.ExchangeId.BITBANK)
+    bf_file_path = _get_file_path(dir_path, exchange.ExchangeId.BITFLYER)
+    ex1_file_path = _get_file_path(dir_path, exchange.ExchangeId.COINCHECK)
+    ex2_file_path = _get_file_path(dir_path, exchange.ExchangeId.LIQUID)
+    bb_file_path = _get_file_path(dir_path, exchange.ExchangeId.BITBANK)
 
     fs_bf = open(bf_file_path, mode='w')
     fs_ex1 = open(ex1_file_path, mode='w')
@@ -41,10 +41,10 @@ def save_ticks():
     fs_ex2.write(header_string)
     fs_bb.write(header_string)
 
-    client_bf = CcxtClient(ccxtconst.ExchangeId.BITFLYER)
-    client_ex1 = CcxtClient(ccxtconst.ExchangeId.COINCHECK)
-    client_ex2 = CcxtClient(ccxtconst.ExchangeId.LIQUID)
-    client_bb = CcxtClient(ccxtconst.ExchangeId.BITBANK)
+    client_bf = CcxtClient(exchange.ExchangeId.BITFLYER)
+    client_ex1 = CcxtClient(exchange.ExchangeId.COINCHECK)
+    client_ex2 = CcxtClient(exchange.ExchangeId.LIQUID)
+    client_bb = CcxtClient(exchange.ExchangeId.BITBANK)
 
     try:
         for _ in range(1000000):
@@ -72,7 +72,7 @@ def save_ticks():
                 fs_bb.write(output_bb + '\n')
                 fs_bb.flush()
 
-                time.sleep(ccxtconst.TICK_INTERVAL_SEC)
+                time.sleep(exchange.TICK_INTERVAL_SEC)
             else:
                 time.sleep(10)
     finally:

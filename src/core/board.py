@@ -5,7 +5,7 @@ from queue import Queue
 from sortedcontainers import SortedDict
 
 import src.utils.datetime as dt
-from src.core.tick import Tick
+from src.models.tick import Tick
 from src.constants.wsconst import WsDataType
 from src.libs.ccxt_client import CcxtClient
 from src.libs.websocket_client import WebsocketClient
@@ -139,7 +139,7 @@ class Board():
         self.__logging_tick(bid_rate, ask_rate)
 
         timestamp = dt.now_timestamp_ms()
-        tick = Tick(timestamp, bid_rate, ask_rate)
+        tick = Tick(self.__exchange_id, timestamp, bid_rate, ask_rate)
 
         return tick
 

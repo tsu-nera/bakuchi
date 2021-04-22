@@ -1,5 +1,6 @@
 class Tick():
-    def __init__(self, timestamp, bid, ask):
+    def __init__(self, exchange_id, timestamp, bid, ask):
+        self.exchange_id = exchange_id
         self.timestamp = timestamp
         self.bid = float(bid)
         self.ask = float(ask)

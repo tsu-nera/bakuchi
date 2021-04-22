@@ -2,7 +2,9 @@ import time
 
 from src.core.exchange_trading import ExchangeTrading as Exchange
 from src.libs.ccxt_client import CcxtClient
+
 import src.constants.ccxtconst as ccxtconst
+import src.constants.exchange as exchange
 
 
 def fetch_balance(exchange_id):
@@ -52,7 +54,7 @@ def create_sell_order(exchange_id, symbol, amount, extinfo_bid=None):
 
 
 def create_bitbank_buy_order(symbol, amount):
-    exchange_id = ccxtconst.ExchangeId.BITBANK
+    exchange_id = exchange.ExchangeId.BITBANK
     ex = Exchange(exchange_id, symbol)
 
     client = CcxtClient(exchange_id)
@@ -66,7 +68,7 @@ def create_bitbank_buy_order(symbol, amount):
 
 
 def create_bitbank_sell_order(symbol, amount):
-    exchange_id = ccxtconst.ExchangeId.BITBANK
+    exchange_id = exchange.ExchangeId.BITBANK
     ex = Exchange(exchange_id, symbol)
 
     client = CcxtClient(exchange_id)
@@ -80,7 +82,7 @@ def create_bitbank_sell_order(symbol, amount):
 
 
 def create_coincheck_buy_order(symbol, amount):
-    exchange_id = ccxtconst.ExchangeId.COINCHECK
+    exchange_id = exchange.ExchangeId.COINCHECK
     client = CcxtClient(exchange_id)
     tick = client.fetch_tick()
 
@@ -110,7 +112,7 @@ def create_coincheck_buy_order(symbol, amount):
 
 
 def create_coincheck_sell_order(symbol, amount):
-    exchange_id = ccxtconst.ExchangeId.COINCHECK
+    exchange_id = exchange.ExchangeId.COINCHECK
     client = CcxtClient(exchange_id)
     tick = client.fetch_tick()
     ask = float(tick.ask)

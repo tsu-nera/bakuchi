@@ -3,7 +3,7 @@ import shutil
 from logging import getLogger
 
 from src.loggers.logger import create_csv_logger
-import src.constants.ccxtconst as ccxtconst
+import src.constants.exchange as exchange
 import src.constants.path as path
 import src.config as config
 import src.utils.datetime as dt
@@ -12,7 +12,7 @@ import src.utils.json as json
 
 class HistoricalLogger():
     def __init__(self):
-        self.exchange_ids = ccxtconst.EXCHANGE_ID_LIST
+        self.exchange_ids = exchange.EXCHANGE_ID_LIST
         self.dir_path = self._get_dir_path()
         self.config_file_path = self._get_config_file_path(self.dir_path)
 

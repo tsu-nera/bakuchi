@@ -20,7 +20,7 @@ import src.utils.datetime as dt
 
 import src.env as env
 import src.config as config
-from src.constants.ccxtconst import ExchangeId
+from src.constants.exchange import ExchangeId
 from src.constants.arbitrage import Strategy, Action
 
 

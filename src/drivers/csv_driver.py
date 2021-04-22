@@ -1,7 +1,9 @@
 import pandas as pd
 
+from src.drivers.driver import Driver
 
-class CsvDriver():
+
+class CsvDriver(Driver):
     def __init__(self):
         pass
 
