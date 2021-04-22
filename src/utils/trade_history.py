@@ -281,7 +281,7 @@ def read_trades(path):
 
 def _read_trades(timestamp, exchange_id):
     file_name = "{}.csv".format(exchange_id.value)
-    file_path = os.path.join(path.REPORTS_DIR, timestamp, path.TRADES_DIR,
+    file_path = os.path.join(path.REPORTS_DATA_DIR_PATH, timestamp, path.TRADES_DIR,
                              file_name)
     return read_trades(file_path)
 
@@ -327,7 +327,7 @@ def convert_trades(from_path, exchange_id):
 
 
 def save_report_trades(dir_name, start_timestamp, end_timestamp):
-    to_dir = os.path.join(path.REPORTS_DIR, dir_name, path.TRADES_DIR)
+    to_dir = os.path.join(path.REPORTS_DATA_DIR_PATH, dir_name, path.TRADES_DIR)
 
     if not os.path.exists(to_dir):
         os.mkdir(to_dir)

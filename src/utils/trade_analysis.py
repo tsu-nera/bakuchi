@@ -20,7 +20,7 @@ class TradeAnalysis():
         self.__ex2_id = exchange.EXCHANGE_ID_LIST[1]
 
         self.timestamp = timestamp
-        self.dir_path = os.path.join(path.REPORTS_DIR, timestamp)
+        self.dir_path = os.path.join(path.REPORTS_DATA_DIR_PATH, timestamp)
         self.trades_dir_path = os.path.join(self.dir_path, path.TRADES_DIR)
         self.ticks_dir_path = os.path.join(self.dir_path, path.EXCHANGES_DIR)
 

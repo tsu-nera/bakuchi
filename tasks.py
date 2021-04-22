@@ -482,7 +482,7 @@ def trade_analysis(c, timestamp):
 
 @task
 def trade_latest_analysis(c):
-    dir_path = path.REPORTS_DIR
+    dir_path = path.REPORTS_DATA_DIR_PATH
     timestamp = get_latest_dirname(dir_path)
     run_analysis(timestamp)
 
@@ -494,7 +494,7 @@ def display_report(c, timestamp):
 
 @task
 def display_latest_report(c):
-    dir_path = path.REPORTS_DIR
+    dir_path = path.REPORTS_DATA_DIR_PATH
     timestamp = get_latest_dirname(dir_path)
     report.display(timestamp)
 
@@ -569,14 +569,14 @@ def slack(c, message):
 
 @task
 def check_error(c, timestamp):
-    root_dir_path = path.REPORTS_DIR
+    root_dir_path = path.REPORTS_DATA_DIR_PATH
     dir_path = os.path.join(root_dir_path, timestamp)
     run('find {} -type f -name "*.log" | xargs grep ERROR'.format(dir_path))
 
 
 @task
 def check_latest_error(c):
-    root_dir_path = path.REPORTS_DIR
+    root_dir_path = path.REPORTS_DATA_DIR_PATH
     dir_path = get_latest_dirpath(root_dir_path)
     run('find {} -type f -name "*.log" | xargs grep ERROR'.format(dir_path))
 

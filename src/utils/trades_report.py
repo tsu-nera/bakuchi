@@ -8,7 +8,7 @@ import src.constants.path as path
 
 
 def read_results():
-    dir_path = path.REPORTS_DIR
+    dir_path = path.REPORTS_DATA_DIR_PATH
     dir_path_list = glob.glob(os.path.join(dir_path, '*/'))
 
     results = []

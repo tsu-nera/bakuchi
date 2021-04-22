@@ -26,7 +26,7 @@ def get_latest_dirpath(dir_path):
 def generate(timestamp):
     production_dir = path.PRODUCTION_HISTORICAL_RAWDATA_DIR_PATH
     from_dir = os.path.join(production_dir, timestamp)
-    to_dir = os.path.join(path.REPORTS_DIR, timestamp)
+    to_dir = os.path.join(path.REPORTS_DATA_DIR_PATH, timestamp)
 
     # ログをバックアップ
     copy_tree(from_dir, to_dir)
@@ -68,7 +68,7 @@ def convert_nb_html(file_path):
 
 def generate_notebook(dir_name):
     from_dir = path.NOTEBOOK_TEMPLATES_DIR
-    to_dir = os.path.join(path.REPORTS_DIR, dir_name)
+    to_dir = os.path.join(path.REPORTS_DATA_DIR_PATH, dir_name)
 
     reports = [path.REPORT_BACKTEST, path.REPORT_TRADE]
 
@@ -83,7 +83,7 @@ def generate_notebook(dir_name):
 
 
 def _get_trade_timestamps(timestamp):
-    dir_path = os.path.join(path.REPORTS_DIR, timestamp)
+    dir_path = os.path.join(path.REPORTS_DATA_DIR_PATH, timestamp)
 
     def __read_asset(keyword):
         file_name = "{}.json".format(keyword)
@@ -190,11 +190,11 @@ def display(timestamp):
 
     def __generate_readme(date, result, timestamp):
         env = Environment(
-            loader=FileSystemLoader(path.REPORTS_DIR, encoding='utf8'))
+            loader=FileSystemLoader(path.REPORTS_DATA_DIR_PATH, encoding='utf8'))
         template = env.get_template(path.README_TEMPLATE_FILE)
         readme = template.render(date=date, result=result)
 
-        output_path = "/".join([path.REPORTS_DIR, timestamp, path.README_FILE])
+        output_path = "/".join([path.REPORTS_DATA_DIR_PATH, timestamp, path.README_FILE])
 
         with open(output_path, mode='w') as f:
             f.write(str(readme))
@@ -221,7 +221,7 @@ def export_trade_result(timestamp):
         trade_data["end_timestamp"])
     trade_data["duration"] = int(trade_data["duration"].total_seconds())
 
-    file_path = os.path.join(path.REPORTS_DIR, timestamp,
+    file_path = os.path.join(path.REPORTS_DATA_DIR_PATH, timestamp,
                              path.RESULT_JSON_FILE)
 
     json.write(file_path, trade_data)
