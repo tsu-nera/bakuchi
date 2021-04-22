@@ -6,6 +6,10 @@
 
 仮想通貨 Bot を開発して利益を出すためのプロジェクト。
 
+ログや分析レポートは別リポジトリで管理。
+
+* https://github.com/tsu-nera/bakuchi_analysis
+
 戦略は、とりあえずローリスク・ローリターンのアービトラージ([裁定取引](https://ja.wikipedia.org/wiki/%E8%A3%81%E5%AE%9A%E5%8F%96%E5%BC%95))で実装する。
 
 ## Environments
@@ -18,6 +22,7 @@
 ```
 $ git clone https://github.com/tsu-nera/bakuchi.git
 $ cd bakuchi
+$ git clone https://github.com/tsu-nera/bakuchi_analysis data
 
 # 各取引所の認証情報を記載
 $ cp src/.env.sample src/.env
