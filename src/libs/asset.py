@@ -279,3 +279,12 @@ class Asset():
             btcs[exchange_id] = {"btc": asset["btc"], "bid": asset["bid"]}
 
         return btcs
+
+    def is_equal_btc_amount(self):
+        self.__update()
+
+        # すべての取引所のbtcが同じ値でない場合はbotを起動しない
+        key = "btc"
+        btc = self.assets[0][key]
+
+        return all([btc == asset[key] for asset in self.assets])

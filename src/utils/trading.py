@@ -1,7 +1,9 @@
 import os
+import sys
+import traceback
+
 import ccxt
 import shutil
-import traceback
 
 import src.constants.exchange as exchange
 import src.constants.ccxtconst as ccxtconst
@@ -85,15 +87,24 @@ def run_trading(demo_mode=False):
 
     logger = get_trading_logger_with_stdout()
     asset = Asset()
-    profit = Profit()
-    profit.setDaemon(True)
-    slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
+
+    # verify asset condition
+    if not asset.is_equal_btc_amount():
+        logger.info(
+            "each exchange has different btc balance, not running trading bot."
+        )
+        asset.display()
+        sys.exit(1)
 
     # run trade
     arbitrage = ArbitrageTrading(exchange.ExchangeId.LIQUID,
                                  exchange.ExchangeId.BITBANK,
                                  ccxtconst.SYMBOL_BTC_JPY,
                                  demo_mode=demo_mode)
+
+    profit = Profit()
+    profit.setDaemon(True)
+    slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
 
     current_trading_dir = arbitrage.get_current_trading_data_dir()
 
@@ -134,8 +145,11 @@ def run_trading(demo_mode=False):
             logger.info("=======================")
             logger.info("=== trading bot end ===")
             logger.info("=======================")
+
+            # teardown
             asset.save(asset.TRADING_END)
             backup_trading_logs(current_trading_dir)
             backup_trading_assets(current_trading_dir)
             backup_trading_orders(current_trading_dir)
+
             slack.notify_with_datetime("Trading Botの稼働を終了しました。")

@@ -61,7 +61,6 @@ def create_bitbank_buy_order(symbol, amount):
     tick = client.fetch_tick()
 
     ask = float(tick.ask)
-    bid = float(tick.bid)
 
     order_info = ex.order_buy(amount, ask)
     return order_info
@@ -74,7 +73,6 @@ def create_bitbank_sell_order(symbol, amount):
     client = CcxtClient(exchange_id)
     tick = client.fetch_tick()
 
-    ask = float(tick.ask)
     bid = float(tick.bid)
 
     order_info = ex.order_sell(amount, bid)

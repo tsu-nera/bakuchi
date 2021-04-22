@@ -1,6 +1,8 @@
 from src.libs.ccxt_client import CcxtClient
 from .exchange_base import ExchangeBase
+
 import src.constants.exchange as exchange
+from src.utils.asset import format_jpy_float
 
 from src.config import COINCHECK_ORDER_BUY_ADJUST_AMOUNT_BTC  # , TRADE_AMOUNT
 
@@ -26,9 +28,9 @@ class ExchangeTrading(ExchangeBase):
 
         def _to_json(jpy, btc):
             return {
-                "exchange_id": self.exchange_id,
+                "exchange_id": self.exchange_id.value,
                 "symbol": self.symbol,
-                "jpy": jpy,
+                "jpy": format_jpy_float(jpy),
                 "btc": btc
             }
 
