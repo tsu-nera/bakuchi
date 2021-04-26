@@ -189,12 +189,13 @@ def display(timestamp):
         return "\n".join([heading, body])
 
     def __generate_readme(date, result, timestamp):
-        env = Environment(
-            loader=FileSystemLoader(path.REPORTS_DATA_DIR_PATH, encoding='utf8'))
+        env = Environment(loader=FileSystemLoader(path.REPORTS_DATA_DIR_PATH,
+                                                  encoding='utf8'))
         template = env.get_template(path.README_TEMPLATE_FILE)
-        readme = template.render(date=date, result=result)
+        readme = template.render(date=date, result=result, timestamp=timestamp)
 
-        output_path = "/".join([path.REPORTS_DATA_DIR_PATH, timestamp, path.README_FILE])
+        output_path = "/".join(
+            [path.REPORTS_DATA_DIR_PATH, timestamp, path.README_FILE])
 
         with open(output_path, mode='w') as f:
             f.write(str(readme))
