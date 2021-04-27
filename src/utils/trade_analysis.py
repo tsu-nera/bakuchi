@@ -259,6 +259,9 @@ class TradeAnalysis():
         self.__prepare_result()
         return self.result
 
+    def get_output_meta(self):
+        return self.__report_trade_meta()
+
 
 def run_analysis(timestamp):
     print("=== trade analysis start ===")

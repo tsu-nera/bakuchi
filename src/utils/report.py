@@ -111,35 +111,6 @@ def display(timestamp):
     backtest_data = backtesting.get_result_data(report_mode=True)
     trade_data = trade_analysis.get_result_data()
 
-    def __report_trade_meta(backtest, trade):
-        data = []
-        data.append(["レコード数", backtest["record_count"], trade["record_count"]])
-        data.append(["取引回数", backtest["trade_count"], trade["trade_count"]])
-        data.append(
-            ["開始日時", "", trade["start_timestamp"]])
-        data.append(
-            ["終了日時", "", trade["end_timestamp"]])
-        data.append(["取引時間[H]", "", trade["duration"]])
-        data.append(
-            ["取引単位[BTC]", backtest["trade_amount"], trade["trade_amount"]])
-        data.append([
-            "利確しきい値[JPY]", backtest["open_threshold"], trade["open_threshold"]
-        ])
-        data.append([
-            "損切りマージン[JPY]", backtest["profit_margin_diff"],
-            trade["profit_margin_diff"]
-        ])
-
-        heading = "トレード情報"
-
-        headers = ["", "バックテスト", "トレード"]
-        body = tabulate(data,
-                        numalign="right",
-                        stralign="right",
-                        headers=headers)
-
-        return "\n".join([heading, body])
-
     def __report_trade_stats(backtest, trade):
         data = []
 
@@ -200,7 +171,7 @@ def display(timestamp):
         with open(output_path, mode='w') as f:
             f.write(str(readme))
 
-    output_meta = __report_trade_meta(backtest_data, trade_data)
+    output_meta = trade_analysis.get_output_meta()
     output_stats = __report_trade_stats(backtest_data, trade_data)
     output_profits = __report_trade_profits(trade_data)
 
