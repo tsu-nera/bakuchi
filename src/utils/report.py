@@ -116,10 +116,10 @@ def display(timestamp):
         data.append(["レコード数", backtest["record_count"], trade["record_count"]])
         data.append(["取引回数", backtest["trade_count"], trade["trade_count"]])
         data.append(
-            ["開始日時", backtest["start_timestamp"], trade["start_timestamp"]])
+            ["開始日時", "", trade["start_timestamp"]])
         data.append(
-            ["終了日時", backtest["end_timestamp"], trade["end_timestamp"]])
-        data.append(["取引時間[H]", backtest["duration"], trade["duration"]])
+            ["終了日時", "", trade["end_timestamp"]])
+        data.append(["取引時間[H]", "", trade["duration"]])
         data.append(
             ["取引単位[BTC]", backtest["trade_amount"], trade["trade_amount"]])
         data.append([
@@ -216,10 +216,6 @@ def export_trade_result(timestamp):
     trade_analysis = TradeAnalysis(timestamp)
     trade_data = trade_analysis.get_result_data()
 
-    trade_data["start_timestamp"] = dt.format_timestamp(
-        trade_data["start_timestamp"])
-    trade_data["end_timestamp"] = dt.format_timestamp(
-        trade_data["end_timestamp"])
     trade_data["duration"] = int(trade_data["duration"].total_seconds())
 
     file_path = os.path.join(path.REPORTS_DATA_DIR_PATH, timestamp,
