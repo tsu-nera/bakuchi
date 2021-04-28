@@ -203,24 +203,29 @@ class TradeAnalysis():
         return self.ticks_ex2
 
     def create_profit_df(self):
+        ex1_key_side = "{}_side".format(self.__ex1_id.value)
+        ex2_key_side = "{}_side".format(self.__ex2_id.value)
+        ex1_key_price = "{}_price".format(self.__ex1_id.value)
+        ex2_key_price = "{}_price".format(self.__ex2_id.value)
+
         df = pd.DataFrame({
             'timestamp': self.trades_ex1['datetime'].to_list(),
-            'ex1_side': self.trades_ex1['side'].to_list(),
-            'ex1_price': self.trades_ex1['price'].to_list(),
-            'ex2_side': self.trades_ex2['side'].to_list(),
-            'ex2_price': self.trades_ex2['price'].to_list()
+            ex1_key_side: self.trades_ex1['side'].to_list(),
+            ex1_key_price: self.trades_ex1['price'].to_list(),
+            ex2_key_side: self.trades_ex2['side'].to_list(),
+            ex2_key_price: self.trades_ex2['price'].to_list()
         })
 
         def __calc_profit(x):
-            if x['ex1_side'] == 'sell':
-                ex1_price = x['ex1_price']
+            if x[ex1_key_side] == 'sell':
+                ex1_price = x[ex1_key_price]
             else:
-                ex1_price = -1 * x['ex1_price']
+                ex1_price = -1 * x[ex1_key_price]
 
-            if x['ex2_side'] == 'sell':
-                ex2_price = x['ex2_price']
+            if x[ex2_key_side] == 'sell':
+                ex2_price = x[ex2_key_price]
             else:
-                ex2_price = -1 * x['ex2_price']
+                ex2_price = -1 * x[ex2_key_price]
 
             return round(ex1_price + ex2_price, 3)
 
