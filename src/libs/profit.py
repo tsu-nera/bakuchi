@@ -159,8 +159,10 @@ class Profit(Thread):
         '''
         self.__update()
 
+        # botによるorder成立状況状況はいるんだっけ？
+        # いったん封印する
         # orders log
-        self.__orders_to_csv()
+        # self.__orders_to_csv()
 
         # profit log
         self.__profits_to_csv()
@@ -171,17 +173,17 @@ class Profit(Thread):
         # slack出力
         self.__notify_slack()
 
-    def __orders_to_csv(self):
-        for exchange_id in exchange.EXCHANGE_ID_LIST:
-            orders = self.orders[exchange_id]
-            target_file = "{}.csv".format(exchange_id.value)
-            target_path = os.path.join(path.ORDERS_LOG_DIR, target_file)
+    # def __orders_to_csv(self):
+    #     for exchange_id in exchange.EXCHANGE_ID_LIST:
+    #         orders = self.orders[exchange_id]
+    #         target_file = "{}.csv".format(exchange_id.value)
+    #         target_path = os.path.join(path.ORDERS_LOG_DIR, target_file)
 
-            orders.to_csv(target_path, index=None)
+    #         orders.to_csv(target_path, index=None)
 
     def __profits_to_csv(self):
         df = pd.DataFrame.from_dict(self.profits)
-        df.to_csv(path.PROFIT_CSV_FILE_PATH, index=None)
+        df.to_csv(path.BOT_PROFIT_CSV_FILE_PATH, index=None)
 
     def __logging(self):
         message = "profit={}, bot={}, market={}, trade={}".format(

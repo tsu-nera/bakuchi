@@ -26,7 +26,7 @@ class Backtesting():
     def _get_file_path(self, exchange_id):
         file_name = "{}.csv".format(exchange_id.value)
         return os.path.join(path.REPORTS_DATA_DIR_PATH, self.timestamp,
-                            path.EXCHANGES_DIR, file_name)
+                            path.TICKS, file_name)
 
     def _read_df(self, exchange_id):
         path = self._get_file_path(exchange_id)
