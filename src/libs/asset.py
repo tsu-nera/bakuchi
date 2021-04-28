@@ -16,7 +16,7 @@ import src.env as env
 import src.utils.datetime as dt
 import src.constants.path as path
 
-from src.utils.asset import format_jpy_float, format_btc_more
+from src.utils.asset import format_jpy, format_jpy_float, format_btc_more
 
 
 class Asset():
@@ -36,15 +36,22 @@ class Asset():
         tick = c.fetch_tick()
         return tick.bid, tick.ask
 
-    def _create_asset(self, id, jpy, btc, btc_as_jpy, total_jpy, bid, ask):
+    def __create_asset(self,
+                       id,
+                       jpy,
+                       btc,
+                       btc_as_jpy,
+                       total_jpy,
+                       bid=0,
+                       ask=0):
         return {
-            "id": id.value,
+            "id": id,
             "jpy": format_jpy_float(jpy),
             "btc": format_btc_more(btc),
             "btc_as_jpy": format_jpy_float(btc_as_jpy),
             "total_jpy": format_jpy_float(total_jpy),
-            "bid": bid,
-            "ask": ask
+            "bid": format_jpy(bid),
+            "ask": format_jpy(ask)
         }
 
     def __clear(self):
@@ -63,18 +70,15 @@ class Asset():
 
             bid, ask = self._get_tick(exchange_id)
 
-            asset = self._create_asset(exchange_id, jpy, btc, btc_as_jpy,
-                                       jpy + btc_as_jpy, bid, ask)
+            asset = self.__create_asset(exchange_id.value, jpy, btc,
+                                        btc_as_jpy, jpy + btc_as_jpy, bid, ask)
             self.assets.append(asset)
 
         def _sum(key):
             return sum([asset[key] for asset in self.assets])
 
-        self.total["id"] = "total"
-        self.total["jpy"] = _sum("jpy")
-        self.total["btc"] = format_btc_more(_sum("btc"))
-        self.total["btc_as_jpy"] = _sum("btc_as_jpy")
-        self.total["total_jpy"] = _sum("total_jpy")
+        self.total = self.__create_asset("total", _sum("jpy"), _sum("btc"),
+                                         _sum("btc_as_jpy"), _sum("total_jpy"))
 
     def _get_balance(self, exchange_id):
         # 短時間に複数回呼び出すとタイミングによってfetchがエラーするのでリトライを実施

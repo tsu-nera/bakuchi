@@ -138,8 +138,9 @@ class Profit(Thread):
         self.stats_trade = self.calc_trade_profit(self.stats_bot,
                                                   self.stats_market)
 
-        print(self.current_asset_total, self.current_btcs, self.stats_bot,
-              self.stats_market, self.stats_trade)
+        print(self.start_asset_total, self.current_asset_total,
+              self.current_btcs, self.stats_bot, self.stats_market,
+              self.stats_trade)
 
     def run(self):
         jpy, btc, btc_as_jpy, total_jpy = self.asset.get_total()
