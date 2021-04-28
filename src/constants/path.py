@@ -27,8 +27,7 @@ CONFIG_JSON_FILE = "config.json"
 TRADING_START_ASSET_FILE = "start.json"
 TRADING_END_ASSET_FILE = "end.json"
 RESULT_JSON_FILE = "result.json"
-EXPECTED_ORDER_CSV_FILE = "expected_order.csv"
-ACTUAL_ORDER_CSV_FILE = "actual_order.csv"
+BOT_ORDER_CSV_FILE = "bot_order.csv"
 BOT_PROFIT_CSV_FILE = "bot_profit.csv"
 
 REPORT_BACKTEST = "backtest.ipynb"
@@ -50,14 +49,6 @@ REPORTS_DATA_DIR_PATH = os.path.join(DATA_DIR, REPORTS_DIR)
 TRADES_DATA_DIR_PATH = os.path.join(DATA_DIR, TRADES_DIR)
 ORDERS_DATA_DIR_PATH = os.path.join(DATA_DIR, ORDERS_DIR)
 
-# data/trades
-BOT_PROFIT_CSV_FILE_PATH = os.path.join(TRADES_DATA_DIR_PATH,
-                                        BOT_PROFIT_CSV_FILE)
-EXPECTED_ORDER_CSV_FILE_PATH = os.path.join(TRADES_DATA_DIR_PATH,
-                                            EXPECTED_ORDER_CSV_FILE)
-ACTUAL_ORDER_CSV_FILE_PATH = os.path.join(TRADES_DATA_DIR_PATH,
-                                          ACTUAL_ORDER_CSV_FILE)
-
 # data/orders
 
 # rawdata
@@ -66,6 +57,7 @@ HISTORICAL_RAWDATA_DIR_PATH = os.path.join(RAWDATA_DIR, HISTORICAL_DATA_DIR)
 
 # logs
 TRADES_LOG_DIR = os.path.join(LOG_DIR, TRADES_DIR)
+ORDERS_LOG_DIR = os.path.join(LOG_DIR, ORDERS_DIR)
 CRON_LOG_DIR = os.path.join(LOG_DIR, CRON_DIR)
 ASSETS_LOG_DIR = os.path.join(LOG_DIR, ASSETS_DIR)
 
@@ -80,6 +72,10 @@ TRADES_LOGS = [
     CCXT_LOG_FILE_PATH, MARGIN_LOG_FILE_PATH, ASSET_LOG_FILE_PATH,
     TRADING_LOG_FILE_PATH, PROFIT_LOG_FILE_PATH
 ]
+
+# logs/orders
+BOT_PROFIT_CSV_FILE_PATH = os.path.join(ORDERS_LOG_DIR, BOT_PROFIT_CSV_FILE)
+BOT_ORDER_CSV_FILE_PATH = os.path.join(ORDERS_LOG_DIR, BOT_ORDER_CSV_FILE)
 
 # logs/assets
 TRADING_START_ASSET_FILE_PATH = os.path.join(ASSETS_LOG_DIR,

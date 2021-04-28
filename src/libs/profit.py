@@ -124,10 +124,11 @@ class Profit(Thread):
 
     def __update_profit_stats(self):
         self.asset.force_update()
+
         _, _, _, self.current_asset_total = self.asset.get_total()
         self.current_btcs = self.asset.get_btcs()
 
-        # Bot稼動での利益
+        # Bot稼動時のトータル利益
         self.stats_bot = self.calc_bot_profit()
 
         # 市場利益
@@ -136,6 +137,9 @@ class Profit(Thread):
         # 稼動時の利益から市場利益を除いた、純粋なトレード利益
         self.stats_trade = self.calc_trade_profit(self.stats_bot,
                                                   self.stats_market)
+
+        print(self.current_asset_total, self.current_btcs, self.stats_bot,
+              self.stats_market, self.stats_trade)
 
     def run(self):
         jpy, btc, btc_as_jpy, total_jpy = self.asset.get_total()

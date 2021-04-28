@@ -1,32 +1,22 @@
 from logging import getLogger
 
 import src.utils.datetime as dt
-from src.loggers.logger import create_csv_logger
 import src.constants.path as path
+from src.loggers.logger import create_csv_logger
 
-LOGGER_NAME_EXPECTED_ORDER = "expected_order"
-LOGGER_NAME_ACTUAL_ORDER = "actual_order"
-
-
-def get_expected_order_logger():
-    return OrderLogger(LOGGER_NAME_EXPECTED_ORDER,
-                       path.EXPECTED_ORDER_CSV_FILE_PATH)
-
-
-def get_actual_order_logger():
-    return OrderLogger(LOGGER_NAME_ACTUAL_ORDER,
-                       path.ACTUAL_ORDER_CSV_FILE_PATH)
+LOGGER_NAME_ORDER = "bot_order"
 
 
 class OrderLogger():
-    def __init__(self, logger_name, log_file_path):
-        self.logger_name = logger_name
-        self.logger = create_csv_logger(log_file_path, logger_name, mode="w")
+    def __init__(self):
+        self.logger = create_csv_logger(path.BOT_ORDER_CSV_FILE_PATH,
+                                        LOGGER_NAME_ORDER,
+                                        mode="w")
         self.__logging_header()
 
     def logging(self, order_type, buy_exchange, buy_rate, buy_price,
                 sell_exchange, sell_rate, sell_price, profit, profit_margin):
-        logger = getLogger(self.logger_name)
+        logger = getLogger(LOGGER_NAME_ORDER)
         timestamp = dt.now_timestamp()
 
         message = "{},{},{},{},{},{},{},{}".format(
@@ -37,5 +27,5 @@ class OrderLogger():
 
     def __logging_header(self):
         header = 'timestamp,order_type,buy_exchange,buy_rate,buy_price,sell_exchange,sell_rate,sell_price,profit,profit_margin'
-        logger = getLogger(self.logger_name)
+        logger = getLogger(LOGGER_NAME_ORDER)
         logger.info(header)

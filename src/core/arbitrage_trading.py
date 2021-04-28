@@ -15,8 +15,7 @@ from src.loggers.logger import get_trading_logger_with_stdout
 from src.loggers.logger import get_margin_logger
 from src.loggers.historical_logger import HistoricalLogger
 
-from src.loggers.order_logger import get_expected_order_logger
-from src.loggers.order_logger import get_actual_order_logger
+from src.loggers.order_logger import OrderLogger
 
 import src.utils.datetime as dt
 
@@ -50,8 +49,7 @@ class ArbitrageTrading(ArbitrageBase):
         self.slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
         self.historical_logger = HistoricalLogger()
 
-        self.expected_order_logger = get_expected_order_logger()
-        self.actual_order_logger = get_actual_order_logger()
+        self.order_logger = OrderLogger()
 
         self.circuit_breaker = CircuitBreaker(self.exchage_ids)
 
@@ -160,13 +158,9 @@ class ArbitrageTrading(ArbitrageBase):
 
         return tick_x, tick_y
 
-    def _calc_expected_profit(self, bid, ask):
+    def __calc_expected_profit(self, bid, ask):
         price = bid - ask
-        return round(price * self.trade_amount, 1)
-
-    def _calc_profit(self, buy_jpy, sell_jpy):
-        price = sell_jpy - buy_jpy
-        return round(price, 3)
+        return round(price * self.trade_amount, 3)
 
     def _calc_price(self, rate):
         return round(self.trade_amount * rate, 3)
@@ -182,15 +176,6 @@ class ArbitrageTrading(ArbitrageBase):
             label, buy_exchange_id.value, buy_ask, sell_exchange_id.value,
             sell_bid, profit_margin, expected_profit)
 
-    def _format_actual_profit_message(self, buy_exchange_id, buy_price_jpy,
-                                      sell_exchange_id, sell_price_jpy,
-                                      actual_profit, profit_margin):
-        label = self._get_log_label()
-        return "[Actual] {} buy-{}({}), sell-{}({}), margin={}, profit={}".format(
-            label, buy_exchange_id.value, round(buy_price_jpy,
-                                                3), sell_exchange_id.value,
-            round(sell_price_jpy, 3), profit_margin, actual_profit)
-
     def _check_order_responses(self, buy, sell):
         def _check_insufficientfunds(e):
             if type(e) == ccxt.ExchangeNotAvailable or type(
@@ -200,41 +185,8 @@ class ArbitrageTrading(ArbitrageBase):
         _check_insufficientfunds(buy)
         _check_insufficientfunds(sell)
 
-    def __logging_expected_order(self, bid, ask):
-        profit = self._calc_expected_profit(bid, ask)
-        profit_margin = self._get_profit_margin(bid, ask)
-        message = self._format_expected_profit_message(self.ex_id_x, ask,
-                                                       self.ex_id_y, bid,
-                                                       profit, profit_margin)
-        label = self._get_log_label()
-
-        self.logger_with_stdout.info(message)
-        self.expected_order_logger.logging(label, self.ex_id_x, ask,
-                                           self._calc_price(ask), self.ex_id_y,
-                                           bid, self._calc_price(bid), profit,
-                                           profit_margin)
-        self._update_entry_open_margin(profit_margin)
-
-    def __logging_actual_order(self, bid, ask):
-        profit = self._calc_profit(bid, ask)
-        profit_margin = self._get_profit_margin(bid, ask)
-        message = self._format_actual_profit_message(self.ex_id_x, ask,
-                                                     self.ex_id_y, bid, profit,
-                                                     profit_margin)
-        label = self._get_log_label()
-
-        self.logger_with_stdout.info(message)
-        self.actual_order_logger.logging(label, self.ex_id_x, ask,
-                                         self._calc_price(ask), self.ex_id_y,
-                                         bid, self._calc_price(bid), profit,
-                                         profit_margin)
-
-        # slackへもついでに通知
-        self.slack.notify_order(self.ex_id_x, self.ex_id_y, self.symbol,
-                                self.trade_amount, profit)
-
     def _action(self, stragegy, tick_x, tick_y):
-        def __action_core(bid, ask):
+        def __action_core(bid, ask, func_order):
             if self.ex_id_x == ExchangeId.COINCHECK or self.ex_id_x == ExchangeId.BITBANK:
                 extinfo_ask = ask
             else:
@@ -245,37 +197,44 @@ class ArbitrageTrading(ArbitrageBase):
             else:
                 extinfo_bid = None
 
-            if not self.demo_mode:
-                self.__logging_expected_order(bid, ask)
-
-            buy_resp, sell_resp = self.parallel.order_buyx_selly(
-                self.trade_amount, bid=extinfo_bid, ask=extinfo_ask)
+            buy_resp, sell_resp = func_order(self.trade_amount,
+                                             bid=extinfo_bid,
+                                             ask=extinfo_ask)
 
             self._check_order_responses(buy_resp, sell_resp)
 
-            if (not self.demo_mode) or (buy_resp and sell_resp):
-                bid = buy_resp["jpy"]
-                ask = sell_resp["jpy"]
-                self.__logging_actual_order(bid, ask)
-            else:
-                self.__logging_expected_order(bid, ask)
-
             profit_margin = self._get_profit_margin(bid, ask)
+            profit = self.__calc_expected_profit(bid, ask)
+
+            label = self._get_log_label()
+            message = self._format_expected_profit_message(
+                self.ex_id_x, ask, self.ex_id_y, bid, profit, profit_margin)
+
+            self.logger_with_stdout.info(message)
+            self.order_logger.logging(label, self.ex_id_x, ask,
+                                      self._calc_price(ask), self.ex_id_y, bid,
+                                      self._calc_price(bid), profit,
+                                      profit_margin)
+
             self._update_entry_open_margin(profit_margin)
+            self.slack.notify_order(self.ex_id_x, self.ex_id_y, self.symbol,
+                                    self.trade_amount, profit)
 
         if stragegy == Strategy.BUY_X_SELL_Y:
             bid = tick_y.bid
             ask = tick_x.ask
+            func_order = self.parallel.order_buyx_selly
 
-            __action_core(bid, ask)
+            __action_core(bid, ask, func_order)
 
             self._change_status_buyx_selly()
 
         elif stragegy == Strategy.BUY_Y_SELL_X:
             bid = tick_x.bid
             ask = tick_y.ask
+            func_order = self.parallel.order_buyy_sellx
 
-            __action_core(bid, ask)
+            __action_core(bid, ask, func_order)
 
             self._change_status_buyy_sellx()
         else:

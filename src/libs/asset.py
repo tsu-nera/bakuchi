@@ -16,7 +16,7 @@ import src.env as env
 import src.utils.datetime as dt
 import src.constants.path as path
 
-from src.utils.asset import format_jpy, format_btc_more
+from src.utils.asset import format_jpy_float, format_btc_more
 
 
 class Asset():
@@ -39,10 +39,10 @@ class Asset():
     def _create_asset(self, id, jpy, btc, btc_as_jpy, total_jpy, bid, ask):
         return {
             "id": id.value,
-            "jpy": format_jpy(jpy),
+            "jpy": format_jpy_float(jpy),
             "btc": format_btc_more(btc),
-            "btc_as_jpy": format_jpy(btc_as_jpy),
-            "total_jpy": format_jpy(total_jpy),
+            "btc_as_jpy": format_jpy_float(btc_as_jpy),
+            "total_jpy": format_jpy_float(total_jpy),
             "bid": bid,
             "ask": ask
         }
@@ -171,7 +171,7 @@ class Asset():
         与えられたBTCの量から日本円の価格を計算する
         '''
         bid, _ = self._get_tick(exchange_id)
-        return format_jpy(btc_amount * bid)
+        return format_jpy_float(btc_amount * bid)
 
     def calc_btc_to_jpy(self, btc_amount, verbose=True):
         '''

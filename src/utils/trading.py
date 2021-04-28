@@ -46,7 +46,7 @@ def backup_trading_orders(current_trading_dir):
     target_dir_path = os.path.join(current_trading_dir, path.TRADES_DIR)
     os.mkdir(target_dir_path)
 
-    file = path.ORDER_CSV_FILE_PATH
+    file = path.BOT_ORDER_CSV_FILE_PATH
     _copy_if_exist(target_dir_path, file)
 
     file = path.BOT_PROFIT_CSV_FILE_PATH

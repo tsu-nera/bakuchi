@@ -51,7 +51,7 @@ class ArbitrageBase(metaclass=ABCMeta):
     def _action(self, result, tick_x, tick_y):
         raise NotImplementedError
 
-    def __get_profit_margin(self, bid, ask):
+    def _get_profit_margin(self, bid, ask):
         return int(bid - ask)
 
     def _update_entry_open_margin(self, value):
