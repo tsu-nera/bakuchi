@@ -15,8 +15,18 @@ def read_asset_total():
     return read_asset("total")
 
 
-def read_start_asset():
-    file_path = path.TRADING_START_ASSET_FILE_PATH
+def __asset_file_path(timestamp, filename):
+    return os.path.join(path.REPORTS_DATA_DIR_PATH, timestamp, path.ASSETS_DIR,
+                        filename)
+
+
+def read_trading_start_asset(timestamp):
+    file_path = __asset_file_path(timestamp, path.TRADING_START_ASSET_FILE)
+    return json.read(file_path)
+
+
+def read_trading_end_asset(timestamp):
+    file_path = __asset_file_path(timestamp, path.TRADING_END_ASSET_FILE)
     return json.read(file_path)
 
 

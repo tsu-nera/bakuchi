@@ -1,4 +1,5 @@
 import time
+
 from tabulate import tabulate
 
 import src.config as config
@@ -9,9 +10,9 @@ from src.models.tick import Tick
 from src.core.exchange_backtesting import ExchangeBacktesting as Exchange
 
 from src.utils.asset import format_btc, format_jpy
+from src.utils.asset import read_trading_start_asset, read_trading_end_asset
 
 from src.constants.arbitrage import Strategy
-from src.constants.exchange import EXCHANGE_ID_LIST
 
 
 class ArbitrageBacktesting(ArbitrageBase):
@@ -21,6 +22,7 @@ class ArbitrageBacktesting(ArbitrageBase):
                  symbol,
                  exchange_x_id,
                  exchange_y_id,
+                 timestamp,
                  simulate_mode=False):
         super().__init__()
 
@@ -39,14 +41,18 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.exchange_x_id = exchange_x_id
         self.exchange_y_id = exchange_y_id
 
-        self.exchange_x = Exchange()
-        self.exchange_y = Exchange()
+        self.exchange_x = Exchange(timestamp, exchange_x_id)
+        self.exchange_y = Exchange(timestamp, exchange_y_id)
 
         self.symbol = symbol
+        self.start_timestamp = timestamp
 
         self.histories = []
         self.arbitrage_histories = []
         self.trade_count = 0
+
+        self.start_asset = read_trading_start_asset(timestamp)
+        self.end_asset = read_trading_end_asset(timestamp)
 
         self._update_run_params(config.BACKTEST_AMOUNT,
                                 config.BACKTEST_OPEN_THRESHOLD,
@@ -163,13 +169,6 @@ class ArbitrageBacktesting(ArbitrageBase):
             pass
 
     def _get_total_jpy(self):
-        start_jpy_x = config.BACKTEST_BALANCE_JPY
-        start_btc_x = config.BACKTEST_BALANCE_BTC
-        start_jpy_y = config.BACKTEST_BALANCE_JPY
-        start_btc_y = config.BACKTEST_BALANCE_BTC
-        start_bid_x = self.df_x["bid"][0]
-        start_bid_y = self.df_y["bid"][-1]
-
         end_jpy_x = self.exchange_x.get_balance_jpy()
         end_btc_x = self.exchange_x.get_balance_btc()
         end_jpy_y = self.exchange_y.get_balance_jpy()
@@ -177,10 +176,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         end_bid_x = self.df_x["bid"][0]
         end_bid_y = self.df_y["bid"][-1]
 
-        start_total_jpy = sum([
-            start_jpy_x, start_jpy_y, start_btc_x * start_bid_x,
-            start_btc_y * start_bid_y
-        ])
+        start_total_jpy = self.start_asset["total"]["total_jpy"]
         end_total_jpy = sum([
             end_jpy_x, end_jpy_y, end_btc_x * end_bid_x, end_btc_y * end_bid_y
         ])
@@ -191,15 +187,12 @@ class ArbitrageBacktesting(ArbitrageBase):
         # meta data
         self.result["record_count"] = len(self.timestamps)
         self.result["trade_count"] = self.trade_count
-        self.result["start_timestamp"] = self.timestamps[0]
-        self.result["end_timestamp"] = self.timestamps[-1]
-        self.result["duration"] = self.timestamps[-1] - self.timestamps[0]
         self.result["trade_amount"] = self.trade_amount
         self.result["open_threshold"] = self.open_threshold
         self.result["profit_margin_diff"] = self.profit_margin_diff
 
         # stats
-        self.result["start_price_jpy"] = config.BACKTEST_BALANCE_JPY * 2
+        self.result["start_price_jpy"] = self.start_asset["total"]["jpy"]
         self.result["end_price_jpy"] = format_jpy(
             sum([
                 self.exchange_x.get_balance_jpy(),
@@ -208,7 +201,7 @@ class ArbitrageBacktesting(ArbitrageBase):
         self.result["profit_jpy"] = self.result["end_price_jpy"] - self.result[
             "start_price_jpy"]
 
-        self.result["start_price_btc"] = config.BACKTEST_BALANCE_BTC * 2
+        self.result["start_price_btc"] = self.start_asset["total"]["btc"]
         self.result["end_price_btc"] = format_btc(
             sum([
                 self.exchange_x.get_balance_btc(),
@@ -239,9 +232,6 @@ class ArbitrageBacktesting(ArbitrageBase):
 
         data.append(["レコード数", self.result["record_count"]])
         data.append(["取引回数", self.result["trade_count"]])
-        data.append(["開始日時", self.result["start_timestamp"]])
-        data.append(["終了日時", self.result["end_timestamp"]])
-        data.append(["取引時間[H]", self.result["duration"]])
         data.append(["取引単位[BTC]", self.result["trade_amount"]])
         data.append(["利確しきい値[JPY]", self.result["open_threshold"]])
         data.append(["損切りマージン[JPY]", self.result["profit_margin_diff"]])

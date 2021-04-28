@@ -27,9 +27,10 @@ class TradeAnalysis():
         self.start_asset = self.__read_asset("start")
         self.end_asset = self.__read_asset("end")
 
-        self.__start_datetime = dt.parse_timestamp(
-            self.start_asset["timestamp"])
-        self.__end_datetime = dt.parse_timestamp(self.end_asset["timestamp"])
+        self.__start_timestamp = self.start_asset["timestamp"]
+        self.__start_datetime = dt.parse_timestamp(self.__start_timestamp)
+        self.__end_timestamp = self.end_asset["timestamp"]
+        self.__end_datetime = dt.parse_timestamp(self.__end_timestamp)
 
         self.trades_ex1 = self.read_trades(self.__ex1_id)
         self.trades_ex2 = self.read_trades(self.__ex2_id)
@@ -76,11 +77,10 @@ class TradeAnalysis():
         # meta data
         self.result["record_count"] = len(self.ticks_ex1)
         self.result["trade_count"] = len(self.trades_ex1)
-        self.result["start_timestamp"] = self.__start_datetime
-        self.result["end_timestamp"] = self.__end_datetime
+        self.result["start_timestamp"] = self.__start_timestamp
+        self.result["end_timestamp"] = self.__end_timestamp
 
-        self.result["duration"] = self.result["end_timestamp"] - self.result[
-            "start_timestamp"]
+        self.result["duration"] = self.__end_datetime - self.__start_datetime
         self.result["trade_amount"] = config["amount"]
         self.result["open_threshold"] = config["open_threshold"]
         self.result["profit_margin_diff"] = config["profit_margin_diff"]
@@ -258,6 +258,9 @@ class TradeAnalysis():
     def get_result_data(self):
         self.__prepare_result()
         return self.result
+
+    def get_output_meta(self):
+        return self.__report_trade_meta()
 
 
 def run_analysis(timestamp):

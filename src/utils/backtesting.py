@@ -21,7 +21,7 @@ class Backtesting():
                                               ccxtconst.SYMBOL_BTC_JPY,
                                               exchange.ExchangeId.BITBANK,
                                               exchange.ExchangeId.LIQUID,
-                                              simulate_mode)
+                                              timestamp, simulate_mode)
 
     def _get_file_path(self, exchange_id):
         file_name = "{}.csv".format(exchange_id.value)
@@ -57,7 +57,8 @@ class Backtesting():
 
     def get_result_data(self, report_mode=False):
         if report_mode:
-            config_file_path = os.path.join(path.REPORTS_DATA_DIR_PATH, self.timestamp,
+            config_file_path = os.path.join(path.REPORTS_DATA_DIR_PATH,
+                                            self.timestamp,
                                             path.CONFIG_JSON_FILE)
             config = json.read(config_file_path)
             self.arbitrage.run(amount=int(config["amount"]),
