@@ -18,6 +18,7 @@ from src.loggers.historical_logger import HistoricalLogger
 from src.loggers.order_logger import OrderLogger
 
 import src.utils.datetime as dt
+from src.utils.asset import format_jpy_float
 
 import src.env as env
 import src.config as config
@@ -45,7 +46,6 @@ class ArbitrageTrading(ArbitrageBase):
         self.profit_margin_diff = config.TRADE_PROFIT_MARGIN_DIFF
         self.tick_interval_sec = config.TRADE_TICK_INTERVAL_SEC
 
-        self.asset = Asset()
         self.slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
         self.historical_logger = HistoricalLogger()
 
@@ -160,10 +160,10 @@ class ArbitrageTrading(ArbitrageBase):
 
     def __calc_expected_profit(self, bid, ask):
         price = bid - ask
-        return round(price * self.trade_amount, 3)
+        return format_jpy_float(price * self.trade_amount)
 
     def _calc_price(self, rate):
-        return round(self.trade_amount * rate, 3)
+        return format_jpy_float(self.trade_amount * rate)
 
     def _get_log_label(self):
         return Action.CLOSING.value if self.opened else Action.OPENING.value
@@ -172,7 +172,7 @@ class ArbitrageTrading(ArbitrageBase):
                                         sell_exchange_id, sell_bid,
                                         expected_profit, profit_margin):
         label = self._get_log_label()
-        return "[Expect] {} buy-{}({}), sell-{}({}), margin={}, profit={}".format(
+        return "[Expect] {} buy-{}(ask={}), sell-{}(bid={}), margin={}, profit={}".format(
             label, buy_exchange_id.value, buy_ask, sell_exchange_id.value,
             sell_bid, profit_margin, expected_profit)
 
@@ -187,11 +187,11 @@ class ArbitrageTrading(ArbitrageBase):
 
     def _action(self, stragegy, tick_x, tick_y):
         def __action_core(ex_id_bid, ex_id_ask, bid, ask, func_order):
-            if self.ex_id_ask == ExchangeId.COINCHECK or self.ex_id_ask == ExchangeId.BITBANK:  # noqa: E501
+            if ex_id_ask == ExchangeId.COINCHECK or ex_id_ask == ExchangeId.BITBANK:  # noqa: E501
                 extinfo_ask = ask
             else:
                 extinfo_ask = None
-            if self.ex_id_bid == ExchangeId.COINCHECK or self.ex_id_bid == ExchangeId.BITBANK:  # noqa: E501
+            if ex_id_bid == ExchangeId.COINCHECK or ex_id_bid == ExchangeId.BITBANK:  # noqa: E501
                 extinfo_bid = bid
             else:
                 extinfo_bid = None
@@ -207,18 +207,17 @@ class ArbitrageTrading(ArbitrageBase):
 
             label = self._get_log_label()
             message = self._format_expected_profit_message(
-                self.ex_id_ask, ask, self.ex_id_bid, bid, profit,
-                profit_margin)
+                ex_id_ask, ask, ex_id_bid, bid, profit, profit_margin)
 
             self.logger_with_stdout.info(message)
-            self.order_logger.logging(label, self.ex_id_ask, ask,
-                                      self._calc_price(ask), self.ex_id_bid,
-                                      bid, self._calc_price(bid), profit,
+            self.order_logger.logging(label, ex_id_ask, ask,
+                                      self._calc_price(ask), ex_id_bid, bid,
+                                      self._calc_price(bid), profit,
                                       profit_margin)
 
             self._update_entry_open_margin(profit_margin)
-            self.slack.notify_order(self.ex_id_ask, self.ex_id_bid,
-                                    self.symbol, self.trade_amount, profit)
+            self.slack.notify_order(ex_id_ask, ex_id_bid, self.symbol,
+                                    self.trade_amount, profit)
 
         if stragegy == Strategy.BUY_X_SELL_Y:
             ex_id_bid = tick_y.exchange_id

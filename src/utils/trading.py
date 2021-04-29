@@ -94,8 +94,11 @@ def run_trading(demo_mode=False):
                                  ccxtconst.SYMBOL_BTC_JPY,
                                  demo_mode=demo_mode)
 
-    profit = Profit()
+    # これって２つのスレッドでassetオブジェクトを共有するがロックとか必要なのかな？危険？
+    # しかしロックとかすることでメインスレッドがブロックされるのはいやなのだが。
+    profit = Profit(asset)
     profit.setDaemon(True)
+
     slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
 
     current_trading_dir = arbitrage.get_current_trading_data_dir()
