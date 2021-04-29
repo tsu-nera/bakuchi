@@ -15,7 +15,7 @@ from src.loggers.logger import get_trading_logger_with_stdout
 from src.loggers.logger import get_margin_logger
 from src.loggers.historical_logger import HistoricalLogger
 
-from src.loggers.order_logger import OrderLogger
+from src.loggers.order_logger import get_bot_order_logger
 
 import src.utils.datetime as dt
 from src.utils.asset import format_jpy_float
@@ -27,7 +27,12 @@ from src.constants.arbitrage import Strategy, Action
 
 
 class ArbitrageTrading(ArbitrageBase):
-    def __init__(self, exchange_id_x, exchange_id_y, symbol, demo_mode=False):
+    def __init__(self,
+                 exchange_id_x,
+                 exchange_id_y,
+                 symbol,
+                 profit=None,
+                 demo_mode=False):
         super().__init__()
 
         self.ex_id_x = exchange_id_x
@@ -36,6 +41,7 @@ class ArbitrageTrading(ArbitrageBase):
 
         self.symbol = symbol
         self.demo_mode = demo_mode
+        self.profit = profit
 
         self.logger = get_trading_logger()
         self.logger_with_stdout = get_trading_logger_with_stdout()
@@ -48,8 +54,7 @@ class ArbitrageTrading(ArbitrageBase):
 
         self.slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
         self.historical_logger = HistoricalLogger()
-
-        self.order_logger = OrderLogger()
+        self.bot_order_logger = get_bot_order_logger()
 
         self.circuit_breaker = CircuitBreaker(self.exchage_ids)
 
@@ -210,14 +215,18 @@ class ArbitrageTrading(ArbitrageBase):
                 ex_id_ask, ask, ex_id_bid, bid, profit, profit_margin)
 
             self.logger_with_stdout.info(message)
-            self.order_logger.logging(label, ex_id_ask, ask,
-                                      self._calc_price(ask), ex_id_bid, bid,
-                                      self._calc_price(bid), profit,
-                                      profit_margin)
+
+            self.bot_order_logger.logging(label, ex_id_ask, ask,
+                                          self._calc_price(ask), ex_id_bid,
+                                          bid, self._calc_price(bid), profit,
+                                          profit_margin)
 
             self._update_entry_open_margin(profit_margin)
             self.slack.notify_order(ex_id_ask, ex_id_bid, self.symbol,
                                     self.trade_amount, profit)
+
+            # 実際の取引結果をサーバに問い合わせて利益を再計算
+            self.profit.update()
 
         if stragegy == Strategy.BUY_X_SELL_Y:
             ex_id_bid = tick_y.exchange_id

@@ -88,16 +88,14 @@ def run_trading(demo_mode=False):
         asset.display()
         sys.exit(1)
 
+    profit = Profit(asset)
+
     # run trade
     arbitrage = ArbitrageTrading(exchange.ExchangeId.LIQUID,
                                  exchange.ExchangeId.BITBANK,
                                  ccxtconst.SYMBOL_BTC_JPY,
+                                 profit,
                                  demo_mode=demo_mode)
-
-    # これって２つのスレッドでassetオブジェクトを共有するがロックとか必要なのかな？危険？
-    # しかしロックとかすることでメインスレッドがブロックされるのはいやなのだが。
-    profit = Profit(asset)
-    profit.setDaemon(True)
 
     slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
 
@@ -113,7 +111,7 @@ def run_trading(demo_mode=False):
         logger.info("=========================")
         slack.notify_with_datetime("Trading Botの稼働を開始しました。")
         asset.save(asset.TRADIGNG_START)
-        profit.start()
+        profit.update()
 
     try:
         arbitrage.run()
