@@ -160,7 +160,7 @@ class Profit(Thread):
 
     def run_bot(self):
         '''
-        botからの定期実行用
+        profit botからの定期実行用
         '''
         self.__update()
 

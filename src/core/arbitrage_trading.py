@@ -186,13 +186,12 @@ class ArbitrageTrading(ArbitrageBase):
         _check_insufficientfunds(sell)
 
     def _action(self, stragegy, tick_x, tick_y):
-        def __action_core(bid, ask, func_order):
-            if self.ex_id_x == ExchangeId.COINCHECK or self.ex_id_x == ExchangeId.BITBANK:
+        def __action_core(ex_id_bid, ex_id_ask, bid, ask, func_order):
+            if self.ex_id_ask == ExchangeId.COINCHECK or self.ex_id_ask == ExchangeId.BITBANK:  # noqa: E501
                 extinfo_ask = ask
             else:
                 extinfo_ask = None
-            if self.ex_id_y == ExchangeId.COINCHECK or self.ex_id_y == ExchangeId.BITBANK:
-
+            if self.ex_id_bid == ExchangeId.COINCHECK or self.ex_id_bid == ExchangeId.BITBANK:  # noqa: E501
                 extinfo_bid = bid
             else:
                 extinfo_bid = None
@@ -208,33 +207,38 @@ class ArbitrageTrading(ArbitrageBase):
 
             label = self._get_log_label()
             message = self._format_expected_profit_message(
-                self.ex_id_x, ask, self.ex_id_y, bid, profit, profit_margin)
+                self.ex_id_ask, ask, self.ex_id_bid, bid, profit,
+                profit_margin)
 
             self.logger_with_stdout.info(message)
-            self.order_logger.logging(label, self.ex_id_x, ask,
-                                      self._calc_price(ask), self.ex_id_y, bid,
-                                      self._calc_price(bid), profit,
+            self.order_logger.logging(label, self.ex_id_ask, ask,
+                                      self._calc_price(ask), self.ex_id_bid,
+                                      bid, self._calc_price(bid), profit,
                                       profit_margin)
 
             self._update_entry_open_margin(profit_margin)
-            self.slack.notify_order(self.ex_id_x, self.ex_id_y, self.symbol,
-                                    self.trade_amount, profit)
+            self.slack.notify_order(self.ex_id_ask, self.ex_id_bid,
+                                    self.symbol, self.trade_amount, profit)
 
         if stragegy == Strategy.BUY_X_SELL_Y:
+            ex_id_bid = tick_y.exchange_id
+            ex_id_ask = tick_x.exchange_id
             bid = tick_y.bid
             ask = tick_x.ask
             func_order = self.parallel.order_buyx_selly
 
-            __action_core(bid, ask, func_order)
+            __action_core(ex_id_bid, ex_id_ask, bid, ask, func_order)
 
             self._change_status_buyx_selly()
 
         elif stragegy == Strategy.BUY_Y_SELL_X:
+            ex_id_bid = tick_x.exchange_id
+            ex_id_ask = tick_y.exchange_id
             bid = tick_x.bid
             ask = tick_y.ask
             func_order = self.parallel.order_buyy_sellx
 
-            __action_core(bid, ask, func_order)
+            __action_core(ex_id_bid, ex_id_ask, bid, ask, func_order)
 
             self._change_status_buyy_sellx()
         else:

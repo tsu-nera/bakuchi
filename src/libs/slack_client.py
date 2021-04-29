@@ -26,7 +26,7 @@ class SlackClient():
     def notify_error(self, message):
         self.notify_with_datetime(message)
 
-    def notify_order(self, buy_exchange_id, sell_exchange_id, symbol, amount,
+    def notify_order(self, ex_id_ask, ex_id_bid, symbol, amount,
                      expected_profit):
         now_timestamp = dt.now_timestamp()
 
@@ -34,8 +34,8 @@ class SlackClient():
 
         profit_message = "{}円の利益{}".format(expected_profit, emoji_gold)
         order_message = "{}の{}を{}で買い{}で売りました。".format(amount, symbol,
-                                                      buy_exchange_id.value,
-                                                      sell_exchange_id.value)
+                                                      ex_id_ask.value,
+                                                      ex_id_bid.value)
 
         message = NEWLINE.join(
             [profit_message, "", now_timestamp, order_message])
