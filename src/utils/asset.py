@@ -30,10 +30,12 @@ def read_trading_end_asset(timestamp):
     return json.read(file_path)
 
 
+# rateはこれ
 def format_jpy(jpy):
     return int(jpy)
 
 
+# rate以外は基本これ
 def format_jpy_float(jpy):
     return round(jpy, 3)
 

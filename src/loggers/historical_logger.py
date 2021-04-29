@@ -21,7 +21,7 @@ class HistoricalLogger():
             shutil.rmtree(self.dir_path)
 
         os.mkdir(self.dir_path)
-        os.mkdir(os.path.join(self.dir_path, path.EXCHANGES_DIR))
+        os.mkdir(os.path.join(self.dir_path, path.TICKS_DIR))
 
         self._dump_config()
 
@@ -62,7 +62,7 @@ class HistoricalLogger():
 
     def _get_file_path(self, dir_path, exchange_id):
         file_name = "{}.csv".format(exchange_id.value)
-        return os.path.join(dir_path, path.EXCHANGES_DIR, file_name)
+        return os.path.join(dir_path, path.TICKS_DIR, file_name)
 
     def _get_config_file_path(self, dir_path):
         file_name = path.CONFIG_JSON_FILE

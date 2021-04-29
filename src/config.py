@@ -6,8 +6,6 @@ config.read('src/config.ini')
 OPEN_THRESHOLD_CHANGE_SEC = int(
     config["arbitrage"]["open_threshold_change_sec"])
 FORCE_CLOSING_MIN = int(config["arbitrage"]["force_closing_min"])
-PROFIT_UPDATE_INTERVAL_MIN = float(
-    config["trade"]["profit_update_interval_min"])
 
 TRADE_AMOUNT = float(config["trade"]["amount"])
 TRADE_OPEN_THRESHOLD = int(config["trade"]["open_threshold"])

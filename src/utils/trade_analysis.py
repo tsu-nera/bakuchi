@@ -22,7 +22,7 @@ class TradeAnalysis():
         self.timestamp = timestamp
         self.dir_path = os.path.join(path.REPORTS_DATA_DIR_PATH, timestamp)
         self.trades_dir_path = os.path.join(self.dir_path, path.TRADES_DIR)
-        self.ticks_dir_path = os.path.join(self.dir_path, path.EXCHANGES_DIR)
+        self.ticks_dir_path = os.path.join(self.dir_path, path.TICKS)
 
         self.start_asset = self.__read_asset("start")
         self.end_asset = self.__read_asset("end")
@@ -67,6 +67,11 @@ class TradeAnalysis():
         return json.read(file_path)
 
     def __read_asset(self, keyword):
+        file_name = "{}.json".format(keyword)
+        file_path = os.path.join(self.dir_path, path.ASSETS_DIR, file_name)
+        return json.read(file_path)
+
+    def __read_profit(self, keyword):
         file_name = "{}.json".format(keyword)
         file_path = os.path.join(self.dir_path, path.ASSETS_DIR, file_name)
         return json.read(file_path)
@@ -205,31 +210,36 @@ class TradeAnalysis():
     def create_profit_df(self):
         ex1_key_side = "{}_side".format(self.__ex1_id.value)
         ex2_key_side = "{}_side".format(self.__ex2_id.value)
-        ex1_key_price = "{}_price".format(self.__ex1_id.value)
-        ex2_key_price = "{}_price".format(self.__ex2_id.value)
+        ex1_key_price_actual = "{}_price_actual".format(self.__ex1_id.value)
+        ex2_key_price_actual = "{}_price_actual".format(self.__ex2_id.value)
 
         df = pd.DataFrame({
-            'timestamp': self.trades_ex1['datetime'].to_list(),
-            ex1_key_side: self.trades_ex1['side'].to_list(),
-            ex1_key_price: self.trades_ex1['price'].to_list(),
-            ex2_key_side: self.trades_ex2['side'].to_list(),
-            ex2_key_price: self.trades_ex2['price'].to_list()
+            'timestamp':
+            self.trades_ex1['datetime'].to_list(),
+            ex1_key_side:
+            self.trades_ex1['side'].to_list(),
+            ex1_key_price_actual:
+            self.trades_ex1['price'].to_list(),
+            ex2_key_side:
+            self.trades_ex2['side'].to_list(),
+            ex2_key_price_actual:
+            self.trades_ex2['price'].to_list()
         })
 
         def __calc_profit(x):
             if x[ex1_key_side] == 'sell':
-                ex1_price = x[ex1_key_price]
+                ex1_price = x[ex1_key_price_actual]
             else:
-                ex1_price = -1 * x[ex1_key_price]
+                ex1_price = -1 * x[ex1_key_price_actual]
 
             if x[ex2_key_side] == 'sell':
-                ex2_price = x[ex2_key_price]
+                ex2_price = x[ex2_key_price_actual]
             else:
-                ex2_price = -1 * x[ex2_key_price]
+                ex2_price = -1 * x[ex2_key_price_actual]
 
             return round(ex1_price + ex2_price, 3)
 
-        df['profit'] = df.apply(__calc_profit, axis=1)
+        df['profit_actual'] = df.apply(__calc_profit, axis=1)
 
         df.timestamp = pd.to_datetime(df.timestamp,
                                       format=dt.DATETIME_BASE_FORMAT)

@@ -19,15 +19,19 @@ import src.env as env
 import src.constants.path as path
 
 
+def _copy_if_exist(target_dir_path, file):
+    if os.path.exists(file):
+        file_name = os.path.basename(file)
+        target_file_path = os.path.join(target_dir_path, file_name)
+        shutil.copy(file, target_file_path)
+
+
 def backup_trading_logs(current_trading_dir):
     target_dir_path = os.path.join(current_trading_dir, path.LOG_DIR)
     os.mkdir(target_dir_path)
 
     for file in path.TRADES_LOGS:
-        if os.path.exists(file):
-            file_name = os.path.basename(file)
-            target_file_path = os.path.join(target_dir_path, file_name)
-            shutil.copy(file, target_file_path)
+        _copy_if_exist(target_dir_path, file)
 
 
 def backup_trading_assets(current_trading_dir):
@@ -35,34 +39,22 @@ def backup_trading_assets(current_trading_dir):
     os.mkdir(target_dir_path)
 
     for file in path.TRADES_ASSETS:
-        if os.path.exists(file):
-            file_name = os.path.basename(file)
-            target_file_path = os.path.join(target_dir_path, file_name)
-            shutil.copy(file, target_file_path)
+        _copy_if_exist(target_dir_path, file)
 
 
 def backup_trading_orders(current_trading_dir):
-    target_dir_path = os.path.join(current_trading_dir, path.ORDERS_DIR)
+    target_dir_path = os.path.join(current_trading_dir, path.TRADES_DIR)
     os.mkdir(target_dir_path)
 
-    file = path.ORDER_CSV_FILE_PATH
-    if os.path.exists(file):
-        file_name = os.path.basename(file)
-        target_file_path = os.path.join(target_dir_path, file_name)
-        shutil.copy(file, target_file_path)
+    file = path.BOT_ORDER_CSV_FILE_PATH
+    _copy_if_exist(target_dir_path, file)
 
-    file = path.PROFIT_CSV_FILE_PATH
-    if os.path.exists(file):
-        file_name = os.path.basename(file)
-        target_file_path = os.path.join(target_dir_path, file_name)
-        shutil.copy(file, target_file_path)
+    file = path.BOT_PROFIT_CSV_FILE_PATH
+    _copy_if_exist(target_dir_path, file)
 
     for exchange_id in exchange.EXCHANGE_ID_LIST:
         file = "{}.csv".format(exchange_id)
-        if os.path.exists(file):
-            file_name = os.path.basename(file)
-            target_file_path = os.path.join(target_dir_path, file_name)
-            shutil.copy(file, target_file_path)
+        _copy_if_exist(target_dir_path, file)
 
 
 def clean_trading_logs():
@@ -96,14 +88,15 @@ def run_trading(demo_mode=False):
         asset.display()
         sys.exit(1)
 
+    profit = Profit(asset)
+
     # run trade
     arbitrage = ArbitrageTrading(exchange.ExchangeId.LIQUID,
                                  exchange.ExchangeId.BITBANK,
                                  ccxtconst.SYMBOL_BTC_JPY,
+                                 profit,
                                  demo_mode=demo_mode)
 
-    profit = Profit()
-    profit.setDaemon(True)
     slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
 
     current_trading_dir = arbitrage.get_current_trading_data_dir()
@@ -118,7 +111,7 @@ def run_trading(demo_mode=False):
         logger.info("=========================")
         slack.notify_with_datetime("Trading Botの稼働を開始しました。")
         asset.save(asset.TRADIGNG_START)
-        profit.start()
+        profit.update()
 
     try:
         arbitrage.run()
