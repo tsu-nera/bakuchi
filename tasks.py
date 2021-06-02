@@ -442,6 +442,7 @@ def asset(c):
 @task
 def bot_asset(c):
     Asset().run_bot()
+    update_note_asset(c)
 
 
 @task
