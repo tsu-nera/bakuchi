@@ -96,7 +96,7 @@ class ArbitrageTrading(ArbitrageBase):
         margin_buyx_selly = self._get_profit_margin(y.bid, x.ask)
         margin_buyy_sellx = self._get_profit_margin(x.bid, y.ask)
 
-        base_message_format = "sell-{}/buy-{} margin:{}"
+        base_message_format = "sell-{}/buy-{} margin:{:>+5d}"
         if self.opened:
             if self.open_direction:
                 message_format = base_message_format.format(
@@ -110,8 +110,9 @@ class ArbitrageTrading(ArbitrageBase):
             message_buyy_sellx_format = base_message_format.format(
                 self.ex_id_x.value, self.ex_id_y.value, margin_buyy_sellx)
 
-        open_threshold_format = "open_threshold:{}".format(self.open_threshold)
-        close_threshold_format = "close_threshold:{}".format(
+        open_threshold_format = " open_threshold:{:+d}".format(
+            self.open_threshold)
+        close_threshold_format = "close_threshold:{:+d}".format(
             self._get_close_threshold())
 
         if self.opened:
@@ -177,7 +178,7 @@ class ArbitrageTrading(ArbitrageBase):
                                         sell_exchange_id, sell_bid,
                                         expected_profit, profit_margin):
         label = self._get_log_label()
-        return "[Expect] {} buy-{}(ask={}), sell-{}(bid={}), margin={}, profit={}".format(
+        return "[Expect] {} buy {:7s}(ask={}), sell {:7s}(bid={}), margin:{:<+5d}, profit:{:+.3f}".format(
             label, buy_exchange_id.value, buy_ask, sell_exchange_id.value,
             sell_bid, profit_margin, expected_profit)
 
