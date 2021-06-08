@@ -177,14 +177,6 @@ class Profit():
     # self.__bot_logger.logging()
 
     def __profits_to_csv(self):
-        print(self.start_asset_jpy, self.start_asset_btc_total,
-              self.start_asset_btc_as_jpy, self.start_asset_total)
-        print(self.start_btcs)
-        print(self.current_btcs)
-        print(self.current_asset_total)
-        print(self.stats_bot, self.stats_market, self.stats_trade)
-        print()
-
         df = pd.DataFrame.from_dict(self.profits)
         df.to_csv(path.BOT_PROFIT_CSV_FILE_PATH, index=None)
 
