@@ -26,29 +26,33 @@ class ExchangeTrading(ExchangeBase):
     def _format_order_response(self, response, amount, extinfo=None):
         info = response["info"]
 
-        def _to_json(jpy, btc):
+        def _to_json(jpy, btc, rate):
             return {
                 "exchange_id": self.exchange_id.value,
                 "symbol": self.symbol,
                 "jpy": format_jpy_float(jpy),
-                "btc": btc
+                "btc": btc,
+                "rate": rate
             }
 
         if self.exchange_id == exchange.ExchangeId.COINCHECK:
+            btc = float(amount)
+            rate = float(extinfo)
             if info["order_type"] == "market_buy":
                 jpy = float(info["market_buy_amount"])
             else:
-                jpy = float(amount) * float(extinfo)
-            btc = amount
-            return _to_json(jpy, btc)
+                jpy = rate * btc
+            return _to_json(jpy, btc, rate)
         elif self.exchange_id == exchange.ExchangeId.LIQUID:
             btc = float(info["quantity"])
-            jpy = float(info["price"]) * btc
-            return _to_json(jpy, btc)
+            rate = float(info["price"])
+            jpy = rate * btc
+            return _to_json(jpy, btc, rate)
         elif amount and extinfo:
             btc = amount
-            jpy = amount * extinfo
-            return _to_json(jpy, btc)
+            rate = extinfo
+            jpy = rate * btc
+            return _to_json(jpy, btc, rate)
         else:
             return {}
 

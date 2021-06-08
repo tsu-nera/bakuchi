@@ -1,3 +1,4 @@
+import shutil
 from invoke import task, run
 
 import os
@@ -441,6 +442,7 @@ def asset(c):
 @task
 def bot_asset(c):
     Asset().run_bot()
+    update_note_asset(c)
 
 
 @task
@@ -558,6 +560,32 @@ def backup_trades(c):
 @task
 def note(c):
     run("jupyter notebook --notebook-dir='.'")
+
+
+def _update_note(keyword):
+    ipynb_file_path = "./data/notebooks/{}.ipynb".format(keyword)
+    html_path_from = "./data/notebooks/{}.html".format(keyword)
+    html_path_to = "./data/notebooks/html/{}.html".format(keyword)
+
+    report.run_notebook(ipynb_file_path)
+    report.convert_nb_html(ipynb_file_path)
+    shutil.move(html_path_from, html_path_to)
+
+
+@task
+def update_note_asset(c):
+    _update_note("asset")
+
+
+@task
+def update_note_trades(c):
+    _update_note("trades")
+
+
+@task
+def update_notes(c):
+    _update_note("asset")
+    _update_note("trades")
 
 
 @task

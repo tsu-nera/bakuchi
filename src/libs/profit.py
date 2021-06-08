@@ -1,14 +1,10 @@
 import os
-import time
-from threading import Thread
 
 import pandas as pd
 
 import src.constants.exchange as exchange
 import src.constants.ccxtconst as ccxtconst
 import src.constants.path as path
-
-from src.config import PROFIT_UPDATE_INTERVAL_MIN
 
 from src.libs.slack_client import SlackClient
 
@@ -17,16 +13,14 @@ import src.utils.trade_history as history
 import src.env as env
 import src.utils.datetime as dt
 
-from src.utils.asset import format_jpy_float
-from src.libs.asset import Asset
+from src.utils.asset import format_jpy, format_jpy_float, format_btc_more
 
 from src.loggers.logger import get_profit_logger
+from src.loggers.order_logger import OrderLogger
 
 
-class Profit(Thread):
-    def __init__(self):
-        Thread.__init__(self)
-
+class Profit():
+    def __init__(self, asset):
         self.orders = {}
 
         order_columns = [
@@ -35,13 +29,27 @@ class Profit(Thread):
         for exchange_id in exchange.EXCHANGE_ID_LIST:
             self.orders[exchange_id] = pd.DataFrame(columns=order_columns)
 
-        self.asset = Asset()
+        self.asset = asset
+        self.__setup_asset_info()
 
         self.profits = []
         self.start_timestamp = dt.now()
         self.total_profit = 0
 
-        self.__logger = get_profit_logger()
+        self.__profit_logger = get_profit_logger()
+        self.__bot_logger = OrderLogger
+
+    def __setup_asset_info(self):
+        jpy, btc, btc_as_jpy, total_jpy = self.asset.get_total()
+
+        self.start_asset_jpy = jpy
+        self.start_asset_btc_total = btc
+        self.start_asset_btc_as_jpy = btc_as_jpy
+        self.start_asset_total = total_jpy
+        self.current_asset_total = self.start_asset_total
+
+        self.start_btcs = self.asset.get_btcs()
+        self.current_btcs = self.start_btcs
 
     def __update(self):
         self.__update_orders()
@@ -67,9 +75,9 @@ class Profit(Thread):
             "pair": pair,
             "side": side,
             "fee": fee,
-            "amount": abs(round(float(amount), 9)),  # 注文量
-            "price": round(abs(float(price)), 3),  # 実際の価格 amount x rate
-            "rate": round(float(rate), 3)  # 現在の価値
+            "amount": format_btc_more(amount),
+            "price": format_jpy_float(price),
+            "rate": format_jpy(rate)
         }
 
     def __update_profits(self):
@@ -84,7 +92,7 @@ class Profit(Thread):
             else:
                 y_price = -1 * y_price
 
-            return round(x_price + y_price, 3)
+            return format_jpy_float(x_price + y_price)
 
         self.profits = []
         self.total_profit = 0
@@ -112,7 +120,7 @@ class Profit(Thread):
                 timestamps, x_sides, x_prices, y_sides, y_prices):
             profit = __calc_profit(x_side, x_price, y_side, y_price)
             data = {
-                "timestamp": timestamp,
+                "datetime": timestamp,
                 "x_side": x_side,
                 "x_price": x_price,
                 "y_side": y_side,
@@ -124,10 +132,11 @@ class Profit(Thread):
 
     def __update_profit_stats(self):
         self.asset.force_update()
+
         _, _, _, self.current_asset_total = self.asset.get_total()
         self.current_btcs = self.asset.get_btcs()
 
-        # Bot稼動での利益
+        # Bot稼動時のトータル利益
         self.stats_bot = self.calc_bot_profit()
 
         # 市場利益
@@ -137,57 +146,53 @@ class Profit(Thread):
         self.stats_trade = self.calc_trade_profit(self.stats_bot,
                                                   self.stats_market)
 
-    def run(self):
-        jpy, btc, btc_as_jpy, total_jpy = self.asset.get_total()
-
-        self.start_asset_jpy = jpy
-        self.start_asset_btc_total = btc
-        self.start_asset_btc_as_jpy = btc_as_jpy
-        self.start_asset_total = total_jpy
-        self.current_asset_total = self.start_asset_total
-
-        self.start_btcs = self.asset.get_btcs()
-        self.current_btcs = self.start_btcs
-
-        while True:
-            self.run_bot()
-            time.sleep(PROFIT_UPDATE_INTERVAL_MIN * 60)
-
-    def run_bot(self):
-        '''
-        botからの定期実行用
-        '''
+    def update(self):
         self.__update()
 
-        # orders log
-        self.__orders_to_csv()
+        # server orders csv
+        self.__server_orders_to_csv()
 
-        # profit log
+        # bot orders csv
+        # self.__bot_orders_to_csv()
+
+        # profit csv
         self.__profits_to_csv()
 
-        # ログ出力
+        # stdout ログ出力
         self.__logging()
 
         # slack出力
         self.__notify_slack()
 
-    def __orders_to_csv(self):
+    def __server_orders_to_csv(self):
         for exchange_id in exchange.EXCHANGE_ID_LIST:
             orders = self.orders[exchange_id]
-            target_file = "{}.csv".format(exchange_id.value)
+            target_file = "{}_server_order.csv".format(exchange_id.value)
             target_path = os.path.join(path.ORDERS_LOG_DIR, target_file)
 
             orders.to_csv(target_path, index=None)
 
+    # def __bot_orders_to_csv(self):
+    #     pass
+    # self.__bot_logger.logging()
+
     def __profits_to_csv(self):
+        print(self.start_asset_jpy, self.start_asset_btc_total,
+              self.start_asset_btc_as_jpy, self.start_asset_total)
+        print(self.start_btcs)
+        print(self.current_btcs)
+        print(self.current_asset_total)
+        print(self.stats_bot, self.stats_market, self.stats_trade)
+        print()
+
         df = pd.DataFrame.from_dict(self.profits)
-        df.to_csv(path.PROFIT_CSV_FILE_PATH, index=None)
+        df.to_csv(path.BOT_PROFIT_CSV_FILE_PATH, index=None)
 
     def __logging(self):
         message = "profit={}, bot={}, market={}, trade={}".format(
             self.total_profit, self.stats_bot, self.stats_market,
             self.stats_trade)
-        self.__logger.info(message)
+        self.__profit_logger.info(message)
 
     def __notify_slack(self):
         slack = SlackClient(env.SLACK_WEBHOOK_URL_TRADE)
@@ -208,6 +213,7 @@ class Profit(Thread):
     def calc_market_profit(self):
         # トレード開始時に保持していたBTCに市場の値動きの差分をかける
         market_profit = 0
+
         for exchange_id in exchange.EXCHANGE_ID_LIST:
             current_bid = self.current_btcs[exchange_id.value]["bid"]
             start_bid = self.start_btcs[exchange_id.value]["bid"]
